@@ -1,0 +1,5 @@
+/.playground
+/.vscode
+/config
+/vendor
+.env
