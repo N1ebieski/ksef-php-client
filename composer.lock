@@ -4,8 +4,70 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb7ed63ef9296eabe2d1283736d6b616",
+    "content-hash": "a50964b6ec4b255f2c0fd030c33e6c30",
     "packages": [
+        {
+            "name": "alcohol/iso4217",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alcohol/iso4217.git",
+                "reference": "3ce6e02fbc0501f949ffdad327f5851c04367f4b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alcohol/iso4217/zipball/3ce6e02fbc0501f949ffdad327f5851c04367f4b",
+                "reference": "3ce6e02fbc0501f949ffdad327f5851c04367f4b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alcohol\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com"
+                }
+            ],
+            "description": "ISO 4217 PHP Library",
+            "homepage": "http://alcohol.github.io/iso4217/",
+            "keywords": [
+                "4217",
+                "ISO 4217",
+                "currencies",
+                "iso",
+                "library"
+            ],
+            "support": {
+                "issues": "https://github.com/alcohol/iso4217/issues",
+                "source": "https://github.com/alcohol/iso4217"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/alcohol",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-01T09:50:00+00:00"
+        },
         {
             "name": "league/iso3166",
             "version": "4.3.2",

@@ -10,9 +10,13 @@ use Stringable;
 
 final readonly class Nazwa extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
-        $this->validate();
+        $this->validate($value);
+
+        $this->value = $value;
     }
 
     public function __toString(): string
@@ -25,9 +29,9 @@ final readonly class Nazwa extends ValueObject implements ValueAwareInterface, S
         return new self($value);
     }
 
-    public function validate(): void
+    public function validate($value): void
     {
-        $length = mb_strlen($this->value);
+        $length = mb_strlen($value);
 
         if ($length < 1 || $length > 512) {
             throw new \InvalidArgumentException('Invalid name length.');

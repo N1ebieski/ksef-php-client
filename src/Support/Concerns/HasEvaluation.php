@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns;
 
+use DateTimeImmutable;
+use N1ebieski\KSEFClient\Contracts\FromInterface;
+
 trait HasEvaluation
 {
     /**
@@ -12,11 +15,12 @@ trait HasEvaluation
     protected function evaluate(mixed $value, ?string $objectNamespace = null): mixed
     {
         if ($objectNamespace !== null) {
-            if ($value instanceof $objectNamespace) {
-                return $value;
-            }
-
-            return $objectNamespace::from($value);
+            return match (true) {
+                $value instanceof $objectNamespace => $value,
+                is_subclass_of($objectNamespace, FromInterface::class) => $objectNamespace::from($value),
+                $objectNamespace === DateTimeImmutable::class => new DateTimeImmutable($value),
+                default => $value
+            };
         }
 
         return $value;

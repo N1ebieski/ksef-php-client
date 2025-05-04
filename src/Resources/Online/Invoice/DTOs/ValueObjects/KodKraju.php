@@ -11,9 +11,13 @@ use Stringable;
 
 final readonly class KodKraju extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
-        $this->validate();
+        $this->validate($value);
+
+        $this->value = $value;
     }
 
     public function __toString(): string
@@ -26,14 +30,14 @@ final readonly class KodKraju extends ValueObject implements ValueAwareInterface
         return new self($value);
     }
 
-    public function validate(): void
+    public function validate($value): void
     {
         try {
-            new \League\ISO3166\ISO3166()->alpha2($this->value);
+            new \League\ISO3166\ISO3166()->alpha2($value);
         } catch (\League\ISO3166\Exception\DomainException) {
-            throw new InvalidArgumentException("Invalid country code format: {$this->value} given.");
+            throw new InvalidArgumentException("Invalid country code format: {$value} given.");
         } catch (\InvalidArgumentException) {
-            throw new InvalidArgumentException("Country code: {$this->value} does not exist.");
+            throw new InvalidArgumentException("Country code: {$value} does not exist.");
         }
     }
 }

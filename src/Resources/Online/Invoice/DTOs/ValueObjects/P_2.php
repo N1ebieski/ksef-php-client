@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ValueObjects;
+namespace N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects;
 
-use InvalidArgumentException;
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
+use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
-final readonly class Url extends ValueObject implements ValueAwareInterface, Stringable
+/**
+ * Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny identyfikuje fakturę
+ */
+final readonly class P_2 extends ValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 
@@ -30,15 +34,12 @@ final readonly class Url extends ValueObject implements ValueAwareInterface, Str
         return new self($value);
     }
 
-    public function withSlashAtEnd(): self
-    {
-        return str_ends_with($this->value, '/') ? $this : new self($this->value . '/');
-    }
-
     private function validate($value): void
     {
-        if (filter_var($value, FILTER_VALIDATE_URL) === false) {
-            throw new InvalidArgumentException("Invalid url format: {$value} given");
+        $length = mb_strlen($value);
+
+        if ($length < 1 || $length > 256) {
+            throw new \InvalidArgumentException('Invalid name length.');
         }
     }
 }

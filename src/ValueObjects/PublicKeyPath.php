@@ -11,9 +11,13 @@ use Stringable;
 
 final readonly class PublicKeyPath extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
-        $this->validate();
+        $this->validate($value);
+
+        $this->value = $value;
     }
 
     public function __toString(): string
@@ -26,16 +30,16 @@ final readonly class PublicKeyPath extends ValueObject implements ValueAwareInte
         return new self($value);
     }
 
-    private function validate(): void
+    private function validate($value): void
     {
-        if ( ! is_file($this->value)) {
-            throw new InvalidArgumentException("File {$this->value} does not exist.");
+        if ( ! is_file($value)) {
+            throw new InvalidArgumentException("File {$value} does not exist.");
         }
 
-        $extension = strtolower(pathinfo($this->value, PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($value, PATHINFO_EXTENSION));
 
         if ( ! in_array($extension, ['pem', 'der'])) {
-            throw new InvalidArgumentException("File {$this->value} has invalid extension.");
+            throw new InvalidArgumentException("File {$value} has invalid extension.");
         }
     }
 }

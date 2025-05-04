@@ -10,9 +10,13 @@ use Stringable;
 
 final readonly class Email extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
-        $this->validate();
+        $this->validate($value);
+
+        $this->value = $value;
     }
 
     public function __toString(): string
@@ -25,15 +29,15 @@ final readonly class Email extends ValueObject implements ValueAwareInterface, S
         return new self($value);
     }
 
-    public function validate(): void
+    public function validate($value): void
     {
-        $length = mb_strlen($this->value);
+        $length = mb_strlen($value);
 
         if ($length < 3 || $length > 255) {
             throw new \InvalidArgumentException('Invalid email length.');
         }
 
-        if (filter_var($this->value, FILTER_VALIDATE_EMAIL) === false) {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
             throw new \InvalidArgumentException('Invalid email format.');
         }
     }
