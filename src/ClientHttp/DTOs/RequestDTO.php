@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ClientHttp\DTOs;
 
+use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Header;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Method;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Support\DTO;
 
-/**
- * @property-read array<int, Header> $headers
- */
 final readonly class RequestDTO extends DTO
 {
+    /**
+     * @param array<int, Header> $headers
+     * @param string|array<string, mixed>|null $data
+     */
     public function __construct(
         public Method $method,
         public Uri $uri,

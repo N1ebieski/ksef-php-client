@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 trait HasEvaluation
 {
     /**
-     * @param null|class-string $objectNamespace 
+     * @param null|class-string $objectNamespace
      */
     protected function evaluate(mixed $value, ?string $objectNamespace = null): mixed
     {

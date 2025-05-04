@@ -1,0 +1,8 @@
+parameters:
+	level: 6
+	paths:
+		- src/
+		- tests/
+	universalObjectCratesClasses:
+		- N1ebieski\KSEFClient\Contracts\ValueAwareInterface
+	excludePaths:

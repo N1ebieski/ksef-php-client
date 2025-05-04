@@ -6,6 +6,9 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 
+/**
+ * @mixin ValueAwareInterface
+ */
 trait HasEquals
 {
     public function isEquals(ValueAwareInterface $value): bool

@@ -6,9 +6,9 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 
 trait HasWith
 {
-    public function with(array $data): self
+    public function with(array $data): static
     {
-        return self::from([...$this->toArray(), ...$data]);
+        return static::from([...$this->toArray(), ...$data]);
     }
 
     abstract public static function from(array $data): self;

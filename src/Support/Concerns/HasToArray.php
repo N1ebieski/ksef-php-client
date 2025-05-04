@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 
 use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
+use N1ebieski\KSEFClient\Support\Str;
 
 trait HasToArray
 {
@@ -14,7 +15,9 @@ trait HasToArray
         $parameters = get_object_vars($this);
 
         foreach ($parameters as $key => $value) {
-            $parameters[$key] = match (true) {
+            $snakeName = Str::snake($key);
+
+            $parameters[$snakeName] = match (true) {
                 $value instanceof ArrayableInterface => $value->toArray(),
                 $value instanceof ValueAwareInterface => $value->value,
                 default => $value
