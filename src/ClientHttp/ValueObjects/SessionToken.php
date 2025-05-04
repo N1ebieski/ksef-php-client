@@ -6,12 +6,15 @@ namespace N1ebieski\KSEFClient\ClientHttp\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
+use SensitiveParameter;
 use Stringable;
 
 final readonly class SessionToken extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
-    {
+    public function __construct(
+        #[SensitiveParameter]
+        public string $value
+    ) {
     }
 
     public function __toString(): string

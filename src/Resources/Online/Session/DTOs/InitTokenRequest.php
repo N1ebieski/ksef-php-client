@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session\DTOs;
 
 use DOMDocument;
-use RuntimeException;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Resources\Request;
 use N1ebieski\KSEFClient\ValueObjects\Nip;
+use RuntimeException;
+use SensitiveParameter;
 
 final readonly class InitTokenRequest extends Request implements XmlSerializableInterface
 {
     public function __construct(
+        #[SensitiveParameter]
         public EncryptedToken $encryptedToken,
+        #[SensitiveParameter]
         public Challenge $challenge,
         public Nip $nip
     ) {

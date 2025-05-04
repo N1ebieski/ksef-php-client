@@ -8,11 +8,14 @@ use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Response;
+use SensitiveParameter;
 
 final readonly class AuthorisationChallengeResponse extends Response
 {
     public function __construct(
+        #[SensitiveParameter]
         public DateTimeImmutable $timestamp,
+        #[SensitiveParameter]
         public Challenge $challenge,
     ) {
     }
