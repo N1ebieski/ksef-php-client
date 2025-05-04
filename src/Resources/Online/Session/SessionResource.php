@@ -13,8 +13,9 @@ use N1ebieski\KSEFClient\Resources\Online\Session\Handlers\InitTokenHandler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Handlers\TerminateHandler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\InitTokenResponse;
+use N1ebieski\KSEFClient\Resources\Resource;
 
-final readonly class SessionResource
+final readonly class SessionResource extends Resource
 {
     public function __construct(
         private HttpClientInterface $client,

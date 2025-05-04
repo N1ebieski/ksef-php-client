@@ -6,8 +6,9 @@ namespace N1ebieski\KSEFClient\Resources\Online;
 
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\SessionResource;
+use N1ebieski\KSEFClient\Resources\Resource;
 
-final readonly class OnlineResource
+final readonly class OnlineResource extends Resource
 {
     public function __construct(
         private HttpClientInterface $client,

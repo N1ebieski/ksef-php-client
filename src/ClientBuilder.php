@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient;
 use Http\Discovery\Psr18ClientDiscovery;
 use N1ebieski\KSEFClient\Actions\DTOs\EncryptTokenAction;
 use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
-use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\DTOs\ConfigDTO;
+use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
+use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
@@ -105,15 +106,15 @@ final class ClientBuilder
         return $this;
     }
 
-    public function build(): Client
+    public function build(): RootResource
     {
         $configDTO = new ConfigDTO(new BaseUri($this->apiUrl->value));
-        $clientHttp = new HttpClient(
+        $httpClient = new HttpClient(
             client: $this->httpClient,
             configDTO: $configDTO
         );
 
-        $client = new Client($clientHttp);
+        $client = new RootResource($httpClient);
 
         $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
             new AuthorisationChallengeRequest($this->nip)
@@ -135,7 +136,7 @@ final class ClientBuilder
             )
         );
 
-        return new Client($clientHttp->withConfigDTO(
+        return new RootResource($httpClient->withConfigDTO(
             $configDTO->withSessionToken(
                 $initTokenResponse->sessionToken->token
             )
