@@ -36,7 +36,7 @@ final readonly class ClientHttp implements ClientHttpInterface
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json');
 
-        if ($this->configDTO->sessionToken !== null) {
+        if ($this->configDTO->sessionToken instanceof \N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken) {
             $request = $request->withHeader('SessionToken', $this->configDTO->sessionToken->value);
         }
 

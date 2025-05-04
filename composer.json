@@ -25,7 +25,8 @@
         "vlucas/phpdotenv": "^5.6",
         "guzzlehttp/guzzle": "^7.9.2",
         "guzzlehttp/psr7": "^2.7.0",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.0"
     },
     "config": {
         "allow-plugins": {
@@ -40,6 +41,14 @@
         "cs-fixer": [
             "Composer\\Config::disableProcessTimeout",
             "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix"
-        ]
+        ],
+        "rector": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/rector process"
+        ],
+        "rector-dry": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/rector process --dry-run > var/logs/rector.log"
+        ]        
     }
 }

@@ -31,6 +31,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $initSessionTokenRequest->setAttribute('xmlns:types', 'http://ksef.mf.gov.pl/schema/gtw/svc/types/2021/10/01/0001');
         $initSessionTokenRequest->setAttribute('xmlns:online.types', 'http://ksef.mf.gov.pl/schema/gtw/svc/online/types/2021/10/01/0001');
         $initSessionTokenRequest->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+
         $dom->appendChild($initSessionTokenRequest);
 
         $context = $dom->createElement('Context');
@@ -38,14 +39,17 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
         $challenge = $dom->createElement('online.types:Challenge');
         $challenge->appendChild($dom->createTextNode($this->challenge->value));
+
         $context->appendChild($challenge);
 
         $identifier = $dom->createElement('online.types:Identifier');
         $identifier->setAttribute('xsi:type', 'types:SubjectIdentifierByCompanyType');
+
         $context->appendChild($identifier);
 
         $id = $dom->createElement('types:Identifier');
         $id->appendChild($dom->createTextNode($this->nip->value));
+
         $identifier->appendChild($id);
 
         $documentType = $dom->createElement('online.types:DocumentType');
@@ -53,6 +57,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
         $service = $dom->createElement('types:Service');
         $service->appendChild($dom->createTextNode('KSeF'));
+
         $documentType->appendChild($service);
 
         $formCode = $dom->createElement('types:FormCode');
@@ -60,22 +65,27 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
         $systemCode = $dom->createElement('types:SystemCode');
         $systemCode->appendChild($dom->createTextNode('FA (2)'));
+
         $formCode->appendChild($systemCode);
 
         $schemaVersion = $dom->createElement('types:SchemaVersion');
         $schemaVersion->appendChild($dom->createTextNode('1-0E'));
+
         $formCode->appendChild($schemaVersion);
 
         $targetNamespace = $dom->createElement('types:TargetNamespace');
         $targetNamespace->appendChild($dom->createTextNode('http://crd.gov.pl/wzor/2021/11/29/11089/'));
+
         $formCode->appendChild($targetNamespace);
 
         $value = $dom->createElement('types:Value');
         $value->appendChild($dom->createTextNode('FA'));
+
         $formCode->appendChild($value);
 
         $token = $dom->createElement('online.types:Token');
         $token->appendChild($dom->createTextNode($this->encryptedToken->value));
+
         $context->appendChild($token);
 
         $xml = $dom->saveXML();

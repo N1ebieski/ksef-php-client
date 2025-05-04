@@ -27,7 +27,7 @@ final readonly class Url extends ValueObject implements ValueAwareInterface, Str
 
     public function withSlashAtEnd(): self
     {
-        return ! str_ends_with($this->value, '/') ? new self($this->value . '/') : $this;
+        return str_ends_with($this->value, '/') ? $this : new self($this->value . '/');
     }
 
     private function validate(): void

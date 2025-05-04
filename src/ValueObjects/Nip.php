@@ -31,7 +31,7 @@ final readonly class Nip extends ValueObject implements ValueAwareInterface, Str
 
     private function validate(): void
     {
-        if ( ! preg_match('/^\d{10}$/', $this->value)) {
+        if (preg_match('/^\d{10}$/', $this->value) === false) {
             throw new \InvalidArgumentException('Invalid NIP number format. It should be 10 digits.');
         }
 

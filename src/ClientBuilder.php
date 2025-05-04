@@ -51,6 +51,7 @@ final class ClientBuilder
         $mode = $this->evaluate($mode, Mode::class);
 
         $this->mode = $mode;
+
         $this->apiUrl = $this->mode->getApiUrl();
 
         if ($this->mode->isEquals(Mode::Test)) {

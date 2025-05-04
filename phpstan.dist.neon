@@ -7,3 +7,4 @@ parameters:
 	universalObjectCratesClasses:
 		- N1ebieski\KSEFClient\Contracts\ValueAwareInterface
 	excludePaths:
+		- ./src/Overrides/Rector/Php74/Rector/Closure/ClosureToArrowFunctionRector.php

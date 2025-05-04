@@ -27,8 +27,8 @@ final readonly class Uri extends ValueObject implements ValueAwareInterface, Str
 
     public function withBaseUrl(BaseUri $baseUri): self
     {
-        return ! $this->isUrl() ?
-            new self($baseUri->value->withSlashAtEnd()->value . $this->withoutSlashAtStart()->value) : $this;
+        return $this->isUrl() ?
+            $this : new self($baseUri->value->withSlashAtEnd()->value . $this->withoutSlashAtStart()->value);
     }
 
     public function withoutSlashAtStart(): self

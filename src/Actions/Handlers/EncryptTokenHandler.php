@@ -22,8 +22,12 @@ final readonly class EncryptTokenHandler extends Handler
             throw new \RuntimeException("Unable to read public key from the file: {$action->publicKeyPath->value}");
         }
 
-        openssl_public_encrypt($data, $encryptedToken, $publicKey, OPENSSL_PKCS1_PADDING);
+        $encryption = openssl_public_encrypt($data, $encryptedToken, $publicKey, OPENSSL_PKCS1_PADDING);
 
-        return new EncryptedToken(base64_encode($encryptedToken)); //@phpstan-ignore-line
+        if ($encryption === false) {
+            throw new \RuntimeException('Unable to encrypt token.');
+        }
+
+        return new EncryptedToken(base64_encode((string) $encryptedToken)); //@phpstan-ignore-line
     }
 }
