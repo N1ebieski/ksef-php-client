@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
@@ -33,7 +34,7 @@ final readonly class Url extends ValueObject implements ValueAwareInterface, Str
     private function validate(): void
     {
         if (filter_var($this->value, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException("Invalid url format: {$this->value} given");
+            throw new InvalidArgumentException("Invalid url format: {$this->value} given");
         }
     }
 }

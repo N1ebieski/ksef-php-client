@@ -11,7 +11,6 @@ use N1ebieski\KSEFClient\Contracts\ClientHttpInterface;
 use N1ebieski\KSEFClient\Resources\Handler;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
-use Psr\Http\Message\ResponseInterface;
 
 final readonly class AuthorisationChallengeHandler extends Handler
 {

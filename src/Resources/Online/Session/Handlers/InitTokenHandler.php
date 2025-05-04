@@ -10,11 +10,8 @@ use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Method;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Contracts\ClientHttpInterface;
 use N1ebieski\KSEFClient\Resources\Handler;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\InitTokenResponse;
-use Psr\Http\Message\ResponseInterface;
 
 final readonly class InitTokenHandler extends Handler
 {

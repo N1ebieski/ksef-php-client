@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
@@ -28,13 +29,13 @@ final readonly class PublicKeyPath extends ValueObject implements ValueAwareInte
     private function validate(): void
     {
         if ( ! is_file($this->value)) {
-            throw new \InvalidArgumentException("File {$this->value} does not exist.");
+            throw new InvalidArgumentException("File {$this->value} does not exist.");
         }
 
         $extension = strtolower(pathinfo($this->value, PATHINFO_EXTENSION));
 
         if ( ! in_array($extension, ['pem', 'der'])) {
-            throw new \InvalidArgumentException("File {$this->value} has invalid extension.");
+            throw new InvalidArgumentException("File {$this->value} has invalid extension.");
         }
     }
 }

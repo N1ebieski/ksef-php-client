@@ -11,7 +11,6 @@ use N1ebieski\KSEFClient\Resources\Online\Session\Handlers\AuthorisationChalleng
 use N1ebieski\KSEFClient\Resources\Online\Session\Handlers\InitTokenHandler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\InitTokenResponse;
-use Psr\Http\Message\ResponseInterface;
 
 final readonly class SessionResource
 {

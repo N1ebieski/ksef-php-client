@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\DTOs;
 
+use DOMDocument;
+use RuntimeException;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Resources\Request;
-use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\Nip;
 
 final readonly class InitTokenRequest extends Request implements XmlSerializableInterface
@@ -22,7 +23,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
     public function toXml(): string
     {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
         $initSessionTokenRequest = $dom->createElement('InitSessionTokenRequest');
@@ -91,7 +92,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $xml = $dom->saveXML();
 
         if ($xml === false) {
-            throw new \RuntimeException('Unable to save XML');
+            throw new RuntimeException('Unable to save XML');
         }
 
         return $xml;

@@ -6,7 +6,6 @@ namespace N1ebieski\KSEFClient\Actions\DTOs;
 
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Actions\Action;
-use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\PublicKeyPath;
 

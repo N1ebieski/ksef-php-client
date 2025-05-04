@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ClientHttp;
 
+use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
 use Http\Discovery\Psr17Factory;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\ConfigDTO;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\RequestDTO;
@@ -36,7 +37,7 @@ final readonly class ClientHttp implements ClientHttpInterface
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json');
 
-        if ($this->configDTO->sessionToken instanceof \N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken) {
+        if ($this->configDTO->sessionToken instanceof SessionToken) {
             $request = $request->withHeader('SessionToken', $this->configDTO->sessionToken->value);
         }
 

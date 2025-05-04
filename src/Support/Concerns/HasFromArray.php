@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns;
 
+use ReflectionClass;
+use ReflectionParameter;
+use ReflectionNamedType;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\Str;
@@ -14,7 +17,7 @@ trait HasFromArray
     {
         $attributes = [];
 
-        $reflectionClass = new \ReflectionClass(static::class);
+        $reflectionClass = new ReflectionClass(static::class);
         $constructor = $reflectionClass->getConstructor();
 
         if ($constructor === null) {
@@ -30,7 +33,7 @@ trait HasFromArray
                 array_unique([$snakeName, $parameter->getName()]),
                 fn (string $value): bool => in_array(
                     $value,
-                    array_map(fn (\ReflectionParameter $parameter): string => $parameter->getName(), $parameters)
+                    array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters)
                 )
             ));
 
@@ -40,7 +43,7 @@ trait HasFromArray
 
             $name = $filter[0];
 
-            /** @var \ReflectionNamedType|null */
+            /** @var ReflectionNamedType|null */
             $type = $parameter->getType();
 
             $attributes[$parameter->getName()] = match (true) {

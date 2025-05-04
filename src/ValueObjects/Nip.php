@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
@@ -32,7 +33,7 @@ final readonly class Nip extends ValueObject implements ValueAwareInterface, Str
     private function validate(): void
     {
         if (preg_match('/^\d{10}$/', $this->value) === false) {
-            throw new \InvalidArgumentException('Invalid NIP number format. It should be 10 digits.');
+            throw new InvalidArgumentException('Invalid NIP number format. It should be 10 digits.');
         }
 
         $weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
@@ -48,7 +49,7 @@ final readonly class Nip extends ValueObject implements ValueAwareInterface, Str
         $checksum = $sum % 11;
 
         if ($checksum === 1 || $digits[9] !== $checksum) {
-            throw new \InvalidArgumentException('Invalid NIP number checksum.');
+            throw new InvalidArgumentException('Invalid NIP number checksum.');
         }
     }
 }

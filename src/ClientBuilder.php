@@ -10,8 +10,6 @@ use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
 use N1ebieski\KSEFClient\ClientHttp\ClientHttp;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\ConfigDTO;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\BaseUri;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
-use N1ebieski\KSEFClient\RequestBuilder;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
@@ -20,7 +18,6 @@ use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\Nip;
 use N1ebieski\KSEFClient\ValueObjects\PublicKeyPath;
-use N1ebieski\KSEFClient\ValueObjects\Url;
 use Psr\Http\Client\ClientInterface;
 
 final class ClientBuilder
