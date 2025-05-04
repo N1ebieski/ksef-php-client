@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Responses;
 
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
+use N1ebieski\KSEFClient\Contracts\ResponseInterface;
+use N1ebieski\KSEFClient\Resources\Online\Session\Responses\DTOs\SessionToken;
 use N1ebieski\KSEFClient\Resources\Response;
 
 final readonly class InitTokenResponse extends Response
@@ -14,8 +15,8 @@ final readonly class InitTokenResponse extends Response
     ) {
     }
 
-    public static function fromResponse(array $data): self
+    public static function fromResponse(ResponseInterface $response): self
     {
-        return new self(new SessionToken($data['sessionToken']['token']));
+        return self::from($response->json());
     }
 }

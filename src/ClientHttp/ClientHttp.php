@@ -8,8 +8,8 @@ use Http\Discovery\Psr17Factory;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\ConfigDTO;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\RequestDTO;
 use N1ebieski\KSEFClient\Contracts\ClientHttpInterface;
+use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 
 final readonly class ClientHttp implements ClientHttpInterface
 {
@@ -54,6 +54,6 @@ final readonly class ClientHttp implements ClientHttpInterface
             $request = $request->withBody($psr17Factory->createStream($content));
         }
 
-        return $this->client->sendRequest($request);
+        return new Response($this->client->sendRequest($request));
     }
 }

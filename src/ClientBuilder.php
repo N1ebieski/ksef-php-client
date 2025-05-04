@@ -29,7 +29,7 @@ final class ClientBuilder
 
     private ClientInterface $httpClient;
 
-    private Mode $mode = Mode::PRODUCTION;
+    private Mode $mode = Mode::Production;
 
     private ApiUrl $apiUrl;
 
@@ -47,10 +47,13 @@ final class ClientBuilder
 
     public function withMode(Mode | string $mode): self
     {
-        $this->mode = $this->evaluate($mode, Mode::class);
-        $this->apiUrl = $mode->getApiUrl();
+        /** @var Mode $mode */
+        $mode = $this->evaluate($mode, Mode::class);
 
-        if ($mode->isEquals(Mode::TEST)) {
+        $this->mode = $mode;
+        $this->apiUrl = $this->mode->getApiUrl();
+
+        if ($this->mode->isEquals(Mode::Test)) {
             $this->nip = new Nip('1111111111', skipValidation: true);
         }
 
@@ -59,14 +62,20 @@ final class ClientBuilder
 
     public function withApiUrl(ApiUrl | string $apiUrl): self
     {
-        $this->apiUrl = $this->evaluate($apiUrl, ApiUrl::class);
+        /** @var ApiUrl $apiUrl */
+        $apiUrl = $this->evaluate($apiUrl, ApiUrl::class);
+
+        $this->apiUrl = $apiUrl;
 
         return $this;
     }
 
     public function withApiToken(ApiToken | string $apiToken): self
     {
-        $this->apiToken = $this->evaluate($apiToken, ApiToken::class);
+        /** @var ApiToken $apiToken */
+        $apiToken = $this->evaluate($apiToken, ApiToken::class);
+
+        $this->apiToken = $apiToken;
 
         return $this;
     }
@@ -80,14 +89,20 @@ final class ClientBuilder
 
     public function withNip(Nip | string $nip): self
     {
-        $this->nip = $this->evaluate($nip, Nip::class);
+        /** @var Nip $nip */
+        $nip = $this->evaluate($nip, Nip::class);
+
+        $this->nip = $nip;
 
         return $this;
     }
 
     public function withPublicKeyPath(PublicKeyPath | string $publicKeyPath): self
     {
-        $this->publicKeyPath = $this->evaluate($publicKeyPath, PublicKeyPath::class);
+        /** @var PublicKeyPath $publicKeyPath */
+        $publicKeyPath = $this->evaluate($publicKeyPath, PublicKeyPath::class);
+
+        $this->publicKeyPath = $publicKeyPath;
 
         return $this;
     }
@@ -124,8 +139,10 @@ final class ClientBuilder
 
         return new Client($clientHttp->withConfigDTO(
             $configDTO->withSessionToken(
-                $initTokenResponse->sessionToken
+                $initTokenResponse->sessionToken->token
             )
         ));
+
+        return $client;
     }
 }

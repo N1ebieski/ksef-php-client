@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Responses;
 
 use DateTimeImmutable;
+use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Response;
 
@@ -16,11 +17,8 @@ final readonly class AuthorisationChallengeResponse extends Response
     ) {
     }
 
-    public static function fromResponse(array $data): self
+    public static function fromResponse(ResponseInterface $response): self
     {
-        return new self(
-            timestamp: new DateTimeImmutable($data['timestamp']),
-            challenge: new Challenge($data['challenge'])
-        );
+        return self::from($response->json());
     }
 }

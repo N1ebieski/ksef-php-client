@@ -23,7 +23,7 @@ final readonly class AuthorisationChallengeHandler extends Handler
     public function handle(AuthorisationChallengeRequest $dto): AuthorisationChallengeResponse
     {
         $response = $this->client->sendRequest(new RequestDTO(
-            method: Method::POST,
+            method: Method::Post,
             uri: Uri::from('online/Session/AuthorisationChallenge'),
             data: [
                 'contextIdentifier' => [
@@ -33,8 +33,6 @@ final readonly class AuthorisationChallengeHandler extends Handler
             ]
         ));
 
-        return AuthorisationChallengeResponse::fromResponse(
-            json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR)
-        );
+        return AuthorisationChallengeResponse::fromResponse($response);
     }
 }

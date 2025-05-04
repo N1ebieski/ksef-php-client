@@ -28,7 +28,7 @@ final readonly class InitTokenHandler extends Handler
         $xml = $dto->toXml();
 
         $response = $this->client->sendRequest(new RequestDTO(
-            method: Method::POST,
+            method: Method::Post,
             uri: Uri::from('online/Session/InitToken'),
             headers: [
                 new Header('Content-Type', 'application/octet-stream')
@@ -36,8 +36,6 @@ final readonly class InitTokenHandler extends Handler
             data: $xml
         ));
 
-        return InitTokenResponse::fromResponse(
-            json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR)
-        );
+        return InitTokenResponse::fromResponse($response);
     }
 }

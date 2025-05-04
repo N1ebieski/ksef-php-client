@@ -8,24 +8,24 @@ use N1ebieski\KSEFClient\Contracts\EnumInterface;
 
 enum Method: string implements EnumInterface
 {
-    case GET = 'GET';
+    case Get = 'GET';
 
-    case POST = 'POST';
+    case Post = 'POST';
 
-    case DELETE = 'DELETE';
+    case Delete = 'DELETE';
 
-    case PUT = 'PUT';
+    case Put = 'PUT';
 
-    case PATCH = 'PATCH';
+    case Patch = 'PATCH';
 
-    case HEAD = 'HEAD';
+    case Head = 'HEAD';
 
-    case OPTIONS = 'OPTIONS';
+    case Options = 'OPTIONS';
 
     public function hasBody(): bool
     {
         return match ($this) {
-            self::GET, self::HEAD, self::OPTIONS => false,
+            self::Get, self::Head, self::Options => false,
             default => true,
         };
     }

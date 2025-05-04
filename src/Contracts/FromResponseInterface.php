@@ -6,8 +6,5 @@ namespace N1ebieski\KSEFClient\Contracts;
 
 interface FromResponseInterface
 {
-    /**
-     * @param array<string, mixed> $data
-     */
-    public static function fromResponse(array $data): self;
+    public static function fromResponse(ResponseInterface $response): self;
 }
