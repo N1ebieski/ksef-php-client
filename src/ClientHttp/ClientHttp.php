@@ -39,12 +39,14 @@ final readonly class ClientHttp implements ClientHttpInterface
             $request = $request->withHeader($header->name, $header->value);
         }
 
-        if ($requestDTO->data) {
-            if ($requestDTO->method->hasBody()) {
-                $request = $request->withBody(
-                    $psr17Factory->createStream(json_encode($requestDTO->data, JSON_THROW_ON_ERROR))
-                );
-            }
+        if ($requestDTO->method->hasBody()) {
+            $content = match (true) {
+                is_string($requestDTO->data) => $requestDTO->data,
+                is_array($requestDTO->data) => json_encode($requestDTO->data, JSON_THROW_ON_ERROR),
+                default => ''
+            };
+
+            $request = $request->withBody($psr17Factory->createStream($content));
         }
 
         return $this->client->sendRequest($request);

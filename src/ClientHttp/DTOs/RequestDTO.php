@@ -17,7 +17,7 @@ final readonly class RequestDTO extends DTO
         public Method $method,
         public Uri $uri,
         public array $headers = [],
-        public array $data = []
+        public array | string | null $data = null
     ) {
     }
 }

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient;
 
 use Http\Discovery\Psr18ClientDiscovery;
+use N1ebieski\KSEFClient\Actions\DTOs\EncryptTokenAction;
+use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
 use N1ebieski\KSEFClient\ClientHttp\ClientHttp;
 use N1ebieski\KSEFClient\ClientHttp\DTOs\ConfigDTO;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\RequestBuilder;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeDTO;
+use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
@@ -96,7 +99,25 @@ final class ClientBuilder
             configDTO: new ConfigDTO(new BaseUri($this->apiUrl->value))
         ));
 
-        $response = $client->online()->session()->authorisationChallenge(new AuthorisationChallengeDTO($this->nip));
+        $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
+            new AuthorisationChallengeRequest($this->nip)
+        );
+
+        $encryptedToken = new EncryptTokenHandler()->handle(
+            new EncryptTokenAction(
+                apiToken: $this->apiToken,
+                timestamp: $authorisationChallengeResponse->timestamp,
+                publicKeyPath: $this->publicKeyPath
+            )
+        );
+
+        $initTokenResponse = $client->online()->session()->initToken(
+            new InitTokenRequest(
+                encryptedToken: $encryptedToken,
+                challenge: $authorisationChallengeResponse->challenge,
+                nip: $this->nip
+            )
+        );
 
         return $client;
     }
