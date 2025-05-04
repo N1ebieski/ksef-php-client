@@ -24,6 +24,6 @@ final readonly class EncryptTokenHandler extends Handler
 
         openssl_public_encrypt($data, $encryptedToken, $publicKey, OPENSSL_PKCS1_PADDING);
 
-        return new EncryptedToken(base64_encode($encryptedToken));
+        return new EncryptedToken(base64_encode($encryptedToken)); //@phpstan-ignore-line
     }
 }

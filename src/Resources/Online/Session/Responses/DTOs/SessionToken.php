@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class SessionToken extends DTO
 {
+    //@phpstan-ignore-next-line
     public function __construct(
         public SessionTokenValueObject $token,
         public array $context

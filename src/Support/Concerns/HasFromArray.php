@@ -46,7 +46,7 @@ trait HasFromArray
             $attributes[$parameter->getName()] = match (true) {
                 $type === null => $data[$name],
                 is_subclass_of($type->getName(), FromInterface::class) => $type->getName()::from($data[$name]),
-                $type->getName() === DateTimeImmutable::class => new DateTimeImmutable($data[$name]),
+                $type->getName() === DateTimeImmutable::class => new DateTimeImmutable($data[$name]), //@phpstan-ignore-line
                 default => $data[$name]
             };
         }

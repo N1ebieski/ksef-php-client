@@ -142,7 +142,5 @@ final class ClientBuilder
                 $initTokenResponse->sessionToken->token
             )
         ));
-
-        return $client;
     }
 }
