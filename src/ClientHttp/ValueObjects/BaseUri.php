@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ClientHttp\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use N1ebieski\KSEFClient\ValueObjects\Url;
 use Stringable;
 
-final readonly class BaseUri extends ValueObject implements Stringable
+final readonly class BaseUri extends ValueObject implements ValueAwareInterface, Stringable
 {
     public Url $value;
 

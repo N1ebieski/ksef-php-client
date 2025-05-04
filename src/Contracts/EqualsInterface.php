@@ -6,5 +6,5 @@ namespace N1ebieski\KSEFClient\Contracts;
 
 interface EqualsInterface
 {
-    public function isEquals(mixed $value): bool;
+    public function isEquals(ValueAwareInterface $value): bool;
 }

@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
-final readonly class PublicKeyPath extends ValueObject implements Stringable
+final readonly class PublicKeyPath extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public string $value;
-
-    public function __construct(string $value)
+    public function __construct(public string $value)
     {
-        $this->validate($value);
-
-        $this->value = $value;
+        $this->validate();
     }
 
     public function __toString(): string
@@ -28,16 +25,16 @@ final readonly class PublicKeyPath extends ValueObject implements Stringable
         return new self($value);
     }
 
-    private function validate(string $value): void
+    private function validate(): void
     {
-        if ( ! is_file($value)) {
-            throw new \InvalidArgumentException("File {$value} does not exist.");
+        if ( ! is_file($this->value)) {
+            throw new \InvalidArgumentException("File {$this->value} does not exist.");
         }
 
-        $extension = strtolower(pathinfo($value, PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($this->value, PATHINFO_EXTENSION));
 
-        if ( ! in_array($extension, ['pem'])) {
-            throw new \InvalidArgumentException("File {$value} has invalid extension.");
+        if ( ! in_array($extension, ['pem', 'der'])) {
+            throw new \InvalidArgumentException("File {$this->value} has invalid extension.");
         }
     }
 }

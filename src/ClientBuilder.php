@@ -103,21 +103,21 @@ final class ClientBuilder
             new AuthorisationChallengeRequest($this->nip)
         );
 
-        $encryptedToken = new EncryptTokenHandler()->handle(
-            new EncryptTokenAction(
-                apiToken: $this->apiToken,
-                timestamp: $authorisationChallengeResponse->timestamp,
-                publicKeyPath: $this->publicKeyPath
-            )
-        );
+        // $encryptedToken = new EncryptTokenHandler()->handle(
+        //     new EncryptTokenAction(
+        //         apiToken: $this->apiToken,
+        //         timestamp: $authorisationChallengeResponse->timestamp,
+        //         publicKeyPath: $this->publicKeyPath
+        //     )
+        // );
 
-        $initTokenResponse = $client->online()->session()->initToken(
-            new InitTokenRequest(
-                encryptedToken: $encryptedToken,
-                challenge: $authorisationChallengeResponse->challenge,
-                nip: $this->nip
-            )
-        );
+        // $initTokenResponse = $client->online()->session()->initToken(
+        //     new InitTokenRequest(
+        //         encryptedToken: $encryptedToken,
+        //         challenge: $authorisationChallengeResponse->challenge,
+        //         nip: $this->nip
+        //     )
+        // );
 
         return $client;
     }

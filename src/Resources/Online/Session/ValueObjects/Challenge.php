@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
-final readonly class Challenge extends ValueObject implements Stringable
+final readonly class Challenge extends ValueObject implements ValueAwareInterface, Stringable
 {
     public function __construct(
         public string $value

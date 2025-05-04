@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ClientHttp\ValueObjects;
 
-enum Method: string
+use N1ebieski\KSEFClient\Contracts\EnumInterface;
+
+enum Method: string implements EnumInterface
 {
     case GET = 'GET';
 

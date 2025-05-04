@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
-final readonly class Nip extends ValueObject implements Stringable
+final readonly class Nip extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public string $value;
-
     public function __construct(
-        string $value,
+        public string $value,
         bool $skipValidation = false
     ) {
         if ( ! $skipValidation) {
-            $this->validate($value);
+            $this->validate();
         }
-
-        $this->value = $value;
     }
 
     public function __toString(): string
@@ -32,16 +29,16 @@ final readonly class Nip extends ValueObject implements Stringable
         return new self($value);
     }
 
-    private function validate(string $value): void
+    private function validate(): void
     {
-        if ( ! preg_match('/^\d{10}$/', $value)) {
+        if ( ! preg_match('/^\d{10}$/', $this->value)) {
             throw new \InvalidArgumentException('Invalid NIP number format. It should be 10 digits.');
         }
 
         $weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
 
         /** @var array<int, int> $digits */
-        $digits = array_map('intval', str_split($value));
+        $digits = array_map('intval', str_split($this->value));
         $sum = 0;
 
         for ($i = 0; $i < 9; $i++) {

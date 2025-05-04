@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\EnumInterface;
 use N1ebieski\KSEFClient\Support\Concerns\HasEquals;
 
-enum Mode: string
+enum Mode: string implements EnumInterface
 {
     use HasEquals;
 
