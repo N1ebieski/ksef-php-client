@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Handlers;
 
-use N1ebieski\KSEFClient\HttpClient\DTOs\RequestDTO;
+use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
@@ -24,7 +24,7 @@ final readonly class InitTokenHandler extends Handler
     {
         $xml = $dto->toXml();
 
-        $response = $this->client->sendRequest(new RequestDTO(
+        $response = $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('online/Session/InitToken'),
             headers: [

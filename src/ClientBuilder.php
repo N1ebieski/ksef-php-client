@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient;
 use Http\Discovery\Psr18ClientDiscovery;
 use N1ebieski\KSEFClient\Actions\DTOs\EncryptTokenAction;
 use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
-use N1ebieski\KSEFClient\HttpClient\DTOs\ConfigDTO;
+use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
@@ -108,7 +108,7 @@ final class ClientBuilder
 
     public function build(): RootResource
     {
-        $configDTO = new ConfigDTO(new BaseUri($this->apiUrl->value));
+        $configDTO = new Config(new BaseUri($this->apiUrl->value));
         $httpClient = new HttpClient(
             client: $this->httpClient,
             configDTO: $configDTO

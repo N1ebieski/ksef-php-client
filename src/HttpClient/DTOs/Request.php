@@ -9,7 +9,7 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Support\DTO;
 
-final readonly class RequestDTO extends DTO
+final readonly class Request extends DTO
 {
     /**
      * @param array<int, Header> $headers

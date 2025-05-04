@@ -7,8 +7,8 @@ namespace N1ebieski\KSEFClient\HttpClient;
 use Http\Discovery\Psr17Factory;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
-use N1ebieski\KSEFClient\HttpClient\DTOs\ConfigDTO;
-use N1ebieski\KSEFClient\HttpClient\DTOs\RequestDTO;
+use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
+use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use Psr\Http\Client\ClientInterface;
 
@@ -16,45 +16,45 @@ final readonly class HttpClient implements HttpClientInterface
 {
     public function __construct(
         private ClientInterface $client,
-        private ConfigDTO $configDTO
+        private Config $configDTO
     ) {
     }
 
-    public function withConfigDTO(ConfigDTO $configDTO): self
+    public function withConfigDTO(Config $configDTO): self
     {
         return new self($this->client, $configDTO);
     }
 
-    public function sendRequest(RequestDTO $requestDTO): ResponseInterface
+    public function sendRequest(Request $request): ResponseInterface
     {
         $psr17Factory = new Psr17Factory();
 
-        $request = $psr17Factory
+        $clientRequest = $psr17Factory
             ->createRequest(
-                method: $requestDTO->method->value,
-                uri: $requestDTO->uri->withBaseUrl($this->configDTO->baseUri)->value
+                method: $request->method->value,
+                uri: $request->uri->withBaseUrl($this->configDTO->baseUri)->value
             )
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json');
 
         if ($this->configDTO->sessionToken instanceof SessionToken) {
-            $request = $request->withHeader('SessionToken', $this->configDTO->sessionToken->value);
+            $clientRequest = $clientRequest->withHeader('SessionToken', $this->configDTO->sessionToken->value);
         }
 
-        foreach ($requestDTO->headers as $header) {
-            $request = $request->withHeader($header->name, $header->value);
+        foreach ($request->headers as $header) {
+            $clientRequest = $clientRequest->withHeader($header->name, $header->value);
         }
 
-        if ($requestDTO->method->hasBody()) {
+        if ($request->method->hasBody()) {
             $content = match (true) {
-                is_string($requestDTO->data) => $requestDTO->data,
-                is_array($requestDTO->data) => json_encode($requestDTO->data, JSON_THROW_ON_ERROR),
+                is_string($request->data) => $request->data,
+                is_array($request->data) => json_encode($request->data, JSON_THROW_ON_ERROR),
                 default => ''
             };
 
-            $request = $request->withBody($psr17Factory->createStream($content));
+            $clientRequest = $clientRequest->withBody($psr17Factory->createStream($content));
         }
 
-        return new Response($this->client->sendRequest($request));
+        return new Response($this->client->sendRequest($clientRequest));
     }
 }

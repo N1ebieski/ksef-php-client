@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\EncryptedToken;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Resources\Request;
 use N1ebieski\KSEFClient\ValueObjects\Nip;
 use RuntimeException;
@@ -20,7 +21,8 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         public EncryptedToken $encryptedToken,
         #[SensitiveParameter]
         public Challenge $challenge,
-        public Nip $nip
+        public Nip $nip,
+        public SystemCode $systemCode = SystemCode::Fa2
     ) {
     }
 
@@ -68,17 +70,17 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $documentType->appendChild($formCode);
 
         $systemCode = $dom->createElement('types:SystemCode');
-        $systemCode->appendChild($dom->createTextNode('FA (2)'));
+        $systemCode->appendChild($dom->createTextNode($this->systemCode->value));
 
         $formCode->appendChild($systemCode);
 
         $schemaVersion = $dom->createElement('types:SchemaVersion');
-        $schemaVersion->appendChild($dom->createTextNode('1-0E'));
+        $schemaVersion->appendChild($dom->createTextNode($this->systemCode->getSchemaVersion()));
 
         $formCode->appendChild($schemaVersion);
 
         $targetNamespace = $dom->createElement('types:TargetNamespace');
-        $targetNamespace->appendChild($dom->createTextNode('http://crd.gov.pl/wzor/2021/11/29/11089/'));
+        $targetNamespace->appendChild($dom->createTextNode($this->systemCode->getTargetNamespace()));
 
         $formCode->appendChild($targetNamespace);
 

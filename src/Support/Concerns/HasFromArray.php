@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns;
 
-use ReflectionClass;
-use ReflectionParameter;
-use ReflectionNamedType;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\Str;
+use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionParameter;
 
 trait HasFromArray
 {
@@ -29,12 +29,11 @@ trait HasFromArray
         foreach ($parameters as $parameter) {
             $snakeName = Str::snake($parameter->getName());
 
+            $parametersAsArray = array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters);
+
             $filter = array_values(array_filter(
                 array_unique([$snakeName, $parameter->getName()]),
-                fn (string $value): bool => in_array(
-                    $value,
-                    array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters)
-                )
+                fn (string $value): bool => in_array($value, $parametersAsArray)
             ));
 
             if ($filter === []) {

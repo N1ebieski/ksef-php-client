@@ -9,7 +9,7 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\Support\DTO;
 use SensitiveParameter;
 
-final readonly class ConfigDTO extends DTO
+final readonly class Config extends DTO
 {
     public function __construct(
         public BaseUri $baseUri,
