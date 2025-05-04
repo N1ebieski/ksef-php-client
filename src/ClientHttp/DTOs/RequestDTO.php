@@ -16,8 +16,8 @@ final readonly class RequestDTO extends DTO
      * @param string|array<string, mixed>|null $data
      */
     public function __construct(
-        public Method $method,
-        public Uri $uri,
+        public Method $method = Method::Get,
+        public Uri $uri = new Uri('/'),
         public array $headers = [],
         public array | string | null $data = null
     ) {
