@@ -94,31 +94,38 @@ final class ClientBuilder
 
     public function build(): Client
     {
-        $client = new Client(new ClientHttp(
+        $configDTO = new ConfigDTO(new BaseUri($this->apiUrl->value));
+        $clientHttp = new ClientHttp(
             client: $this->httpClient,
-            configDTO: new ConfigDTO(new BaseUri($this->apiUrl->value))
-        ));
+            configDTO: $configDTO
+        );
+
+        $client = new Client($clientHttp);
 
         $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
             new AuthorisationChallengeRequest($this->nip)
         );
 
-        // $encryptedToken = new EncryptTokenHandler()->handle(
-        //     new EncryptTokenAction(
-        //         apiToken: $this->apiToken,
-        //         timestamp: $authorisationChallengeResponse->timestamp,
-        //         publicKeyPath: $this->publicKeyPath
-        //     )
-        // );
+        $encryptedToken = new EncryptTokenHandler()->handle(
+            new EncryptTokenAction(
+                apiToken: $this->apiToken,
+                timestamp: $authorisationChallengeResponse->timestamp,
+                publicKeyPath: $this->publicKeyPath
+            )
+        );
 
-        // $initTokenResponse = $client->online()->session()->initToken(
-        //     new InitTokenRequest(
-        //         encryptedToken: $encryptedToken,
-        //         challenge: $authorisationChallengeResponse->challenge,
-        //         nip: $this->nip
-        //     )
-        // );
+        $initTokenResponse = $client->online()->session()->initToken(
+            new InitTokenRequest(
+                encryptedToken: $encryptedToken,
+                challenge: $authorisationChallengeResponse->challenge,
+                nip: $this->nip
+            )
+        );
 
-        return $client;
+        return new Client($clientHttp->withConfigDTO(
+            $configDTO->withSessionToken(
+                $initTokenResponse->sessionToken
+            )
+        ));
     }
 }

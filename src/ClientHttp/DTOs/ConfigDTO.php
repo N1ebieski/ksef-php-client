@@ -15,4 +15,9 @@ final readonly class ConfigDTO extends DTO
         public ?SessionToken $sessionToken = null
     ) {
     }
+
+    public function withSessionToken(SessionToken $sessionToken): self
+    {
+        return new self($this->baseUri, $sessionToken);
+    }
 }

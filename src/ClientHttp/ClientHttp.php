@@ -19,6 +19,11 @@ final readonly class ClientHttp implements ClientHttpInterface
     ) {
     }
 
+    public function withConfigDTO(ConfigDTO $configDTO): self
+    {
+        return new self($this->client, $configDTO);
+    }
+
     public function sendRequest(RequestDTO $requestDTO): ResponseInterface
     {
         $psr17Factory = new Psr17Factory();
