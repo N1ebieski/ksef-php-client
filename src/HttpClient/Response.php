@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ClientHttp;
+namespace N1ebieski\KSEFClient\HttpClient;
 
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as BaseResponseInterface;

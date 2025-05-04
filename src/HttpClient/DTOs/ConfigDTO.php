@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ClientHttp\DTOs;
+namespace N1ebieski\KSEFClient\HttpClient\DTOs;
 
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\BaseUri;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\Support\DTO;
 use SensitiveParameter;
 

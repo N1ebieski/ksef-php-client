@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ClientHttp;
+namespace N1ebieski\KSEFClient\HttpClient;
 
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\SessionToken;
 use Http\Discovery\Psr17Factory;
-use N1ebieski\KSEFClient\ClientHttp\DTOs\ConfigDTO;
-use N1ebieski\KSEFClient\ClientHttp\DTOs\RequestDTO;
-use N1ebieski\KSEFClient\Contracts\ClientHttpInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
+use N1ebieski\KSEFClient\HttpClient\DTOs\ConfigDTO;
+use N1ebieski\KSEFClient\HttpClient\DTOs\RequestDTO;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use Psr\Http\Client\ClientInterface;
 
-final readonly class ClientHttp implements ClientHttpInterface
+final readonly class HttpClient implements HttpClientInterface
 {
     public function __construct(
         private ClientInterface $client,

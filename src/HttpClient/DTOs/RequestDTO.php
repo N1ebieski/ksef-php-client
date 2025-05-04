@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ClientHttp\DTOs;
+namespace N1ebieski\KSEFClient\HttpClient\DTOs;
 
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Header;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Method;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Uri;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class RequestDTO extends DTO

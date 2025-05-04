@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Handlers;
 
-use N1ebieski\KSEFClient\ClientHttp\DTOs\RequestDTO;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Method;
-use N1ebieski\KSEFClient\ClientHttp\ValueObjects\Uri;
-use N1ebieski\KSEFClient\Contracts\ClientHttpInterface;
+use N1ebieski\KSEFClient\HttpClient\DTOs\RequestDTO;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
+use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Resources\Handler;
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallen
 final readonly class AuthorisationChallengeHandler extends Handler
 {
     public function __construct(
-        private ClientHttpInterface $client,
+        private HttpClientInterface $client,
     ) {
     }
 
