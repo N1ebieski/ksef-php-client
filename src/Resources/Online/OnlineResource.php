@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online;
 
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\Resources\Online\OnlineResourceInterface;
+use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\SessionResource;
 use N1ebieski\KSEFClient\Resources\Resource;
 
-final readonly class OnlineResource extends Resource
+final readonly class OnlineResource extends Resource implements OnlineResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,
     ) {
     }
 
-    public function session(): SessionResource
+    public function session(): SessionResourceInterface
     {
         return new SessionResource($this->client);
     }

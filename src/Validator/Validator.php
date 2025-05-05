@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator;
 
-use InvalidArgumentException;
 use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\Type;
 use N1ebieski\KSEFClient\Validator\Rules\Rule;

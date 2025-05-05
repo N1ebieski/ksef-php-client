@@ -11,9 +11,8 @@ abstract readonly class Rule
 {
     public function getMessage(string $message, ?string $attribute = null): string
     {
-        $pos = strrpos($message, '.');
-
         if ($attribute !== null) {
+            $pos = strrpos($message, '.');
             $replacement = " for attribute {$attribute}.";
 
             return match (true) {

@@ -22,7 +22,7 @@ final readonly class FileExtensionsRule extends Rule
 
         if ( ! in_array($extension, $this->extensions)) {
             throw new InvalidArgumentException(
-                $this->getMessage('File {$value} has invalid extension.', $attribute)
+                $this->getMessage('File has invalid extension.', $attribute)
             );
         }
     }

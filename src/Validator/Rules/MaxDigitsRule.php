@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\Validator\Rules;
 
 use InvalidArgumentException;
 
-final readonly class MaxDigits extends Rule
+final readonly class MaxDigitsRule extends Rule
 {
     public function __construct(
         private int $max

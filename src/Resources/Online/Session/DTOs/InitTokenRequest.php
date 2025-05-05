@@ -96,10 +96,6 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
         $xml = $dom->saveXML();
 
-        if ($xml === false) {
-            throw new RuntimeException('Unable to save XML');
-        }
-
-        return $xml;
+        return $xml ?: throw new RuntimeException('Unable to save XML');
     }
 }

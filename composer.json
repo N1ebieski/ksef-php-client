@@ -6,6 +6,11 @@
             "N1ebieski\\KSEFClient\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "N1ebieski\\KSEFClient\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "N1ebieski",
@@ -26,7 +31,8 @@
         "guzzlehttp/guzzle": "^7.9.2",
         "guzzlehttp/psr7": "^2.7.0",
         "phpstan/phpstan": "^2.1",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "phpunit/phpunit": "^12.1"
     },
     "config": {
         "allow-plugins": {
@@ -49,6 +55,10 @@
         "rector-dry": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/rector process --dry-run > var/logs/rector.log"
+        ],
+        "phpunit": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpunit > var/logs/phpunit.log"
         ]        
     }
 }

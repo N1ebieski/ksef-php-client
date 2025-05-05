@@ -25,11 +25,10 @@ trait HasFromArray
         }
 
         $parameters = $constructor->getParameters();
+        $parametersAsArray = array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters);
 
         foreach ($parameters as $parameter) {
             $snakeName = Str::snake($parameter->getName());
-
-            $parametersAsArray = array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters);
 
             $filter = array_values(array_filter(
                 array_unique([$snakeName, $parameter->getName()]),

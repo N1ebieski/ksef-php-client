@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\DecimalRule;
-use N1ebieski\KSEFClient\Validator\Rules\MaxDigits;
+use N1ebieski\KSEFClient\Validator\Rules\MaxDigitsRule;
 use N1ebieski\KSEFClient\Validator\Rules\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
@@ -27,7 +27,7 @@ final readonly class P_15 extends ValueObject implements ValueAwareInterface, St
         Validator::validate((string) $value, [
             new RegexRule('/-?([1-9]\d{0,15}|0)(\.\d{1,2})?/'),
             new DecimalRule(0, 2),
-            new MaxDigits(18),
+            new MaxDigitsRule(18),
         ]);
 
         $this->value = $value;

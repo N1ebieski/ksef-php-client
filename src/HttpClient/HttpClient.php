@@ -16,13 +16,13 @@ final readonly class HttpClient implements HttpClientInterface
 {
     public function __construct(
         private ClientInterface $client,
-        private Config $configDTO
+        private Config $config
     ) {
     }
 
-    public function withConfigDTO(Config $configDTO): self
+    public function withConfig(Config $config): self
     {
-        return new self($this->client, $configDTO);
+        return new self($this->client, $config);
     }
 
     public function sendRequest(Request $request): ResponseInterface
@@ -32,13 +32,13 @@ final readonly class HttpClient implements HttpClientInterface
         $clientRequest = $psr17Factory
             ->createRequest(
                 method: $request->method->value,
-                uri: $request->uri->withBaseUrl($this->configDTO->baseUri)->value
+                uri: $request->uri->withBaseUrl($this->config->baseUri)->value
             )
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json');
 
-        if ($this->configDTO->sessionToken instanceof SessionToken) {
-            $clientRequest = $clientRequest->withHeader('SessionToken', $this->configDTO->sessionToken->value);
+        if ($this->config->sessionToken instanceof SessionToken) {
+            $clientRequest = $clientRequest->withHeader('SessionToken', $this->config->sessionToken->value);
         }
 
         foreach ($request->headers as $header) {

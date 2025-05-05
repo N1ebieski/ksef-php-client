@@ -14,7 +14,6 @@ use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeReq
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
-use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\ObjectNamespace;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
@@ -45,7 +44,7 @@ final class ClientBuilder
     public function withMode(Mode | string $mode): self
     {
         /** @var Mode $mode */
-        $mode = Evaluation::evaluate($mode, ObjectNamespace::from(Mode::class));
+        $mode = Evaluation::evaluate($mode, Mode::class);
 
         $this->mode = $mode;
 
@@ -61,7 +60,7 @@ final class ClientBuilder
     public function withApiUrl(ApiUrl | string $apiUrl): self
     {
         /** @var ApiUrl $apiUrl */
-        $apiUrl = Evaluation::evaluate($apiUrl, ObjectNamespace::from(ApiUrl::class));
+        $apiUrl = Evaluation::evaluate($apiUrl, ApiUrl::class);
 
         $this->apiUrl = $apiUrl;
 
@@ -71,7 +70,7 @@ final class ClientBuilder
     public function withApiToken(ApiToken | string $apiToken): self
     {
         /** @var ApiToken $apiToken */
-        $apiToken = Evaluation::evaluate($apiToken, ObjectNamespace::from(ApiToken::class));
+        $apiToken = Evaluation::evaluate($apiToken, ApiToken::class);
 
         $this->apiToken = $apiToken;
 
@@ -88,7 +87,7 @@ final class ClientBuilder
     public function withNip(Nip | string $nip): self
     {
         /** @var Nip $nip */
-        $nip = Evaluation::evaluate($nip, ObjectNamespace::from(Nip::class));
+        $nip = Evaluation::evaluate($nip, Nip::class);
 
         $this->nip = $nip;
 
@@ -98,7 +97,7 @@ final class ClientBuilder
     public function withPublicKeyPath(PublicKeyPath | string $publicKeyPath): self
     {
         /** @var PublicKeyPath $publicKeyPath */
-        $publicKeyPath = Evaluation::evaluate($publicKeyPath, ObjectNamespace::from(PublicKeyPath::class));
+        $publicKeyPath = Evaluation::evaluate($publicKeyPath, PublicKeyPath::class);
 
         $this->publicKeyPath = $publicKeyPath;
 
@@ -107,10 +106,10 @@ final class ClientBuilder
 
     public function build(): RootResource
     {
-        $configDTO = new Config(new BaseUri($this->apiUrl->value));
+        $config = new Config(new BaseUri($this->apiUrl->value));
         $httpClient = new HttpClient(
             client: $this->httpClient,
-            configDTO: $configDTO
+            config: $config
         );
 
         $client = new RootResource($httpClient);
@@ -135,8 +134,8 @@ final class ClientBuilder
             )
         );
 
-        return new RootResource($httpClient->withConfigDTO(
-            $configDTO->withSessionToken(
+        return new RootResource($httpClient->withConfig(
+            $config->withSessionToken(
                 $initTokenResponse->sessionToken->token
             )
         ));
