@@ -17,9 +17,11 @@ final readonly class Evaluation
     public static function evaluate(mixed $value, Type | ObjectNamespace $type): mixed
     {
         return match (true) {
-            $type->isEquals(Type::Array) => match (true) {
-                is_array($value) => $value,
-                default => [$value]
+            $type instanceof Type => match (true) {
+                $type->isEquals(Type::Array) => match (true) {
+                    is_array($value) => $value,
+                    default => [$value]
+                },
             },
 
             $type instanceof ObjectNamespace => match (true) {

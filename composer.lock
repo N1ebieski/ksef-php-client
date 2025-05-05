@@ -4,137 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a50964b6ec4b255f2c0fd030c33e6c30",
+    "content-hash": "ab2eba60149b14a155d7d7d918a619f9",
     "packages": [
-        {
-            "name": "alcohol/iso4217",
-            "version": "4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alcohol/iso4217.git",
-                "reference": "3ce6e02fbc0501f949ffdad327f5851c04367f4b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alcohol/iso4217/zipball/3ce6e02fbc0501f949ffdad327f5851c04367f4b",
-                "reference": "3ce6e02fbc0501f949ffdad327f5851c04367f4b",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Alcohol\\": "."
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Bast",
-                    "email": "rob.bast@gmail.com"
-                }
-            ],
-            "description": "ISO 4217 PHP Library",
-            "homepage": "http://alcohol.github.io/iso4217/",
-            "keywords": [
-                "4217",
-                "ISO 4217",
-                "currencies",
-                "iso",
-                "library"
-            ],
-            "support": {
-                "issues": "https://github.com/alcohol/iso4217/issues",
-                "source": "https://github.com/alcohol/iso4217"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/alcohol",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-07-01T09:50:00+00:00"
-        },
-        {
-            "name": "league/iso3166",
-            "version": "4.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alcohol/iso3166.git",
-                "reference": "5133fed7d54728222f4058702487dccedda20472"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alcohol/iso3166/zipball/5133fed7d54728222f4058702487dccedda20472",
-                "reference": "5133fed7d54728222f4058702487dccedda20472",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.12.6",
-                "phpstan/phpstan-deprecation-rules": "^1.2.1",
-                "phpstan/phpstan-strict-rules": "^1.6.1",
-                "phpunit/phpunit": "^9.6.21"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\ISO3166\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Bast",
-                    "email": "rob.bast@gmail.com"
-                }
-            ],
-            "description": "ISO 3166-1 PHP Library",
-            "homepage": "https://github.com/alcohol/iso3166",
-            "keywords": [
-                "3166",
-                "3166-1",
-                "ISO 3166",
-                "countries",
-                "iso",
-                "library"
-            ],
-            "support": {
-                "issues": "https://github.com/alcohol/iso3166/issues",
-                "source": "https://github.com/alcohol/iso3166"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/alcohol",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-10-10T07:39:24+00:00"
-        },
         {
             "name": "php-http/discovery",
             "version": "1.20.0",
@@ -2123,21 +1994,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.0.14",
+            "version": "2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "63923bc9383c1212476c41d8cebf58a425e6f98d"
+                "reference": "abbbf32474a67e242d26bffc098a712a05b3d32a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/63923bc9383c1212476c41d8cebf58a425e6f98d",
-                "reference": "63923bc9383c1212476c41d8cebf58a425e6f98d",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/abbbf32474a67e242d26bffc098a712a05b3d32a",
+                "reference": "abbbf32474a67e242d26bffc098a712a05b3d32a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.12"
+                "phpstan/phpstan": "^2.1.14"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -2170,7 +2041,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.0.14"
+                "source": "https://github.com/rectorphp/rector/tree/2.0.15"
             },
             "funding": [
                 {
@@ -2178,7 +2049,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-28T00:03:14+00:00"
+            "time": "2025-05-05T10:00:41+00:00"
         },
         {
             "name": "sebastian/diff",

@@ -14,7 +14,7 @@ enum SystemCode: string implements EnumInterface
 
     public function getSchemaVersion(): string
     {
-        return match (true) {
+        return match ($this) {
             self::Fa1 => '1-0E',
             self::Fa2 => '1-0E',
         };
@@ -22,7 +22,7 @@ enum SystemCode: string implements EnumInterface
 
     public function getTargetNamespace(): string
     {
-        return match (true) {
+        return match ($this) {
             self::Fa1 => 'http://crd.gov.pl/wzor/2021/11/29/11089/',
             self::Fa2 => 'http://crd.gov.pl/wzor/2021/11/29/11089/',
         };
