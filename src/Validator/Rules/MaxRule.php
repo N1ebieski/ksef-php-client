@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator\Rules;
 
+use InvalidArgumentException;
+
 final readonly class MaxRule extends Rule
 {
     public function __construct(
@@ -14,7 +16,7 @@ final readonly class MaxRule extends Rule
     public function handle(string $value, ?string $attribute = null): void
     {
         if (mb_strlen($value) > $this->max) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 $this->getMessage(
                     sprintf('Value must have at most %d characters.', $this->max),
                     $attribute

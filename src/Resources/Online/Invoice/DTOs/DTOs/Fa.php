@@ -14,8 +14,6 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects\P_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects\P_2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects\P_6;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects\SystemInfo;
-use N1ebieski\KSEFClient\Resources\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Fa extends DTO

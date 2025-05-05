@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator\Rules;
 
+use InvalidArgumentException;
+
 final readonly class DecimalRule extends Rule
 {
     public function __construct(
@@ -17,7 +19,7 @@ final readonly class DecimalRule extends Rule
         $fractionLength = strlen(substr(strrchr($value, '.'), 1));
 
         if ($fractionLength > $this->max) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 $this->getMessage(
                     sprintf('Value must have at most %d decimal places.', $this->max),
                     $attribute
@@ -26,7 +28,7 @@ final readonly class DecimalRule extends Rule
         }
 
         if ($fractionLength < $this->min) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 $this->getMessage(
                     sprintf('Value must have at least %d decimal places.', $this->min),
                     $attribute

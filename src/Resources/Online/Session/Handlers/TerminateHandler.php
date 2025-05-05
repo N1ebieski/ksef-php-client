@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Handlers;
 
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
-use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
@@ -20,10 +19,8 @@ final readonly class TerminateHandler extends Handler
 
     public function handle(): ResponseInterface
     {
-        $response = $this->client->sendRequest(new Request(
+        return $this->client->sendRequest(new Request(
             uri: Uri::from('online/Session/Terminate')
         ));
-
-        return $response;
     }
 }

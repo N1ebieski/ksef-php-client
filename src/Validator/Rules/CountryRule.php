@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator\Rules;
 
+use InvalidArgumentException;
+
 final readonly class CountryRule extends Rule
 {
     private const array CODES = [
@@ -38,7 +40,7 @@ final readonly class CountryRule extends Rule
     public function handle(string $value, ?string $attribute = null): void
     {
         if ( ! in_array($value, self::CODES)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 $this->getMessage('Invalid currency format.', $attribute)
             );
         }
