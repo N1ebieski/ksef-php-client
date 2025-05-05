@@ -6,6 +6,10 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Validator\Rules\EmailRule;
+use N1ebieski\KSEFClient\Validator\Rules\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\MinRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 final readonly class Email extends ValueObject implements ValueAwareInterface, Stringable
@@ -14,7 +18,11 @@ final readonly class Email extends ValueObject implements ValueAwareInterface, S
 
     public function __construct(string $value)
     {
-        $this->validate($value);
+        Validator::validate($value, [
+            new MinRule(3),
+            new MaxRule(255),
+            new EmailRule(),
+        ]);
 
         $this->value = $value;
     }
@@ -27,18 +35,5 @@ final readonly class Email extends ValueObject implements ValueAwareInterface, S
     public static function from(string $value): self
     {
         return new self($value);
-    }
-
-    public function validate($value): void
-    {
-        $length = mb_strlen($value);
-
-        if ($length < 3 || $length > 255) {
-            throw new \InvalidArgumentException('Invalid email length.');
-        }
-
-        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
-            throw new \InvalidArgumentException('Invalid email format.');
-        }
     }
 }

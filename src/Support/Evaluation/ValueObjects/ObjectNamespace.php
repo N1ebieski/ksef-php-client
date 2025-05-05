@@ -2,29 +2,25 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects;
+namespace N1ebieski\KSEFClient\Support\Evaluation\ValueObjects;
 
-use DateTimeImmutable;
-use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
+use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\MaxRule;
-use N1ebieski\KSEFClient\Validator\Rules\MinRule;
+use N1ebieski\KSEFClient\Validator\Rules\ClassExistsRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-/**
- * Miejsce wystawienia faktury
- */
-final readonly class P_1M extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class ObjectNamespace extends ValueObject implements Stringable, FromInterface
 {
+    /**
+     * @var class-string
+     */
     public string $value;
 
     public function __construct(string $value)
     {
         Validator::validate($value, [
-            new MinRule(1),
-            new MaxRule(256),
+            new ClassExistsRule(),
         ]);
 
         $this->value = $value;

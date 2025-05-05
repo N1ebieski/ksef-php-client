@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
+use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
+use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\ObjectNamespace;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use N1ebieski\KSEFClient\ValueObjects\Url;
 use Stringable;
@@ -16,7 +18,7 @@ final readonly class BaseUri extends ValueObject implements ValueAwareInterface,
     public function __construct(Url | string $value)
     {
         /** @var Url $value */
-        $value = $this->evaluate($value, Url::class);
+        $value = Evaluation::evaluate($value, ObjectNamespace::from(Url::class));
 
         $this->value = $value;
     }

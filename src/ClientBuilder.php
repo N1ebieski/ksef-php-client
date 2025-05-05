@@ -14,6 +14,8 @@ use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeReq
 use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
+use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
+use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\ObjectNamespace;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
@@ -23,8 +25,6 @@ use Psr\Http\Client\ClientInterface;
 
 final class ClientBuilder
 {
-    use HasEvaluation;
-
     private ClientInterface $httpClient;
 
     private Mode $mode = Mode::Production;
@@ -46,7 +46,7 @@ final class ClientBuilder
     public function withMode(Mode | string $mode): self
     {
         /** @var Mode $mode */
-        $mode = $this->evaluate($mode, Mode::class);
+        $mode = Evaluation::evaluate($mode, ObjectNamespace::from(Mode::class));
 
         $this->mode = $mode;
 
@@ -62,7 +62,7 @@ final class ClientBuilder
     public function withApiUrl(ApiUrl | string $apiUrl): self
     {
         /** @var ApiUrl $apiUrl */
-        $apiUrl = $this->evaluate($apiUrl, ApiUrl::class);
+        $apiUrl = Evaluation::evaluate($apiUrl, ObjectNamespace::from(ApiUrl::class));
 
         $this->apiUrl = $apiUrl;
 
@@ -72,7 +72,7 @@ final class ClientBuilder
     public function withApiToken(ApiToken | string $apiToken): self
     {
         /** @var ApiToken $apiToken */
-        $apiToken = $this->evaluate($apiToken, ApiToken::class);
+        $apiToken = Evaluation::evaluate($apiToken, ObjectNamespace::from(ApiToken::class));
 
         $this->apiToken = $apiToken;
 
@@ -89,7 +89,7 @@ final class ClientBuilder
     public function withNip(Nip | string $nip): self
     {
         /** @var Nip $nip */
-        $nip = $this->evaluate($nip, Nip::class);
+        $nip = Evaluation::evaluate($nip, ObjectNamespace::from(Nip::class));
 
         $this->nip = $nip;
 
@@ -99,7 +99,7 @@ final class ClientBuilder
     public function withPublicKeyPath(PublicKeyPath | string $publicKeyPath): self
     {
         /** @var PublicKeyPath $publicKeyPath */
-        $publicKeyPath = $this->evaluate($publicKeyPath, PublicKeyPath::class);
+        $publicKeyPath = Evaluation::evaluate($publicKeyPath, ObjectNamespace::from(PublicKeyPath::class));
 
         $this->publicKeyPath = $publicKeyPath;
 

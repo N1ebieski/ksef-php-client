@@ -9,6 +9,10 @@ use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
 use N1ebieski\KSEFClient\Support\Validation;
 use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Validator\Rules\DecimalRule;
+use N1ebieski\KSEFClient\Validator\Rules\MaxDigits;
+use N1ebieski\KSEFClient\Validator\Rules\RegexRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 /**
@@ -21,7 +25,11 @@ final readonly class P_13_3 extends ValueObject implements ValueAwareInterface, 
 
     public function __construct(float $value)
     {
-        $this->validate($value);
+        Validator::validate((string) $value, [
+            new RegexRule('/-?([1-9]\d{0,15}|0)(\.\d{1,2})?/'),
+            new DecimalRule(0, 2),
+            new MaxDigits(18),
+        ]);
 
         $this->value = $value;
     }
@@ -34,12 +42,5 @@ final readonly class P_13_3 extends ValueObject implements ValueAwareInterface, 
     public static function from(float $value): self
     {
         return new self($value);
-    }
-
-    private function validate($value): void
-    {
-        if ( ! Validation::float($value, 18, 2, '/-?([1-9]\d{0,15}|0)(\.\d{1,2})?/')) {
-            throw new \InvalidArgumentException("Invalid value format: {$value}.");
-        }
     }
 }

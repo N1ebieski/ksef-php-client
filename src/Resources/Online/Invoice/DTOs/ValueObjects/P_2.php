@@ -8,6 +8,9 @@ use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
 use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Validator\Rules\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\MinRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 /**
@@ -19,7 +22,10 @@ final readonly class P_2 extends ValueObject implements ValueAwareInterface, Str
 
     public function __construct(string $value)
     {
-        $this->validate($value);
+        Validator::validate($value, [
+            new MinRule(1),
+            new MaxRule(256),
+        ]);
 
         $this->value = $value;
     }
@@ -32,14 +38,5 @@ final readonly class P_2 extends ValueObject implements ValueAwareInterface, Str
     public static function from(string $value): self
     {
         return new self($value);
-    }
-
-    private function validate($value): void
-    {
-        $length = mb_strlen($value);
-
-        if ($length < 1 || $length > 256) {
-            throw new \InvalidArgumentException('Invalid name length.');
-        }
     }
 }

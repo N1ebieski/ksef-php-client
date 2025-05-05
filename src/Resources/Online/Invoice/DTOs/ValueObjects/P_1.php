@@ -7,6 +7,8 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\DTOs\ValueObjects;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\Concerns\HasEvaluation;
+use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
+use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\ObjectNamespace;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
@@ -15,13 +17,11 @@ use Stringable;
  */
 final readonly class P_1 extends ValueObject implements ValueAwareInterface, Stringable
 {
-    use HasEvaluation;
-
     public DateTimeImmutable $value;
 
     public function __construct(DateTimeImmutable | string $value)
     {
-        $this->value = $this->evaluate($value, DateTimeImmutable::class);
+        $this->value = Evaluation::evaluate($value, ObjectNamespace::from(DateTimeImmutable::class));
     }
 
     public function __toString(): string
