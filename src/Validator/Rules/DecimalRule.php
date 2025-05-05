@@ -16,7 +16,12 @@ final readonly class DecimalRule extends Rule
 
     public function handle(string $value, ?string $attribute = null): void
     {
-        $fractionLength = strlen(substr(strrchr($value, '.'), 1));
+        $fraction = strrchr($value, '.');
+
+        $fractionLength = match (true) {
+            $fraction === false => 0,
+            default => strlen(substr($fraction, 1)),
+        };
 
         if ($fractionLength > $this->max) {
             throw new InvalidArgumentException(

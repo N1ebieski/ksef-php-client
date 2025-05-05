@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator\Rules;
 
+/**
+ * @method void handle(mixed $value, ?string $attribute = null)
+ */
 abstract readonly class Rule
 {
     public function getMessage(string $message, ?string $attribute = null): string
@@ -21,6 +24,4 @@ abstract readonly class Rule
 
         return $message;
     }
-
-    abstract public function handle(string $value, ?string $attribute = null): void;
 }

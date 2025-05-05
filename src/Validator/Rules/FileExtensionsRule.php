@@ -8,6 +8,9 @@ use InvalidArgumentException;
 
 final readonly class FileExtensionsRule extends Rule
 {
+    /**
+     * @param array<int, string> $extensions
+     */
     public function __construct(
         private array $extensions
     ) {

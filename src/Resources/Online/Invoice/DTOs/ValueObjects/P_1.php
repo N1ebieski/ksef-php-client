@@ -20,7 +20,10 @@ final readonly class P_1 extends ValueObject implements ValueAwareInterface, Str
 
     public function __construct(DateTimeImmutable | string $value)
     {
-        $this->value = Evaluation::evaluate($value, ObjectNamespace::from(DateTimeImmutable::class));
+        /** @var DateTimeImmutable $value */
+        $value = Evaluation::evaluate($value, ObjectNamespace::from(DateTimeImmutable::class));
+
+        $this->value = $value;
     }
 
     public function __toString(): string

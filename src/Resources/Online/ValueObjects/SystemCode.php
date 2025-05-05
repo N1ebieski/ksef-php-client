@@ -30,7 +30,7 @@ enum SystemCode: string implements EnumInterface
 
     public function getWariantFormularza(): string
     {
-        return match (true) {
+        return match ($this) {
             self::Fa1 => '1',
             self::Fa2 => '2',
         };

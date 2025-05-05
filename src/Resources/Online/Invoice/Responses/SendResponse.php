@@ -13,7 +13,7 @@ final readonly class SendResponse extends Response
     {
     }
 
-    public static function fromResponse(ResponseInterface $response): self
-    {
-    }
+    // public static function fromResponse(ResponseInterface $response): self
+    // {
+    // }
 }

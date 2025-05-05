@@ -17,8 +17,8 @@ final readonly class InvoiceResource extends Resource
     ) {
     }
 
-    public function send(SendRequest $dto): SendResponse
-    {
-        return new SendHandler($this->client)->handle($dto);
-    }
+    // public function send(SendRequest $dto): SendResponse
+    // {
+    //     return new SendHandler($this->client)->handle($dto);
+    // }
 }
