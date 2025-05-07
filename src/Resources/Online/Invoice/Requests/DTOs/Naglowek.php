@@ -10,8 +10,12 @@ use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Naglowek extends DTO
 {
+    /**
+     * @param null|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
+     * @return void
+     */
     public function __construct(
-        public SystemCode $wariantFormularza,
+        public SystemCode $wariantFormularza = SystemCode::Fa2,
         public ?SystemInfo $systemInfo = null,
     ) {
     }

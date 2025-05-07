@@ -13,7 +13,7 @@ final readonly class Adres extends DTO
 {
     public function __construct(
         public AdresL1 $adresL1,
-        public ?KodKraju $kodKraju = null,
+        public KodKraju $kodKraju = new KodKraju('PL'),
         public ?AdresL2 $adresL2 = null,
     ) {
     }

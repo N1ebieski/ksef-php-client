@@ -12,7 +12,7 @@ use N1ebieski\KSEFClient\Support\DTO;
 final readonly class DodatkowyOpis extends DTO
 {
     /**
-     * @param null|NrWiersza $nrWiersza Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeśli informacja odnosi się wyłącznie do danej pozycji faktury
+     * @param NrWiersza|null $nrWiersza Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeśli informacja odnosi się wyłącznie do danej pozycji faktury
      * @return void
      */
     public function __construct(
