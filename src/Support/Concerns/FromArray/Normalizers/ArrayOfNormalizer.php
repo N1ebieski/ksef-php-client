@@ -26,14 +26,15 @@ final readonly class ArrayOfNormalizer implements PipeInterface
             return $next($normalize);
         }
 
-        $normalize->value = array_map(function (mixed $item) use ($attributes): mixed {
-            $arrayOf = $attributes[0]->newInstance();
+        $arrayOf = $attributes[0]->newInstance();
 
-            return match (true) {
-                is_subclass_of($arrayOf->class, FromInterface::class) => $arrayOf->class::from($item),
-                default => $item
-            };
-        }, $normalize->value);
+        $normalize->value = match (true) {
+            is_subclass_of($arrayOf->class, FromInterface::class) => array_map(
+                fn (mixed $item) => $arrayOf->class::from($item),
+                $normalize->value
+            ),
+            default => $normalize->value
+        };
 
         return $normalize;
     }
