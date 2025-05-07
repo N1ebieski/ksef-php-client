@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient;
 
 use Http\Discovery\Psr18ClientDiscovery;
-use N1ebieski\KSEFClient\Actions\DTOs\EncryptTokenAction;
+use N1ebieski\KSEFClient\Actions\EncryptTokenAction;
 use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;

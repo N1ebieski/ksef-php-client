@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ValueObjects;
+namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\String\UrlRule;
+use N1ebieski\KSEFClient\Validator\Rules\String\CountryRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class Url extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class KodKraju extends ValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 
     public function __construct(string $value)
     {
         Validator::validate($value, [
-            new UrlRule(),
+            new CountryRule(),
         ]);
 
         $this->value = $value;
@@ -31,10 +31,5 @@ final readonly class Url extends ValueObject implements ValueAwareInterface, Str
     public static function from(string $value): self
     {
         return new self($value);
-    }
-
-    public function withSlashAtEnd(): self
-    {
-        return str_ends_with($this->value, '/') ? $this : new self($this->value . '/');
     }
 }

@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\NipRule;
+use N1ebieski\KSEFClient\Validator\Rules\Number\NipRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Actions\Handlers;
 
 use RuntimeException;
-use N1ebieski\KSEFClient\Actions\DTOs\EncryptTokenAction;
+use N1ebieski\KSEFClient\Actions\EncryptTokenAction;
 use N1ebieski\KSEFClient\Actions\Handler;
-use N1ebieski\KSEFClient\Resources\Online\Session\ValueObjects\EncryptedToken;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\EncryptedToken;
 
 final readonly class EncryptTokenHandler extends Handler
 {

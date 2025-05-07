@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Contracts\Resources\Online\Session;
 
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\DTOs\InitTokenRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Responses\AuthorisationChallengeResponse;
-use N1ebieski\KSEFClient\Resources\Online\Session\Responses\InitTokenResponse;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitTokenResponse;
 
 interface SessionResourceInterface
 {

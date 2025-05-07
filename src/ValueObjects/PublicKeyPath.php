@@ -6,8 +6,8 @@ namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\FileExistsRule;
-use N1ebieski\KSEFClient\Validator\Rules\FileExtensionsRule;
+use N1ebieski\KSEFClient\Validator\Rules\File\ExistsRule;
+use N1ebieski\KSEFClient\Validator\Rules\File\ExtensionsRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
@@ -18,8 +18,8 @@ final readonly class PublicKeyPath extends ValueObject implements ValueAwareInte
     public function __construct(string $value)
     {
         Validator::validate($value, [
-            new FileExistsRule(),
-            new FileExtensionsRule(['pem', 'der']),
+            new ExistsRule(),
+            new ExtensionsRule(['pem', 'der']),
         ]);
 
         $this->value = $value;
