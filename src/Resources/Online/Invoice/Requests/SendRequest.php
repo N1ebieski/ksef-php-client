@@ -7,11 +7,22 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests;
 use DateTimeImmutable;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Adres;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Fa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Naglowek;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Platnosc;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Stopka;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\WarunkiTransakcji;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\AdresL2;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FP;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrKlienta;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1M;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\SystemInfo;
 use N1ebieski\KSEFClient\Resources\Request;
 use RuntimeException;
 
@@ -49,22 +60,25 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $faktura->appendChild($naglowek);
 
         $kodFormularza = $dom->createElement('KodFormularza');
-        $kodFormularza->setAttribute('kodSystemowy', $this->naglowek->wariantFormularza->value);
+        $kodFormularza->setAttribute('kodSystemowy', (string) $this->naglowek->wariantFormularza->value);
         $kodFormularza->setAttribute('wersjaSchemy', $this->naglowek->wariantFormularza->getSchemaVersion());
         $kodFormularza->appendChild($dom->createTextNode('FA'));
+
         $naglowek->appendChild($kodFormularza);
 
         $wariantFormularza = $dom->createElement('WariantFormularza');
         $wariantFormularza->appendChild($dom->createTextNode($this->naglowek->wariantFormularza->getWariantFormularza()));
+
         $naglowek->appendChild($wariantFormularza);
 
         $dataWytworzenia = $dom->createElement('DataWytworzenia');
         $dataWytworzenia->appendChild($dom->createTextNode(new DateTimeImmutable()->format('Y-m-d\TH:i:s\Z')));
+
         $naglowek->appendChild($dataWytworzenia);
 
-        if ($this->naglowek->systemInfo !== null) {
+        if ($this->naglowek->systemInfo instanceof SystemInfo) {
             $systemInfo = $dom->createElement('SystemInfo');
-            $systemInfo->appendChild($dom->createTextNode($this->naglowek->systemInfo->value));
+            $systemInfo->appendChild($dom->createTextNode((string) $this->naglowek->systemInfo));
             $naglowek->appendChild($systemInfo);
         }
 
@@ -75,27 +89,31 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $podmiot1->appendChild($daneIdentyfikacyjne);
 
         $nip = $dom->createElement('NIP');
-        $nip->appendChild($dom->createTextNode($this->podmiot1->daneIdentyfikacyjne->nip->value));
+        $nip->appendChild($dom->createTextNode((string) $this->podmiot1->daneIdentyfikacyjne->nip));
+
         $daneIdentyfikacyjne->appendChild($nip);
 
         $nazwa = $dom->createElement('Nazwa');
-        $nazwa->appendChild($dom->createTextNode($this->podmiot1->daneIdentyfikacyjne->nazwa->value));
+        $nazwa->appendChild($dom->createTextNode((string) $this->podmiot1->daneIdentyfikacyjne->nazwa));
+
         $daneIdentyfikacyjne->appendChild($nazwa);
 
         $adres = $dom->createElement('Adres');
         $podmiot1->appendChild($adres);
 
         $kodKraju = $dom->createElement('KodKraju');
-        $kodKraju->appendChild($dom->createTextNode($this->podmiot1->adres->kodKraju->value));
+        $kodKraju->appendChild($dom->createTextNode((string) $this->podmiot1->adres->kodKraju));
+
         $adres->appendChild($kodKraju);
 
         $adresL1 = $dom->createElement('AdresL1');
-        $adresL1->appendChild($dom->createTextNode($this->podmiot1->adres->adresL1->value));
+        $adresL1->appendChild($dom->createTextNode((string) $this->podmiot1->adres->adresL1));
+
         $adres->appendChild($adresL1);
 
-        if ($this->podmiot1->adres->adresL2 !== null) {
+        if ($this->podmiot1->adres->adresL2 instanceof AdresL2) {
             $adresL2 = $dom->createElement('AdresL2');
-            $adresL2->appendChild($dom->createTextNode($this->podmiot1->adres->adresL2->value));
+            $adresL2->appendChild($dom->createTextNode((string) $this->podmiot1->adres->adresL2));
             $adres->appendChild($adresL2);
         }
 
@@ -105,13 +123,13 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
             if ($_daneKontaktowe->email !== null) {
                 $email = $dom->createElement('Email');
-                $email->appendChild($dom->createTextNode($_daneKontaktowe->email->value));
+                $email->appendChild($dom->createTextNode((string) $_daneKontaktowe->email));
                 $daneKontaktowe->appendChild($email);
             }
 
             if ($_daneKontaktowe->telefon !== null) {
                 $telefon = $dom->createElement('Telefon');
-                $telefon->appendChild($dom->createTextNode($_daneKontaktowe->telefon->value));
+                $telefon->appendChild($dom->createTextNode((string) $_daneKontaktowe->telefon));
                 $daneKontaktowe->appendChild($telefon);
             }
         }
@@ -123,28 +141,30 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $podmiot2->appendChild($daneIdentyfikacyjne);
 
         $nip = $dom->createElement('NIP');
-        $nip->appendChild($dom->createTextNode($this->podmiot2->daneIdentyfikacyjne->nip->value));
+        $nip->appendChild($dom->createTextNode((string) $this->podmiot2->daneIdentyfikacyjne->nip));
+
         $daneIdentyfikacyjne->appendChild($nip);
 
         $nazwa = $dom->createElement('Nazwa');
-        $nazwa->appendChild($dom->createTextNode($this->podmiot2->daneIdentyfikacyjne->nazwa->value));
+        $nazwa->appendChild($dom->createTextNode((string) $this->podmiot2->daneIdentyfikacyjne->nazwa));
+
         $daneIdentyfikacyjne->appendChild($nazwa);
 
-        if ($this->podmiot2->adres !== null) {
+        if ($this->podmiot2->adres instanceof Adres) {
             $adres = $dom->createElement('Adres');
             $podmiot2->appendChild($adres);
 
             $kodKraju = $dom->createElement('KodKraju');
-            $kodKraju->appendChild($dom->createTextNode($this->podmiot2->adres->kodKraju->value));
+            $kodKraju->appendChild($dom->createTextNode((string) $this->podmiot2->adres->kodKraju));
             $adres->appendChild($kodKraju);
 
             $adresL1 = $dom->createElement('AdresL1');
-            $adresL1->appendChild($dom->createTextNode($this->podmiot2->adres->adresL1->value));
+            $adresL1->appendChild($dom->createTextNode((string) $this->podmiot2->adres->adresL1));
             $adres->appendChild($adresL1);
 
-            if ($this->podmiot2->adres->adresL2 !== null) {
+            if ($this->podmiot2->adres->adresL2 instanceof AdresL2) {
                 $adresL2 = $dom->createElement('AdresL2');
-                $adresL2->appendChild($dom->createTextNode($this->podmiot2->adres->adresL2->value));
+                $adresL2->appendChild($dom->createTextNode((string) $this->podmiot2->adres->adresL2));
                 $adres->appendChild($adresL2);
             }
         }
@@ -155,20 +175,20 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
             if ($_daneKontaktowe->email !== null) {
                 $email = $dom->createElement('Email');
-                $email->appendChild($dom->createTextNode($_daneKontaktowe->email->value));
+                $email->appendChild($dom->createTextNode((string) $_daneKontaktowe->email));
                 $daneKontaktowe->appendChild($email);
             }
 
             if ($_daneKontaktowe->telefon !== null) {
                 $telefon = $dom->createElement('Telefon');
-                $telefon->appendChild($dom->createTextNode($_daneKontaktowe->telefon->value));
+                $telefon->appendChild($dom->createTextNode((string) $_daneKontaktowe->telefon));
                 $daneKontaktowe->appendChild($telefon);
             }
         }
 
-        if ($this->podmiot2->nrKlienta !== null) {
+        if ($this->podmiot2->nrKlienta instanceof NrKlienta) {
             $nrKlienta = $dom->createElement('NrKlienta');
-            $nrKlienta->appendChild($dom->createTextNode($this->podmiot2->nrKlienta->value));
+            $nrKlienta->appendChild($dom->createTextNode((string) $this->podmiot2->nrKlienta));
             $podmiot2->appendChild($nrKlienta);
         }
 
@@ -176,44 +196,53 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $faktura->appendChild($fa);
 
         $kodWaluty = $dom->createElement('KodWaluty');
-        $kodWaluty->appendChild($dom->createTextNode($this->fa->kodWaluty->value));
+        $kodWaluty->appendChild($dom->createTextNode((string) $this->fa->kodWaluty));
+
         $fa->appendChild($kodWaluty);
 
         $p1 = $dom->createElement('P_1');
-        $p1->appendChild($dom->createTextNode((string) $this->fa->p_1->value));
+        $p1->appendChild($dom->createTextNode((string) $this->fa->p_1));
+
         $fa->appendChild($p1);
 
         $p2 = $dom->createElement('P_2');
-        $p2->appendChild($dom->createTextNode($this->fa->p_2->value));
+        $p2->appendChild($dom->createTextNode((string) $this->fa->p_2));
+
         $fa->appendChild($p2);
 
         $p6 = $dom->createElement('P_6');
-        $p6->appendChild($dom->createTextNode((string) $this->fa->p_6->value));
+        $p6->appendChild($dom->createTextNode((string) $this->fa->p_6));
+
         $fa->appendChild($p6);
 
         $p13_1 = $dom->createElement('P_13_1');
-        $p13_1->appendChild($dom->createTextNode((string) $this->fa->p_13_1->value));
+        $p13_1->appendChild($dom->createTextNode((string) $this->fa->p_13_1));
+
         $fa->appendChild($p13_1);
 
         $p14_1 = $dom->createElement('P_14_1');
-        $p14_1->appendChild($dom->createTextNode((string) $this->fa->p_14_1->value));
+        $p14_1->appendChild($dom->createTextNode((string) $this->fa->p_14_1));
+
         $fa->appendChild($p14_1);
 
         $p13_3 = $dom->createElement('P_13_3');
-        $p13_3->appendChild($dom->createTextNode((string) $this->fa->p_13_3->value));
+        $p13_3->appendChild($dom->createTextNode((string) $this->fa->p_13_3));
+
         $fa->appendChild($p13_3);
 
         $p14_3 = $dom->createElement('P_14_3');
-        $p14_3->appendChild($dom->createTextNode((string) $this->fa->p_14_3->value));
+        $p14_3->appendChild($dom->createTextNode((string) $this->fa->p_14_3));
+
         $fa->appendChild($p14_3);
 
         $p15 = $dom->createElement('P_15');
-        $p15->appendChild($dom->createTextNode((string) $this->fa->p_15->value));
+        $p15->appendChild($dom->createTextNode((string) $this->fa->p_15));
+
         $fa->appendChild($p15);
 
-        if ($this->fa->p_1M !== null) {
+        if ($this->fa->p_1M instanceof P_1M) {
             $p1M = $dom->createElement('P_1M');
-            $p1M->appendChild($dom->createTextNode($this->fa->p_1M->value));
+            $p1M->appendChild($dom->createTextNode((string) $this->fa->p_1M));
             $fa->appendChild($p1M);
         }
 
@@ -221,59 +250,65 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $fa->appendChild($adnotacje);
 
         $p16 = $dom->createElement('P_16');
-        $p16->appendChild($dom->createTextNode($this->fa->adnotacje->p_16->value));
+        $p16->appendChild($dom->createTextNode((string) $this->fa->adnotacje->p_16->value));
+
         $adnotacje->appendChild($p16);
 
         $p17 = $dom->createElement('P_17');
-        $p17->appendChild($dom->createTextNode($this->fa->adnotacje->p_17->value));
+        $p17->appendChild($dom->createTextNode((string) $this->fa->adnotacje->p_17->value));
+
         $adnotacje->appendChild($p17);
 
         $p18 = $dom->createElement('P_18');
-        $p18->appendChild($dom->createTextNode($this->fa->adnotacje->p_18->value));
+        $p18->appendChild($dom->createTextNode((string) $this->fa->adnotacje->p_18->value));
+
         $adnotacje->appendChild($p18);
 
         $p18A = $dom->createElement('P_18A');
-        $p18A->appendChild($dom->createTextNode($this->fa->adnotacje->p_18A->value));
+        $p18A->appendChild($dom->createTextNode((string) $this->fa->adnotacje->p_18A->value));
+
         $adnotacje->appendChild($p18A);
 
         $zwolnienie = $dom->createElement('Zwolnienie');
         $adnotacje->appendChild($zwolnienie);
 
-        if ($this->fa->adnotacje->zwolnienie->p_19N !== null) {
+        if ($this->fa->adnotacje->zwolnienie->p_19N instanceof P_19N) {
             $p19N = $dom->createElement('P_19N');
-            $p19N->appendChild($dom->createTextNode($this->fa->adnotacje->zwolnienie->p_19N->value));
+            $p19N->appendChild($dom->createTextNode((string) $this->fa->adnotacje->zwolnienie->p_19N->value));
             $zwolnienie->appendChild($p19N);
         }
 
         $noweSrodkiTransportu = $dom->createElement('NoweSrodkiTransportu');
         $adnotacje->appendChild($noweSrodkiTransportu);
 
-        if ($this->fa->adnotacje->noweSrodkiTransportu->p_22N !== null) {
+        if ($this->fa->adnotacje->noweSrodkiTransportu->p_22N instanceof P_22N) {
             $p22N = $dom->createElement('P_22N');
-            $p22N->appendChild($dom->createTextNode($this->fa->adnotacje->noweSrodkiTransportu->p_22N->value));
+            $p22N->appendChild($dom->createTextNode((string) $this->fa->adnotacje->noweSrodkiTransportu->p_22N->value));
             $noweSrodkiTransportu->appendChild($p22N);
         }
 
         $p23 = $dom->createElement('P_23');
-        $p23->appendChild($dom->createTextNode($this->fa->adnotacje->p_23->value));
+        $p23->appendChild($dom->createTextNode((string) $this->fa->adnotacje->p_23->value));
+
         $adnotacje->appendChild($p23);
 
         $pPMarzy = $dom->createElement('PMarzy');
         $adnotacje->appendChild($pPMarzy);
 
-        if ($this->fa->adnotacje->pMarzy->p_PMarzyN !== null) {
+        if ($this->fa->adnotacje->pMarzy->p_PMarzyN instanceof P_PMarzyN) {
             $pPMarzyN = $dom->createElement('P_PMarzyN');
-            $pPMarzyN->appendChild($dom->createTextNode($this->fa->adnotacje->pMarzy->p_PMarzyN->value));
+            $pPMarzyN->appendChild($dom->createTextNode((string) $this->fa->adnotacje->pMarzy->p_PMarzyN->value));
             $pPMarzy->appendChild($pPMarzyN);
         }
 
         $rodzajFaktury = $dom->createElement('RodzajFaktury');
-        $rodzajFaktury->appendChild($dom->createTextNode($this->fa->rodzajFaktury->value));
+        $rodzajFaktury->appendChild($dom->createTextNode((string) $this->fa->rodzajFaktury->value));
+
         $fa->appendChild($rodzajFaktury);
 
-        if ($this->fa->fP !== null) {
+        if ($this->fa->fP instanceof FP) {
             $fP = $dom->createElement('FP');
-            $fP->appendChild($dom->createTextNode($this->fa->fP->value));
+            $fP->appendChild($dom->createTextNode((string) $this->fa->fP->value));
             $fa->appendChild($fP);
         }
 
@@ -282,11 +317,11 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
             $fa->appendChild($dodatkowyOpis);
 
             $klucz = $dom->createElement('Klucz');
-            $klucz->appendChild($dom->createTextNode($_dodatkowyOpis->klucz->value));
+            $klucz->appendChild($dom->createTextNode((string) $_dodatkowyOpis->klucz));
             $dodatkowyOpis->appendChild($klucz);
 
             $wartosc = $dom->createElement('Wartosc');
-            $wartosc->appendChild($dom->createTextNode($_dodatkowyOpis->wartosc->value));
+            $wartosc->appendChild($dom->createTextNode((string) $_dodatkowyOpis->wartosc));
             $dodatkowyOpis->appendChild($wartosc);
 
             if ($_dodatkowyOpis->nrWiersza !== null) {
@@ -306,37 +341,37 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
             if ($_faWiersz->uu_ID !== null) {
                 $uuID = $dom->createElement('UU_ID');
-                $uuID->appendChild($dom->createTextNode($_faWiersz->uu_ID->value));
+                $uuID->appendChild($dom->createTextNode((string) $_faWiersz->uu_ID));
                 $faWiersz->appendChild($uuID);
             }
 
             if ($_faWiersz->p_7 !== null) {
                 $p7 = $dom->createElement('P_7');
-                $p7->appendChild($dom->createTextNode($_faWiersz->p_7->value));
+                $p7->appendChild($dom->createTextNode((string) $_faWiersz->p_7));
                 $faWiersz->appendChild($p7);
             }
 
             if ($_faWiersz->p_8A !== null) {
                 $p8A = $dom->createElement('P_8A');
-                $p8A->appendChild($dom->createTextNode($_faWiersz->p_8A->value));
+                $p8A->appendChild($dom->createTextNode((string) $_faWiersz->p_8A));
                 $faWiersz->appendChild($p8A);
             }
 
             if ($_faWiersz->p_8B !== null) {
                 $p8B = $dom->createElement('P_8B');
-                $p8B->appendChild($dom->createTextNode((string) $_faWiersz->p_8B->value));
+                $p8B->appendChild($dom->createTextNode((string) $_faWiersz->p_8B));
                 $faWiersz->appendChild($p8B);
             }
 
             if ($_faWiersz->p_9A !== null) {
                 $p9A = $dom->createElement('P_9A');
-                $p9A->appendChild($dom->createTextNode((string) $_faWiersz->p_9A->value));
+                $p9A->appendChild($dom->createTextNode((string) $_faWiersz->p_9A));
                 $faWiersz->appendChild($p9A);
             }
 
             if ($_faWiersz->p_11 !== null) {
                 $p11 = $dom->createElement('P_11');
-                $p11->appendChild($dom->createTextNode((string) $_faWiersz->p_11->value));
+                $p11->appendChild($dom->createTextNode((string) $_faWiersz->p_11));
                 $faWiersz->appendChild($p11);
             }
 
@@ -347,24 +382,24 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
             }
         }
 
-        if ($this->fa->platnosc !== null) {
+        if ($this->fa->platnosc instanceof Platnosc) {
             $platnosc = $dom->createElement('Platnosc');
             $fa->appendChild($platnosc);
 
             $zaplacono = $dom->createElement('Zaplacono');
-            $zaplacono->appendChild($dom->createTextNode($this->fa->platnosc->zaplacono->value));
+            $zaplacono->appendChild($dom->createTextNode((string) $this->fa->platnosc->zaplacono->value));
             $platnosc->appendChild($zaplacono);
 
             $dataZaplaty = $dom->createElement('DataZaplaty');
-            $dataZaplaty->appendChild($dom->createTextNode((string) $this->fa->platnosc->dataZaplaty->value));
+            $dataZaplaty->appendChild($dom->createTextNode((string) $this->fa->platnosc->dataZaplaty));
             $platnosc->appendChild($dataZaplaty);
 
             $formaPlatnosci = $dom->createElement('FormaPlatnosci');
-            $formaPlatnosci->appendChild($dom->createTextNode($this->fa->platnosc->formaPlatnosci->value));
+            $formaPlatnosci->appendChild($dom->createTextNode((string) $this->fa->platnosc->formaPlatnosci->value));
             $platnosc->appendChild($formaPlatnosci);
         }
 
-        if ($this->fa->warunkiTransakcji !== null) {
+        if ($this->fa->warunkiTransakcji instanceof WarunkiTransakcji) {
             $warunkiTransakcji = $dom->createElement('WarunkiTransakcji');
             $fa->appendChild($warunkiTransakcji);
 
@@ -374,19 +409,19 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
                 if ($_zamowienia->dataZamowienia !== null) {
                     $dataZamowienia = $dom->createElement('DataZamowienia');
-                    $dataZamowienia->appendChild($dom->createTextNode((string) $_zamowienia->dataZamowienia->value));
+                    $dataZamowienia->appendChild($dom->createTextNode((string) $_zamowienia->dataZamowienia));
                     $zamowienia->appendChild($dataZamowienia);
                 }
 
                 if ($_zamowienia->nrZamowienia !== null) {
                     $nrZamowienia = $dom->createElement('NrZamowienia');
-                    $nrZamowienia->appendChild($dom->createTextNode($_zamowienia->nrZamowienia->value));
+                    $nrZamowienia->appendChild($dom->createTextNode((string) $_zamowienia->nrZamowienia));
                     $zamowienia->appendChild($nrZamowienia);
                 }
             }
         }
 
-        if ($this->stopka !== null) {
+        if ($this->stopka instanceof Stopka) {
             $stopka = $dom->createElement('Stopka');
             $naglowek->appendChild($stopka);
 
@@ -396,7 +431,7 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
                 if ($_informacje->stopkaFaktury !== null) {
                     $stopkaFaktury = $dom->createElement('StopkaFaktury');
-                    $stopkaFaktury->appendChild($dom->createTextNode($_informacje->stopkaFaktury->value));
+                    $stopkaFaktury->appendChild($dom->createTextNode((string) $_informacje->stopkaFaktury));
                     $informacje->appendChild($stopkaFaktury);
                 }
             }
@@ -407,19 +442,19 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
                 if ($_rejestry->krs !== null) {
                     $krs = $dom->createElement('KRS');
-                    $krs->appendChild($dom->createTextNode($_rejestry->krs->value));
+                    $krs->appendChild($dom->createTextNode((string) $_rejestry->krs));
                     $rejestry->appendChild($krs);
                 }
 
                 if ($_rejestry->regon !== null) {
                     $regon = $dom->createElement('REGON');
-                    $regon->appendChild($dom->createTextNode($_rejestry->regon->value));
+                    $regon->appendChild($dom->createTextNode((string) $_rejestry->regon));
                     $rejestry->appendChild($regon);
                 }
 
                 if ($_rejestry->bdo !== null) {
                     $bdo = $dom->createElement('BDO');
-                    $bdo->appendChild($dom->createTextNode($_rejestry->bdo->value));
+                    $bdo->appendChild($dom->createTextNode((string) $_rejestry->bdo));
                     $rejestry->appendChild($bdo);
                 }
             }

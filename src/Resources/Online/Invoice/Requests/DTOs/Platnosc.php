@@ -17,9 +17,9 @@ final readonly class Platnosc extends DTO
      * @return void
      */
     public function __construct(
-        public Zaplacono $zaplacono = Zaplacono::Default,
         public DataZaplaty $dataZaplaty,
         public FormaPlatnosci $formaPlatnosci,
+        public Zaplacono $zaplacono = Zaplacono::Default,
     ) {
     }
 }

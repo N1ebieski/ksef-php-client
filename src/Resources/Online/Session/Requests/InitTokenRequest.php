@@ -44,7 +44,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $initSessionTokenRequest->appendChild($context);
 
         $challenge = $dom->createElement('online.types:Challenge');
-        $challenge->appendChild($dom->createTextNode($this->challenge->value));
+        $challenge->appendChild($dom->createTextNode((string) $this->challenge));
 
         $context->appendChild($challenge);
 
@@ -54,7 +54,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $context->appendChild($identifier);
 
         $id = $dom->createElement('types:Identifier');
-        $id->appendChild($dom->createTextNode($this->nip->value));
+        $id->appendChild($dom->createTextNode((string) $this->nip));
 
         $identifier->appendChild($id);
 
@@ -70,7 +70,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $documentType->appendChild($formCode);
 
         $systemCode = $dom->createElement('types:SystemCode');
-        $systemCode->appendChild($dom->createTextNode($this->systemCode->value));
+        $systemCode->appendChild($dom->createTextNode((string) $this->systemCode->value));
 
         $formCode->appendChild($systemCode);
 
@@ -90,7 +90,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         $formCode->appendChild($value);
 
         $token = $dom->createElement('online.types:Token');
-        $token->appendChild($dom->createTextNode($this->encryptedToken->value));
+        $token->appendChild($dom->createTextNode((string) $this->encryptedToken));
 
         $context->appendChild($token);
 

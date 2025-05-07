@@ -19,7 +19,7 @@ final readonly class Podmiot2 extends DTO
     public function __construct(
         public DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public ?Adres $adres = null,
-        public ?DaneKontaktowe $daneKontaktowe = null,
+        public array $daneKontaktowe = [],
         public ?NrKlienta $nrKlienta = null
     ) {
     }
