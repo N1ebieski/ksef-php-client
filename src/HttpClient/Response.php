@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\HttpClient;
 
-use Throwable;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as BaseResponseInterface;
+use Throwable;
 
 final readonly class Response implements ResponseInterface
 {
     public function __construct(
         public BaseResponseInterface $baseResponse
     ) {
-        $this->throwIfError();
+        $this->throwExceptionIfError();
     }
 
-    private function throwIfError(): void
+    private function throwExceptionIfError(): void
     {
         $error = ErrorMap::tryFrom($this->baseResponse->getStatusCode());
 
