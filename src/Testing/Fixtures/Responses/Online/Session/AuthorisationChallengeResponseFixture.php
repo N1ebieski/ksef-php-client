@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Testing\Fixtures\Responses;
+namespace N1ebieski\KSEFClient\Testing\Fixtures\Responses\Online\Session;
 
 use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
 

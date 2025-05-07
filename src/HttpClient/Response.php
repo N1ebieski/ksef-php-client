@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\HttpClient;
 
+use Throwable;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as BaseResponseInterface;
 
@@ -29,7 +30,10 @@ final readonly class Response implements ResponseInterface
 
         $firstException = $exceptions[0] ?? null;
 
-        throw new ($error->getExceptionNamespace())(
+        /** @var class-string<Throwable> $exceptionNamespace */
+        $exceptionNamespace = $error->getExceptionNamespace();
+
+        throw new $exceptionNamespace(
             message: $firstException->exceptionDescription ?? '',
             code: $firstException->exceptionCode ?? 0,
             context: $exceptionResponse
@@ -38,6 +42,7 @@ final readonly class Response implements ResponseInterface
 
     public function object(): object
     {
+        /** @var object */
         return json_decode($this->baseResponse->getBody()->getContents(), flags: JSON_THROW_ON_ERROR);
     }
 

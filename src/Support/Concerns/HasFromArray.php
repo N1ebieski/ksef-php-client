@@ -10,7 +10,6 @@ use N1ebieski\KSEFClient\Support\Attributes\ArrayOf;
 use N1ebieski\KSEFClient\Support\Str;
 use ReflectionClass;
 use ReflectionNamedType;
-use ReflectionParameter;
 
 trait HasFromArray
 {
@@ -44,20 +43,22 @@ trait HasFromArray
             /** @var ReflectionNamedType|null */
             $type = $parameter->getType();
 
-            $value = match (true) {
-                ($attributes = $parameter->getAttributes(ArrayOf::class)) !== [] => array_map(
-                    function (mixed $item) use ($attributes): mixed {
+            $value = $data[$name];
+
+            if (is_array($value)) {
+                $attributes = $parameter->getAttributes(ArrayOf::class);
+
+                if ($attributes !== []) {
+                    $value = array_map(function (mixed $item) use ($attributes): mixed {
                         $arrayOfAttribute = $attributes[0]->newInstance();
 
                         return match (true) {
                             is_subclass_of($arrayOfAttribute->class, FromInterface::class) => $arrayOfAttribute->class::from($item),
                             default => $item
                         };
-                    },
-                    $data[$name]
-                ),
-                default => $data[$name]
-            };
+                    }, $value);
+                }
+            }
 
             $newParameters[$parameter->getName()] = match (true) {
                 $type === null => $value,

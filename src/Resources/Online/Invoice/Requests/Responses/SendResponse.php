@@ -12,7 +12,7 @@ final readonly class SendResponse extends Response
     public function __construct(
         public DateTimeImmutable $timestamp,
         public string $referenceNumber,
-        public string $processingCode,
+        public int $processingCode,
         public string $processingDescription,
         public string $elementReferenceNumber
     ) {

@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Tests\Resources\Online\Session\Requests\Handlers;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
-use N1ebieski\KSEFClient\Testing\Fixtures\Responses\AuthorisationChallengeResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Responses\Online\Session\AuthorisationChallengeResponseFixture;
 use PHPUnit\Framework\TestCase;
 
 final class AuthorisationChallengeHandlerTest extends TestCase

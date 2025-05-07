@@ -6,25 +6,12 @@ namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\Number\NipRule;
-use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 final readonly class NIP extends ValueObject implements ValueAwareInterface, Stringable
 {
-    public string $value;
-
-    public function __construct(
-        string $value,
-        bool $skipValidation = false
-    ) {
-        // if ( ! $skipValidation) {
-        //     Validator::validate($value, [
-        //         new NipRule(),
-        //     ]);
-        // }
-
-        $this->value = $value;
+    public function __construct(public string $value)
+    {
     }
 
     public function __toString(): string

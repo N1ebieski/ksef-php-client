@@ -51,7 +51,7 @@ final class ClientBuilder
         $this->apiUrl = $this->mode->getApiUrl();
 
         if ($this->mode->isEquals(Mode::Test)) {
-            $this->nip = new NIP('1111111111', skipValidation: true);
+            $this->nip = new NIP('1111111111');
         }
 
         return $this;
