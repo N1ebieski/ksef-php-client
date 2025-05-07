@@ -33,7 +33,7 @@ final readonly class P_13_1 extends ValueObject implements ValueAwareInterface, 
 
     public function __toString(): string
     {
-        return number_format($this->value, 2, '.', '');
+        return (string) $this->value;
     }
 
     public static function from(float $value): self
