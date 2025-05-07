@@ -17,7 +17,7 @@ use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
-use N1ebieski\KSEFClient\ValueObjects\Nip;
+use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\PublicKeyPath;
 use Psr\Http\Client\ClientInterface;
 
@@ -31,7 +31,7 @@ final class ClientBuilder
 
     private ApiToken $apiToken;
 
-    private Nip $nip;
+    private NIP $nip;
 
     private PublicKeyPath $publicKeyPath;
 
@@ -51,7 +51,7 @@ final class ClientBuilder
         $this->apiUrl = $this->mode->getApiUrl();
 
         if ($this->mode->isEquals(Mode::Test)) {
-            $this->nip = new Nip('1111111111', skipValidation: true);
+            $this->nip = new NIP('1111111111', skipValidation: true);
         }
 
         return $this;
@@ -84,10 +84,10 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withNip(Nip | string $nip): self
+    public function withNip(NIP | string $nip): self
     {
-        /** @var Nip $nip */
-        $nip = Evaluation::evaluate($nip, Nip::class);
+        /** @var NIP $nip */
+        $nip = Evaluation::evaluate($nip, NIP::class);
 
         $this->nip = $nip;
 

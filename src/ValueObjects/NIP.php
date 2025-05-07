@@ -10,7 +10,7 @@ use N1ebieski\KSEFClient\Validator\Rules\Number\NipRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class Nip extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class NIP extends ValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 

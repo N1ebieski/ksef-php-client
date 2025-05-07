@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZaplaty;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FormaPlatnosci;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
 use N1ebieski\KSEFClient\Support\DTO;
 
@@ -19,6 +19,7 @@ final readonly class Platnosc extends DTO
     public function __construct(
         public Zaplacono $zaplacono,
         public DataZaplaty $dataZaplaty,
+        public FormaPlatnosci $formaPlatnosci,
     ) {
     }
 }

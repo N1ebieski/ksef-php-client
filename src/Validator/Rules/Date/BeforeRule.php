@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator\Rules\Date;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use InvalidArgumentException;
 use N1ebieski\KSEFClient\Validator\Rules\Rule;

@@ -15,7 +15,8 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
         \Rector\Php81\Rector\Array_\FirstClassCallableRector::class,
         \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
-        \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class
+        \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
+        \Rector\Carbon\Rector\New_\DateTimeInstanceToCarbonRector::class,
     ])
     ->withComposerBased(phpunit: true)
     ->withImportNames(removeUnusedImports: true)

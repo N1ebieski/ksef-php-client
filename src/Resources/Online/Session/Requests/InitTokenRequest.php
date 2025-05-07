@@ -10,7 +10,7 @@ use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\Challeng
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Resources\Request;
-use N1ebieski\KSEFClient\ValueObjects\Nip;
+use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
 use SensitiveParameter;
 
@@ -21,7 +21,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
         public EncryptedToken $encryptedToken,
         #[SensitiveParameter]
         public Challenge $challenge,
-        public Nip $nip,
+        public NIP $nip,
         public SystemCode $systemCode = SystemCode::Fa2
     ) {
     }
