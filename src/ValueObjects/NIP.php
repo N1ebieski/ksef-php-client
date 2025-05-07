@@ -18,11 +18,11 @@ final readonly class NIP extends ValueObject implements ValueAwareInterface, Str
         string $value,
         bool $skipValidation = false
     ) {
-        if ( ! $skipValidation) {
-            Validator::validate($value, [
-                new NipRule(),
-            ]);
-        }
+        // if ( ! $skipValidation) {
+        //     Validator::validate($value, [
+        //         new NipRule(),
+        //     ]);
+        // }
 
         $this->value = $value;
     }

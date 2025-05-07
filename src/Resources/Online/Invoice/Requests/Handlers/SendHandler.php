@@ -34,7 +34,7 @@ final readonly class SendHandler extends Handler
                 'invoiceHash' => [
                     'fileSize' => $fileSize,
                     'hashSHA' => [
-                        'algorithm' => 'sha256',
+                        'algorithm' => 'SHA-256',
                         'encoding' => 'Base64',
                         'value' => $hashSHA,
                     ],

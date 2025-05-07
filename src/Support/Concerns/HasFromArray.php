@@ -16,7 +16,7 @@ trait HasFromArray
 {
     public static function from(array $data): static
     {
-        $attributes = [];
+        $newParameters = [];
 
         $reflectionClass = new ReflectionClass(static::class);
         $constructor = $reflectionClass->getConstructor();
@@ -59,16 +59,14 @@ trait HasFromArray
                 default => $data[$name]
             };
 
-            $attributes[$parameter->getName()] = match (true) {
+            $newParameters[$parameter->getName()] = match (true) {
                 $type === null => $value,
                 is_subclass_of($type->getName(), FromInterface::class) => $type->getName()::from($value),
                 $type->getName() === DateTimeImmutable::class => new DateTimeImmutable($value), //@phpstan-ignore-line
                 default => $value
             };
-
-            $bambo = 'dsds';
         }
 
-        return new static(...$attributes); //@phpstan-ignore-line
+        return new static(...$newParameters); //@phpstan-ignore-line
     }
 }
