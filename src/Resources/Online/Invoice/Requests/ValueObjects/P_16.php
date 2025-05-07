@@ -6,9 +6,9 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\EnumInterface;
 
-enum P_16: int implements EnumInterface
+enum P_16: string implements EnumInterface
 {
-    case MetodaKasowa = 1;
+    case MetodaKasowa = '1';
 
-    case Default = 2;
+    case Default = '2';
 }

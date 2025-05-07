@@ -10,9 +10,6 @@ use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 
-/**
- * Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy
- */
 final readonly class P_1 extends ValueObject implements ValueAwareInterface, Stringable
 {
     public DateTimeImmutable $value;

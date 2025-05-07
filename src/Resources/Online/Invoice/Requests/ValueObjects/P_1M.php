@@ -11,9 +11,6 @@ use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-/**
- * Miejsce wystawienia faktury
- */
 final readonly class P_1M extends ValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;

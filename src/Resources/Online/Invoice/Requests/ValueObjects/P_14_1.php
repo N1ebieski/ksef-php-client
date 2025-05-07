@@ -12,11 +12,6 @@ use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-/**
- * Kwota podatku od sumy wartości sprzedaży netto objętej stawką podstawową - aktualnie 23% albo 22%. W przypadku
- * faktur zaliczkowych, kwota podatku wyliczona według wzoru, o którym mowa w art. 106f ust. 1 pkt 3 ustawy. W
- * przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
- */
 final readonly class P_14_1 extends ValueObject implements ValueAwareInterface, Stringable
 {
     public float $value;

@@ -18,7 +18,7 @@ final readonly class FaWiersz extends DTO
 {
     /**
      * @param NrWierszaFa $nrWierszaFa Kolejny numer wiersza faktury
-     * @param UU_ID|null $uuID Uniwersalny unikalny numer wiersza faktury
+     * @param UU_ID|null $uu_ID Uniwersalny unikalny numer wiersza faktury
      * @param P_7|null $p_7 Nazwa (rodzaj) towaru lub usługi. Pole opcjonalne wyłącznie dla przypadku określonego w art 106j ust. 3 pkt 2 ustawy (faktura korygująca)
      * @param P_8A|null $p_8A Miara dostarczonych towarów lub zakres wykonanych usług. Pole opcjonalne dla przypadku określonego w art. 106e ust. 5 pkt 3 ustawy
      * @param P_8B|null $p_8B Ilość (liczba) dostarczonych towarów lub zakres wykonanych usług. Pole opcjonalne dla przypadku określonego w art. 106e ust. 5 pkt 3 ustawy
@@ -29,7 +29,7 @@ final readonly class FaWiersz extends DTO
      */
     public function __construct(
         public NrWierszaFa $nrWierszaFa,
-        public ?UU_ID $uuID = null,
+        public ?UU_ID $uu_ID = null,
         public ?P_7 $p_7 = null,
         public ?P_8A $p_8A = null,
         public ?P_8B $p_8B = null,

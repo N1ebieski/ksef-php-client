@@ -11,9 +11,6 @@ use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-/**
- * Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny identyfikuje fakturę
- */
 final readonly class P_2 extends ValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;

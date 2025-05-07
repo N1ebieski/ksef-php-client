@@ -32,7 +32,7 @@ final readonly class Adnotacje extends DTO
         public Zwolnienie $zwolnienie = new Zwolnienie(p_19N: P_19N::Default),
         public NoweSrodkiTransportu $noweSrodkiTransportu = new NoweSrodkiTransportu(p_22N: P_22N::Default),
         public P_23 $p_23 = P_23::Default,
-        public PMarzy $pMarzy = new PMarzy(pPMarzyN: P_PMarzyN::Default),
+        public PMarzy $pMarzy = new PMarzy(p_PMarzyN: P_PMarzyN::Default),
     ) {
     }
 }

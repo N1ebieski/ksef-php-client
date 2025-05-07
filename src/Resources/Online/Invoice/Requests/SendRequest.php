@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests;
 
+use DateTimeImmutable;
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Fa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Naglowek;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Stopka;
 use N1ebieski\KSEFClient\Resources\Request;
+use RuntimeException;
 
-final readonly class SendRequest extends Request
+final readonly class SendRequest extends Request implements XmlSerializableInterface
 {
     /**
      * @param Podmiot1 $podmiot1 Dane podatnika. Imię i nazwisko lub nazwa sprzedawcy towarów lub usług
@@ -27,5 +31,402 @@ final readonly class SendRequest extends Request
         public Fa $fa,
         public ?Stopka $stopka = null
     ) {
+    }
+
+    public function toXml(): string
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $faktura = $dom->createElement('Faktura');
+        $faktura->setAttribute('xmlns:etd', 'http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/');
+        $faktura->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $faktura->setAttribute('xmlns', 'http://crd.gov.pl/wzor/2023/06/29/12648/');
+
+        $dom->appendChild($faktura);
+
+        $naglowek = $dom->createElement('Naglowek');
+        $faktura->appendChild($naglowek);
+
+        $kodFormularza = $dom->createElement('KodFormularza');
+        $kodFormularza->setAttribute('kodSystemowy', $this->naglowek->wariantFormularza->value);
+        $kodFormularza->setAttribute('wersjaSchemy', $this->naglowek->wariantFormularza->getSchemaVersion());
+        $kodFormularza->appendChild($dom->createTextNode('FA'));
+        $naglowek->appendChild($kodFormularza);
+
+        $wariantFormularza = $dom->createElement('WariantFormularza');
+        $wariantFormularza->appendChild($dom->createTextNode($this->naglowek->wariantFormularza->getWariantFormularza()));
+        $naglowek->appendChild($wariantFormularza);
+
+        $dataWytworzenia = $dom->createElement('DataWytworzenia');
+        $dataWytworzenia->appendChild($dom->createTextNode(new DateTimeImmutable()->format('Y-m-d\TH:i:s\Z')));
+        $naglowek->appendChild($dataWytworzenia);
+
+        if ($this->naglowek->systemInfo !== null) {
+            $systemInfo = $dom->createElement('SystemInfo');
+            $systemInfo->appendChild($dom->createTextNode($this->naglowek->systemInfo->value));
+            $naglowek->appendChild($systemInfo);
+        }
+
+        $podmiot1 = $dom->createElement('Podmiot1');
+        $faktura->appendChild($podmiot1);
+
+        $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
+        $podmiot1->appendChild($daneIdentyfikacyjne);
+
+        $nip = $dom->createElement('NIP');
+        $nip->appendChild($dom->createTextNode($this->podmiot1->daneIdentyfikacyjne->nip->value));
+        $daneIdentyfikacyjne->appendChild($nip);
+
+        $nazwa = $dom->createElement('Nazwa');
+        $nazwa->appendChild($dom->createTextNode($this->podmiot1->daneIdentyfikacyjne->nazwa->value));
+        $daneIdentyfikacyjne->appendChild($nazwa);
+
+        $adres = $dom->createElement('Adres');
+        $podmiot1->appendChild($adres);
+
+        $kodKraju = $dom->createElement('KodKraju');
+        $kodKraju->appendChild($dom->createTextNode($this->podmiot1->adres->kodKraju->value));
+        $adres->appendChild($kodKraju);
+
+        $adresL1 = $dom->createElement('AdresL1');
+        $adresL1->appendChild($dom->createTextNode($this->podmiot1->adres->adresL1->value));
+        $adres->appendChild($adresL1);
+
+        if ($this->podmiot1->adres->adresL2 !== null) {
+            $adresL2 = $dom->createElement('AdresL2');
+            $adresL2->appendChild($dom->createTextNode($this->podmiot1->adres->adresL2->value));
+            $adres->appendChild($adresL2);
+        }
+
+        foreach ($this->podmiot1->daneKontaktowe as $_daneKontaktowe) {
+            $daneKontaktowe = $dom->createElement('DaneKontaktowe');
+            $podmiot1->appendChild($daneKontaktowe);
+
+            if ($_daneKontaktowe->email !== null) {
+                $email = $dom->createElement('Email');
+                $email->appendChild($dom->createTextNode($_daneKontaktowe->email->value));
+                $daneKontaktowe->appendChild($email);
+            }
+
+            if ($_daneKontaktowe->telefon !== null) {
+                $telefon = $dom->createElement('Telefon');
+                $telefon->appendChild($dom->createTextNode($_daneKontaktowe->telefon->value));
+                $daneKontaktowe->appendChild($telefon);
+            }
+        }
+
+        $podmiot2 = $dom->createElement('Podmiot2');
+        $faktura->appendChild($podmiot2);
+
+        $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
+        $podmiot2->appendChild($daneIdentyfikacyjne);
+
+        $nip = $dom->createElement('NIP');
+        $nip->appendChild($dom->createTextNode($this->podmiot2->daneIdentyfikacyjne->nip->value));
+        $daneIdentyfikacyjne->appendChild($nip);
+
+        $nazwa = $dom->createElement('Nazwa');
+        $nazwa->appendChild($dom->createTextNode($this->podmiot2->daneIdentyfikacyjne->nazwa->value));
+        $daneIdentyfikacyjne->appendChild($nazwa);
+
+        if ($this->podmiot2->adres !== null) {
+            $adres = $dom->createElement('Adres');
+            $podmiot2->appendChild($adres);
+
+            $kodKraju = $dom->createElement('KodKraju');
+            $kodKraju->appendChild($dom->createTextNode($this->podmiot2->adres->kodKraju->value));
+            $adres->appendChild($kodKraju);
+
+            $adresL1 = $dom->createElement('AdresL1');
+            $adresL1->appendChild($dom->createTextNode($this->podmiot2->adres->adresL1->value));
+            $adres->appendChild($adresL1);
+
+            if ($this->podmiot2->adres->adresL2 !== null) {
+                $adresL2 = $dom->createElement('AdresL2');
+                $adresL2->appendChild($dom->createTextNode($this->podmiot2->adres->adresL2->value));
+                $adres->appendChild($adresL2);
+            }
+        }
+
+        foreach ($this->podmiot2->daneKontaktowe as $_daneKontaktowe) {
+            $daneKontaktowe = $dom->createElement('DaneKontaktowe');
+            $podmiot2->appendChild($daneKontaktowe);
+
+            if ($_daneKontaktowe->email !== null) {
+                $email = $dom->createElement('Email');
+                $email->appendChild($dom->createTextNode($_daneKontaktowe->email->value));
+                $daneKontaktowe->appendChild($email);
+            }
+
+            if ($_daneKontaktowe->telefon !== null) {
+                $telefon = $dom->createElement('Telefon');
+                $telefon->appendChild($dom->createTextNode($_daneKontaktowe->telefon->value));
+                $daneKontaktowe->appendChild($telefon);
+            }
+        }
+
+        if ($this->podmiot2->nrKlienta !== null) {
+            $nrKlienta = $dom->createElement('NrKlienta');
+            $nrKlienta->appendChild($dom->createTextNode($this->podmiot2->nrKlienta->value));
+            $podmiot2->appendChild($nrKlienta);
+        }
+
+        $fa = $dom->createElement('Fa');
+        $faktura->appendChild($fa);
+
+        $kodWaluty = $dom->createElement('KodWaluty');
+        $kodWaluty->appendChild($dom->createTextNode($this->fa->kodWaluty->value));
+        $fa->appendChild($kodWaluty);
+
+        $p1 = $dom->createElement('P_1');
+        $p1->appendChild($dom->createTextNode((string) $this->fa->p_1->value));
+        $fa->appendChild($p1);
+
+        $p2 = $dom->createElement('P_2');
+        $p2->appendChild($dom->createTextNode($this->fa->p_2->value));
+        $fa->appendChild($p2);
+
+        $p6 = $dom->createElement('P_6');
+        $p6->appendChild($dom->createTextNode((string) $this->fa->p_6->value));
+        $fa->appendChild($p6);
+
+        $p13_1 = $dom->createElement('P_13_1');
+        $p13_1->appendChild($dom->createTextNode((string) $this->fa->p_13_1->value));
+        $fa->appendChild($p13_1);
+
+        $p14_1 = $dom->createElement('P_14_1');
+        $p14_1->appendChild($dom->createTextNode((string) $this->fa->p_14_1->value));
+        $fa->appendChild($p14_1);
+
+        $p13_3 = $dom->createElement('P_13_3');
+        $p13_3->appendChild($dom->createTextNode((string) $this->fa->p_13_3->value));
+        $fa->appendChild($p13_3);
+
+        $p14_3 = $dom->createElement('P_14_3');
+        $p14_3->appendChild($dom->createTextNode((string) $this->fa->p_14_3->value));
+        $fa->appendChild($p14_3);
+
+        $p15 = $dom->createElement('P_15');
+        $p15->appendChild($dom->createTextNode((string) $this->fa->p_15->value));
+        $fa->appendChild($p15);
+
+        if ($this->fa->p_1M !== null) {
+            $p1M = $dom->createElement('P_1M');
+            $p1M->appendChild($dom->createTextNode($this->fa->p_1M->value));
+            $fa->appendChild($p1M);
+        }
+
+        $adnotacje = $dom->createElement('Adnotacje');
+        $fa->appendChild($adnotacje);
+
+        $p16 = $dom->createElement('P_16');
+        $p16->appendChild($dom->createTextNode($this->fa->adnotacje->p_16->value));
+        $adnotacje->appendChild($p16);
+
+        $p17 = $dom->createElement('P_17');
+        $p17->appendChild($dom->createTextNode($this->fa->adnotacje->p_17->value));
+        $adnotacje->appendChild($p17);
+
+        $p18 = $dom->createElement('P_18');
+        $p18->appendChild($dom->createTextNode($this->fa->adnotacje->p_18->value));
+        $adnotacje->appendChild($p18);
+
+        $p18A = $dom->createElement('P_18A');
+        $p18A->appendChild($dom->createTextNode($this->fa->adnotacje->p_18A->value));
+        $adnotacje->appendChild($p18A);
+
+        $zwolnienie = $dom->createElement('Zwolnienie');
+        $adnotacje->appendChild($zwolnienie);
+
+        if ($this->fa->adnotacje->zwolnienie->p_19N !== null) {
+            $p19N = $dom->createElement('P_19N');
+            $p19N->appendChild($dom->createTextNode($this->fa->adnotacje->zwolnienie->p_19N->value));
+            $zwolnienie->appendChild($p19N);
+        }
+
+        $noweSrodkiTransportu = $dom->createElement('NoweSrodkiTransportu');
+        $adnotacje->appendChild($noweSrodkiTransportu);
+
+        if ($this->fa->adnotacje->noweSrodkiTransportu->p_22N !== null) {
+            $p22N = $dom->createElement('P_22N');
+            $p22N->appendChild($dom->createTextNode($this->fa->adnotacje->noweSrodkiTransportu->p_22N->value));
+            $noweSrodkiTransportu->appendChild($p22N);
+        }
+
+        $p23 = $dom->createElement('P_23');
+        $p23->appendChild($dom->createTextNode($this->fa->adnotacje->p_23->value));
+        $adnotacje->appendChild($p23);
+
+        $pPMarzy = $dom->createElement('PMarzy');
+        $adnotacje->appendChild($pPMarzy);
+
+        if ($this->fa->adnotacje->pMarzy->p_PMarzyN !== null) {
+            $pPMarzyN = $dom->createElement('P_PMarzyN');
+            $pPMarzyN->appendChild($dom->createTextNode($this->fa->adnotacje->pMarzy->p_PMarzyN->value));
+            $pPMarzy->appendChild($pPMarzyN);
+        }
+
+        $rodzajFaktury = $dom->createElement('RodzajFaktury');
+        $rodzajFaktury->appendChild($dom->createTextNode($this->fa->rodzajFaktury->value));
+        $fa->appendChild($rodzajFaktury);
+
+        if ($this->fa->fP !== null) {
+            $fP = $dom->createElement('FP');
+            $fP->appendChild($dom->createTextNode($this->fa->fP->value));
+            $fa->appendChild($fP);
+        }
+
+        foreach ($this->fa->dodatkowyOpis as $_dodatkowyOpis) {
+            $dodatkowyOpis = $dom->createElement('DodatkowyOpis');
+            $fa->appendChild($dodatkowyOpis);
+
+            $klucz = $dom->createElement('Klucz');
+            $klucz->appendChild($dom->createTextNode($_dodatkowyOpis->klucz->value));
+            $dodatkowyOpis->appendChild($klucz);
+
+            $wartosc = $dom->createElement('Wartosc');
+            $wartosc->appendChild($dom->createTextNode($_dodatkowyOpis->wartosc->value));
+            $dodatkowyOpis->appendChild($wartosc);
+
+            if ($_dodatkowyOpis->nrWiersza !== null) {
+                $nrWiersza = $dom->createElement('NrWiersza');
+                $nrWiersza->appendChild($dom->createTextNode((string) $_dodatkowyOpis->nrWiersza->value));
+                $dodatkowyOpis->appendChild($nrWiersza);
+            }
+        }
+
+        foreach ($this->fa->faWiersz as $_faWiersz) {
+            $faWiersz = $dom->createElement('FaWiersz');
+            $fa->appendChild($faWiersz);
+
+            $nrWierszaFa = $dom->createElement('NrWierszaFa');
+            $nrWierszaFa->appendChild($dom->createTextNode((string) $_faWiersz->nrWierszaFa->value));
+            $faWiersz->appendChild($nrWierszaFa);
+
+            if ($_faWiersz->uu_ID !== null) {
+                $uuID = $dom->createElement('UU_ID');
+                $uuID->appendChild($dom->createTextNode($_faWiersz->uu_ID->value));
+                $faWiersz->appendChild($uuID);
+            }
+
+            if ($_faWiersz->p_7 !== null) {
+                $p7 = $dom->createElement('P_7');
+                $p7->appendChild($dom->createTextNode($_faWiersz->p_7->value));
+                $faWiersz->appendChild($p7);
+            }
+
+            if ($_faWiersz->p_8A !== null) {
+                $p8A = $dom->createElement('P_8A');
+                $p8A->appendChild($dom->createTextNode($_faWiersz->p_8A->value));
+                $faWiersz->appendChild($p8A);
+            }
+
+            if ($_faWiersz->p_8B !== null) {
+                $p8B = $dom->createElement('P_8B');
+                $p8B->appendChild($dom->createTextNode((string) $_faWiersz->p_8B->value));
+                $faWiersz->appendChild($p8B);
+            }
+
+            if ($_faWiersz->p_9A !== null) {
+                $p9A = $dom->createElement('P_9A');
+                $p9A->appendChild($dom->createTextNode((string) $_faWiersz->p_9A->value));
+                $faWiersz->appendChild($p9A);
+            }
+
+            if ($_faWiersz->p_11 !== null) {
+                $p11 = $dom->createElement('P_11');
+                $p11->appendChild($dom->createTextNode((string) $_faWiersz->p_11->value));
+                $faWiersz->appendChild($p11);
+            }
+
+            if ($_faWiersz->p_12 !== null) {
+                $p12 = $dom->createElement('P_12');
+                $p12->appendChild($dom->createTextNode((string) $_faWiersz->p_12->value));
+                $faWiersz->appendChild($p12);
+            }
+        }
+
+        if ($this->fa->platnosc !== null) {
+            $platnosc = $dom->createElement('Platnosc');
+            $fa->appendChild($platnosc);
+
+            $zaplacono = $dom->createElement('Zaplacono');
+            $zaplacono->appendChild($dom->createTextNode($this->fa->platnosc->zaplacono->value));
+            $platnosc->appendChild($zaplacono);
+
+            $dataZaplaty = $dom->createElement('DataZaplaty');
+            $dataZaplaty->appendChild($dom->createTextNode((string) $this->fa->platnosc->dataZaplaty->value));
+            $platnosc->appendChild($dataZaplaty);
+
+            $formaPlatnosci = $dom->createElement('FormaPlatnosci');
+            $formaPlatnosci->appendChild($dom->createTextNode($this->fa->platnosc->formaPlatnosci->value));
+            $platnosc->appendChild($formaPlatnosci);
+        }
+
+        if ($this->fa->warunkiTransakcji !== null) {
+            $warunkiTransakcji = $dom->createElement('WarunkiTransakcji');
+            $fa->appendChild($warunkiTransakcji);
+
+            foreach ($this->fa->warunkiTransakcji->zamowienia as $_zamowienia) {
+                $zamowienia = $dom->createElement('Zamowienia');
+                $warunkiTransakcji->appendChild($zamowienia);
+
+                if ($_zamowienia->dataZamowienia !== null) {
+                    $dataZamowienia = $dom->createElement('DataZamowienia');
+                    $dataZamowienia->appendChild($dom->createTextNode((string) $_zamowienia->dataZamowienia->value));
+                    $zamowienia->appendChild($dataZamowienia);
+                }
+
+                if ($_zamowienia->nrZamowienia !== null) {
+                    $nrZamowienia = $dom->createElement('NrZamowienia');
+                    $nrZamowienia->appendChild($dom->createTextNode($_zamowienia->nrZamowienia->value));
+                    $zamowienia->appendChild($nrZamowienia);
+                }
+            }
+        }
+
+        if ($this->stopka !== null) {
+            $stopka = $dom->createElement('Stopka');
+            $naglowek->appendChild($stopka);
+
+            foreach ($this->stopka->informacje as $_informacje) {
+                $informacje = $dom->createElement('Informacje');
+                $stopka->appendChild($informacje);
+
+                if ($_informacje->stopkaFaktury !== null) {
+                    $stopkaFaktury = $dom->createElement('StopkaFaktury');
+                    $stopkaFaktury->appendChild($dom->createTextNode($_informacje->stopkaFaktury->value));
+                    $informacje->appendChild($stopkaFaktury);
+                }
+            }
+
+            foreach ($this->stopka->rejestry as $_rejestry) {
+                $rejestry = $dom->createElement('Rejestry');
+                $stopka->appendChild($rejestry);
+
+                if ($_rejestry->krs !== null) {
+                    $krs = $dom->createElement('KRS');
+                    $krs->appendChild($dom->createTextNode($_rejestry->krs->value));
+                    $rejestry->appendChild($krs);
+                }
+
+                if ($_rejestry->regon !== null) {
+                    $regon = $dom->createElement('REGON');
+                    $regon->appendChild($dom->createTextNode($_rejestry->regon->value));
+                    $rejestry->appendChild($regon);
+                }
+
+                if ($_rejestry->bdo !== null) {
+                    $bdo = $dom->createElement('BDO');
+                    $bdo->appendChild($dom->createTextNode($_rejestry->bdo->value));
+                    $rejestry->appendChild($bdo);
+                }
+            }
+        }
+
+        $xml = $dom->saveXML();
+
+        return $xml ?: throw new RuntimeException('Unable to save XML');
     }
 }

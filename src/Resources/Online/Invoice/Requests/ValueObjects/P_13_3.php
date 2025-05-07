@@ -12,10 +12,6 @@ use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-/**
- * Suma wartości sprzedaży netto objętej stawką obniżoną drugą - aktualnie 5%. W przypadku faktur zaliczkowych, kwota
- * zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
- */
 final readonly class P_13_3 extends ValueObject implements ValueAwareInterface, Stringable
 {
     public float $value;
