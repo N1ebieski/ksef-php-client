@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
+use N1ebieski\KSEFClient\Support\Attributes\ArrayOf;
 use N1ebieski\KSEFClient\Support\Str;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -25,14 +26,13 @@ trait HasFromArray
         }
 
         $parameters = $constructor->getParameters();
-        $parametersAsArray = array_map(fn (ReflectionParameter $parameter): string => $parameter->getName(), $parameters);
 
         foreach ($parameters as $parameter) {
             $snakeName = Str::snake($parameter->getName());
 
             $filter = array_values(array_filter(
                 array_unique([$snakeName, $parameter->getName()]),
-                fn (string $value): bool => in_array($value, $parametersAsArray)
+                fn (string $value): bool => in_array($value, array_keys($data))
             ));
 
             if ($filter === []) {
@@ -44,12 +44,29 @@ trait HasFromArray
             /** @var ReflectionNamedType|null */
             $type = $parameter->getType();
 
-            $attributes[$parameter->getName()] = match (true) {
-                $type === null => $data[$name],
-                is_subclass_of($type->getName(), FromInterface::class) => $type->getName()::from($data[$name]),
-                $type->getName() === DateTimeImmutable::class => new DateTimeImmutable($data[$name]), //@phpstan-ignore-line
+            $value = match (true) {
+                ($attributes = $parameter->getAttributes(ArrayOf::class)) !== [] => array_map(
+                    function (mixed $item) use ($attributes): mixed {
+                        $arrayOfAttribute = $attributes[0]->newInstance();
+
+                        return match (true) {
+                            is_subclass_of($arrayOfAttribute->class, FromInterface::class) => $arrayOfAttribute->class::from($item),
+                            default => $item
+                        };
+                    },
+                    $data[$name]
+                ),
                 default => $data[$name]
             };
+
+            $attributes[$parameter->getName()] = match (true) {
+                $type === null => $value,
+                is_subclass_of($type->getName(), FromInterface::class) => $type->getName()::from($value),
+                $type->getName() === DateTimeImmutable::class => new DateTimeImmutable($value), //@phpstan-ignore-line
+                default => $value
+            };
+
+            $bambo = 'dsds';
         }
 
         return new static(...$attributes); //@phpstan-ignore-line
