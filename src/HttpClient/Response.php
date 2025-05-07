@@ -12,6 +12,33 @@ final readonly class Response implements ResponseInterface
     public function __construct(
         public BaseResponseInterface $baseResponse
     ) {
+        $this->throwIfError();
+    }
+
+    private function throwIfError(): void
+    {
+        $error = ErrorMap::tryFrom($this->baseResponse->getStatusCode());
+
+        if ($error === null) {
+            return;
+        }
+
+        /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $exceptionResponse */
+        $exceptionResponse = $this->object();
+        $exceptions = $exceptionResponse->exception->exceptionDetailList;
+
+        $firstException = $exceptions[0] ?? null;
+
+        throw new ($error->getExceptionNamespace())(
+            message: $firstException->exceptionDescription ?? '',
+            code: $firstException->exceptionCode ?? 0,
+            context: $exceptionResponse
+        );
+    }
+
+    public function object(): object
+    {
+        return json_decode($this->baseResponse->getBody()->getContents(), flags: JSON_THROW_ON_ERROR);
     }
 
     public function json(): array

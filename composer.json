@@ -1,10 +1,13 @@
 {
     "name": "n1ebieski/ksef-php-client",
-    "version": "0.1.0",
+    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "N1ebieski\\KSEFClient\\": "src/"
-        }
+        },
+        "files": [
+            "src/Support/helpers.php"
+          ]        
     },
     "autoload-dev": {
         "psr-4": {
