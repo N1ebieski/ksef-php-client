@@ -13,7 +13,7 @@ final class AuthorisationChallengeValidResponseFixture extends Fixture
     /**
      * @var array<string, mixed>
      */
-    public array $data = [
+    public array $contents = [
         'timestamp' => '2022-01-01T00:00:00+01:00',
         'challenge' => '1234567890',
     ];

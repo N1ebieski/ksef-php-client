@@ -20,7 +20,7 @@ trait HasClientMock
         /** @var TestCase $this */
         //@phpstan-ignore-next-line
         $streamStub = $this->createStub(StreamInterface::class);
-        $streamStub->method('getContents')->willReturn(json_encode($response->data));
+        $streamStub->method('getContents')->willReturn(json_encode($response->contents));
 
         $responseStub = $this->createStub(ResponseInterface::class);
         $responseStub->method('getStatusCode')->willReturn($response->statusCode);

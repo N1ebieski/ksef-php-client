@@ -13,7 +13,7 @@ final class ErrorResponseFixture extends Fixture
     /**
      * @var array<string, mixed>
      */
-    public array $data = [
+    public array $contents = [
         'exception' => [
             'serviceCtx' => 'srvDVAKA',
             'serviceCode' => '20211001-EX-FFFFFFFFFF-FFFFFFFFFF-FF',
@@ -31,6 +31,6 @@ final class ErrorResponseFixture extends Fixture
 
     public function getDataAsContext(): object
     {
-        return (object) $this->data;
+        return (object) $this->contents;
     }
 }

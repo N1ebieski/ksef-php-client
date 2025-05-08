@@ -30,10 +30,10 @@ final class AuthorisationChallengeHandlerTest extends TestCase
 
         $this->assertObjectHasProperty('timestamp', $response);
         //@phpstan-ignore-next-line
-        $this->assertEquals(new DateTimeImmutable($responseFixture->data['timestamp']), $response->timestamp);
+        $this->assertEquals(new DateTimeImmutable($responseFixture->contents['timestamp']), $response->timestamp);
 
         $this->assertObjectHasProperty('challenge', $response);
-        $this->assertEquals($responseFixture->data['challenge'], $response->challenge);
+        $this->assertEquals($responseFixture->contents['challenge'], $response->challenge);
     }
 
     public function testInvalidResponse(): void
@@ -41,8 +41,10 @@ final class AuthorisationChallengeHandlerTest extends TestCase
         $responseFixture = new ErrorResponseFixture();
 
         $this->expectExceptionObject(new BadRequestException(
-            message: $responseFixture->data['exception']['exceptionDetailList'][0]['exceptionDescription'],
-            code: $responseFixture->data['exception']['exceptionDetailList'][0]['exceptionCode'],
+            //@phpstan-ignore-next-line
+            message: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionDescription'],
+            //@phpstan-ignore-next-line
+            code: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionCode'],
             context: $responseFixture->getDataAsContext()
         ));
 

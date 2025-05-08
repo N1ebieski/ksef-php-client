@@ -8,7 +8,6 @@ use Closure;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Contracts\PipeInterface;
 use N1ebieski\KSEFClient\Support\Evaluation\DTOs\Normalize;
-use ReflectionNamedType;
 
 final readonly class FromNormalizer implements PipeInterface
 {
