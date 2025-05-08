@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\EnumInterface;
+use N1ebieski\KSEFClient\Contracts\EqualsInterface;
+use N1ebieski\KSEFClient\Support\Concerns\HasEquals;
 
-enum Method: string implements EnumInterface
+enum Method: string implements EnumInterface, EqualsInterface
 {
+    use HasEquals;
+
     case Get = 'GET';
 
     case Post = 'POST';

@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use Psr\Http\Client\ClientInterface;
 
@@ -29,10 +30,16 @@ final readonly class HttpClient implements HttpClientInterface
     {
         $psr17Factory = new Psr17Factory();
 
+        $uri = $request->uri->withBaseUrl($this->config->baseUri);
+
+        if ($request->method->isEquals(Method::Get) && is_array($request->data)) {
+            $uri = $uri->withParameters($request->data);
+        }
+
         $clientRequest = $psr17Factory
             ->createRequest(
                 method: $request->method->value,
-                uri: $request->uri->withBaseUrl($this->config->baseUri)->value
+                uri: $uri->value
             )
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json');

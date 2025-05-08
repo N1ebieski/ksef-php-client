@@ -71,10 +71,10 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
 
         $naglowek->appendChild($wariantFormularza);
 
-        $dataWytworzenia = $dom->createElement('DataWytworzenia');
-        $dataWytworzenia->appendChild($dom->createTextNode(new DateTimeImmutable()->format('Y-m-d\TH:i:s\Z')));
+        $dataWytworzeniaFa = $dom->createElement('DataWytworzeniaFa');
+        $dataWytworzeniaFa->appendChild($dom->createTextNode(new DateTimeImmutable()->format('Y-m-d\TH:i:s\Z')));
 
-        $naglowek->appendChild($dataWytworzenia);
+        $naglowek->appendChild($dataWytworzeniaFa);
 
         if ($this->naglowek->systemInfo instanceof SystemInfo) {
             $systemInfo = $dom->createElement('SystemInfo');

@@ -25,6 +25,11 @@ final readonly class Uri extends ValueObject implements ValueAwareInterface, Str
         return new self($value);
     }
 
+    public function withParameters(array $parameters): self
+    {
+        return $parameters === [] ? $this : new self($this->value . '?' . http_build_query($parameters));
+    }
+
     public function withBaseUrl(BaseUri $baseUri): self
     {
         return $this->isUrl() ?
