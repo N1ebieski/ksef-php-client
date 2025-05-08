@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Testing\Fixtures\Responses\Online\Session;
+namespace N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Session\Requests\Responses;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Resources\ResponseFixture;
 
-final class AuthorisationChallengeValidResponseFixture extends Fixture
+final class AuthorisationChallengeResponseFixture extends ResponseFixture
 {
     public int $statusCode = 200;
 

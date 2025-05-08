@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Resources\Online\Session\Requests\Handlers;
 
-use DateTimeImmutable;
 use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
-use N1ebieski\KSEFClient\Testing\Fixtures\Responses\ErrorResponseFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Responses\Online\Session\AuthorisationChallengeValidResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Session\Requests\AuthorisationChallengeRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Responses\ErrorResponseFixture;
 use PHPUnit\Framework\TestCase;
 
 final class AuthorisationChallengeHandlerTest extends TestCase
@@ -18,26 +18,26 @@ final class AuthorisationChallengeHandlerTest extends TestCase
 
     public function testValidResponse(): void
     {
-        $responseFixture = new AuthorisationChallengeValidResponseFixture();
+        $requestFixture = new AuthorisationChallengeRequestFixture();
+        $responseFixture = new AuthorisationChallengeResponseFixture();
 
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->session()->authorisationChallenge([
-            'nip' => '1111111111',
-        ]);
+        $response = $clientStub->online()->session()->authorisationChallenge($requestFixture->data);
 
         $this->assertInstanceOf(AuthorisationChallengeResponse::class, $response);
 
         $this->assertObjectHasProperty('timestamp', $response);
         //@phpstan-ignore-next-line
-        $this->assertEquals(new DateTimeImmutable($responseFixture->contents['timestamp']), $response->timestamp);
+        $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
 
         $this->assertObjectHasProperty('challenge', $response);
-        $this->assertEquals($responseFixture->contents['challenge'], $response->challenge);
+        $this->assertEquals($responseFixture->contents['challenge'], $response->challenge->value);
     }
 
     public function testInvalidResponse(): void
     {
+        $requestFixture = new AuthorisationChallengeRequestFixture();
         $responseFixture = new ErrorResponseFixture();
 
         $this->expectExceptionObject(new BadRequestException(
@@ -50,8 +50,6 @@ final class AuthorisationChallengeHandlerTest extends TestCase
 
         $clientStub = $this->getClientStub($responseFixture);
 
-        $clientStub->online()->session()->authorisationChallenge([
-            'nip' => '1111111111',
-        ]);
+        $clientStub->online()->session()->authorisationChallenge($requestFixture->data);
     }
 }
