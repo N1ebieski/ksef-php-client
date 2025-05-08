@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
-use N1ebieski\KSEFClient\Support\Attributes\ArrayOf;
+use N1ebieski\KSEFClient\Support\Attributes\AsArrayOf;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Podmiot1 extends DTO
@@ -18,7 +18,7 @@ final readonly class Podmiot1 extends DTO
     public function __construct(
         public DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
-        #[ArrayOf(DaneKontaktowe::class)]
+        #[AsArrayOf(DaneKontaktowe::class)]
         public array $daneKontaktowe = []
     ) {
     }

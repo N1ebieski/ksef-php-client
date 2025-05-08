@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns\FromArray;
 
+use N1ebieski\KSEFClient\Support\Concerns\FromArray\DTOs\Normalize;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\ArrayOfNormalizer;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\DateTimeNormalizer;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\FromNormalizer;
+use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\NullNormalizer;
 use N1ebieski\KSEFClient\Support\Pipeline;
 use N1ebieski\KSEFClient\Support\Str;
 use ReflectionClass;
@@ -42,6 +44,7 @@ trait HasFromArray
 
             /** @var Normalize $normalize */
             $normalize = new Pipeline()->through([
+                new NullNormalizer(),
                 new ArrayOfNormalizer(),
                 new FromNormalizer(),
                 new DateTimeNormalizer()

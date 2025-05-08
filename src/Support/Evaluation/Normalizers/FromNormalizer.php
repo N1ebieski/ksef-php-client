@@ -2,33 +2,28 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers;
+namespace N1ebieski\KSEFClient\Support\Evaluation\Normalizers;
 
 use Closure;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Contracts\PipeInterface;
-use N1ebieski\KSEFClient\Support\Concerns\FromArray\DTOs\Normalize;
+use N1ebieski\KSEFClient\Support\Evaluation\DTOs\Normalize;
 use ReflectionNamedType;
 
 final readonly class FromNormalizer implements PipeInterface
 {
     public function handle(Normalize $normalize, Closure $next): Normalize
     {
-        $type = $normalize->parameter->getType();
-
-        if ($type instanceof ReflectionNamedType === false) {
+        if ( ! is_string($normalize->type)) {
             /** @var Normalize */
             return $next($normalize);
         }
 
-        /** @var class-string $name */
-        $name = $type->getName();
-
-        if ( ! is_subclass_of($name, FromInterface::class)) {
+        if ( ! is_subclass_of($normalize->type, FromInterface::class)) {
             /** @var Normalize */
             return $next($normalize);
         }
 
-        return $normalize->withValue($name::from($normalize->value));
+        return $normalize->withValue($normalize->type::from($normalize->value));
     }
 }

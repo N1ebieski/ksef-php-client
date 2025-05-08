@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Evaluation;
 
-use DateTimeImmutable;
-use InvalidArgumentException;
-use N1ebieski\KSEFClient\Contracts\FromInterface;
+use N1ebieski\KSEFClient\Support\Evaluation\DTOs\Normalize;
+use N1ebieski\KSEFClient\Support\Evaluation\Normalizers\ArrayNormalizer;
+use N1ebieski\KSEFClient\Support\Evaluation\Normalizers\DateTimeNormalizer;
+use N1ebieski\KSEFClient\Support\Evaluation\Normalizers\EqualNormalizer;
+use N1ebieski\KSEFClient\Support\Evaluation\Normalizers\FromNormalizer;
 use N1ebieski\KSEFClient\Support\Evaluation\ValueObjects\Type;
+use N1ebieski\KSEFClient\Support\Pipeline;
 
 final readonly class Evaluation
 {
@@ -16,21 +19,14 @@ final readonly class Evaluation
      */
     public static function evaluate(mixed $value, Type | string $type): mixed
     {
-        return match (true) {
-            //@phpstan-ignore-next-line
-            $type instanceof Type => match (true) {
-                $type->isEquals(Type::Array) => match (true) {
-                    is_array($value) => $value,
-                    default => [$value]
-                },
-            },
+        /** @var Normalize $normalize */
+        $normalize = new Pipeline()->through([
+            new EqualNormalizer(),
+            new ArrayNormalizer(),
+            new FromNormalizer(),
+            new DateTimeNormalizer()
+        ])->process(new Normalize($type, $value));
 
-            is_string($type) => match (true) {
-                $value instanceof $type => $value,
-                is_subclass_of($type, FromInterface::class) => $type::from($value),
-                $type === DateTimeImmutable::class => new DateTimeImmutable($value), //@phpstan-ignore-line
-                default => throw new InvalidArgumentException("Cannot convert value to {$type}.")
-            }
-        };
+        return $normalize->value;
     }
 }

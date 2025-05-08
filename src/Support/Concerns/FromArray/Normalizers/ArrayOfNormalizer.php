@@ -7,8 +7,8 @@ namespace N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers;
 use Closure;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Contracts\PipeInterface;
-use N1ebieski\KSEFClient\Support\Attributes\ArrayOf;
-use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalize;
+use N1ebieski\KSEFClient\Support\Attributes\AsArrayOf;
+use N1ebieski\KSEFClient\Support\Concerns\FromArray\DTOs\Normalize;
 
 final readonly class ArrayOfNormalizer implements PipeInterface
 {
@@ -19,7 +19,7 @@ final readonly class ArrayOfNormalizer implements PipeInterface
             return $next($normalize);
         }
 
-        $attributes = $normalize->parameter->getAttributes(ArrayOf::class);
+        $attributes = $normalize->parameter->getAttributes(AsArrayOf::class);
 
         if ($attributes === []) {
             /** @var Normalize */
@@ -28,14 +28,14 @@ final readonly class ArrayOfNormalizer implements PipeInterface
 
         $arrayOf = $attributes[0]->newInstance();
 
-        $normalize->value = match (true) {
-            is_subclass_of($arrayOf->class, FromInterface::class) => array_map(
-                fn (mixed $item) => $arrayOf->class::from($item),
-                $normalize->value
-            ),
-            default => $normalize->value
-        };
+        if ( ! is_subclass_of($arrayOf->class, FromInterface::class)) {
+            /** @var Normalize */
+            return $next($normalize);
+        }
 
-        return $normalize;
+        return $normalize->withValue(array_map(
+            fn (mixed $item) => $arrayOf->class::from($item),
+            $normalize->value
+        ));
     }
 }

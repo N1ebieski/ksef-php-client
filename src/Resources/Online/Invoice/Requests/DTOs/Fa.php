@@ -16,7 +16,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\RodzajFaktury;
-use N1ebieski\KSEFClient\Support\Attributes\ArrayOf;
+use N1ebieski\KSEFClient\Support\Attributes\AsArrayOf;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Fa extends DTO
@@ -54,9 +54,9 @@ final readonly class Fa extends DTO
         public Adnotacje $adnotacje = new Adnotacje(),
         public RodzajFaktury $rodzajFaktury = RodzajFaktury::Vat,
         public ?FP $fP = null,
-        #[ArrayOf(DodatkowyOpis::class)]
+        #[AsArrayOf(DodatkowyOpis::class)]
         public array $dodatkowyOpis = [],
-        #[ArrayOf(FaWiersz::class)]
+        #[AsArrayOf(FaWiersz::class)]
         public array $faWiersz = [],
         public ?Platnosc $platnosc = null,
         public ?WarunkiTransakcji $warunkiTransakcji = null

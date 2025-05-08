@@ -10,7 +10,7 @@ use N1ebieski\KSEFClient\Validator\Rules\String\ClassExistsRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
 #[Attribute()]
-final readonly class ArrayOf extends BaseAttribute
+final readonly class AsArrayOf extends BaseAttribute
 {
     public string $class;
 
