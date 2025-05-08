@@ -8,23 +8,22 @@ use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\RootResource;
+use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 trait HasClientMock
 {
-    /**
-     * @param array<string, mixed> $response
-     */
-    public function getClientStub(array $response): RootResourceInterface
+    public function getClientStub(Fixture $response): RootResourceInterface
     {
         /** @var TestCase $this */
         //@phpstan-ignore-next-line
         $streamStub = $this->createStub(StreamInterface::class);
-        $streamStub->method('getContents')->willReturn(json_encode($response));
+        $streamStub->method('getContents')->willReturn(json_encode($response->data));
 
         $responseStub = $this->createStub(ResponseInterface::class);
+        $responseStub->method('getStatusCode')->willReturn($response->statusCode);
         $responseStub->method('getBody')->willReturn($streamStub);
 
         $httpClientStub = $this->createStub(HttpClientInterface::class);

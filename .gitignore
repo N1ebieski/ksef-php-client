@@ -1,5 +1,6 @@
 /.playground
 /.vscode
+/.phpunit.cache
 /config
 /vendor
 /var
