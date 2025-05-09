@@ -19,8 +19,9 @@ final readonly class DataZaplaty extends ValueObject implements ValueAwareInterf
 
     public function __construct(DateTimeImmutable | string $value)
     {
-        /** @var DateTimeImmutable $value */
-        $value = Evaluation::evaluate($value, DateTimeImmutable::class);
+        if ($value instanceof DateTimeImmutable === false) {
+            $value = new DateTimeImmutable($value);
+        }
 
         Validator::validate($value, [
             new BeforeRule(new DateTimeImmutable('2050-01-01')),

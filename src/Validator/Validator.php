@@ -13,12 +13,13 @@ final readonly class Validator
     /**
      * @param array<int, Rule>|array<string, array<int, Rule>> $rules
      */
-    public static function validate(mixed $value, array $rules): void
+    public static function validate(mixed $values, array $rules): void
     {
-        /** @var array<string|int, mixed> $valueAsArray */
-        $valueAsArray = Evaluation::evaluate($value, Type::Array);
+        if ( ! is_array($values)) {
+            $values = [$values];
+        }
 
-        foreach ($valueAsArray as $attribute => $value) {
+        foreach ($values as $attribute => $value) {
             if (is_int($attribute)) {
                 $attribute = null;
             }

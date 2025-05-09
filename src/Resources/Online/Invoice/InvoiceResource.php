@@ -24,16 +24,18 @@ final readonly class InvoiceResource extends Resource implements InvoiceResource
 
     public function send(SendRequest | array $dto): SendResponse
     {
-        /** @var SendRequest $dto */
-        $dto = Evaluation::evaluate($dto, SendRequest::class);
+        if ($dto instanceof SendRequest == false) {
+            $dto = SendRequest::from($dto);
+        }
 
         return new SendHandler($this->client)->handle($dto);
     }
 
     public function status(StatusRequest | array $dto): StatusResponse
     {
-        /** @var StatusRequest $dto */
-        $dto = Evaluation::evaluate($dto, StatusRequest::class);
+        if ($dto instanceof StatusRequest == false) {
+            $dto = StatusRequest::from($dto);
+        }
 
         return new StatusHandler($this->client)->handle($dto);
     }

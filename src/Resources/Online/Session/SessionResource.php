@@ -8,10 +8,10 @@ use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\AuthorisationChallengeHandler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\InitTokenHandler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\TerminateHandler;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitTokenResponse;
 use N1ebieski\KSEFClient\Resources\Resource;
@@ -26,16 +26,18 @@ final readonly class SessionResource extends Resource implements SessionResource
 
     public function authorisationChallenge(AuthorisationChallengeRequest | array $dto): AuthorisationChallengeResponse
     {
-        /** @var AuthorisationChallengeRequest $dto */
-        $dto = Evaluation::evaluate($dto, AuthorisationChallengeRequest::class);
+        if ($dto instanceof AuthorisationChallengeRequest == false) {
+            $dto = AuthorisationChallengeRequest::from($dto);
+        }
 
         return new AuthorisationChallengeHandler($this->client)->handle($dto);
     }
 
     public function initToken(InitTokenRequest | array $dto): InitTokenResponse
     {
-        /** @var InitTokenRequest $dto */
-        $dto = Evaluation::evaluate($dto, InitTokenRequest::class);
+        if ($dto instanceof InitTokenRequest == false) {
+            $dto = InitTokenRequest::from($dto);
+        }
 
         return new InitTokenHandler($this->client)->handle($dto);
     }

@@ -43,8 +43,9 @@ final class ClientBuilder
 
     public function withMode(Mode | string $mode): self
     {
-        /** @var Mode $mode */
-        $mode = Evaluation::evaluate($mode, Mode::class);
+        if ($mode instanceof Mode === false) {
+            $mode = Mode::from($mode);
+        }
 
         $this->mode = $mode;
 
@@ -59,8 +60,9 @@ final class ClientBuilder
 
     public function withApiUrl(ApiUrl | string $apiUrl): self
     {
-        /** @var ApiUrl $apiUrl */
-        $apiUrl = Evaluation::evaluate($apiUrl, ApiUrl::class);
+        if ($apiUrl instanceof ApiUrl === false) {
+            $apiUrl = ApiUrl::from($apiUrl);
+        }
 
         $this->apiUrl = $apiUrl;
 
@@ -69,8 +71,9 @@ final class ClientBuilder
 
     public function withApiToken(ApiToken | string $apiToken): self
     {
-        /** @var ApiToken $apiToken */
-        $apiToken = Evaluation::evaluate($apiToken, ApiToken::class);
+        if ($apiToken instanceof ApiToken === false) {
+            $apiToken = ApiToken::from($apiToken);
+        }
 
         $this->apiToken = $apiToken;
 
@@ -86,8 +89,9 @@ final class ClientBuilder
 
     public function withNip(NIP | string $nip): self
     {
-        /** @var NIP $nip */
-        $nip = Evaluation::evaluate($nip, NIP::class);
+        if ($nip instanceof NIP === false) {
+            $nip = NIP::from($nip);
+        }
 
         $this->nip = $nip;
 
@@ -96,8 +100,9 @@ final class ClientBuilder
 
     public function withPublicKeyPath(PublicKeyPath | string $publicKeyPath): self
     {
-        /** @var PublicKeyPath $publicKeyPath */
-        $publicKeyPath = Evaluation::evaluate($publicKeyPath, PublicKeyPath::class);
+        if ($publicKeyPath instanceof PublicKeyPath === false) {
+            $publicKeyPath = PublicKeyPath::from($publicKeyPath);
+        }
 
         $this->publicKeyPath = $publicKeyPath;
 

@@ -15,8 +15,9 @@ final readonly class ApiUrl extends ValueObject implements ValueAwareInterface, 
 
     public function __construct(Url | string $value)
     {
-        /** @var Url $value */
-        $value = Evaluation::evaluate($value, Url::class);
+        if ($value instanceof Url == false) {
+            $value = Url::from($value);
+        }
 
         $this->value = $value;
     }
