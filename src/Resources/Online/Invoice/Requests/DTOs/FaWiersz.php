@@ -27,6 +27,7 @@ final readonly class FaWiersz extends DTO
      * @return void
      */
     public function __construct(
+        public ?NrWierszaFa $nrWierszaFa = null,
         public ?UU_ID $uu_id = null,
         public ?P_7 $p_7 = null,
         public ?P_8A $p_8a = null,

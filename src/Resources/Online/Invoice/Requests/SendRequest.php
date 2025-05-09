@@ -396,7 +396,7 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
             $fa->appendChild($faWiersz);
 
             $nrWierszaFa = $dom->createElement('NrWierszaFa');
-            $nrWierszaFa->appendChild($dom->createTextNode((string) ($index + 1)));
+            $nrWierszaFa->appendChild($dom->createTextNode((string) ($_faWiersz->nrWierszaFa ?? $index + 1)));
             $faWiersz->appendChild($nrWierszaFa);
 
             if ($_faWiersz->uu_id !== null) {
