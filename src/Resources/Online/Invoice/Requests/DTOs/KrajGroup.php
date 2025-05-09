@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
@@ -12,7 +14,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class KrajGroup extends DTO
+final readonly class KrajGroup extends DTO implements DomSerializableInterface
 {
     /**
      * @param NrID $nrId Dane identyfikujące nabywcę
@@ -23,5 +25,28 @@ final readonly class KrajGroup extends DTO
         public NrID $nrId,
         public ?KodKraju $kodKraju = null
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $krajGroup = $dom->createElement('KrajGroup');
+        $dom->appendChild($krajGroup);
+
+        $nrId = $dom->createElement('NrID');
+        $nrId->appendChild($dom->createTextNode((string) $this->nrId));
+        $krajGroup->appendChild($nrId);
+
+        if ($this->kodKraju instanceof KodKraju) {
+            $kodKraju = $dom->createElement('KodKraju');
+            $kodKraju->appendChild($dom->createTextNode((string) $this->kodKraju));
+            $krajGroup->appendChild($kodKraju);
+        }
+
+        $dom->appendChild($krajGroup);
+
+        return $dom;
     }
 }

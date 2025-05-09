@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Support\DTO;
 
-final readonly class Podmiot1 extends DTO
+final readonly class Podmiot1 extends DTO implements DomSerializableInterface
 {
     /**
      * @param Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
@@ -19,5 +21,29 @@ final readonly class Podmiot1 extends DTO
         public Adres $adres,
         public array $daneKontaktowe = []
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $podmiot1 = $dom->createElement('Podmiot1');
+        $dom->appendChild($podmiot1);
+
+        $daneIdentyfikacyjne = $dom->importNode($this->daneIdentyfikacyjne->toDom()->documentElement, true);
+
+        $podmiot1->appendChild($daneIdentyfikacyjne);
+
+        $adres = $dom->importNode($this->adres->toDom()->documentElement, true);
+
+        $podmiot1->appendChild($adres);
+
+        foreach ($this->daneKontaktowe as $daneKontaktowe) {
+            $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
+            $podmiot1->appendChild($daneKontaktowe);
+        }
+
+        return $dom;
     }
 }

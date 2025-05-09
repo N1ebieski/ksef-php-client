@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests;
 
 use DateTimeImmutable;
 use DOMDocument;
-use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Adres;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Fa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Naglowek;

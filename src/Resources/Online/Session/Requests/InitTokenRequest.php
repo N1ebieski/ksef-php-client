@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests;
 
 use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Resources\Request;
+use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
 use SensitiveParameter;
 
 final readonly class InitTokenRequest extends Request implements XmlSerializableInterface
 {
+    use HasToXml;
+
     public function __construct(
         #[SensitiveParameter]
         public EncryptedToken $encryptedToken,
@@ -26,7 +30,7 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
     ) {
     }
 
-    public function toXml(): string
+    public function toDom(): DOMDocument
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -94,8 +98,6 @@ final readonly class InitTokenRequest extends Request implements XmlSerializable
 
         $context->appendChild($token);
 
-        $xml = $dom->saveXML();
-
-        return $xml ?: throw new RuntimeException('Unable to save XML');
+        return $dom;
     }
 }
