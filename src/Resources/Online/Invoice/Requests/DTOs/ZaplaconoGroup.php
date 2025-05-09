@@ -33,15 +33,15 @@ final readonly class ZaplaconoGroup extends DTO implements DomSerializableInterf
         $zaplaconoGroup = $dom->createElement('ZaplaconoGroup');
         $dom->appendChild($zaplaconoGroup);
 
-        $dataZaplaty = $dom->createElement('DataZaplaty');
-        $dataZaplaty->appendChild($dom->createTextNode((string) $this->dataZaplaty));
-
-        $zaplaconoGroup->appendChild($dataZaplaty);
-
         $zaplacono = $dom->createElement('Zaplacono');
         $zaplacono->appendChild($dom->createTextNode((string) $this->zaplacono->value));
 
         $zaplaconoGroup->appendChild($zaplacono);
+
+        $dataZaplaty = $dom->createElement('DataZaplaty');
+        $dataZaplaty->appendChild($dom->createTextNode((string) $this->dataZaplaty));
+
+        $zaplaconoGroup->appendChild($dataZaplaty);
 
         return $dom;
     }

@@ -37,7 +37,7 @@ final readonly class P_19AGroup extends DTO implements DomSerializableInterface
         $p_19agroup = $dom->createElement('P_19AGroup');
         $dom->appendChild($p_19agroup);
 
-        $p_19a = $dom->createElement('P_19N');
+        $p_19a = $dom->createElement('P_19A');
         $p_19a->appendChild($dom->createTextNode((string) $this->p_19a));
 
         $p_19agroup->appendChild($p_19a);

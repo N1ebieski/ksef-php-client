@@ -90,7 +90,7 @@ final readonly class FaWiersz extends DTO implements DomSerializableInterface
 
         if ($this->p_12 instanceof P_12) {
             $p_12 = $dom->createElement('P_12');
-            $p_12->appendChild($dom->createTextNode((string) $this->p_12));
+            $p_12->appendChild($dom->createTextNode((string) $this->p_12->value));
             $faWiersz->appendChild($p_12);
         }
 
