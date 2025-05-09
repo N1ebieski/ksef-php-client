@@ -14,7 +14,7 @@ use N1ebieski\KSEFClient\ValueObjects\NIP;
 final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSerializableInterface
 {
     public function __construct(
-        public NIPGroup | UEGroup | KrajGroup | BrakIDGroup $nipGroup,
+        public NIPGroup | UEGroup | KrajGroup | BrakIDGroup $idgroup,
         public ?Nazwa $nazwa = null
     ) {
     }
@@ -27,7 +27,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSeria
         $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
         $dom->appendChild($daneIdentyfikacyjne);
 
-        $nipGroup = $this->nipGroup->toDom()->documentElement;
+        $nipGroup = $this->idgroup->toDom()->documentElement;
 
         foreach ($nipGroup->childNodes as $child) {
             $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));

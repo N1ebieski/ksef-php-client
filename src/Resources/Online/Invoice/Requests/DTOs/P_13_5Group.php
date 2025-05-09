@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
@@ -21,7 +23,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class P_13_5Group extends DTO
+final readonly class P_13_5Group extends DTO implements DomSerializableInterface
 {
     /**
      * @param P_13_5 $p_13_4 Suma wartości sprzedaży netto w przypadku procedury szczególnej, o której mowa w dziale XII w rozdziale 6a ustawy. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
@@ -32,5 +34,30 @@ final readonly class P_13_5Group extends DTO
         public P_13_5 $p_13_5,
         public ?P_14_5 $p_14_5 = null,
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $p_13_5group = $dom->createElement('P_13_1Group');
+        $dom->appendChild($p_13_5group);
+
+        $p_13_5 = $dom->createElement('P_13_1');
+        $p_13_5->appendChild($dom->createTextNode((string) $this->p_13_5));
+
+        $p_13_5group->appendChild($p_13_5);
+
+        if ($this->p_14_5 instanceof P_14_5) {
+            $p_14_5 = $dom->createElement('P_14_1');
+            $p_14_5->appendChild($dom->createTextNode((string) $this->p_14_5));
+
+            $p_13_5group->appendChild($p_14_5);
+        }
+
+        $dom->appendChild($p_13_5group);
+
+        return $dom;
     }
 }

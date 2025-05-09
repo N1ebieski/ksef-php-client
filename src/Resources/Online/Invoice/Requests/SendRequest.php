@@ -53,7 +53,7 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         public Naglowek $naglowek,
         public Podmiot1 $podmiot1,
         public Podmiot2 $podmiot2,
-        // public Fa $fa,
+        public Fa $fa,
         // public ?Stopka $stopka = null
     ) {
     }

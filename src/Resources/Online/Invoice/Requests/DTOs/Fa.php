@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FP;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodWaluty;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
@@ -24,7 +26,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\RodzajFaktury;
 use N1ebieski\KSEFClient\Support\DTO;
 
-final readonly class Fa extends DTO
+final readonly class Fa extends DTO implements DomSerializableInterface
 {
     /**
      * @param KodWaluty $kodWaluty Trzyliterowy kod waluty (ISO 4217)
@@ -62,5 +64,89 @@ final readonly class Fa extends DTO
         public ?Platnosc $platnosc = null,
         public ?WarunkiTransakcji $warunkiTransakcji = null
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $fa = $dom->createElement('Fa');
+        $dom->appendChild($fa);
+
+        $kodWaluty = $dom->createElement('KodWaluty');
+        $kodWaluty->appendChild($dom->createTextNode((string) $this->kodWaluty));
+
+        $fa->appendChild($kodWaluty);
+
+        $p_1 = $dom->createElement('P_1');
+        $p_1->appendChild($dom->createTextNode((string) $this->p_1));
+
+        $fa->appendChild($p_1);
+
+        if ($this->p_1m instanceof P_1M) {
+            $p_1m = $dom->createElement('P_1M');
+            $p_1m->appendChild($dom->createTextNode((string) $this->p_1m));
+            $fa->appendChild($p_1m);
+        }
+
+        $p_6group = $this->p_6group->toDom()->documentElement;
+
+        foreach ($p_6group->childNodes as $child) {
+            $fa->appendChild($dom->importNode($child, true));
+        }
+
+        if ($this->p_13_1group instanceof P_13_1Group) {
+            $p_13_1group = $this->p_13_1group->toDom()->documentElement;
+
+            foreach ($p_13_1group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
+        }
+
+        if ($this->p_13_2group instanceof P_13_2Group) {
+            $p_13_2group = $this->p_13_2group->toDom()->documentElement;
+
+            foreach ($p_13_2group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
+        }
+
+        if ($this->p_13_3group instanceof P_13_3Group) {
+            $p_13_3group = $this->p_13_3group->toDom()->documentElement;
+
+            foreach ($p_13_3group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
+        }
+
+        if ($this->p_13_4group instanceof P_13_4Group) {
+            $p_13_4group = $this->p_13_4group->toDom()->documentElement;
+
+            foreach ($p_13_4group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
+        }
+
+        if ($this->p_13_5group instanceof P_13_5Group) {
+            $p_13_5group = $this->p_13_5group->toDom()->documentElement;
+
+            foreach ($p_13_5group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
+        }
+
+        if ($this->p_13_7 instanceof P_13_7) {
+            $p13_7 = $dom->createElement('P_13_7');
+            $p13_7->appendChild($dom->createTextNode((string) $this->p_13_7));
+
+            $fa->appendChild($p13_7);
+        }
+
+        $adnotacje = $dom->importNode($this->adnotacje->toDom()->documentElement, true);
+
+        $fa->appendChild($adnotacje);
+
+        return $dom;
     }
 }

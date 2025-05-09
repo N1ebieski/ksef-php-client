@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
@@ -17,7 +19,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class P_13_3Group extends DTO
+final readonly class P_13_3Group extends DTO implements DomSerializableInterface
 {
     /**
      * @param P_13_3 $p_13_3 Suma wartości sprzedaży netto objętej stawką obniżoną drugą - aktualnie 5%. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
@@ -28,5 +30,28 @@ final readonly class P_13_3Group extends DTO
         public P_13_3 $p_13_3,
         public P_14_3 $p_14_3,
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $p_13_3group = $dom->createElement('P_13_1Group');
+        $dom->appendChild($p_13_3group);
+
+        $p_13_3 = $dom->createElement('P_13_1');
+        $p_13_3->appendChild($dom->createTextNode((string) $this->p_13_3));
+
+        $p_13_3group->appendChild($p_13_3);
+
+        $p_14_3 = $dom->createElement('P_14_1');
+        $p_14_3->appendChild($dom->createTextNode((string) $this->p_14_3));
+
+        $p_13_3group->appendChild($p_14_3);
+
+        $dom->appendChild($p_13_3group);
+
+        return $dom;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_16;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_17;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_18;
@@ -14,7 +16,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_23;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
 use N1ebieski\KSEFClient\Support\DTO;
 
-final readonly class Adnotacje extends DTO
+final readonly class Adnotacje extends DTO implements DomSerializableInterface
 {
     /**
      * @param P_16 $p_16 W przypadku dostawy towarów lub świadczenia usług, w odniesieniu do których obowiązek podatkowy powstaje zgodnie z art. 19a ust. 5 pkt 1 lub art. 21 ust. 1 ustawy - wyrazy "metoda kasowa", należy podać wartość "1"; w przeciwnym przypadku - wartość "2"
@@ -34,5 +36,53 @@ final readonly class Adnotacje extends DTO
         public P_23 $p_23 = P_23::Default,
         public PMarzy $pMarzy = new PMarzy(),
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $adnotacje = $dom->createElement('Adnotacje');
+        $dom->appendChild($adnotacje);
+
+        $p_16 = $dom->createElement('P_16');
+        $p_16->appendChild($dom->createTextNode((string) $this->p_16));
+
+        $adnotacje->appendChild($p_16);
+
+        $p_17 = $dom->createElement('P_17');
+        $p_17->appendChild($dom->createTextNode((string) $this->p_17));
+
+        $adnotacje->appendChild($p_17);
+
+        $p_18 = $dom->createElement('P_18');
+        $p_18->appendChild($dom->createTextNode((string) $this->p_18));
+
+        $adnotacje->appendChild($p_18);
+
+        $p_23 = $dom->createElement('P_18A');
+        $p_23->appendChild($dom->createTextNode((string) $this->p_18a));
+
+        $adnotacje->appendChild($p_23);
+
+        $zwolnienie = $dom->importNode($this->zwolnienie->toDom()->documentElement, true);
+
+        $adnotacje->appendChild($zwolnienie);
+
+        $noweSrodkiTransportu = $dom->importNode($this->noweSrodkiTransportu->toDom()->documentElement, true);
+
+        $adnotacje->appendChild($noweSrodkiTransportu);
+
+        $p_23 = $dom->createElement('P_23');
+        $p_23->appendChild($dom->createTextNode((string) $this->p_23));
+
+        $adnotacje->appendChild($p_23);
+
+        $pMarzy = $dom->importNode($this->pMarzy->toDom()->documentElement, true);
+
+        $adnotacje->appendChild($pMarzy);
+
+        return $dom;
     }
 }

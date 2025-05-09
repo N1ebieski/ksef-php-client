@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
@@ -18,7 +20,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class P_22Group extends DTO
+final readonly class P_22Group extends DTO implements DomSerializableInterface
 {
     /**
      * @param P_22 $p_22 Znacznik wewnątrzwspólnotowej dostawy nowych środków transportu
@@ -29,5 +31,28 @@ final readonly class P_22Group extends DTO
         public P_42_5 $p_42_5,
         public P_22 $p_22 = P_22::Default,
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $p_22group = $dom->createElement('P_22Group');
+        $dom->appendChild($p_22group);
+
+        $p_42_5 = $dom->createElement('P_42_5');
+        $p_42_5->appendChild($dom->createTextNode((string) $this->p_42_5));
+
+        $p_22group->appendChild($p_42_5);
+
+        $p_22 = $dom->createElement('P_22');
+        $p_22->appendChild($dom->createTextNode((string) $this->p_22));
+
+        $p_22group->appendChild($p_22);
+
+        $dom->appendChild($p_22group);
+
+        return $dom;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
@@ -15,7 +17,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class P_13_1Group extends DTO
+final readonly class P_13_1Group extends DTO implements DomSerializableInterface
 {
     /**
      * @param P_13_1 $p_13_1 Suma wartości sprzedaży netto ze stawką podstawową - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
@@ -26,5 +28,28 @@ final readonly class P_13_1Group extends DTO
         public P_13_1 $p_13_1,
         public P_14_1 $p_14_1,
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $p_13_1group = $dom->createElement('P_13_1Group');
+        $dom->appendChild($p_13_1group);
+
+        $p_13_1 = $dom->createElement('P_13_1');
+        $p_13_1->appendChild($dom->createTextNode((string) $this->p_13_1));
+
+        $p_13_1group->appendChild($p_13_1);
+
+        $p_14_1 = $dom->createElement('P_14_1');
+        $p_14_1->appendChild($dom->createTextNode((string) $this->p_14_1));
+
+        $p_13_1group->appendChild($p_14_1);
+
+        $dom->appendChild($p_13_1group);
+
+        return $dom;
     }
 }
