@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns\FromArray;
 
-use CuyZ\Valinor\Mapper\Source\Source;
-use N1ebieski\KSEFClient\Overrides\CuyZ\Valinor\Mapper\Source\Modifier\CamelCaseKeysWithExcept;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\DTOs\Normalize;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\ArrayOfNormalizer;
 use N1ebieski\KSEFClient\Support\Concerns\FromArray\Normalizers\DateTimeNormalizer;
@@ -20,11 +18,9 @@ trait HasFromArray
     public static function from(array $data): static
     {
         return new \CuyZ\Valinor\MapperBuilder()
-
+            ->allowPermissiveTypes()
             ->mapper()
-            ->map(static::class, \CuyZ\Valinor\Mapper\Source\Source::iterable(
-                new CamelCaseKeysWithExcept($data, except: ['p_'])
-            ));
+            ->map(static::class, \CuyZ\Valinor\Mapper\Source\Source::array($data)->camelCaseKeys());
     }
 
 

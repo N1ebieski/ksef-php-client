@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrKlienta;
-use N1ebieski\KSEFClient\Support\Attributes\AsArrayOf;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Podmiot2 extends DTO
 {
     /**
-     * @param DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące nabywcę
+     * @param Podmiot2DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące nabywcę
      * @param Adres|null $adres Adres nabywcy
      * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe nabywcy
      * @param null|NrKlienta $nrKlienta Numer klienta dla przypadków, w których nabywca posługuje się nim w umowie lub zamówieniu
      * @return void
      */
     public function __construct(
-        public DaneIdentyfikacyjne $daneIdentyfikacyjne,
+        public Podmiot2DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public ?Adres $adres = null,
-        #[AsArrayOf(DaneKontaktowe::class)]
         public array $daneKontaktowe = [],
         public ?NrKlienta $nrKlienta = null
     ) {

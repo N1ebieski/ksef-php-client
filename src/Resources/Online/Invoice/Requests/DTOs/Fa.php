@@ -22,7 +22,6 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\RodzajFaktury;
-use N1ebieski\KSEFClient\Support\Attributes\AsArrayOf;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Fa extends DTO
@@ -32,17 +31,7 @@ final readonly class Fa extends DTO
      * @param P_1 $p_1 Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy
      * @param P_1M|null $p_1m Miejsce wystawienia faktury
      * @param P_2 $p_2 Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny identyfikuje fakturę
-     * @param P_6 $p_6 Data dokonania lub zakończenia dostawy towarów lub wykonania usługi lub data otrzymania zapłaty, o której mowa w art. 106b ust. 1 pkt 4 ustawy, o ile taka data jest określona i różni się od daty wystawienia faktury. Pole wypełnia się w przypadku, gdy dla wszystkich pozycji faktury data jest wspólna
-     * @param P_13_1|null $p_13_1 Suma wartości sprzedaży netto ze stawką podstawową - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_13_2|null $p_13_2 Suma wartości sprzedaży netto objętej stawką obniżoną pierwszą - aktualnie 8 % albo 7%. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_13_3|null $p_13_3 Suma wartości sprzedaży netto objętej stawką obniżoną drugą - aktualnie 5%. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_13_4|null $p_13_4 Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_13_5|null $p_13_5 Suma wartości sprzedaży netto w przypadku procedury szczególnej, o której mowa w dziale XII w rozdziale 6a ustawy. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
      * @param P_13_7|null $p_13_7 Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_14_1|null $p_14_1 Kwota podatku od sumy wartości sprzedaży netto objętej stawką podstawową - aktualnie 23% albo 22%. W przypadku faktur zaliczkowych, kwota podatku wyliczona według wzoru, o którym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_14_2|null $p_14_2 Kwota podatku od sumy wartości sprzedaży netto objętej stawką obniżoną pierwszą - aktualnie 8% albo 7%. W przypadku faktur zaliczkowych, kwota podatku wyliczona według wzoru, o którym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_14_3|null $p_14_3 Kwota podatku od sumy wartości sprzedaży netto objętej stawką obniżoną drugą - aktualnie 5%. W przypadku faktur zaliczkowych, kwota podatku wyliczona według wzoru, o którym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
-     * @param P_14_4|null $p_14_4 Kwota podatku od sumy wartości sprzedaży netto w przypadku ryczałtu dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota podatku wyliczona według wzoru, o którym mowa w art. 106f ust. 1 pkt 3 ustawy. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
      * @param P_15 $p_15 Kwota należności ogółem. W przypadku faktur zaliczkowych kwota zapłaty dokumentowana fakturą. W przypadku faktur o których mowa w art. 106f ust. 3 ustawy kwota pozostała do zapłaty. W przypadku faktur korygujących korekta kwoty wynikającej z faktury korygowanej. W przypadku, o którym mowa w art. 106j ust. 3 ustawy korekta kwot wynikających z faktur korygowanych
      * @param Adnotacje $adnotacje Inne adnotacje na fakturze
      * @param FP|null $fP Faktura, o której mowa w art. 109 ust. 3d ustawy
@@ -56,17 +45,13 @@ final readonly class Fa extends DTO
         public KodWaluty $kodWaluty,
         public P_1 $p_1,
         public P_2 $p_2,
-        public P_6 $p_6,
+        public P_6Group | OkresFaGroup $p_6group,
         public P_15 $p_15,
-        public ?P_13_1 $p_13_1 = null,
-        public ?P_13_2 $p_13_2 = null,
-        public ?P_13_3 $p_13_3 = null,
-        public ?P_13_4 $p_13_4 = null,
-        public ?P_13_5 $p_13_5 = null,
-        public ?P_14_1 $p_14_1 = null,
-        public ?P_14_2 $p_14_2 = null,
-        public ?P_14_3 $p_14_3 = null,
-        public ?P_14_4 $p_14_4 = null,
+        public ?P_13_1Group $p_13_1group = null,
+        public ?P_13_2Group $p_13_2group = null,
+        public ?P_13_3Group $p_13_3group = null,
+        public ?P_13_4Group $p_13_4group = null,
+        public ?P_13_5Group $p_13_5group = null,
         public ?P_1M $p_1m = null,
         public ?P_13_7 $p_13_7 = null,
         public Adnotacje $adnotacje = new Adnotacje(),

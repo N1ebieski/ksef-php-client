@@ -50,7 +50,7 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         public Podmiot1 $podmiot1,
         public Podmiot2 $podmiot2,
         public Fa $fa,
-        // public ?Stopka $stopka = null
+        public ?Stopka $stopka = null
     ) {
     }
 
@@ -82,7 +82,7 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $naglowek->appendChild($wariantFormularza);
 
         $dataWytworzeniaFa = $dom->createElement('DataWytworzeniaFa');
-        $dataWytworzeniaFa->appendChild($dom->createTextNode(new DateTimeImmutable()->format('Y-m-d\TH:i:s\Z')));
+        $dataWytworzeniaFa->appendChild($dom->createTextNode((string) $this->naglowek->dataWytworzeniaFa));
 
         $naglowek->appendChild($dataWytworzeniaFa);
 

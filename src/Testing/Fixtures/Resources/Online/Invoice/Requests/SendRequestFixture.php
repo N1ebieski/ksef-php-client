@@ -28,7 +28,9 @@ final class SendRequestFixture extends Fixture
         ],
         'podmiot2' => [
             'dane_identyfikacyjne' => [
-                'nip' => '5123957531',
+                'nip_group' => [
+                    'nip' => '5123957531'
+                ],
                 'nazwa' => 'Firma'
             ],
             'adres' => [
@@ -41,9 +43,13 @@ final class SendRequestFixture extends Fixture
             'p_1' => '2025-05-08',
             'p_1m' => 'Warszawa',
             'p_2' => '1/05/2025',
-            'p_6' => '2025-05-08',
-            'p_13_1' => 1666.66,
-            'p_14_1' => 383.33,
+            'p_6group' => [
+                'p_6' => '2025-05-08'
+            ],
+            'p_13_1group' => [
+                'p_13_1' => 1666.66,
+                'p_14_1' => 383.33,
+            ],
             'p_13_3' => 0.95,
             'p_14_3' => 0.05,
             'p_15' => 2050.99,

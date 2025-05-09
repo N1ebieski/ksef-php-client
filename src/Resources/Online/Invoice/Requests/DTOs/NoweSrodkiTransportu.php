@@ -9,12 +9,8 @@ use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class NoweSrodkiTransportu extends DTO
 {
-    /**
-     * @param P_22N|null $p_22N Znacznik braku wewnątrzwspólnotowej dostawy nowych środków transportu
-     * @return void
-     */
     public function __construct(
-        public ?P_22N $p_22N = null,
+        public P_22Group | P_22NGroup $p_22group = new P_22NGroup(),
     ) {
     }
 }
