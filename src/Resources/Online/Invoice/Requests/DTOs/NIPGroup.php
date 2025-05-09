@@ -34,8 +34,6 @@ final readonly class NIPGroup extends DTO implements DomSerializableInterface
 
         $nipGroup->appendChild($nip);
 
-        $dom->appendChild($nipGroup);
-
         return $dom;
     }
 }

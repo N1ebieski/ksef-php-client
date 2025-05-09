@@ -39,8 +39,6 @@ final readonly class BrakIDGroup extends DTO implements DomSerializableInterface
 
         $brakIdGroup->appendChild($brakId);
 
-        $dom->appendChild($brakIdGroup);
-
         return $dom;
     }
 }

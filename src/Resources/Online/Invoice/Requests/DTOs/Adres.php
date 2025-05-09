@@ -38,7 +38,7 @@ final readonly class Adres extends DTO implements DomSerializableInterface
 
         $adres->appendChild($adresL1);
 
-        if ($this->adresL2 instanceof AdresL2) {
+        if ($this->adresL2 !== null) {
             $adresL2 = $dom->createElement('AdresL2');
             $adresL2->appendChild($dom->createTextNode((string) $this->adresL2));
             $adres->appendChild($adresL2);

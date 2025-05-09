@@ -43,8 +43,6 @@ final readonly class UEGroup extends DTO implements DomSerializableInterface
 
         $ueGroup->appendChild($nrVatUe);
 
-        $dom->appendChild($ueGroup);
-
         return $dom;
     }
 }

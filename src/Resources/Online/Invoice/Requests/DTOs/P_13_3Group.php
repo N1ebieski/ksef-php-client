@@ -50,8 +50,6 @@ final readonly class P_13_3Group extends DTO implements DomSerializableInterface
 
         $p_13_3group->appendChild($p_14_3);
 
-        $dom->appendChild($p_13_3group);
-
         return $dom;
     }
 }

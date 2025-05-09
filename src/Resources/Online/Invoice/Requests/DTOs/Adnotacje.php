@@ -47,22 +47,22 @@ final readonly class Adnotacje extends DTO implements DomSerializableInterface
         $dom->appendChild($adnotacje);
 
         $p_16 = $dom->createElement('P_16');
-        $p_16->appendChild($dom->createTextNode((string) $this->p_16));
+        $p_16->appendChild($dom->createTextNode((string) $this->p_16->value));
 
         $adnotacje->appendChild($p_16);
 
         $p_17 = $dom->createElement('P_17');
-        $p_17->appendChild($dom->createTextNode((string) $this->p_17));
+        $p_17->appendChild($dom->createTextNode((string) $this->p_17->value));
 
         $adnotacje->appendChild($p_17);
 
         $p_18 = $dom->createElement('P_18');
-        $p_18->appendChild($dom->createTextNode((string) $this->p_18));
+        $p_18->appendChild($dom->createTextNode((string) $this->p_18->value));
 
         $adnotacje->appendChild($p_18);
 
         $p_23 = $dom->createElement('P_18A');
-        $p_23->appendChild($dom->createTextNode((string) $this->p_18a));
+        $p_23->appendChild($dom->createTextNode((string) $this->p_18a->value));
 
         $adnotacje->appendChild($p_23);
 
@@ -75,7 +75,7 @@ final readonly class Adnotacje extends DTO implements DomSerializableInterface
         $adnotacje->appendChild($noweSrodkiTransportu);
 
         $p_23 = $dom->createElement('P_23');
-        $p_23->appendChild($dom->createTextNode((string) $this->p_23));
+        $p_23->appendChild($dom->createTextNode((string) $this->p_23->value));
 
         $adnotacje->appendChild($p_23);
 

@@ -39,13 +39,11 @@ final readonly class KrajGroup extends DTO implements DomSerializableInterface
         $nrId->appendChild($dom->createTextNode((string) $this->nrId));
         $krajGroup->appendChild($nrId);
 
-        if ($this->kodKraju instanceof KodKraju) {
+        if ($this->kodKraju !== null) {
             $kodKraju = $dom->createElement('KodKraju');
             $kodKraju->appendChild($dom->createTextNode((string) $this->kodKraju));
             $krajGroup->appendChild($kodKraju);
         }
-
-        $dom->appendChild($krajGroup);
 
         return $dom;
     }

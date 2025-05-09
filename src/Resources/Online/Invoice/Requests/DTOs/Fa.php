@@ -84,7 +84,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
 
         $fa->appendChild($p_1);
 
-        if ($this->p_1m instanceof P_1M) {
+        if ($this->p_1m !== null) {
             $p_1m = $dom->createElement('P_1M');
             $p_1m->appendChild($dom->createTextNode((string) $this->p_1m));
             $fa->appendChild($p_1m);
@@ -96,7 +96,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             $fa->appendChild($dom->importNode($child, true));
         }
 
-        if ($this->p_13_1group instanceof P_13_1Group) {
+        if ($this->p_13_1group !== null) {
             $p_13_1group = $this->p_13_1group->toDom()->documentElement;
 
             foreach ($p_13_1group->childNodes as $child) {
@@ -104,7 +104,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_2group instanceof P_13_2Group) {
+        if ($this->p_13_2group !== null) {
             $p_13_2group = $this->p_13_2group->toDom()->documentElement;
 
             foreach ($p_13_2group->childNodes as $child) {
@@ -112,7 +112,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_3group instanceof P_13_3Group) {
+        if ($this->p_13_3group !== null) {
             $p_13_3group = $this->p_13_3group->toDom()->documentElement;
 
             foreach ($p_13_3group->childNodes as $child) {
@@ -120,7 +120,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_4group instanceof P_13_4Group) {
+        if ($this->p_13_4group !== null) {
             $p_13_4group = $this->p_13_4group->toDom()->documentElement;
 
             foreach ($p_13_4group->childNodes as $child) {
@@ -128,7 +128,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_5group instanceof P_13_5Group) {
+        if ($this->p_13_5group !== null) {
             $p_13_5group = $this->p_13_5group->toDom()->documentElement;
 
             foreach ($p_13_5group->childNodes as $child) {
@@ -136,16 +136,54 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_7 instanceof P_13_7) {
+        if ($this->p_13_7 !== null) {
             $p13_7 = $dom->createElement('P_13_7');
             $p13_7->appendChild($dom->createTextNode((string) $this->p_13_7));
 
             $fa->appendChild($p13_7);
         }
 
+        $p_15 = $dom->createElement('P_15');
+        $p_15->appendChild($dom->createTextNode((string) $this->p_15));
+
+        $fa->appendChild($p_15);
+
         $adnotacje = $dom->importNode($this->adnotacje->toDom()->documentElement, true);
 
         $fa->appendChild($adnotacje);
+
+        $rodzajFaktury = $dom->createElement('RodzajFaktury');
+        $rodzajFaktury->appendChild($dom->createTextNode((string) $this->rodzajFaktury->value));
+
+        $fa->appendChild($rodzajFaktury);
+
+        if ($this->fP !== null) {
+            $fP = $dom->createElement('FP');
+            $fP->appendChild($dom->createTextNode((string) $this->fP->value));
+            $fa->appendChild($fP);
+        }
+
+        foreach ($this->dodatkowyOpis as $dodatkowyOpis) {
+            $dodatkowyOpis = $dom->importNode($dodatkowyOpis->toDom()->documentElement, true);
+            $fa->appendChild($dodatkowyOpis);
+        }
+
+        foreach ($this->faWiersz as $faWiersz) {
+            $faWiersz = $dom->importNode($faWiersz->toDom()->documentElement, true);
+            $fa->appendChild($faWiersz);
+        }
+
+        if ($this->platnosc !== null) {
+            $platnosc = $dom->importNode($this->platnosc->toDom()->documentElement, true);
+
+            $fa->appendChild($platnosc);
+        }
+
+        if ($this->warunkiTransakcji !== null) {
+            $warunkiTransakcji = $dom->importNode($this->warunkiTransakcji->toDom()->documentElement, true);
+
+            $fa->appendChild($warunkiTransakcji);
+        }
 
         return $dom;
     }

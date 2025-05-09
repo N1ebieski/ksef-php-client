@@ -41,11 +41,9 @@ final readonly class P_PMarzy_3_1Group extends DTO implements DomSerializableInt
         $dom->appendChild($p_pmarzy_3_1group);
 
         $p_pmarzy_3_1 = $dom->createElement('P_PMarzy_3_1');
-        $p_pmarzy_3_1->appendChild($dom->createTextNode((string) $this->p_pmarzy_3_1));
+        $p_pmarzy_3_1->appendChild($dom->createTextNode((string) $this->p_pmarzy_3_1->value));
 
         $p_pmarzy_3_1group->appendChild($p_pmarzy_3_1);
-
-        $dom->appendChild($p_pmarzy_3_1group);
 
         return $dom;
     }

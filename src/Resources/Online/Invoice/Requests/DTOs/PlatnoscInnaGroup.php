@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
+use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZamowienia;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZaplaty;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FormaPlatnosci;
@@ -13,7 +15,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Platnosc
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
 use N1ebieski\KSEFClient\Support\DTO;
 
-final readonly class PlatnoscInnaGroup extends DTO
+final readonly class PlatnoscInnaGroup extends DTO implements DomSerializableInterface
 {
     /**
      * @param PlatnoscInna $platnoscInna Znacznik innej formy płatności: 1 - inna forma płatności
@@ -24,5 +26,26 @@ final readonly class PlatnoscInnaGroup extends DTO
         public OpisPlatnosci $opisPlatnosci,
         public PlatnoscInna $platnoscInna = PlatnoscInna::Default,
     ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $platnoscInnaGroup = $dom->createElement('PlatnoscInnaGroup');
+        $dom->appendChild($platnoscInnaGroup);
+
+        $platnoscInna = $dom->createElement('PlatnoscInna');
+        $platnoscInna->appendChild($dom->createTextNode((string) $this->platnoscInna->value));
+
+        $platnoscInnaGroup->appendChild($platnoscInna);
+
+        $opisPlatnosci = $dom->createElement('OpisPlatnosci');
+        $opisPlatnosci->appendChild($dom->createTextNode((string) $this->opisPlatnosci));
+
+        $platnoscInnaGroup->appendChild($opisPlatnosci);
+
+        return $dom;
     }
 }

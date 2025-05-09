@@ -47,11 +47,9 @@ final readonly class P_22Group extends DTO implements DomSerializableInterface
         $p_22group->appendChild($p_42_5);
 
         $p_22 = $dom->createElement('P_22');
-        $p_22->appendChild($dom->createTextNode((string) $this->p_22));
+        $p_22->appendChild($dom->createTextNode((string) $this->p_22->value));
 
         $p_22group->appendChild($p_22);
-
-        $dom->appendChild($p_22group);
 
         return $dom;
     }

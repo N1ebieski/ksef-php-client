@@ -38,8 +38,6 @@ final readonly class OkresFaGroup extends DTO implements DomSerializableInterfac
 
         $okresFaGroup->appendChild($okresFa);
 
-        $dom->appendChild($okresFaGroup);
-
         return $dom;
     }
 }

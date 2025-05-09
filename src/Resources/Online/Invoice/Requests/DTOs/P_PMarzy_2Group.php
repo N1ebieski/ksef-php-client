@@ -40,11 +40,9 @@ final readonly class P_PMarzy_2Group extends DTO implements DomSerializableInter
         $dom->appendChild($p_pmarzy_2group);
 
         $p_pmarzy_2 = $dom->createElement('P_PMarzy_2');
-        $p_pmarzy_2->appendChild($dom->createTextNode((string) $this->p_pmarzy_2));
+        $p_pmarzy_2->appendChild($dom->createTextNode((string) $this->p_pmarzy_2->value));
 
         $p_pmarzy_2group->appendChild($p_pmarzy_2);
-
-        $dom->appendChild($p_pmarzy_2group);
 
         return $dom;
     }

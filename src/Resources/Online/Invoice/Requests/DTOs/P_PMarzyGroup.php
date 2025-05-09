@@ -40,7 +40,7 @@ final readonly class P_PMarzyGroup extends DTO implements DomSerializableInterfa
         $dom->appendChild($p_pmarzygroup);
 
         $p_pmarzy = $dom->createElement('P_PMarzy');
-        $p_pmarzy->appendChild($dom->createTextNode((string) $this->p_pmarzy));
+        $p_pmarzy->appendChild($dom->createTextNode((string) $this->p_pmarzy->value));
 
         $p_pmarzygroup->appendChild($p_pmarzy);
 
@@ -49,8 +49,6 @@ final readonly class P_PMarzyGroup extends DTO implements DomSerializableInterfa
         foreach ($p_pmarzy2_3group->childNodes as $child) {
             $p_pmarzygroup->appendChild($dom->importNode($child, true));
         }
-
-        $dom->appendChild($p_pmarzygroup);
 
         return $dom;
     }

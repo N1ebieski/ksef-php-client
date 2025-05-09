@@ -38,7 +38,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
 
         $podmiot2->appendChild($daneIdentyfikacyjne);
 
-        if ($this->adres instanceof Adres) {
+        if ($this->adres !== null) {
             $adres = $dom->importNode($this->adres->toDom()->documentElement, true);
 
             $podmiot2->appendChild($adres);
@@ -49,7 +49,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
             $podmiot2->appendChild($daneKontaktowe);
         }
 
-        if ($this->nrKlienta instanceof NrKlienta) {
+        if ($this->nrKlienta !== null) {
             $nrKlienta = $dom->createElement('NrKlienta');
             $nrKlienta->appendChild($dom->createTextNode((string) $this->nrKlienta));
             $podmiot2->appendChild($nrKlienta);

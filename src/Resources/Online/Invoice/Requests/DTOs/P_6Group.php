@@ -39,8 +39,6 @@ final readonly class P_6Group extends DTO implements DomSerializableInterface
 
         $p6Group->appendChild($p6);
 
-        $dom->appendChild($p6Group);
-
         return $dom;
     }
 }
