@@ -121,7 +121,7 @@ final readonly class SignDocumentHandler extends Handler
 
         $signedProperties->appendChild($signedSignatureProperties);
 
-        $signatureTime = $dom->createElementNS((string) XmlNamespace::Xades->value, 'xades:SigningTime', (string) new DateTimeImmutable()->format('Y-m-d\TH:i:sp'));
+        $signatureTime = $dom->createElementNS((string) XmlNamespace::Xades->value, 'xades:SigningTime', new DateTimeImmutable()->format('Y-m-d\TH:i:sp'));
 
         $signedSignatureProperties->appendChild($signatureTime);
 

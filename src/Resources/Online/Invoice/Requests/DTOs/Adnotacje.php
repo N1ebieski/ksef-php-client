@@ -10,10 +10,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_16;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_17;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_18;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_18A;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_23;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 

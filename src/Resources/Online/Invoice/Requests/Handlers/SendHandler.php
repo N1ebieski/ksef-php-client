@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Handlers;
 
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\ValueObjects\LogXmlFilename;
@@ -33,7 +34,7 @@ final readonly class SendHandler extends Handler
         $invoiceBody = base64_encode($xml);
         $fileSize = strlen($xml);
 
-        if ($this->config->logXmlPath !== null) {
+        if ($this->config->logXmlPath instanceof LogXmlPath) {
             $this->logXml->handle(
                 new LogXmlAction(
                     logXmlFilename: LogXmlFilename::from('send-invoice.xml'),

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 

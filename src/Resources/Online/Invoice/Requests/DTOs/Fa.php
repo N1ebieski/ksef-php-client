@@ -9,21 +9,11 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FP;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodWaluty;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_4;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_5;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_7;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_4;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_15;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\RodzajFaktury;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
@@ -86,7 +76,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
 
         $fa->appendChild($p_1);
 
-        if ($this->p_1m !== null) {
+        if ($this->p_1m instanceof P_1M) {
             $p_1m = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_1M');
             $p_1m->appendChild($dom->createTextNode((string) $this->p_1m));
             $fa->appendChild($p_1m);
@@ -104,7 +94,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             $fa->appendChild($dom->importNode($child, true));
         }
 
-        if ($this->p_13_1group !== null) {
+        if ($this->p_13_1group instanceof P_13_1Group) {
             /** @var DOMElement $p_13_1group */
             $p_13_1group = $this->p_13_1group->toDom()->documentElement;
 
@@ -113,7 +103,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_2group !== null) {
+        if ($this->p_13_2group instanceof P_13_2Group) {
             /** @var DOMElement $p_13_2group */
             $p_13_2group = $this->p_13_2group->toDom()->documentElement;
 
@@ -122,7 +112,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_3group !== null) {
+        if ($this->p_13_3group instanceof P_13_3Group) {
             /** @var DOMElement $p_13_3group */
             $p_13_3group = $this->p_13_3group->toDom()->documentElement;
 
@@ -131,7 +121,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_4group !== null) {
+        if ($this->p_13_4group instanceof P_13_4Group) {
             /** @var DOMElement $p_13_4group */
             $p_13_4group = $this->p_13_4group->toDom()->documentElement;
 
@@ -140,7 +130,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_5group !== null) {
+        if ($this->p_13_5group instanceof P_13_5Group) {
             /** @var DOMElement $p_13_5group */
             $p_13_5group = $this->p_13_5group->toDom()->documentElement;
 
@@ -149,7 +139,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             }
         }
 
-        if ($this->p_13_7 !== null) {
+        if ($this->p_13_7 instanceof P_13_7) {
             $p13_7 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_7');
             $p13_7->appendChild($dom->createTextNode((string) $this->p_13_7));
 
@@ -170,7 +160,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
 
         $fa->appendChild($rodzajFaktury);
 
-        if ($this->fP !== null) {
+        if ($this->fP instanceof FP) {
             $fP = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FP');
             $fP->appendChild($dom->createTextNode((string) $this->fP->value));
             $fa->appendChild($fP);
@@ -186,13 +176,13 @@ final readonly class Fa extends DTO implements DomSerializableInterface
             $fa->appendChild($faWiersz);
         }
 
-        if ($this->platnosc !== null) {
+        if ($this->platnosc instanceof Platnosc) {
             $platnosc = $dom->importNode($this->platnosc->toDom()->documentElement, true);
 
             $fa->appendChild($platnosc);
         }
 
-        if ($this->warunkiTransakcji !== null) {
+        if ($this->warunkiTransakcji instanceof WarunkiTransakcji) {
             $warunkiTransakcji = $dom->importNode($this->warunkiTransakcji->toDom()->documentElement, true);
 
             $fa->appendChild($warunkiTransakcji);

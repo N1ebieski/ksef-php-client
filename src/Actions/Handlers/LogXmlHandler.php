@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Actions\Handlers;
 
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\Actions\Handler;
 use N1ebieski\KSEFClient\Actions\LogXmlAction;
 use N1ebieski\KSEFClient\DTOs\Config;
@@ -18,7 +19,7 @@ final readonly class LogXmlHandler extends Handler
 
     public function handle(LogXmlAction $action): void
     {
-        if ($this->config->logXmlPath === null) {
+        if (!$this->config->logXmlPath instanceof LogXmlPath) {
             return;
         }
 

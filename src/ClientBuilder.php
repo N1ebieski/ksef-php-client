@@ -160,7 +160,7 @@ final class ClientBuilder
         );
 
         $authorisationSessionResponse = match (true) {
-            $this->apiToken !== null => $client->online()->session()->initToken(
+            $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
                 new InitTokenRequest(
                     apiToken: $this->apiToken,
                     challenge: $authorisationChallengeResponse->challenge,
@@ -169,7 +169,7 @@ final class ClientBuilder
                     nip: $this->nip
                 )
             ),
-            $this->certificatePath !== null => $client->online()->session()->initSigned(
+            $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
                 new InitSignedRequest(
                     certificatePath: $this->certificatePath,
                     challenge: $authorisationChallengeResponse->challenge,

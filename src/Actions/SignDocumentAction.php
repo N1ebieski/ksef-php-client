@@ -6,7 +6,6 @@ namespace N1ebieski\KSEFClient\Actions;
 
 use N1ebieski\KSEFClient\Actions\Action;
 use N1ebieski\KSEFClient\Actions\ValueObjects\Certificate;
-use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use SensitiveParameter;
 
 final readonly class SignDocumentAction extends Action

@@ -6,7 +6,6 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\Support\ValueObject;
 use Stringable;
 

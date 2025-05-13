@@ -6,23 +6,10 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_4;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_5;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_4;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_5;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
 
 final readonly class P_13_5Group extends DTO implements DomSerializableInterface
 {
@@ -50,7 +37,7 @@ final readonly class P_13_5Group extends DTO implements DomSerializableInterface
 
         $p_13_5group->appendChild($p_13_5);
 
-        if ($this->p_14_5 !== null) {
+        if ($this->p_14_5 instanceof P_14_5) {
             $p_14_5 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_14_5');
             $p_14_5->appendChild($dom->createTextNode((string) $this->p_14_5));
 

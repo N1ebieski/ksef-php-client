@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers;
 
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\Actions\EncryptTokenAction;
 use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
 use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
@@ -41,7 +42,7 @@ final readonly class InitTokenHandler extends Handler
 
         $xml = $dto->toXml($encryptedToken);
 
-        if ($this->config->logXmlPath !== null) {
+        if ($this->config->logXmlPath instanceof LogXmlPath) {
             $this->logXml->handle(
                 new LogXmlAction(
                     logXmlFilename: LogXmlFilename::from('init-token.xml'),

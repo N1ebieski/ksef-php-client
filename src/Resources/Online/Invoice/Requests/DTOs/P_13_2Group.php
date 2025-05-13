@@ -6,19 +6,10 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
 
 final readonly class P_13_2Group extends DTO implements DomSerializableInterface
 {

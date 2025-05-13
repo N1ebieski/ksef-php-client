@@ -39,7 +39,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
 
         $podmiot2->appendChild($daneIdentyfikacyjne);
 
-        if ($this->adres !== null) {
+        if ($this->adres instanceof Adres) {
             $adres = $dom->importNode($this->adres->toDom()->documentElement, true);
 
             $podmiot2->appendChild($adres);
@@ -50,7 +50,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
             $podmiot2->appendChild($daneKontaktowe);
         }
 
-        if ($this->nrKlienta !== null) {
+        if ($this->nrKlienta instanceof NrKlienta) {
             $nrKlienta = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrKlienta');
             $nrKlienta->appendChild($dom->createTextNode((string) $this->nrKlienta));
             $podmiot2->appendChild($nrKlienta);

@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 

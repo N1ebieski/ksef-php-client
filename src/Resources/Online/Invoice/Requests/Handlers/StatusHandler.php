@@ -9,9 +9,7 @@ use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Resources\Handler;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\SendResponse;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\StatusResponse;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\SendRequest;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\StatusRequest;
 
 final readonly class StatusHandler extends Handler

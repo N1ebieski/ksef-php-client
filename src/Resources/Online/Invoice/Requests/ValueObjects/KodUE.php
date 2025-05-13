@@ -6,7 +6,6 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\String\CountryRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\CountryUERule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;

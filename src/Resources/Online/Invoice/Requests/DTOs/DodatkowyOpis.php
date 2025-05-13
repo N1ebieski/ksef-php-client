@@ -33,7 +33,7 @@ final readonly class DodatkowyOpis extends DTO implements DomSerializableInterfa
         $dodatkowyOpis = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DodatkowyOpis');
         $dom->appendChild($dodatkowyOpis);
 
-        if ($this->nrWiersza !== null) {
+        if ($this->nrWiersza instanceof NrWiersza) {
             $nrWiersza = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrWiersza');
             $nrWiersza->appendChild($dom->createTextNode((string) $this->nrWiersza));
             $dodatkowyOpis->appendChild($nrWiersza);
@@ -41,10 +41,12 @@ final readonly class DodatkowyOpis extends DTO implements DomSerializableInterfa
 
         $klucz = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Klucz');
         $klucz->appendChild($dom->createTextNode((string) $this->klucz));
+
         $dodatkowyOpis->appendChild($klucz);
 
         $wartosc = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Wartosc');
         $wartosc->appendChild($dom->createTextNode((string) $this->wartosc));
+
         $dodatkowyOpis->appendChild($wartosc);
 
         $dom->appendChild($dodatkowyOpis);

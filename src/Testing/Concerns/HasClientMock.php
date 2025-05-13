@@ -9,7 +9,6 @@ use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\RootResource;
-use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Resources\ResponseFixture;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers;
 
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\Handlers\SignDocumentHandler;
 use N1ebieski\KSEFClient\Actions\LogXmlAction;
@@ -39,7 +40,7 @@ final readonly class InitSignedHandler extends Handler
             )
         );
 
-        if ($this->config->logXmlPath !== null) {
+        if ($this->config->logXmlPath instanceof LogXmlPath) {
             $this->logXml->handle(
                 new LogXmlAction(
                     logXmlFilename: LogXmlFilename::from('init-signed.xml'),

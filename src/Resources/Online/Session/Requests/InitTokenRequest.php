@@ -34,7 +34,7 @@ final readonly class InitTokenRequest extends Request
 
     public function toXml(EncryptedToken $encryptedToken): string
     {
-        return $this->toDom($encryptedToken)->saveXML() ?: throw new \RuntimeException(
+        return $this->toDom($encryptedToken)->saveXML() ?: throw new RuntimeException(
             'Unable to serialize to XML'
         );
     }

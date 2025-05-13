@@ -7,9 +7,6 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZaplaty;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FormaPlatnosci;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
@@ -29,7 +26,7 @@ final readonly class Platnosc extends DTO implements DomSerializableInterface
         $platnosc = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Platnosc');
         $dom->appendChild($platnosc);
 
-        if ($this->zaplataGroup !== null) {
+        if ($this->zaplataGroup instanceof ZaplaconoGroup) {
             /** @var DOMElement $zaplataGroup */
             $zaplataGroup = $this->zaplataGroup->toDom()->documentElement;
 

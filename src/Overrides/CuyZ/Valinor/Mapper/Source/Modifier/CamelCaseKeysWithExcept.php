@@ -16,7 +16,7 @@ use function is_iterable;
 final class CamelCaseKeysWithExcept implements IteratorAggregate
 {
     /** @var array<mixed> */
-    private array $source;
+    private readonly array $source;
 
     /**
      * @param iterable<mixed> $source
@@ -24,7 +24,7 @@ final class CamelCaseKeysWithExcept implements IteratorAggregate
      */
     public function __construct(
         iterable $source,
-        private array $except = []
+        private readonly array $except = []
     ) {
         $this->source = $this->replace($source);
     }

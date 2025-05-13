@@ -27,14 +27,14 @@ final readonly class Zamowienia extends DTO implements DomSerializableInterface
         $zamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zamowienia');
         $dom->appendChild($zamowienia);
 
-        if ($this->dataZamowienia !== null) {
+        if ($this->dataZamowienia instanceof DataZamowienia) {
             $dataZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataZamowienia');
             $dataZamowienia->appendChild($dom->createTextNode((string) $this->dataZamowienia));
 
             $zamowienia->appendChild($dataZamowienia);
         }
 
-        if ($this->nrZamowienia !== null) {
+        if ($this->nrZamowienia instanceof NrZamowienia) {
             $nrZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrZamowienia');
             $nrZamowienia->appendChild($dom->createTextNode((string) $this->nrZamowienia));
 
