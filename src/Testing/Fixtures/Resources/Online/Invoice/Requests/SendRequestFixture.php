@@ -102,8 +102,9 @@ final class SendRequestFixture extends Fixture
     {
         $todayDate = new DateTimeImmutable()->format('Y-m-d');
 
-        $this->data['fa']['p_1'] = $todayDate;
+        $this->data['fa']['p_1'] = $todayDate; //@phpstan-ignore-line
 
+        //@phpstan-ignore-next-line
         if (isset($this->data['fa']['p_6group']['p_6'])) {
             $this->data['fa']['p_6group']['p_6'] = $todayDate;
         }

@@ -21,6 +21,7 @@ use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use Psr\Http\Client\ClientInterface;
+use RuntimeException;
 
 final class ClientBuilder
 {
@@ -158,8 +159,8 @@ final class ClientBuilder
             new AuthorisationChallengeRequest($this->nip)
         );
 
-        if ($this->apiToken !== null) {
-            $authorisationSessionResponse = $client->online()->session()->initToken(
+        $authorisationSessionResponse = match (true) {
+            $this->apiToken !== null => $client->online()->session()->initToken(
                 new InitTokenRequest(
                     apiToken: $this->apiToken,
                     challenge: $authorisationChallengeResponse->challenge,
@@ -167,17 +168,17 @@ final class ClientBuilder
                     publicKeyPath: $this->publicKeyPath,
                     nip: $this->nip
                 )
-            );
-        } else {
-            $authorisationSessionResponse = $client->online()->session()->initSigned(
+            ),
+            $this->certificatePath !== null => $client->online()->session()->initSigned(
                 new InitSignedRequest(
                     certificatePath: $this->certificatePath,
                     challenge: $authorisationChallengeResponse->challenge,
                     timestamp: $authorisationChallengeResponse->timestamp,
                     nip: $this->nip
                 )
-            );
-        }
+            ),
+            default => throw new RuntimeException('You must provide api token or certificate path')
+        };
 
         return new RootResource(
             client: $httpClient->withConfig(

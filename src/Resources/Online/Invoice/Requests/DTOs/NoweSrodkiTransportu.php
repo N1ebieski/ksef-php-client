@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
@@ -25,6 +26,7 @@ final readonly class NoweSrodkiTransportu extends DTO implements DomSerializable
         $noweSrodkiTransportu = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NoweSrodkiTransportu');
         $dom->appendChild($noweSrodkiTransportu);
 
+        /** @var DOMElement $p_22group */
         $p_22group = $this->p_22group->toDom()->documentElement;
 
         foreach ($p_22group->childNodes as $child) {

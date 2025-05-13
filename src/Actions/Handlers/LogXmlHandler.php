@@ -18,6 +18,10 @@ final readonly class LogXmlHandler extends Handler
 
     public function handle(LogXmlAction $action): void
     {
+        if ($this->config->logXmlPath === null) {
+            return;
+        }
+
         $filename = $this->config->logXmlPath->withSlashAtEnd()->value . $action->logXmlFilename->withoutSlashAtStart()->value;
 
         file_put_contents($filename, $action->document) ?: throw new RuntimeException(

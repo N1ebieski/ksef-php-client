@@ -43,7 +43,7 @@ final readonly class P_22Group extends DTO implements DomSerializableInterface
         $dom->appendChild($p_22group);
 
         $p_42_5 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_42_5');
-        $p_42_5->appendChild($dom->createTextNode((string) $this->p_42_5));
+        $p_42_5->appendChild($dom->createTextNode((string) $this->p_42_5->value));
 
         $p_22group->appendChild($p_42_5);
 

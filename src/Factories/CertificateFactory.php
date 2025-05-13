@@ -24,15 +24,15 @@ final readonly class CertificateFactory
             sprintf('Unable to read the cert file. OpenSSL: %s', (openssl_error_string() ?: ''))
         );
 
+        /** @var array{pkey: string, cert: string} $data */
+
         $privateKey = openssl_pkey_get_private($data['pkey'], $certificatePath->passphrase) ?: throw new \RuntimeException(
             sprintf('Unable to read the cert file. OpenSSL: %s', (openssl_error_string() ?: ''))
         );
 
-        /** @var array{pkey: string, cert: string} $data */
-
         $raw = trim(str_replace(['-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----', "\n"], '', $data['cert']));
 
-        /** @var array<issuer: array<string, string>> $x509 */
+        /** @var array{issuer: array<string, string>, serialNumberHex: string} $info */
         $info = openssl_x509_parse($data['cert']) ?: throw new \RuntimeException(
             sprintf('Unable to read the cert file. OpenSSL: %s', (openssl_error_string() ?: ''))
         );

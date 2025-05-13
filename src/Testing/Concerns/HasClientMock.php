@@ -6,16 +6,18 @@ namespace N1ebieski\KSEFClient\Testing\Concerns;
 
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
+use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Resources\ResponseFixture;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 trait HasClientMock
 {
-    public function getClientStub(Fixture $response): RootResourceInterface
+    public function getClientStub(ResponseFixture $response): RootResourceInterface
     {
         /** @var TestCase $this */
         //@phpstan-ignore-next-line
@@ -29,6 +31,6 @@ trait HasClientMock
         $httpClientStub = $this->createStub(HttpClientInterface::class);
         $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub));
 
-        return new RootResource($httpClientStub);
+        return new RootResource($httpClientStub, new Config());
     }
 }

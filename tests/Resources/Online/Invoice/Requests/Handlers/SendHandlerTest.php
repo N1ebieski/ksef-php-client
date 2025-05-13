@@ -34,7 +34,6 @@ final class SendHandlerTest extends TestCase
         $this->assertEquals($responseFixture->contents['referenceNumber'], $response->referenceNumber->value);
 
         $this->assertObjectHasProperty('timestamp', $response);
-        //@phpstan-ignore-next-line
         $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
 
         $this->assertObjectHasProperty('processingCode', $response);

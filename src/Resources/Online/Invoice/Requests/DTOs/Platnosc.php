@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZaplaty;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FormaPlatnosci;
@@ -29,6 +30,7 @@ final readonly class Platnosc extends DTO implements DomSerializableInterface
         $dom->appendChild($platnosc);
 
         if ($this->zaplataGroup !== null) {
+            /** @var DOMElement $zaplataGroup */
             $zaplataGroup = $this->zaplataGroup->toDom()->documentElement;
 
             foreach ($zaplataGroup->childNodes as $child) {
@@ -37,6 +39,7 @@ final readonly class Platnosc extends DTO implements DomSerializableInterface
         }
 
         if ($this->platnoscGroup !== null) {
+            /** @var DOMElement $platnoscGroup */
             $platnoscGroup = $this->platnoscGroup->toDom()->documentElement;
 
             foreach ($platnoscGroup->childNodes as $child) {

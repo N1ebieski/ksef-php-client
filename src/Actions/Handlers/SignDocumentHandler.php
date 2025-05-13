@@ -31,7 +31,7 @@ final readonly class SignDocumentHandler extends Handler
         $signature = $dom->createElementNS((string) XmlNamespace::Ds->value, 'ds:Signature');
         $signature->setAttribute('Id', $ids['signature'] = Str::guid());
 
-        $dom->firstChild->appendChild($signature);
+        $dom->firstChild?->appendChild($signature);
 
         $signedInfo = $dom->createElementNS((string) XmlNamespace::Ds->value, 'ds:SignedInfo');
         $signedInfo->setAttribute('Id', Str::guid());
@@ -178,6 +178,7 @@ final readonly class SignDocumentHandler extends Handler
             throw new RuntimeException('Unable to sign document');
         }
 
+        /** @var string $actualDigest */
         $signatureValue->textContent = base64_encode($actualDigest);
 
         return $dom->saveXML() ?: throw new RuntimeException('Unable to serialize to XML');

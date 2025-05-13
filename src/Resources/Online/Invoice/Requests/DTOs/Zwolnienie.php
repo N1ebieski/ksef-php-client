@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
@@ -25,6 +26,7 @@ final readonly class Zwolnienie extends DTO implements DomSerializableInterface
         $zwolnienie = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zwolnienie');
         $dom->appendChild($zwolnienie);
 
+        /** @var DOMElement $p_19group */
         $p_19group = $this->p_19group->toDom()->documentElement;
 
         foreach ($p_19group->childNodes as $child) {

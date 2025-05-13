@@ -28,7 +28,6 @@ final class AuthorisationChallengeHandlerTest extends TestCase
         $this->assertInstanceOf(AuthorisationChallengeResponse::class, $response);
 
         $this->assertObjectHasProperty('timestamp', $response);
-        //@phpstan-ignore-next-line
         $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
 
         $this->assertObjectHasProperty('challenge', $response);

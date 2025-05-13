@@ -11,6 +11,9 @@ use SensitiveParameter;
 
 final readonly class Certificate extends ValueObject
 {
+    /**
+     * @param array{issuer: array<string, string>, serialNumberHex: string} $info
+     */
     public function __construct(
         #[SensitiveParameter]
         public string $raw,

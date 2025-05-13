@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
@@ -26,6 +27,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSeria
         $daneIdentyfikacyjne = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DaneIdentyfikacyjne');
         $dom->appendChild($daneIdentyfikacyjne);
 
+        /** @var DOMElement $nipGroup */
         $nipGroup = $this->idgroup->toDom()->documentElement;
 
         foreach ($nipGroup->childNodes as $child) {

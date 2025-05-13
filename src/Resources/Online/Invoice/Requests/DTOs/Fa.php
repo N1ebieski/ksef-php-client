@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FP;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodWaluty;
@@ -96,6 +97,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
 
         $fa->appendChild($p_2);
 
+        /** @var DOMElement $p_6group */
         $p_6group = $this->p_6group->toDom()->documentElement;
 
         foreach ($p_6group->childNodes as $child) {
@@ -103,6 +105,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
         }
 
         if ($this->p_13_1group !== null) {
+            /** @var DOMElement $p_13_1group */
             $p_13_1group = $this->p_13_1group->toDom()->documentElement;
 
             foreach ($p_13_1group->childNodes as $child) {
@@ -111,6 +114,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
         }
 
         if ($this->p_13_2group !== null) {
+            /** @var DOMElement $p_13_2group */
             $p_13_2group = $this->p_13_2group->toDom()->documentElement;
 
             foreach ($p_13_2group->childNodes as $child) {
@@ -119,6 +123,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
         }
 
         if ($this->p_13_3group !== null) {
+            /** @var DOMElement $p_13_3group */
             $p_13_3group = $this->p_13_3group->toDom()->documentElement;
 
             foreach ($p_13_3group->childNodes as $child) {
@@ -127,6 +132,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
         }
 
         if ($this->p_13_4group !== null) {
+            /** @var DOMElement $p_13_4group */
             $p_13_4group = $this->p_13_4group->toDom()->documentElement;
 
             foreach ($p_13_4group->childNodes as $child) {
@@ -135,6 +141,7 @@ final readonly class Fa extends DTO implements DomSerializableInterface
         }
 
         if ($this->p_13_5group !== null) {
+            /** @var DOMElement $p_13_5group */
             $p_13_5group = $this->p_13_5group->toDom()->documentElement;
 
             foreach ($p_13_5group->childNodes as $child) {

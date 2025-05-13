@@ -36,7 +36,7 @@ final readonly class BrakIDGroup extends DTO implements DomSerializableInterface
         $dom->appendChild($brakIdGroup);
 
         $brakId = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BrakID');
-        $brakId->appendChild($dom->createTextNode((string) $this->brakId));
+        $brakId->appendChild($dom->createTextNode((string) $this->brakId->value));
 
         $brakIdGroup->appendChild($brakId);
 

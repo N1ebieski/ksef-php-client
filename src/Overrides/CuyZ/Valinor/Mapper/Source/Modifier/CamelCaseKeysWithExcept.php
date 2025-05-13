@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Overrides\CuyZ\Valinor\Mapper\Source\Modifier;
 
-use function is_iterable;
 use IteratorAggregate;
-
 use Traversable;
+
+use function is_iterable;
 
 /**
  * @api

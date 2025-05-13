@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
@@ -39,10 +40,11 @@ final readonly class P_19Group extends DTO implements DomSerializableInterface
         $dom->appendChild($p_19group);
 
         $p_19 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_19');
-        $p_19->appendChild($dom->createTextNode((string) $this->p_19));
+        $p_19->appendChild($dom->createTextNode((string) $this->p_19->value));
 
         $p_19group->appendChild($p_19);
 
+        /** @var DOMElement $p_19abcgroup */
         $p_19abcgroup = $this->p_19abcgroup->toDom()->documentElement;
 
         foreach ($p_19abcgroup->childNodes as $child) {

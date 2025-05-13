@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
@@ -27,8 +28,8 @@ final readonly class P_PMarzyGroup extends DTO implements DomSerializableInterfa
      * @return void
      */
     public function __construct(
-        public P_PMarzy $p_pmarzy = P_PMarzy::Default,
-        public P_PMarzy_2Group | P_PMarzy_3_1Group | P_PMarzy_3_2Group | P_PMarzy_3_3Group $p_pmarzy_2_3group
+        public P_PMarzy_2Group | P_PMarzy_3_1Group | P_PMarzy_3_2Group | P_PMarzy_3_3Group $p_pmarzy_2_3group,
+        public P_PMarzy $p_pmarzy = P_PMarzy::Default
     ) {
     }
 
@@ -45,6 +46,7 @@ final readonly class P_PMarzyGroup extends DTO implements DomSerializableInterfa
 
         $p_pmarzygroup->appendChild($p_pmarzy);
 
+        /** @var DOMElement $p_pmarzy2_3group */
         $p_pmarzy2_3group = $this->p_pmarzy_2_3group->toDom()->documentElement;
 
         foreach ($p_pmarzy2_3group->childNodes as $child) {
