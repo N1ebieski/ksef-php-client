@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Klucz;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrWiersza;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Wartosc;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class DodatkowyOpis extends DTO implements DomSerializableInterface
@@ -29,20 +30,20 @@ final readonly class DodatkowyOpis extends DTO implements DomSerializableInterfa
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $dodatkowyOpis = $dom->createElement('DodatkowyOpis');
+        $dodatkowyOpis = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DodatkowyOpis');
         $dom->appendChild($dodatkowyOpis);
 
-        if ($this->nrWiersza instanceof NrWiersza) {
-            $nrWiersza = $dom->createElement('NrWiersza');
+        if ($this->nrWiersza !== null) {
+            $nrWiersza = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrWiersza');
             $nrWiersza->appendChild($dom->createTextNode((string) $this->nrWiersza));
             $dodatkowyOpis->appendChild($nrWiersza);
         }
 
-        $klucz = $dom->createElement('Klucz');
+        $klucz = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Klucz');
         $klucz->appendChild($dom->createTextNode((string) $this->klucz));
         $dodatkowyOpis->appendChild($klucz);
 
-        $wartosc = $dom->createElement('Wartosc');
+        $wartosc = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Wartosc');
         $wartosc->appendChild($dom->createTextNode((string) $this->wartosc));
         $dodatkowyOpis->appendChild($wartosc);
 

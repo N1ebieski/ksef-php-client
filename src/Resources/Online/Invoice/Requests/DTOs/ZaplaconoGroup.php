@@ -10,6 +10,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZamo
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZaplaty;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrZamowienia;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class ZaplaconoGroup extends DTO implements DomSerializableInterface
@@ -30,15 +31,15 @@ final readonly class ZaplaconoGroup extends DTO implements DomSerializableInterf
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $zaplaconoGroup = $dom->createElement('ZaplaconoGroup');
+        $zaplaconoGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'ZaplaconoGroup');
         $dom->appendChild($zaplaconoGroup);
 
-        $zaplacono = $dom->createElement('Zaplacono');
+        $zaplacono = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zaplacono');
         $zaplacono->appendChild($dom->createTextNode((string) $this->zaplacono->value));
 
         $zaplaconoGroup->appendChild($zaplacono);
 
-        $dataZaplaty = $dom->createElement('DataZaplaty');
+        $dataZaplaty = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataZaplaty');
         $dataZaplaty->appendChild($dom->createTextNode((string) $this->dataZaplaty));
 
         $zaplaconoGroup->appendChild($dataZaplaty);

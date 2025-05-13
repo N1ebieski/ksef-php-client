@@ -17,6 +17,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19B;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19C;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -36,10 +37,10 @@ final readonly class P_19CGroup extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_19cgroup = $dom->createElement('P_19CGroup');
+        $p_19cgroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_19CGroup');
         $dom->appendChild($p_19cgroup);
 
-        $p_19c = $dom->createElement('P_19C');
+        $p_19c = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_19C');
         $p_19c->appendChild($dom->createTextNode((string) $this->p_19c));
 
         $p_19cgroup->appendChild($p_19c);

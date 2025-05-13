@@ -13,6 +13,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrZamowi
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\OpisPlatnosci;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\PlatnoscInna;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class PlatnoscInnaGroup extends DTO implements DomSerializableInterface
@@ -33,15 +34,15 @@ final readonly class PlatnoscInnaGroup extends DTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $platnoscInnaGroup = $dom->createElement('PlatnoscInnaGroup');
+        $platnoscInnaGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PlatnoscInnaGroup');
         $dom->appendChild($platnoscInnaGroup);
 
-        $platnoscInna = $dom->createElement('PlatnoscInna');
+        $platnoscInna = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PlatnoscInna');
         $platnoscInna->appendChild($dom->createTextNode((string) $this->platnoscInna->value));
 
         $platnoscInnaGroup->appendChild($platnoscInna);
 
-        $opisPlatnosci = $dom->createElement('OpisPlatnosci');
+        $opisPlatnosci = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OpisPlatnosci');
         $opisPlatnosci->appendChild($dom->createTextNode((string) $this->opisPlatnosci));
 
         $platnoscInnaGroup->appendChild($opisPlatnosci);

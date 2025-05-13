@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrKlienta;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Podmiot2 extends DTO implements DomSerializableInterface
@@ -31,7 +32,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $podmiot2 = $dom->createElement('Podmiot2');
+        $podmiot2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Podmiot2');
         $dom->appendChild($podmiot2);
 
         $daneIdentyfikacyjne = $dom->importNode($this->daneIdentyfikacyjne->toDom()->documentElement, true);
@@ -50,7 +51,7 @@ final readonly class Podmiot2 extends DTO implements DomSerializableInterface
         }
 
         if ($this->nrKlienta !== null) {
-            $nrKlienta = $dom->createElement('NrKlienta');
+            $nrKlienta = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrKlienta');
             $nrKlienta->appendChild($dom->createTextNode((string) $this->nrKlienta));
             $podmiot2->appendChild($nrKlienta);
         }

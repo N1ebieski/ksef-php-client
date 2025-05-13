@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests;
 
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
 
 final class SendRequestFixture extends Fixture
@@ -40,11 +41,11 @@ final class SendRequestFixture extends Fixture
         ],
         'fa' => [
             'kod_waluty' => 'PLN',
-            'p_1' => '2025-05-08',
+            'p_1' => '2025-05-11',
             'p_1m' => 'Warszawa',
             'p_2' => '1/05/2025',
             'p_6group' => [
-                'p_6' => '2025-05-08'
+                'p_6' => '2025-05-11'
             ],
             'p_13_1group' => [
                 'p_13_1' => 1666.66,
@@ -96,4 +97,17 @@ final class SendRequestFixture extends Fixture
             ]
         ]
     ];
+
+    public function withTodayDate(): self
+    {
+        $todayDate = new DateTimeImmutable()->format('Y-m-d');
+
+        $this->data['fa']['p_1'] = $todayDate;
+
+        if (isset($this->data['fa']['p_6group']['p_6'])) {
+            $this->data['fa']['p_6group']['p_6'] = $todayDate;
+        }
+
+        return $this;
+    }
 }

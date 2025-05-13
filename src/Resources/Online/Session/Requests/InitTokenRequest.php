@@ -4,97 +4,104 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests;
 
+use DateTimeImmutable;
 use DOMDocument;
-use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\SystemCode;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Resources\Request;
-use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
+use N1ebieski\KSEFClient\ValueObjects\ApiToken;
+use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
 use SensitiveParameter;
 
-final readonly class InitTokenRequest extends Request implements XmlSerializableInterface
+final readonly class InitTokenRequest extends Request
 {
-    use HasToXml;
-
     public function __construct(
         #[SensitiveParameter]
-        public EncryptedToken $encryptedToken,
+        public ApiToken $apiToken,
         #[SensitiveParameter]
         public Challenge $challenge,
+        #[SensitiveParameter]
+        public DateTimeImmutable $timestamp,
+        public KSEFPublicKeyPath $publicKeyPath,
         public NIP $nip,
         public SystemCode $systemCode = SystemCode::Fa2
     ) {
     }
 
-    public function toDom(): DOMDocument
+    public function toXml(EncryptedToken $encryptedToken): string
+    {
+        return $this->toDom($encryptedToken)->saveXML() ?: throw new \RuntimeException(
+            'Unable to serialize to XML'
+        );
+    }
+
+    public function toDom(EncryptedToken $encryptedToken): DOMDocument
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $initSessionTokenRequest = $dom->createElement('InitSessionTokenRequest');
-        $initSessionTokenRequest->setAttribute('xmlns', 'http://ksef.mf.gov.pl/schema/gtw/svc/online/auth/request/2021/10/01/0001');
-        $initSessionTokenRequest->setAttribute('xmlns:request.auth', 'http://ksef.mf.gov.pl/schema/gtw/svc/online/auth/request/2021/10/01/0001');
-        $initSessionTokenRequest->setAttribute('xmlns:types', 'http://ksef.mf.gov.pl/schema/gtw/svc/types/2021/10/01/0001');
-        $initSessionTokenRequest->setAttribute('xmlns:online.types', 'http://ksef.mf.gov.pl/schema/gtw/svc/online/types/2021/10/01/0001');
-        $initSessionTokenRequest->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $initSessionTokenRequest = $dom->createElementNS((string) XmlNamespace::KsefOnlineAuthRequest->value, 'InitSessionTokenRequest');
+        $initSessionTokenRequest->setAttribute('xmlns:types', (string) XmlNamespace::KsefTypes->value);
+        $initSessionTokenRequest->setAttribute('xmlns:online.types', (string) XmlNamespace::KsefOnlineTypes->value);
+        $initSessionTokenRequest->setAttribute('xmlns:xsi', (string) XmlNamespace::Xsi->value);
 
         $dom->appendChild($initSessionTokenRequest);
 
-        $context = $dom->createElement('Context');
+        $context = $dom->createElementNS((string) XmlNamespace::KsefOnlineAuthRequest->value, 'Context');
         $initSessionTokenRequest->appendChild($context);
 
-        $challenge = $dom->createElement('online.types:Challenge');
+        $challenge = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:Challenge');
         $challenge->appendChild($dom->createTextNode((string) $this->challenge));
 
         $context->appendChild($challenge);
 
-        $identifier = $dom->createElement('online.types:Identifier');
+        $identifier = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:Identifier');
         $identifier->setAttribute('xsi:type', 'types:SubjectIdentifierByCompanyType');
 
         $context->appendChild($identifier);
 
-        $id = $dom->createElement('types:Identifier');
+        $id = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:Identifier');
         $id->appendChild($dom->createTextNode((string) $this->nip));
 
         $identifier->appendChild($id);
 
-        $documentType = $dom->createElement('online.types:DocumentType');
+        $documentType = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:DocumentType');
         $context->appendChild($documentType);
 
-        $service = $dom->createElement('types:Service');
+        $service = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:Service');
         $service->appendChild($dom->createTextNode('KSeF'));
 
         $documentType->appendChild($service);
 
-        $formCode = $dom->createElement('types:FormCode');
+        $formCode = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:FormCode');
         $documentType->appendChild($formCode);
 
-        $systemCode = $dom->createElement('types:SystemCode');
+        $systemCode = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:SystemCode');
         $systemCode->appendChild($dom->createTextNode((string) $this->systemCode->value));
 
         $formCode->appendChild($systemCode);
 
-        $schemaVersion = $dom->createElement('types:SchemaVersion');
+        $schemaVersion = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:SchemaVersion');
         $schemaVersion->appendChild($dom->createTextNode($this->systemCode->getSchemaVersion()));
 
         $formCode->appendChild($schemaVersion);
 
-        $targetNamespace = $dom->createElement('types:TargetNamespace');
+        $targetNamespace = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:TargetNamespace');
         $targetNamespace->appendChild($dom->createTextNode($this->systemCode->getTargetNamespace()));
 
         $formCode->appendChild($targetNamespace);
 
-        $value = $dom->createElement('types:Value');
+        $value = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:Value');
         $value->appendChild($dom->createTextNode('FA'));
 
         $formCode->appendChild($value);
 
-        $token = $dom->createElement('online.types:Token');
-        $token->appendChild($dom->createTextNode((string) $this->encryptedToken));
+        $token = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:Token');
+        $token->appendChild($dom->createTextNode((string) $encryptedToken));
 
         $context->appendChild($token);
 

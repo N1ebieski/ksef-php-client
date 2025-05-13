@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class PMarzy extends DTO implements DomSerializableInterface
@@ -21,7 +22,7 @@ final readonly class PMarzy extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $pmarzy = $dom->createElement('PMarzy');
+        $pmarzy = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PMarzy');
         $dom->appendChild($pmarzy);
 
         $p_pmarzygroup = $this->p_pmarzygroup->toDom()->documentElement;

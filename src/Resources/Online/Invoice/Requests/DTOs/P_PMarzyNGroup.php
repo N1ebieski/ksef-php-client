@@ -15,6 +15,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -34,10 +35,10 @@ final readonly class P_PMarzyNGroup extends DTO implements DomSerializableInterf
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzyngroup = $dom->createElement('P_PMarzyNGroup');
+        $p_pmarzyngroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzyNGroup');
         $dom->appendChild($p_pmarzyngroup);
 
-        $p_pmarzyn = $dom->createElement('P_PMarzyN');
+        $p_pmarzyn = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzyN');
         $p_pmarzyn->appendChild($dom->createTextNode((string) $this->p_pmarzyn->value));
 
         $p_pmarzyngroup->appendChild($p_pmarzyn);

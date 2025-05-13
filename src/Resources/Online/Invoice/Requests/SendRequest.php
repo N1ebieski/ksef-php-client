@@ -4,39 +4,16 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests;
 
-use DateTimeImmutable;
 use DOMDocument;
-use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Adres;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Fa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Naglowek;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Platnosc;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Podmiot2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\Stopka;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs\WarunkiTransakcji;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\AdresL2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FP;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrKlienta;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_4;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_5;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_7;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_1;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_2;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_3;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_4;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_19N;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_1M;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\SystemInfo;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Resources\Request;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
-use RuntimeException;
 
 final readonly class SendRequest extends Request implements XmlSerializableInterface
 {
@@ -63,10 +40,8 @@ final readonly class SendRequest extends Request implements XmlSerializableInter
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $faktura = $dom->createElement('Faktura');
-        $faktura->setAttribute('xmlns', 'http://crd.gov.pl/wzor/2023/06/29/12648/');
-        $faktura->setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
-        $faktura->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $faktura = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Faktura');
+        $faktura->setAttribute('xmlns:xsi', (string) XmlNamespace::Xsi->value);
 
         $dom->appendChild($faktura);
 

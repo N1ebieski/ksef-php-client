@@ -24,7 +24,7 @@ final readonly class DataWytworzeniaFa extends ValueObject implements ValueAware
 
     public function __toString(): string
     {
-        return $this->value->format('Y-m-d');
+        return $this->value->format('Y-m-d\TH:i:s\Z');
     }
 
     public static function from(string $value): self

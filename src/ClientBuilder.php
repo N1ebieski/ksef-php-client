@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient;
 
 use Http\Discovery\Psr18ClientDiscovery;
-use N1ebieski\KSEFClient\Actions\EncryptTokenAction;
-use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
-use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
+use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitSignedRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
-use N1ebieski\KSEFClient\Support\Evaluation\Evaluation;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
+use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
+use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
-use N1ebieski\KSEFClient\ValueObjects\PublicKeyPath;
 use Psr\Http\Client\ClientInterface;
 
 final class ClientBuilder
@@ -29,11 +30,15 @@ final class ClientBuilder
 
     private ApiUrl $apiUrl;
 
-    private ApiToken $apiToken;
+    private ?ApiToken $apiToken = null;
+
+    private ?CertificatePath $certificatePath = null;
 
     private NIP $nip;
 
-    private PublicKeyPath $publicKeyPath;
+    private KSEFPublicKeyPath $publicKeyPath;
+
+    private ?LogXmlPath $logXmlPath = null;
 
     public function __construct()
     {
@@ -75,7 +80,22 @@ final class ClientBuilder
             $apiToken = ApiToken::from($apiToken);
         }
 
+        $this->certificatePath = null;
+
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    public function withCertificatePath(CertificatePath | string $certificatePath, ?string $passphrase = null): self
+    {
+        if ($certificatePath instanceof CertificatePath === false) {
+            $certificatePath = CertificatePath::from($certificatePath, $passphrase);
+        }
+
+        $this->apiToken = null;
+
+        $this->certificatePath = $certificatePath;
 
         return $this;
     }
@@ -98,10 +118,10 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withPublicKeyPath(PublicKeyPath | string $publicKeyPath): self
+    public function withKSEFPublicKeyPath(KSEFPublicKeyPath | string $publicKeyPath): self
     {
-        if ($publicKeyPath instanceof PublicKeyPath === false) {
-            $publicKeyPath = PublicKeyPath::from($publicKeyPath);
+        if ($publicKeyPath instanceof KSEFPublicKeyPath === false) {
+            $publicKeyPath = KSEFPublicKeyPath::from($publicKeyPath);
         }
 
         $this->publicKeyPath = $publicKeyPath;
@@ -109,40 +129,63 @@ final class ClientBuilder
         return $this;
     }
 
+    public function withLogXmlPath(LogXmlPath | string $logXmlPath): self
+    {
+        if ($logXmlPath instanceof LogXmlPath === false) {
+            $logXmlPath = LogXmlPath::from($logXmlPath);
+        }
+
+        $this->logXmlPath = $logXmlPath;
+
+        return $this;
+    }
+
     public function build(): RootResource
     {
-        $config = new Config(new BaseUri($this->apiUrl->value));
-        $httpClient = new HttpClient(
-            client: $this->httpClient,
-            config: $config
+        $config = new Config(
+            logXmlPath: $this->logXmlPath
         );
 
-        $client = new RootResource($httpClient);
+        $httpClientConfig = new HttpClientConfig(new BaseUri($this->apiUrl->value));
+        $httpClient = new HttpClient(
+            client: $this->httpClient,
+            config: $httpClientConfig
+        );
+
+        $client = new RootResource($httpClient, $config);
 
         $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
             new AuthorisationChallengeRequest($this->nip)
         );
 
-        $encryptedToken = new EncryptTokenHandler()->handle(
-            new EncryptTokenAction(
-                apiToken: $this->apiToken,
-                timestamp: $authorisationChallengeResponse->timestamp,
-                publicKeyPath: $this->publicKeyPath
-            )
-        );
+        if ($this->apiToken !== null) {
+            $authorisationSessionResponse = $client->online()->session()->initToken(
+                new InitTokenRequest(
+                    apiToken: $this->apiToken,
+                    challenge: $authorisationChallengeResponse->challenge,
+                    timestamp: $authorisationChallengeResponse->timestamp,
+                    publicKeyPath: $this->publicKeyPath,
+                    nip: $this->nip
+                )
+            );
+        } else {
+            $authorisationSessionResponse = $client->online()->session()->initSigned(
+                new InitSignedRequest(
+                    certificatePath: $this->certificatePath,
+                    challenge: $authorisationChallengeResponse->challenge,
+                    timestamp: $authorisationChallengeResponse->timestamp,
+                    nip: $this->nip
+                )
+            );
+        }
 
-        $initTokenResponse = $client->online()->session()->initToken(
-            new InitTokenRequest(
-                encryptedToken: $encryptedToken,
-                challenge: $authorisationChallengeResponse->challenge,
-                nip: $this->nip
-            )
+        return new RootResource(
+            client: $httpClient->withConfig(
+                $httpClientConfig->withSessionToken(
+                    $authorisationSessionResponse->sessionToken->token
+                ),
+            ),
+            config: $config
         );
-
-        return new RootResource($httpClient->withConfig(
-            $config->withSessionToken(
-                $initTokenResponse->sessionToken->token
-            )
-        ));
     }
 }

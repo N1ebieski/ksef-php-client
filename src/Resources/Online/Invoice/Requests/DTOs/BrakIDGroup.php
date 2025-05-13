@@ -12,6 +12,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -31,10 +32,10 @@ final readonly class BrakIDGroup extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $brakIdGroup = $dom->createElement('BrakIDGroup');
+        $brakIdGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BrakIDGroup');
         $dom->appendChild($brakIdGroup);
 
-        $brakId = $dom->createElement('BrakID');
+        $brakId = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BrakID');
         $brakId->appendChild($dom->createTextNode((string) $this->brakId));
 
         $brakIdGroup->appendChild($brakId);

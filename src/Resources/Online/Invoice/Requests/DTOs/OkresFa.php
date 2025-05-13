@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_22N;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6_Do;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6_Od;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class OkresFa extends DTO implements DomSerializableInterface
@@ -29,15 +30,15 @@ final readonly class OkresFa extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $okresFa = $dom->createElement('OkresFa');
+        $okresFa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OkresFa');
         $dom->appendChild($okresFa);
 
-        $p6Od = $dom->createElement('P_6_Od');
+        $p6Od = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_6_Od');
         $p6Od->appendChild($dom->createTextNode((string) $this->p_6_od));
 
         $okresFa->appendChild($p6Od);
 
-        $p6Do = $dom->createElement('P_6_Do');
+        $p6Do = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_6_Do');
         $p6Do->appendChild($dom->createTextNode((string) $this->p_6_do));
 
         $okresFa->appendChild($p6Do);

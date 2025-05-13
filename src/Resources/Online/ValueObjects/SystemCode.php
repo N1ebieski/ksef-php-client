@@ -24,7 +24,7 @@ enum SystemCode: string implements EnumInterface
     {
         return match ($this) {
             self::Fa1 => 'http://crd.gov.pl/wzor/2021/11/29/11089/',
-            self::Fa2 => 'http://crd.gov.pl/wzor/2021/11/29/11089/',
+            self::Fa2 => 'http://crd.gov.pl/wzor/2023/06/29/12648/',
         };
     }
 

@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -30,15 +31,15 @@ final readonly class UEGroup extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $ueGroup = $dom->createElement('UEGroup');
+        $ueGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'UEGroup');
         $dom->appendChild($ueGroup);
 
-        $kodUe = $dom->createElement('KodUE');
+        $kodUe = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodUE');
         $kodUe->appendChild($dom->createTextNode((string) $this->kodUe));
 
         $ueGroup->appendChild($kodUe);
 
-        $nrVatUe = $dom->createElement('nrVatUe');
+        $nrVatUe = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'nrVatUe');
         $nrVatUe->appendChild($dom->createTextNode((string) $this->nrVatUe));
 
         $ueGroup->appendChild($nrVatUe);

@@ -6,10 +6,9 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\BrakID;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
 
 final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSerializableInterface
 {
@@ -24,7 +23,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSeria
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
+        $daneIdentyfikacyjne = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DaneIdentyfikacyjne');
         $dom->appendChild($daneIdentyfikacyjne);
 
         $nipGroup = $this->idgroup->toDom()->documentElement;
@@ -33,7 +32,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends DTO implements DomSeria
             $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));
         }
 
-        $nazwa = $dom->createElement('Nazwa');
+        $nazwa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Nazwa');
         $nazwa->appendChild($dom->createTextNode((string) $this->nazwa));
 
         $daneIdentyfikacyjne->appendChild($nazwa);

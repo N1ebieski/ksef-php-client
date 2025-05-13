@@ -13,7 +13,7 @@ final readonly class NipRule extends Rule
     {
         if (preg_match('/^\d{10}$/', $value) === false) {
             throw new InvalidArgumentException(
-                $this->getMessage('Invalid NIP number format. It should be 10 digits.')
+                $this->getMessage('Invalid NIP number format. It should be 10 digits.', $attribute)
             );
         }
 
@@ -31,7 +31,7 @@ final readonly class NipRule extends Rule
 
         if ($checksum === 1 || $digits[9] !== $checksum) {
             throw new InvalidArgumentException(
-                $this->getMessage('Invalid NIP number checksum.')
+                $this->getMessage('Invalid NIP number checksum.', $attribute)
             );
         }
     }

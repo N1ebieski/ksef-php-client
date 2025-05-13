@@ -13,12 +13,6 @@ trait HasToXml
 {
     public function toXml(): string
     {
-        $dto = $this->toDom()->saveXML();
-
-        if ($dto === false) {
-            throw new \RuntimeException('Unable to serialize to XML');
-        }
-
-        return $dto;
+        return $this->toDom()->saveXML() ?: throw new \RuntimeException('Unable to serialize to XML');
     }
 }

@@ -27,7 +27,9 @@
         "psr/http-client-implementation": "^1.0.1",
         "psr/http-factory-implementation": "*",
         "psr/http-message": "^1.1.0|^2.0.0",
-        "cuyz/valinor": "^1.15"
+        "cuyz/valinor": "^1.15",
+        "symfony/uid": "^7.0",
+        "krowinski/bcmath-extended": "^6.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.75",
@@ -42,7 +44,7 @@
         "allow-plugins": {
             "php-http/discovery": false
         }
-    },
+    },  
     "scripts": {
         "phpstan": [
             "Composer\\Config::disableProcessTimeout",
@@ -63,6 +65,6 @@
         "phpunit": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpunit > var/logs/phpunit.log"
-        ]        
+        ]
     }
 }

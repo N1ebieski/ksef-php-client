@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class WarunkiTransakcji extends DTO implements DomSerializableInterface
@@ -24,7 +25,7 @@ final readonly class WarunkiTransakcji extends DTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $warunkiTransakcji = $dom->createElement('WarunkiTransakcji');
+        $warunkiTransakcji = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'WarunkiTransakcji');
         $dom->appendChild($warunkiTransakcji);
 
         foreach ($this->zamowienia as $zamowienie) {

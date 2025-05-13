@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -26,10 +27,10 @@ final readonly class NIPGroup extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $nipGroup = $dom->createElement('NIPGroup');
+        $nipGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NIPGroup');
         $dom->appendChild($nipGroup);
 
-        $nip = $dom->createElement('NIP');
+        $nip = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NIP');
         $nip->appendChild($dom->createTextNode((string) $this->nip));
 
         $nipGroup->appendChild($nip);

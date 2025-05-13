@@ -20,6 +20,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzy
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzy_3_2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzy_3_3;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -39,10 +40,10 @@ final readonly class P_PMarzy_3_3Group extends DTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzy_3_3group = $dom->createElement('P_PMarzy_3_3Group');
+        $p_pmarzy_3_3group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_3_3Group');
         $dom->appendChild($p_pmarzy_3_3group);
 
-        $p_pmarzy_3_3 = $dom->createElement('P_PMarzy_3_3');
+        $p_pmarzy_3_3 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_3_3');
         $p_pmarzy_3_3->appendChild($dom->createTextNode((string) $this->p_pmarzy_3_3->value));
 
         $p_pmarzy_3_3group->appendChild($p_pmarzy_3_3);

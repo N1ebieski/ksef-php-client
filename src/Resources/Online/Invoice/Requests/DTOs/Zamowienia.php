@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZamowienia;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrZamowienia;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Zamowienia extends DTO implements DomSerializableInterface
@@ -23,18 +24,18 @@ final readonly class Zamowienia extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $zamowienia = $dom->createElement('Zamowienia');
+        $zamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zamowienia');
         $dom->appendChild($zamowienia);
 
         if ($this->dataZamowienia !== null) {
-            $dataZamowienia = $dom->createElement('DataZamowienia');
+            $dataZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataZamowienia');
             $dataZamowienia->appendChild($dom->createTextNode((string) $this->dataZamowienia));
 
             $zamowienia->appendChild($dataZamowienia);
         }
 
         if ($this->nrZamowienia !== null) {
-            $nrZamowienia = $dom->createElement('NrZamowienia');
+            $nrZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrZamowienia');
             $nrZamowienia->appendChild($dom->createTextNode((string) $this->nrZamowienia));
 
             $zamowienia->appendChild($nrZamowienia);

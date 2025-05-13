@@ -17,6 +17,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzy;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzy_2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_PMarzyN;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -36,10 +37,10 @@ final readonly class P_PMarzy_2Group extends DTO implements DomSerializableInter
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzy_2group = $dom->createElement('P_PMarzy_2Group');
+        $p_pmarzy_2group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_2Group');
         $dom->appendChild($p_pmarzy_2group);
 
-        $p_pmarzy_2 = $dom->createElement('P_PMarzy_2');
+        $p_pmarzy_2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_2');
         $p_pmarzy_2->appendChild($dom->createTextNode((string) $this->p_pmarzy_2->value));
 
         $p_pmarzy_2group->appendChild($p_pmarzy_2);

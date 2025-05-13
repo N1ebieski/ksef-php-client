@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\DataZapl
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\FormaPlatnosci;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrZamowienia;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Zaplacono;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class FormaPlatnosciGroup extends DTO implements DomSerializableInterface
@@ -25,10 +26,10 @@ final readonly class FormaPlatnosciGroup extends DTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $formaPlatnosciGroup = $dom->createElement('FormaPlatnosciGroup');
+        $formaPlatnosciGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FormaPlatnosciGroup');
         $dom->appendChild($formaPlatnosciGroup);
 
-        $formaPlatnosci = $dom->createElement('FormaPlatnosci');
+        $formaPlatnosci = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FormaPlatnosci');
         $formaPlatnosci->appendChild($dom->createTextNode((string) $this->formaPlatnosci->value));
 
         $formaPlatnosciGroup->appendChild($formaPlatnosci);

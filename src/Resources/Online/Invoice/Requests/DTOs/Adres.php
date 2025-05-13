@@ -9,6 +9,7 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\AdresL1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\AdresL2;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodKraju;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 
 final readonly class Adres extends DTO implements DomSerializableInterface
@@ -25,21 +26,21 @@ final readonly class Adres extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $adres = $dom->createElement('Adres');
+        $adres = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Adres');
         $dom->appendChild($adres);
 
-        $kodKraju = $dom->createElement('KodKraju');
+        $kodKraju = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodKraju');
         $kodKraju->appendChild($dom->createTextNode((string) $this->kodKraju));
 
         $adres->appendChild($kodKraju);
 
-        $adresL1 = $dom->createElement('AdresL1');
+        $adresL1 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'AdresL1');
         $adresL1->appendChild($dom->createTextNode((string) $this->adresL1));
 
         $adres->appendChild($adresL1);
 
         if ($this->adresL2 !== null) {
-            $adresL2 = $dom->createElement('AdresL2');
+            $adresL2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'AdresL2');
             $adresL2->appendChild($dom->createTextNode((string) $this->adresL2));
             $adres->appendChild($adresL2);
         }

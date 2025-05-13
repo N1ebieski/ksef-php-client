@@ -14,6 +14,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_13_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_14_1;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -35,15 +36,15 @@ final readonly class P_13_1Group extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_13_1group = $dom->createElement('P_13_1Group');
+        $p_13_1group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_1Group');
         $dom->appendChild($p_13_1group);
 
-        $p_13_1 = $dom->createElement('P_13_1');
+        $p_13_1 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_1');
         $p_13_1->appendChild($dom->createTextNode((string) $this->p_13_1));
 
         $p_13_1group->appendChild($p_13_1);
 
-        $p_14_1 = $dom->createElement('P_14_1');
+        $p_14_1 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_14_1');
         $p_14_1->appendChild($dom->createTextNode((string) $this->p_14_1));
 
         $p_13_1group->appendChild($p_14_1);

@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Actions;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Actions\Action;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
-use N1ebieski\KSEFClient\ValueObjects\PublicKeyPath;
+use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use SensitiveParameter;
 
 final readonly class EncryptTokenAction extends Action
@@ -17,7 +17,7 @@ final readonly class EncryptTokenAction extends Action
         public ApiToken $apiToken,
         #[SensitiveParameter]
         public DateTimeImmutable $timestamp,
-        public PublicKeyPath $publicKeyPath,
+        public KSEFPublicKeyPath $publicKeyPath,
     ) {
     }
 }

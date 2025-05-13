@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -32,15 +33,15 @@ final readonly class KrajGroup extends DTO implements DomSerializableInterface
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $krajGroup = $dom->createElement('KrajGroup');
+        $krajGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KrajGroup');
         $dom->appendChild($krajGroup);
 
-        $nrId = $dom->createElement('NrID');
+        $nrId = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrID');
         $nrId->appendChild($dom->createTextNode((string) $this->nrId));
         $krajGroup->appendChild($nrId);
 
         if ($this->kodKraju !== null) {
-            $kodKraju = $dom->createElement('KodKraju');
+            $kodKraju = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodKraju');
             $kodKraju->appendChild($dom->createTextNode((string) $this->kodKraju));
             $krajGroup->appendChild($kodKraju);
         }

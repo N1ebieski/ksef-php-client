@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Handlers;
 
+use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
+use N1ebieski\KSEFClient\Actions\LogXmlAction;
+use N1ebieski\KSEFClient\Actions\ValueObjects\LogXmlFilename;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
@@ -16,6 +20,8 @@ final readonly class SendHandler extends Handler
 {
     public function __construct(
         private HttpClientInterface $client,
+        private LogXmlHandler $logXml,
+        private Config $config
     ) {
     }
 
@@ -26,6 +32,15 @@ final readonly class SendHandler extends Handler
         $hashSHA = base64_encode(hash('sha256', $xml, true));
         $invoiceBody = base64_encode($xml);
         $fileSize = strlen($xml);
+
+        if ($this->config->logXmlPath !== null) {
+            $this->logXml->handle(
+                new LogXmlAction(
+                    logXmlFilename: LogXmlFilename::from('send-invoice.xml'),
+                    document: $xml
+                )
+            );
+        }
 
         $response = $this->client->sendRequest(new Request(
             method: Method::Put,

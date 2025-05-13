@@ -12,6 +12,7 @@ use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrID;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\NrVatUE;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects\P_6;
+use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\DTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
@@ -31,7 +32,7 @@ final readonly class OkresFaGroup extends DTO implements DomSerializableInterfac
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $okresFaGroup = $dom->createElement('OkresFaGroup');
+        $okresFaGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OkresFaGroup');
         $dom->appendChild($okresFaGroup);
 
         $okresFa = $dom->importNode($this->okresFa->toDom()->documentElement, true);
