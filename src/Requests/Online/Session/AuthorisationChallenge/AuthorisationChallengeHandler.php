@@ -19,7 +19,7 @@ final readonly class AuthorisationChallengeHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(AuthorisationChallengeRequest $dto): AuthorisationChallengeResponse
+    public function handle(AuthorisationChallengeRequest $request): AuthorisationChallengeResponse
     {
         $response = $this->client->sendRequest(new Request(
             method: Method::Post,
@@ -27,7 +27,7 @@ final readonly class AuthorisationChallengeHandler extends AbstractHandler
             data: [
                 'contextIdentifier' => [
                     'type' => 'onip',
-                    'identifier' => $dto->nip->value
+                    'identifier' => $request->nip->value
                 ]
             ]
         ));

@@ -31,32 +31,32 @@ final readonly class SessionResource extends AbstractResource implements Session
     ) {
     }
 
-    public function authorisationChallenge(AuthorisationChallengeRequest | array $dto): AuthorisationChallengeResponse
+    public function authorisationChallenge(AuthorisationChallengeRequest | array $request): AuthorisationChallengeResponse
     {
-        if ($dto instanceof AuthorisationChallengeRequest == false) {
-            $dto = AuthorisationChallengeRequest::from($dto);
+        if ($request instanceof AuthorisationChallengeRequest == false) {
+            $request = AuthorisationChallengeRequest::from($request);
         }
 
-        return new AuthorisationChallengeHandler($this->client)->handle($dto);
+        return new AuthorisationChallengeHandler($this->client)->handle($request);
     }
 
-    public function initToken(InitTokenRequest | array $dto): InitTokenResponse
+    public function initToken(InitTokenRequest | array $request): InitTokenResponse
     {
-        if ($dto instanceof InitTokenRequest == false) {
-            $dto = InitTokenRequest::from($dto);
+        if ($request instanceof InitTokenRequest == false) {
+            $request = InitTokenRequest::from($request);
         }
 
         return new InitTokenHandler(
             client: $this->client,
             logXml: new LogXmlHandler($this->config),
             config: $this->config
-        )->handle($dto);
+        )->handle($request);
     }
 
-    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $dto): InitSignedResponse
+    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse
     {
-        if (is_array($dto)) {
-            $dto = InitSignedRequest::from($dto);
+        if (is_array($request)) {
+            $request = InitSignedRequest::from($request);
         }
 
         return new InitSignedHandler(
@@ -64,7 +64,7 @@ final readonly class SessionResource extends AbstractResource implements Session
             signDocument: new SignDocumentHandler(),
             logXml: new LogXmlHandler($this->config),
             config: $this->config
-        )->handle($dto);
+        )->handle($request);
     }
 
     public function terminate(): ResponseInterface

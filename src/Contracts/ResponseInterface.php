@@ -14,4 +14,8 @@ interface ResponseInterface
      * @return array<string, mixed>
      */
     public function json(): array;
+
+    public function object(): object;
+
+    public function body(): string;
 }

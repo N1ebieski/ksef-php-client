@@ -16,19 +16,19 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 interface SessionResourceInterface
 {
     /**
-     * @param AuthorisationChallengeRequest|array<string, mixed> $dto
+     * @param AuthorisationChallengeRequest|array<string, mixed> $request
      */
-    public function authorisationChallenge(AuthorisationChallengeRequest | array $dto): AuthorisationChallengeResponse;
+    public function authorisationChallenge(AuthorisationChallengeRequest | array $request): AuthorisationChallengeResponse;
 
     /**
-     * @param InitTokenRequest|array<string, mixed> $dto
+     * @param InitTokenRequest|array<string, mixed> $request
      */
-    public function initToken(InitTokenRequest | array $dto): InitTokenResponse;
+    public function initToken(InitTokenRequest | array $request): InitTokenResponse;
 
     /**
-     * @param InitSignedRequest|InitSignedXmlRequest|array<string, mixed> $dto
+     * @param InitSignedRequest|InitSignedXmlRequest|array<string, mixed> $request
      */
-    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $dto): InitSignedResponse;
+    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse;
 
     public function terminate(): ResponseInterface;
 }

@@ -28,15 +28,15 @@ final readonly class InitTokenHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(InitTokenRequest $dto): InitTokenResponse
+    public function handle(InitTokenRequest $request): InitTokenResponse
     {
         $encryptedToken = EncryptedTokenFactory::make(
-            apiToken: $dto->apiToken,
-            timestamp: $dto->timestamp,
-            publicKeyPath: $dto->publicKeyPath
+            apiToken: $request->apiToken,
+            timestamp: $request->timestamp,
+            publicKeyPath: $request->publicKeyPath
         );
 
-        $xml = $dto->toXml($encryptedToken);
+        $xml = $request->toXml($encryptedToken);
 
         if ($this->config->logXmlPath instanceof LogXmlPath) {
             $this->logXml->handle(

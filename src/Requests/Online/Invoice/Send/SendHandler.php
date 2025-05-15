@@ -26,9 +26,9 @@ final readonly class SendHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(SendRequest $dto): SendResponse
+    public function handle(SendRequest $request): SendResponse
     {
-        $xml = $dto->toXml();
+        $xml = $request->toXml();
 
         $hashSHA = base64_encode(hash('sha256', $xml, true));
         $invoiceBody = base64_encode($xml);

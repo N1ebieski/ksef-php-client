@@ -8,12 +8,15 @@ use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice\InvoiceResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetHandler;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendHandler;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusHandler;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
 final readonly class InvoiceResource extends AbstractResource implements InvoiceResourceInterface
@@ -24,25 +27,34 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
     ) {
     }
 
-    public function send(SendRequest | array $dto): SendResponse
+    public function send(SendRequest | array $request): SendResponse
     {
-        if ($dto instanceof SendRequest == false) {
-            $dto = SendRequest::from($dto);
+        if ($request instanceof SendRequest == false) {
+            $request = SendRequest::from($request);
         }
 
         return new SendHandler(
             client: $this->client,
             logXml: new LogXmlHandler($this->config),
             config: $this->config
-        )->handle($dto);
+        )->handle($request);
     }
 
-    public function status(StatusRequest | array $dto): StatusResponse
+    public function status(StatusRequest | array $request): StatusResponse
     {
-        if ($dto instanceof StatusRequest == false) {
-            $dto = StatusRequest::from($dto);
+        if ($request instanceof StatusRequest == false) {
+            $request = StatusRequest::from($request);
         }
 
-        return new StatusHandler($this->client)->handle($dto);
+        return new StatusHandler($this->client)->handle($request);
+    }
+
+    public function get(GetRequest | array $request): GetResponse
+    {
+        if ($request instanceof GetRequest == false) {
+            $request = GetRequest::from($request);
+        }
+
+        return new GetHandler($this->client)->handle($request);
     }
 }
