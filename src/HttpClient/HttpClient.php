@@ -30,7 +30,7 @@ final readonly class HttpClient implements HttpClientInterface
     {
         $psr17Factory = new Psr17Factory();
 
-        $uri = $request->uri->withBaseUrl($this->config->baseUri);
+        $uri = $request->uri->withBaseUrl($this->config->baseUri)->withoutSlashAtEnd();
 
         if ($request->method->isEquals(Method::Get) && is_array($request->data)) {
             $uri = $uri->withParameters($request->data);

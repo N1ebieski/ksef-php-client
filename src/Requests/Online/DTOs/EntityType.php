@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects;
+namespace N1ebieski\KSEFClient\Requests\Online\DTOs;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use Stringable;
 
-final readonly class InvoiceNumber extends AbstractValueObject implements ValueAwareInterface, Stringable
+final readonly class EntityType extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
-    public function __construct(public string $value)
-    {
+    public function __construct(
+        public string $value
+    ) {
     }
 
     public function __toString(): string
@@ -19,7 +20,7 @@ final readonly class InvoiceNumber extends AbstractValueObject implements ValueA
         return $this->value;
     }
 
-    public static function from(string $value): self
+    public function from(string $value): self
     {
         return new self($value);
     }

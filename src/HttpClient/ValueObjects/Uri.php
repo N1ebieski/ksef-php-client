@@ -30,6 +30,8 @@ final readonly class Uri extends AbstractValueObject implements ValueAwareInterf
      */
     public function withParameters(array $parameters): self
     {
+        $parameters = array_filter($parameters);
+
         return $parameters === [] ? $this : new self($this->value . '?' . http_build_query($parameters));
     }
 
@@ -41,7 +43,12 @@ final readonly class Uri extends AbstractValueObject implements ValueAwareInterf
 
     public function withoutSlashAtStart(): self
     {
-        return str_starts_with($this->value, '/') ? new self(substr($this->value, 0, -1)) : $this;
+        return str_starts_with($this->value, '/') ? new self(ltrim($this->value, '/')) : $this;
+    }
+
+    public function withoutSlashAtEnd(): self
+    {
+        return str_ends_with($this->value, '/') ? new self(rtrim($this->value, '/')) : $this;
     }
 
     private function isUrl(): bool

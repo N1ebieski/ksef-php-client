@@ -12,6 +12,8 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 
 interface SessionResourceInterface
 {
@@ -29,6 +31,8 @@ interface SessionResourceInterface
      * @param InitSignedRequest|InitSignedXmlRequest|array<string, mixed> $request
      */
     public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse;
+
+    public function status(StatusRequest | array $request = new StatusRequest()): StatusResponse;
 
     public function terminate(): ResponseInterface;
 }

@@ -20,6 +20,9 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
@@ -65,6 +68,15 @@ final readonly class SessionResource extends AbstractResource implements Session
             logXml: new LogXmlHandler($this->config),
             config: $this->config
         )->handle($request);
+    }
+
+    public function status(StatusRequest | array $request = new StatusRequest()): StatusResponse
+    {
+        if (is_array($request)) {
+            $request = StatusRequest::from($request);
+        }
+
+        return new StatusHandler($this->client)->handle($request);
     }
 
     public function terminate(): ResponseInterface

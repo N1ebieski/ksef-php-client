@@ -30,7 +30,7 @@ final readonly class LogXmlFilename extends AbstractValueObject implements Value
 
     public function withoutSlashAtStart(): self
     {
-        return str_starts_with($this->value, '/') ? new self(substr($this->value, 0, -1)) : $this;
+        return str_starts_with($this->value, '/') ? new self(ltrim($this->value, '/')) : $this;
     }
 
     public static function from(string $value): self

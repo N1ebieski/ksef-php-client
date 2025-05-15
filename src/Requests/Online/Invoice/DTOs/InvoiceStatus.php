@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DateTimeImmutable;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\InvoiceNumber;
+use N1ebieski\KSEFClient\Requests\Online\ValueObjects\InvoiceNumber;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KsefReferenceNumber;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
