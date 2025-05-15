@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice;
 
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\SendResponse;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\StatusResponse;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\SendRequest;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
 
 interface InvoiceResourceInterface
 {

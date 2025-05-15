@@ -8,15 +8,15 @@ use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice\InvoiceResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Handlers\SendHandler;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Handlers\StatusHandler;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\SendResponse;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\StatusResponse;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\SendRequest;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\StatusRequest;
-use N1ebieski\KSEFClient\Resources\Resource;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendHandler;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusHandler;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
+use N1ebieski\KSEFClient\Resources\AbstractResource;
 
-final readonly class InvoiceResource extends Resource implements InvoiceResourceInterface
+final readonly class InvoiceResource extends AbstractResource implements InvoiceResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,

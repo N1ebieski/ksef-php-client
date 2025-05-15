@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Contracts\Resources\Online\Session;
 
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitSignedRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitSignedResponse;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitTokenResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 
 interface SessionResourceInterface
 {

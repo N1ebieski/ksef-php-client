@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Factories;
 
 use DateTimeImmutable;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects\EncryptedToken;
+use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use RuntimeException;

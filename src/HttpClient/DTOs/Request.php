@@ -7,9 +7,9 @@ namespace N1ebieski\KSEFClient\HttpClient\DTOs;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
-use N1ebieski\KSEFClient\Support\DTO;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final readonly class Request extends DTO
+final readonly class Request extends AbstractDTO
 {
     /**
      * @param array<int, Header> $headers

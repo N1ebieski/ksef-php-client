@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Tests\Resources\Online\Invoice\Requests\Handlers;
 
 use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\SendResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
 use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\Responses\SendResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\SendRequestFixture;

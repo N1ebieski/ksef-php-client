@@ -6,10 +6,10 @@ namespace N1ebieski\KSEFClient\HttpClient\DTOs;
 
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
-use N1ebieski\KSEFClient\Support\DTO;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
 use SensitiveParameter;
 
-final readonly class Config extends DTO
+final readonly class Config extends AbstractDTO
 {
     public function __construct(
         public BaseUri $baseUri,

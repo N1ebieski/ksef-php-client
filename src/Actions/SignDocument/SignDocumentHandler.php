@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use DOMDocument;
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
-use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
+use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\Str;
 use RuntimeException;
 

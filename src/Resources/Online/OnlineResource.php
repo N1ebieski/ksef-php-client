@@ -11,9 +11,9 @@ use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInter
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\InvoiceResource;
 use N1ebieski\KSEFClient\Resources\Online\Session\SessionResource;
-use N1ebieski\KSEFClient\Resources\Resource;
+use N1ebieski\KSEFClient\Resources\AbstractResource;
 
-final readonly class OnlineResource extends Resource implements OnlineResourceInterface
+final readonly class OnlineResource extends AbstractResource implements OnlineResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,

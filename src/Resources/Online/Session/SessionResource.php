@@ -11,19 +11,19 @@ use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\AuthorisationChallengeHandler;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\InitSignedHandler;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\InitTokenHandler;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers\TerminateHandler;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitSignedRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponse;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitSignedResponse;
-use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitTokenResponse;
-use N1ebieski\KSEFClient\Resources\Resource;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+use N1ebieski\KSEFClient\Resources\AbstractResource;
 
-final readonly class SessionResource extends Resource implements SessionResourceInterface
+final readonly class SessionResource extends AbstractResource implements SessionResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,

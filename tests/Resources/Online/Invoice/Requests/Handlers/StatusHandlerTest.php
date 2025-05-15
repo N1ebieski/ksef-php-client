@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Resources\Online\Invoice\Requests\Handlers;
 
-use N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Responses\StatusResponse;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
 use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\Responses\StatusResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\StatusRequestFixture;
