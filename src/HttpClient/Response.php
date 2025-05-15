@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient;
 
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
+use N1ebieski\KSEFClient\HttpClient\Factories\ExceptionFactory;
 use Psr\Http\Message\ResponseInterface as BaseResponseInterface;
-use Throwable;
 
 final readonly class Response implements ResponseInterface
 {
@@ -18,26 +18,13 @@ final readonly class Response implements ResponseInterface
 
     private function throwExceptionIfError(): void
     {
-        $error = ErrorMap::tryFrom($this->baseResponse->getStatusCode());
+        $statusCode = $this->baseResponse->getStatusCode();
 
-        if ($error === null) {
+        if ($statusCode < 400) {
             return;
         }
 
-        /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $exceptionResponse */
-        $exceptionResponse = $this->object();
-        $exceptions = $exceptionResponse->exception->exceptionDetailList;
-
-        $firstException = $exceptions[0] ?? null;
-
-        /** @var class-string<Throwable> $exceptionNamespace */
-        $exceptionNamespace = $error->getExceptionNamespace();
-
-        throw new $exceptionNamespace(
-            message: $firstException->exceptionDescription ?? '',
-            code: $firstException->exceptionCode ?? 0,
-            context: $exceptionResponse
-        );
+        throw ExceptionFactory::make($statusCode, $this->object());
     }
 
     public function object(): object

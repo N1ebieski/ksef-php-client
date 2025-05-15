@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\Handlers;
 
 use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
-use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
-use N1ebieski\KSEFClient\Actions\LogXmlAction;
-use N1ebieski\KSEFClient\Actions\ValueObjects\LogXmlFilename;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
+use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;

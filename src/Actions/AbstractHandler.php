@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Actions;
 
-abstract readonly class Handler
+abstract readonly class AbstractHandler
 {
 }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions;
+namespace N1ebieski\KSEFClient\Actions\SignDocument;
 
-use N1ebieski\KSEFClient\Actions\Action;
-use N1ebieski\KSEFClient\Actions\ValueObjects\Certificate;
+use N1ebieski\KSEFClient\Actions\AbstractAction;
+use N1ebieski\KSEFClient\ValueObjects\Certificate;
 use SensitiveParameter;
 
-final readonly class SignDocumentAction extends Action
+final readonly class SignDocumentAction extends AbstractAction
 {
     public function __construct(
         #[SensitiveParameter]

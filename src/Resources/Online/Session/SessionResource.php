@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session;
 
 use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
-use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
-use N1ebieski\KSEFClient\Actions\Handlers\SignDocumentHandler;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
+use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
@@ -48,7 +48,6 @@ final readonly class SessionResource extends Resource implements SessionResource
 
         return new InitTokenHandler(
             client: $this->client,
-            encryptToken: new EncryptTokenHandler(),
             logXml: new LogXmlHandler($this->config),
             config: $this->config
         )->handle($dto);

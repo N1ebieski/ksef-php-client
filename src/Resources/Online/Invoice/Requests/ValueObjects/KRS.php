@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class KRS extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class KRS extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 

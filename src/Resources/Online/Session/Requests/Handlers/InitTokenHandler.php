@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests\Handlers;
 
-use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
-use N1ebieski\KSEFClient\Actions\EncryptTokenAction;
-use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
-use N1ebieski\KSEFClient\Actions\Handlers\LogXmlHandler;
-use N1ebieski\KSEFClient\Actions\LogXmlAction;
-use N1ebieski\KSEFClient\Actions\ValueObjects\LogXmlFilename;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
+use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Factories\EncryptedTokenFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
@@ -19,12 +17,12 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Resources\Handler;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\Online\Session\Requests\Responses\InitTokenResponse;
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 
 final readonly class InitTokenHandler extends Handler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private EncryptTokenHandler $encryptToken,
         private LogXmlHandler $logXml,
         private Config $config
     ) {
@@ -32,12 +30,10 @@ final readonly class InitTokenHandler extends Handler
 
     public function handle(InitTokenRequest $dto): InitTokenResponse
     {
-        $encryptedToken = $this->encryptToken->handle(
-            new EncryptTokenAction(
-                apiToken: $dto->apiToken,
-                timestamp: $dto->timestamp,
-                publicKeyPath: $dto->publicKeyPath
-            )
+        $encryptedToken = EncryptedTokenFactory::make(
+            apiToken: $dto->apiToken,
+            timestamp: $dto->timestamp,
+            publicKeyPath: $dto->publicKeyPath
         );
 
         $xml = $dto->toXml($encryptedToken);

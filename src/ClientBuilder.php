@@ -108,7 +108,7 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withNip(NIP | string $nip): self
+    public function withNIP(NIP | string $nip): self
     {
         if ($nip instanceof NIP === false) {
             $nip = NIP::from($nip);

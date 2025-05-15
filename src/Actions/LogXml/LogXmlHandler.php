@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions\Handlers;
+namespace N1ebieski\KSEFClient\Actions\LogXml;
 
-use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
-use N1ebieski\KSEFClient\Actions\Handler;
-use N1ebieski\KSEFClient\Actions\LogXmlAction;
+use N1ebieski\KSEFClient\Actions\AbstractHandler;
+use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use RuntimeException;
 
-final readonly class LogXmlHandler extends Handler
+final readonly class LogXmlHandler extends AbstractHandler
 {
     public function __construct(
         private Config $config
@@ -19,7 +19,7 @@ final readonly class LogXmlHandler extends Handler
 
     public function handle(LogXmlAction $action): void
     {
-        if (!$this->config->logXmlPath instanceof LogXmlPath) {
+        if ( ! $this->config->logXmlPath instanceof LogXmlPath) {
             return;
         }
 

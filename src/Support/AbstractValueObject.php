@@ -6,6 +6,6 @@ namespace N1ebieski\KSEFClient\Support;
 
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 
-abstract readonly class ValueObject implements FromInterface
+abstract readonly class AbstractValueObject implements FromInterface
 {
 }

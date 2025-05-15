@@ -6,6 +6,6 @@ namespace N1ebieski\KSEFClient\HttpClient\Exceptions;
 
 use GuzzleHttp\Exception\ServerException;
 
-final class UnknownSystemException extends ServerException
+final class InternalServerException extends ServerException
 {
 }

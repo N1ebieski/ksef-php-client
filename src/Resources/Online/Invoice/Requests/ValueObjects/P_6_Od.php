@@ -6,14 +6,14 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice\Requests\ValueObjects;
 
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\Date\AfterRule;
 use N1ebieski\KSEFClient\Validator\Rules\Date\BeforeRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class P_6_Od extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class P_6_Od extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public DateTimeImmutable $value;
 

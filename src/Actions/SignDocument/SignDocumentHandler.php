@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions\Handlers;
+namespace N1ebieski\KSEFClient\Actions\SignDocument;
 
 use DateTimeImmutable;
 use DOMDocument;
-use N1ebieski\KSEFClient\Actions\Handler;
-use N1ebieski\KSEFClient\Actions\SignDocumentAction;
+use N1ebieski\KSEFClient\Actions\AbstractHandler;
+use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
 use N1ebieski\KSEFClient\Resources\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\Str;
 use RuntimeException;
@@ -17,7 +17,7 @@ use RuntimeException;
  * I could not use their dependency directly, but most of the logic in this class
  * is their authorship
  */
-final readonly class SignDocumentHandler extends Handler
+final readonly class SignDocumentHandler extends AbstractHandler
 {
     public function handle(SignDocumentAction $action): string
     {

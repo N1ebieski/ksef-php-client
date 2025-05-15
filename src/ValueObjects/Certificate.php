@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions\ValueObjects;
+namespace N1ebieski\KSEFClient\ValueObjects;
 
 use BCMathExtended\BC;
-use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use OpenSSLAsymmetricKey;
 use SensitiveParameter;
 
-final readonly class Certificate extends ValueObject
+final readonly class Certificate extends AbstractValueObject
 {
     /**
      * @param array{issuer: array<string, string>, serialNumberHex: string} $info

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Session\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
-use N1ebieski\KSEFClient\Support\ValueObject;
+use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use SensitiveParameter;
 use Stringable;
 
-final readonly class Challenge extends ValueObject implements ValueAwareInterface, Stringable
+final readonly class Challenge extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public function __construct(
         #[SensitiveParameter]
