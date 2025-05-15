@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests;
+namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\Fixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
 
-final class StatusRequestFixture extends Fixture
+final class StatusRequestFixture extends AbstractFixture
 {
     /**
      * @var array<string, mixed>

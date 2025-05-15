@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Validator\Rules;
 /**
  * @method void handle(mixed $value, ?string $attribute = null)
  */
-abstract readonly class Rule
+abstract readonly class AbstractRule
 {
     public function getMessage(string $message, ?string $attribute = null): string
     {

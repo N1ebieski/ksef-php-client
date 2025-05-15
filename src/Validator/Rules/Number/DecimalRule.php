@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Validator\Rules\Number;
 
 use InvalidArgumentException;
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
-final readonly class DecimalRule extends Rule
+final readonly class DecimalRule extends AbstractRule
 {
     public function __construct(
         private int $min,

@@ -9,14 +9,14 @@ use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\RootResource;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\ResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 trait HasClientMock
 {
-    public function getClientStub(ResponseFixture $response): RootResourceInterface
+    public function getClientStub(AbstractResponseFixture $response): RootResourceInterface
     {
         /** @var TestCase $this */
         //@phpstan-ignore-next-line

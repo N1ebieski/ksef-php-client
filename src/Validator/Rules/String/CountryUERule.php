@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Validator\Rules\String;
 
 use InvalidArgumentException;
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
-final readonly class CountryUERule extends Rule
+final readonly class CountryUERule extends AbstractRule
 {
     private const array CODES = [
         'AT', 'BE', 'BG', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE',

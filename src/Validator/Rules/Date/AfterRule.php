@@ -6,9 +6,9 @@ namespace N1ebieski\KSEFClient\Validator\Rules\Date;
 
 use DateTimeInterface;
 use InvalidArgumentException;
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
-final readonly class AfterRule extends Rule
+final readonly class AfterRule extends AbstractRule
 {
     public function __construct(private DateTimeInterface $after)
     {

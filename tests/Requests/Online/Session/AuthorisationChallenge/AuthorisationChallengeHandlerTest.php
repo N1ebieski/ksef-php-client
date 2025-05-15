@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Tests\Resources\Online\Session\Requests\Handlers;
+namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\AuthorisationChallenge;
 
 use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Session\Requests\AuthorisationChallengeRequestFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Session\Requests\Responses\AuthorisationChallengeResponseFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Responses\ErrorResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponseFixture;
 use PHPUnit\Framework\TestCase;
 
 final class AuthorisationChallengeHandlerTest extends TestCase

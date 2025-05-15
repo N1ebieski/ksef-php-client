@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Tests\Resources\Online\Invoice\Requests\Handlers;
+namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Status;
 
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\Responses\StatusResponseFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\StatusRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusResponseFixture;
 use PHPUnit\Framework\TestCase;
 
 final class StatusHandlerTest extends TestCase

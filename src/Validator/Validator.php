@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator;
 
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
 final readonly class Validator
 {
     /**
-     * @param array<int, Rule>|array<string, array<int, Rule>> $rules
+     * @param array<int, AbstractRule>|array<string, array<int, AbstractRule>> $rules
      */
     public static function validate(mixed $values, array $rules): void
     {
@@ -22,7 +22,7 @@ final readonly class Validator
                 $attribute = null;
             }
 
-            /** @var array<int, Rule> $rulesSet */
+            /** @var array<int, AbstractRule> $rulesSet */
             $rulesSet = $attribute !== null && isset($rules[$attribute]) ? $rules[$attribute] : $rules;
 
             foreach ($rulesSet as $rule) {

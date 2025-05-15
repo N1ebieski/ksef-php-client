@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Validator\Rules\Number;
 
 use InvalidArgumentException;
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
-final readonly class NipRule extends Rule
+final readonly class NipRule extends AbstractRule
 {
     public function handle(string $value, ?string $attribute = null): void
     {

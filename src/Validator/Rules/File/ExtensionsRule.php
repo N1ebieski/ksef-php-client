@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Validator\Rules\File;
 
 use InvalidArgumentException;
-use N1ebieski\KSEFClient\Validator\Rules\Rule;
+use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
-final readonly class ExtensionsRule extends Rule
+final readonly class ExtensionsRule extends AbstractRule
 {
     /**
      * @param array<int, string> $extensions

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Testing\Fixtures\Resources\Online\Invoice\Requests\Responses;
+namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\Resources\ResponseFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
 
-final class StatusResponseFixture extends ResponseFixture
+final class StatusResponseFixture extends AbstractResponseFixture
 {
     public int $statusCode = 200;
 
