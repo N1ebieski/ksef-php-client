@@ -6,10 +6,11 @@ namespace N1ebieski\KSEFClient\Contracts\Resources\Online\Session;
 
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 
 interface SessionResourceInterface
@@ -25,9 +26,9 @@ interface SessionResourceInterface
     public function initToken(InitTokenRequest | array $dto): InitTokenResponse;
 
     /**
-     * @param InitSignedRequest|array<string, mixed> $dto
+     * @param InitSignedRequest|InitSignedXmlRequest|array<string, mixed> $dto
      */
-    public function initSigned(InitSignedRequest | array $dto): InitSignedResponse;
+    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $dto): InitSignedResponse;
 
     public function terminate(): ResponseInterface;
 }

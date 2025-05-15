@@ -24,7 +24,7 @@ final readonly class Response implements ResponseInterface
             return;
         }
 
-        throw ExceptionFactory::make($statusCode, $this->object());
+        throw ExceptionFactory::make($statusCode, $this->object()); //@phpstan-ignore-line
     }
 
     public function object(): object

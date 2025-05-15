@@ -21,7 +21,6 @@ use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use Psr\Http\Client\ClientInterface;
-use RuntimeException;
 
 final class ClientBuilder
 {
@@ -155,38 +154,39 @@ final class ClientBuilder
 
         $client = new RootResource($httpClient, $config);
 
-        $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
-            new AuthorisationChallengeRequest($this->nip)
-        );
+        if ($this->isAuthorisation()) {
+            $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
+                new AuthorisationChallengeRequest($this->nip)
+            );
 
-        $authorisationSessionResponse = match (true) {
-            $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
-                new InitTokenRequest(
-                    apiToken: $this->apiToken,
-                    challenge: $authorisationChallengeResponse->challenge,
-                    timestamp: $authorisationChallengeResponse->timestamp,
-                    publicKeyPath: $this->publicKeyPath,
-                    nip: $this->nip
-                )
-            ),
-            $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
-                new InitSignedRequest(
-                    certificatePath: $this->certificatePath,
-                    challenge: $authorisationChallengeResponse->challenge,
-                    timestamp: $authorisationChallengeResponse->timestamp,
-                    nip: $this->nip
-                )
-            ),
-            default => throw new RuntimeException('You must provide api token or certificate path')
-        };
-
-        return new RootResource(
-            client: $httpClient->withConfig(
-                $httpClientConfig->withSessionToken(
-                    $authorisationSessionResponse->sessionToken->token
+            $authorisationSessionResponse = match (true) {
+                $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
+                    new InitTokenRequest(
+                        apiToken: $this->apiToken,
+                        challenge: $authorisationChallengeResponse->challenge,
+                        timestamp: $authorisationChallengeResponse->timestamp,
+                        publicKeyPath: $this->publicKeyPath,
+                        nip: $this->nip
+                    )
                 ),
-            ),
-            config: $config
-        );
+                $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
+                    new InitSignedRequest(
+                        certificatePath: $this->certificatePath,
+                        challenge: $authorisationChallengeResponse->challenge,
+                        timestamp: $authorisationChallengeResponse->timestamp,
+                        nip: $this->nip
+                    )
+                )
+            };
+
+            $client = $client->withSessionToken($authorisationSessionResponse->sessionToken->token);
+        }
+
+        return $client;
+    }
+
+    private function isAuthorisation(): bool
+    {
+        return $this->apiToken !== null || $this->certificatePath !== null;
     }
 }

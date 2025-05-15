@@ -31,14 +31,17 @@ final readonly class InitSignedHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(InitSignedRequest $dto): InitSignedResponse
+    public function handle(InitSignedRequest | InitSignedXmlRequest $dto): InitSignedResponse
     {
-        $signedXml = $this->signDocument->handle(
-            new SignDocumentAction(
-                certificate: CertificateFactory::make($dto->certificatePath),
-                document: $dto->toXml()
-            )
-        );
+        $signedXml = match (true) {
+            $dto instanceof InitSignedRequest => $this->signDocument->handle(
+                new SignDocumentAction(
+                    certificate: CertificateFactory::make($dto->certificatePath),
+                    document: $dto->toXml()
+                )
+            ),
+            default => $dto->toXml(),
+        };
 
         if ($this->config->logXmlPath instanceof LogXmlPath) {
             $this->logXml->handle(

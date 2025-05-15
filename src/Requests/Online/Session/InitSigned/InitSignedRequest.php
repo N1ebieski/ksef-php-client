@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\InitSigned;
 
 use DateTimeImmutable;
 use DOMDocument;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\Requests\AbstractRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
@@ -16,7 +17,7 @@ use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use SensitiveParameter;
 
-final readonly class InitSignedRequest extends AbstractRequest implements XmlSerializableInterface
+final readonly class InitSignedRequest extends AbstractRequest implements XmlSerializableInterface, DomSerializableInterface
 {
     use HasToXml;
 

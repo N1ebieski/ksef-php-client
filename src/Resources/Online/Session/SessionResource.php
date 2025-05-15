@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session;
 
-use N1ebieski\KSEFClient\Actions\Handlers\EncryptTokenHandler;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\Contracts\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
-use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeHandler;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedHandler;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenHandler;
-use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
 final readonly class SessionResource extends AbstractResource implements SessionResourceInterface
@@ -53,9 +53,9 @@ final readonly class SessionResource extends AbstractResource implements Session
         )->handle($dto);
     }
 
-    public function initSigned(InitSignedRequest | array $dto): InitSignedResponse
+    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $dto): InitSignedResponse
     {
-        if ($dto instanceof InitSignedRequest == false) {
+        if (is_array($dto)) {
             $dto = InitSignedRequest::from($dto);
         }
 
