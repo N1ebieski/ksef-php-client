@@ -33,7 +33,7 @@ final readonly class InitTokenHandler extends AbstractHandler
         $encryptedToken = EncryptedTokenFactory::make(
             apiToken: $request->apiToken,
             timestamp: $request->timestamp,
-            publicKeyPath: $request->publicKeyPath
+            publicKeyPath: $request->ksefPublicKeyPath
         );
 
         $xml = $request->toXml($encryptedToken);
