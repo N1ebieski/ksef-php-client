@@ -159,7 +159,7 @@ final class ClientBuilder
                 new AuthorisationChallengeRequest($this->nip)
             );
 
-            $authorisationSessionResponse = match (true) {
+            $authorisationSessionResponse = match (true) { //@phpstan-ignore-line
                 $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
                     new InitTokenRequest(
                         apiToken: $this->apiToken,

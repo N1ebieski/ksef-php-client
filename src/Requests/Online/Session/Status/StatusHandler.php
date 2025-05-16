@@ -22,7 +22,7 @@ final readonly class StatusHandler extends AbstractHandler
         $response = $this->client->sendRequest(new Request(
             method: Method::Get,
             uri: Uri::from(
-                sprintf('online/Session/Status/%s', $request->referenceNumber?->value ?? '')
+                sprintf('online/Session/Status/%s', $request->referenceNumber->value ?? '')
             ),
             data: [
                 'PageSize' => $request->pageSize,

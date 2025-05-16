@@ -32,6 +32,9 @@ interface SessionResourceInterface
      */
     public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse;
 
+    /**
+     * @param StatusRequest|array<string, mixed> $request
+     */
     public function status(StatusRequest | array $request = new StatusRequest()): StatusResponse;
 
     public function terminate(): ResponseInterface;

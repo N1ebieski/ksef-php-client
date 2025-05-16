@@ -9,5 +9,8 @@ use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
 
 interface CommonResourceInterface
 {
+    /**
+     * @param StatusRequest|array<string, mixed> $request
+     */
     public function status(StatusRequest | array $request): StatusResponse;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Testing\Concerns;
+namespace N1ebieski\KSEFClient\Testing\Support\Concerns;
 
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
@@ -21,7 +21,7 @@ trait HasClientMock
         /** @var TestCase $this */
         //@phpstan-ignore-next-line
         $streamStub = $this->createStub(StreamInterface::class);
-        $streamStub->method('getContents')->willReturn(json_encode($response->contents));
+        $streamStub->method('getContents')->willReturn(json_encode($response->data));
 
         $responseStub = $this->createStub(ResponseInterface::class);
         $responseStub->method('getStatusCode')->willReturn($response->statusCode);

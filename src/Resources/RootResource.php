@@ -34,6 +34,6 @@ final readonly class RootResource extends AbstractResource implements RootResour
 
     public function common(): CommonResourceInterface
     {
-        return new CommonResource($this->client, $this->config);
+        return new CommonResource($this->client);
     }
 }

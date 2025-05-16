@@ -9,9 +9,4 @@ use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
 abstract class AbstractResponseFixture extends AbstractFixture
 {
     abstract public int $statusCode { get; }
-
-    /**
-     * @var array<string, mixed>
-     */
-    abstract public array $contents { get; }
 }

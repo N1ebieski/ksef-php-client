@@ -13,7 +13,7 @@ final class StatusResponseFixture extends AbstractResponseFixture
     /**
      * @var array<string, mixed>
      */
-    public array $contents = [
+    public array $data = [
         'elementReferenceNumber' => '20841003-T2-61EDCAEF30-90EE406BFB-A2',
         'processingCode' => 801,
         'processingDescription' => 'magn',
@@ -26,9 +26,20 @@ final class StatusResponseFixture extends AbstractResponseFixture
         ]
     ];
 
+    public function withInvoiceStatus(): self
+    {
+        $this->data['invoiceStatus'] = [
+            'invoiceNumber' => 'INV_1111111111_2222222222_4727711098527000',
+            'ksefReferenceNumber' => '1111111111-20211001-FFFFFF-FFFFFF-FF',
+            'acquisitionTimestamp' => '2021-10-01T12:13:14.999Z'
+        ];
+
+        return $this;
+    }
+
     public function withEmptyInvoiceStatus(): self
     {
-        $this->contents['invoiceStatus'] = [];
+        $this->data['invoiceStatus'] = [];
 
         return $this;
     }

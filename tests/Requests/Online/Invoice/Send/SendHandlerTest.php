@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Send;
 
-use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
-use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
+use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
-use PHPUnit\Framework\TestCase;
 
-final class SendHandlerTest extends TestCase
+final class SendHandlerTest extends AbstractTestCase
 {
-    use HasClientMock;
-
     public function testValidResponse(): void
     {
         $requestFixture = new SendRequestFixture();
@@ -27,20 +23,7 @@ final class SendHandlerTest extends TestCase
 
         $this->assertInstanceOf(SendResponse::class, $response);
 
-        $this->assertObjectHasProperty('elementReferenceNumber', $response);
-        $this->assertEquals($responseFixture->contents['elementReferenceNumber'], $response->elementReferenceNumber->value);
-
-        $this->assertObjectHasProperty('referenceNumber', $response);
-        $this->assertEquals($responseFixture->contents['referenceNumber'], $response->referenceNumber->value);
-
-        $this->assertObjectHasProperty('timestamp', $response);
-        $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
-
-        $this->assertObjectHasProperty('processingCode', $response);
-        $this->assertEquals($responseFixture->contents['processingCode'], $response->processingCode->value);
-
-        $this->assertObjectHasProperty('processingDescription', $response);
-        $this->assertEquals($responseFixture->contents['processingDescription'], $response->processingDescription->value);
+        $this->assertFixture($responseFixture->data, $response);
     }
 
     public function testInvalidResponse(): void
@@ -48,13 +31,7 @@ final class SendHandlerTest extends TestCase
         $requestFixture = new SendRequestFixture();
         $responseFixture = new ErrorResponseFixture();
 
-        $this->expectExceptionObject(new BadRequestException(
-            //@phpstan-ignore-next-line
-            message: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionDescription'],
-            //@phpstan-ignore-next-line
-            code: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionCode'],
-            context: $responseFixture->getDataAsContext()
-        ));
+        $this->assertExceptionFixture($responseFixture->data);
 
         $clientStub = $this->getClientStub($responseFixture);
 

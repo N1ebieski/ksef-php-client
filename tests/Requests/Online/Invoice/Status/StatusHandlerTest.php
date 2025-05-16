@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Status;
 
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
-use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
+use N1ebieski\KSEFClient\Testing\AbstractTestCase;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusResponseFixture;
-use PHPUnit\Framework\TestCase;
 
-final class StatusHandlerTest extends TestCase
+final class StatusHandlerTest extends AbstractTestCase
 {
-    use HasClientMock;
-
     public function testValidResponseWithEmptyInvoiceStatus(): void
     {
         $requestFixture = new StatusRequestFixture();
@@ -25,40 +23,32 @@ final class StatusHandlerTest extends TestCase
 
         $this->assertInstanceOf(StatusResponse::class, $response);
 
-        var_dump($response);
-
-        // $this->assertObjectHasProperty('elementReferenceNumber', $response);
-        // $this->assertEquals($responseFixture->contents['elementReferenceNumber'], $response->elementReferenceNumber->value);
-
-        // $this->assertObjectHasProperty('referenceNumber', $response);
-        // $this->assertEquals($responseFixture->contents['referenceNumber'], $response->referenceNumber->value);
-
-        // $this->assertObjectHasProperty('timestamp', $response);
-        // //@phpstan-ignore-next-line
-        // $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
-
-        // $this->assertObjectHasProperty('processingCode', $response);
-        // $this->assertEquals($responseFixture->contents['processingCode'], $response->processingCode->value);
-
-        // $this->assertObjectHasProperty('processingDescription', $response);
-        // $this->assertEquals($responseFixture->contents['processingDescription'], $response->processingDescription->value);
+        $this->assertFixture($responseFixture->data, $response);
     }
 
-    // public function testInvalidResponse(): void
-    // {
-    //     $requestFixture = new SendRequestFixture();
-    //     $responseFixture = new ErrorResponseFixture();
+    public function testValidResponseWithInvoiceStatus(): void
+    {
+        $requestFixture = new StatusRequestFixture();
+        $responseFixture = new StatusResponseFixture()->withInvoiceStatus();
 
-    //     $this->expectExceptionObject(new BadRequestException(
-    //         //@phpstan-ignore-next-line
-    //         message: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionDescription'],
-    //         //@phpstan-ignore-next-line
-    //         code: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionCode'],
-    //         context: $responseFixture->getDataAsContext()
-    //     ));
+        $clientStub = $this->getClientStub($responseFixture);
 
-    //     $clientStub = $this->getClientStub($responseFixture);
+        $response = $clientStub->online()->invoice()->status($requestFixture->data);
 
-    //     $clientStub->online()->invoice()->send($requestFixture->data);
-    // }
+        $this->assertInstanceOf(StatusResponse::class, $response);
+
+        $this->assertFixture($responseFixture->data, $response);
+    }
+
+    public function testInvalidResponse(): void
+    {
+        $requestFixture = new StatusRequestFixture();
+        $responseFixture = new ErrorResponseFixture();
+
+        $this->assertExceptionFixture($responseFixture->data);
+
+        $clientStub = $this->getClientStub($responseFixture);
+
+        $clientStub->online()->invoice()->status($requestFixture->data);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Common;
 
+use CuyZ\Valinor\Mapper\MappingError;
 use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Common\CommonResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
@@ -15,11 +16,13 @@ use N1ebieski\KSEFClient\Resources\AbstractResource;
 final readonly class CommonResource extends AbstractResource implements CommonResourceInterface
 {
     public function __construct(
-        private HttpClientInterface $client,
-        private Config $config
+        private HttpClientInterface $client
     ) {
     }
 
+    /**
+     * @param StatusRequest|array<string, mixed> $request
+     */
     public function status(StatusRequest | array $request): StatusResponse
     {
         if (is_array($request)) {

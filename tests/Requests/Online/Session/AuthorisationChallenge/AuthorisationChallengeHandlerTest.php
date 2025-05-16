@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\AuthorisationChallenge;
 
-use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
-use N1ebieski\KSEFClient\Testing\Concerns\HasClientMock;
+use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponseFixture;
-use PHPUnit\Framework\TestCase;
 
-final class AuthorisationChallengeHandlerTest extends TestCase
+final class AuthorisationChallengeHandlerTest extends AbstractTestCase
 {
-    use HasClientMock;
-
     public function testValidResponse(): void
     {
         $requestFixture = new AuthorisationChallengeRequestFixture();
@@ -27,11 +23,7 @@ final class AuthorisationChallengeHandlerTest extends TestCase
 
         $this->assertInstanceOf(AuthorisationChallengeResponse::class, $response);
 
-        $this->assertObjectHasProperty('timestamp', $response);
-        $this->assertEquals($responseFixture->contents['timestamp'], $response->timestamp->format('Y-m-d\TH:i:sP'));
-
-        $this->assertObjectHasProperty('challenge', $response);
-        $this->assertEquals($responseFixture->contents['challenge'], $response->challenge->value);
+        $this->assertFixture($responseFixture->data, $response);
     }
 
     public function testInvalidResponse(): void
@@ -39,13 +31,7 @@ final class AuthorisationChallengeHandlerTest extends TestCase
         $requestFixture = new AuthorisationChallengeRequestFixture();
         $responseFixture = new ErrorResponseFixture();
 
-        $this->expectExceptionObject(new BadRequestException(
-            //@phpstan-ignore-next-line
-            message: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionDescription'],
-            //@phpstan-ignore-next-line
-            code: $responseFixture->contents['exception']['exceptionDetailList'][0]['exceptionCode'],
-            context: $responseFixture->getDataAsContext()
-        ));
+        $this->assertExceptionFixture($responseFixture->data);
 
         $clientStub = $this->getClientStub($responseFixture);
 

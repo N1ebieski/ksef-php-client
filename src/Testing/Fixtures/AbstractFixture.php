@@ -6,4 +6,8 @@ namespace N1ebieski\KSEFClient\Testing\Fixtures;
 
 abstract class AbstractFixture
 {
+    /**
+     * @var array<string, mixed>
+     */
+    abstract public array $data { get; }
 }

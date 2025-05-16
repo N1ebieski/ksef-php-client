@@ -13,7 +13,7 @@ final class SendResponseFixture extends AbstractResponseFixture
     /**
      * @var array<string, mixed>
      */
-    public array $contents = [
+    public array $data = [
         'elementReferenceNumber' => '20841003-T2-61EDCAEF30-90EE406BFB-A2',
         'processingCode' => 801,
         'processingDescription' => 'magn',

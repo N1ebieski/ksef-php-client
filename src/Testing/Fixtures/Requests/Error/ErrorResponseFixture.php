@@ -13,7 +13,7 @@ final class ErrorResponseFixture extends AbstractResponseFixture
     /**
      * @var array<string, mixed>
      */
-    public array $contents = [
+    public array $data = [
         'exception' => [
             'serviceCtx' => 'srvDVAKA',
             'serviceCode' => '20211001-EX-FFFFFFFFFF-FFFFFFFFFF-FF',
@@ -28,9 +28,4 @@ final class ErrorResponseFixture extends AbstractResponseFixture
             ]
         ]
     ];
-
-    public function getDataAsContext(): object
-    {
-        return (object) $this->contents;
-    }
 }
