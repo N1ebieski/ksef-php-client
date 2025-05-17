@@ -16,8 +16,10 @@
     },
     "authors": [
         {
-            "name": "N1ebieski",
-            "email": "kontakt@intelekt.net.pl"
+            "name": "Mariusz Wysokiński",
+            "homepage": "https://intelekt.net.pl",            
+            "email": "kontakt@intelekt.net.pl",
+            "role": "Developer"
         }
     ],
     "require": {
