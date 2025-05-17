@@ -9,28 +9,35 @@ use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Status\StatusResponseFixture;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class StatusHandlerTest extends AbstractTestCase
 {
-    public function testValidResponseWithEmptyInvoiceStatus(): void
+    public static function validResponseProvider(): array
     {
-        $requestFixture = new StatusRequestFixture();
-        $responseFixture = new StatusResponseFixture()->withEmptyInvoiceStatus();
+        $requests = [
+            new StatusRequestFixture(),
+        ];
 
-        $clientStub = $this->getClientStub($responseFixture);
+        $responses = [
+            new StatusResponseFixture(),
+            new StatusResponseFixture()->withEmptyInvoiceStatus()->withName('empty invoice status'),
+        ];
 
-        $response = $clientStub->online()->invoice()->status($requestFixture->data);
+        $combinations = [];
 
-        $this->assertInstanceOf(StatusResponse::class, $response);
+        foreach ($requests as $request) {
+            foreach ($responses as $response) {
+                $combinations["{$request->name}, {$response->name}"] = [$request, $response];
+            }
+        }
 
-        $this->assertFixture($responseFixture->data, $response);
+        return $combinations;
     }
 
-    public function testValidResponseWithInvoiceStatus(): void
+    #[DataProvider('validResponseProvider')]
+    public function testValidResponse(StatusRequestFixture $requestFixture, StatusResponseFixture $responseFixture): void
     {
-        $requestFixture = new StatusRequestFixture();
-        $responseFixture = new StatusResponseFixture()->withInvoiceStatus();
-
         $clientStub = $this->getClientStub($responseFixture);
 
         $response = $clientStub->online()->invoice()->status($requestFixture->data);

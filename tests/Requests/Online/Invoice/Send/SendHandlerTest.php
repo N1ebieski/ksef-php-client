@@ -9,14 +9,34 @@ use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SendHandlerTest extends AbstractTestCase
 {
-    public function testValidResponse(): void
+    public static function validResponseProvider(): array
     {
-        $requestFixture = new SendRequestFixture();
-        $responseFixture = new SendResponseFixture();
+        $requests = [
+            new SendRequestFixture(),
+        ];
 
+        $responses = [
+            new SendResponseFixture(),
+        ];
+
+        $combinations = [];
+
+        foreach ($requests as $request) {
+            foreach ($responses as $response) {
+                $combinations["{$request->name}, {$response->name}"] = [$request, $response];
+            }
+        }
+
+        return $combinations;
+    }
+
+    #[DataProvider('validResponseProvider')]
+    public function testValidResponse(SendRequestFixture $requestFixture, SendResponseFixture $responseFixture): void
+    {
         $clientStub = $this->getClientStub($responseFixture);
 
         $response = $clientStub->online()->invoice()->send($requestFixture->data);

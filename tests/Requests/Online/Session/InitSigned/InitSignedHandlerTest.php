@@ -4,19 +4,40 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\InitSigned;
 
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\InitSigned\InitSignedRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\InitSigned\InitSignedResponseFixture;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class InitSignedHandlerTest extends AbstractTestCase
 {
-    public function testValidResponse(): void
+    public static function validResponseProvider(): array
     {
-        $requestFixture = new InitSignedRequestFixture();
-        $responseFixture = new InitSignedResponseFixture();
+        $requests = [
+            new InitSignedRequestFixture(),
+        ];
 
+        $responses = [
+            new InitSignedResponseFixture(),
+        ];
+
+        $combinations = [];
+
+        foreach ($requests as $request) {
+            foreach ($responses as $response) {
+                $combinations["{$request->name}, {$response->name}"] = [$request, $response];
+            }
+        }
+
+        return $combinations;
+    }
+
+    #[DataProvider('validResponseProvider')]
+    public function testValidResponse(InitSignedRequestFixture $requestFixture, InitSignedResponseFixture $responseFixture): void
+    {
         $clientStub = $this->getClientStub($responseFixture);
 
         $response = $clientStub->online()->session()->initSigned($requestFixture->data);

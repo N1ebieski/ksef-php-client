@@ -9,14 +9,34 @@ use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponseFixture;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AuthorisationChallengeHandlerTest extends AbstractTestCase
 {
-    public function testValidResponse(): void
+    public static function validResponseProvider(): array
     {
-        $requestFixture = new AuthorisationChallengeRequestFixture();
-        $responseFixture = new AuthorisationChallengeResponseFixture();
+        $requests = [
+            new AuthorisationChallengeRequestFixture(),
+        ];
 
+        $responses = [
+            new AuthorisationChallengeResponseFixture(),
+        ];
+
+        $combinations = [];
+
+        foreach ($requests as $request) {
+            foreach ($responses as $response) {
+                $combinations["{$request->name}, {$response->name}"] = [$request, $response];
+            }
+        }
+
+        return $combinations;
+    }
+
+    #[DataProvider('validResponseProvider')]
+    public function testValidResponse(AuthorisationChallengeRequestFixture $requestFixture, AuthorisationChallengeResponseFixture $responseFixture): void
+    {
         $clientStub = $this->getClientStub($responseFixture);
 
         $response = $clientStub->online()->session()->authorisationChallenge($requestFixture->data);

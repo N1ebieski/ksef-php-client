@@ -9,28 +9,35 @@ use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Common\Status\StatusRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Common\Status\StatusResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class StatusHandlerTest extends AbstractTestCase
 {
-    public function testValidResponseWithoutUpo(): void
+    public static function validResponseProvider(): array
     {
-        $requestFixture = new StatusRequestFixture();
-        $responseFixture = new StatusResponseFixture()->withoutUpo();
+        $requests = [
+            new StatusRequestFixture(),
+        ];
 
-        $clientStub = $this->getClientStub($responseFixture);
+        $responses = [
+            new StatusResponseFixture(),
+            new StatusResponseFixture()->withoutUpo()->withName('without upo'),
+        ];
 
-        $response = $clientStub->common()->status($requestFixture->data);
+        $combinations = [];
 
-        $this->assertInstanceOf(StatusResponse::class, $response);
+        foreach ($requests as $request) {
+            foreach ($responses as $response) {
+                $combinations["{$request->name}, {$response->name}"] = [$request, $response];
+            }
+        }
 
-        $this->assertFixture($responseFixture->data, $response);
+        return $combinations;
     }
 
-    public function testValidResponseWithUpo(): void
+    #[DataProvider('validResponseProvider')]
+    public function testValidResponse(StatusRequestFixture $requestFixture, StatusResponseFixture $responseFixture): void
     {
-        $requestFixture = new StatusRequestFixture();
-        $responseFixture = new StatusResponseFixture()->withUpo();
-
         $clientStub = $this->getClientStub($responseFixture);
 
         $response = $clientStub->common()->status($requestFixture->data);
