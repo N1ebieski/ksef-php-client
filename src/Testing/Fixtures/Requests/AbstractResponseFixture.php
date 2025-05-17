@@ -12,6 +12,6 @@ abstract class AbstractResponseFixture extends AbstractFixture
 
     public function toContents(): string
     {
-        return json_encode($this->data);
+        return json_encode($this->data) ?: throw new \InvalidArgumentException('Invalid JSON');
     }
 }

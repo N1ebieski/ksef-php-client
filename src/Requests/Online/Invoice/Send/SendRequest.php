@@ -62,9 +62,11 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
 
         $faktura->appendChild($fa);
 
-        $stopka = $dom->importNode($this->stopka->toDom()->documentElement, true);
+        if ($this->stopka instanceof Stopka) {
+            $stopka = $dom->importNode($this->stopka->toDom()->documentElement, true);
 
-        $faktura->appendChild($stopka);
+            $faktura->appendChild($stopka);
+        }
 
         return $dom;
     }

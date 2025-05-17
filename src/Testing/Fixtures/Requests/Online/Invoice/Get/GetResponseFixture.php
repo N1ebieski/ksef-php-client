@@ -19,6 +19,7 @@ final class GetResponseFixture extends AbstractResponseFixture
 
     public function toContents(): string
     {
+        /** @var string */
         return $this->data['contents'];
     }
 }

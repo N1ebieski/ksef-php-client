@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class InitTokenHandlerTest extends AbstractTestCase
 {
+    /**
+     * @return array<string, array{InitTokenRequestFixture, InitTokenResponseFixture}>
+     */
     public static function validResponseProvider(): array
     {
         $requests = [
@@ -32,6 +35,7 @@ final class InitTokenHandlerTest extends AbstractTestCase
             }
         }
 
+        /** @var array<string, array{InitTokenRequestFixture, InitTokenResponseFixture}> */
         return $combinations;
     }
 

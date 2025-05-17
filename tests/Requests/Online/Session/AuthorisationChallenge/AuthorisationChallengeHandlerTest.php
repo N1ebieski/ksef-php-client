@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class AuthorisationChallengeHandlerTest extends AbstractTestCase
 {
+    /**
+     * @return array<string, array{AuthorisationChallengeRequestFixture, AuthorisationChallengeResponseFixture}>
+     */
     public static function validResponseProvider(): array
     {
         $requests = [
@@ -31,6 +34,7 @@ final class AuthorisationChallengeHandlerTest extends AbstractTestCase
             }
         }
 
+        /** @var array<string, array{AuthorisationChallengeRequestFixture, AuthorisationChallengeResponseFixture}> */
         return $combinations;
     }
 

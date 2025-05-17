@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 final class StatusHandlerTest extends AbstractTestCase
 {
+    /**
+     * @return array<string, array{StatusRequestFixture, StatusResponseFixture}>
+     */
     public static function validResponseProvider(): array
     {
         $requests = [
@@ -36,6 +39,7 @@ final class StatusHandlerTest extends AbstractTestCase
             }
         }
 
+        /** @var array<string, array{StatusRequestFixture, StatusResponseFixture}> */
         return $combinations;
     }
 

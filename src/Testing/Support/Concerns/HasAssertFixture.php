@@ -19,8 +19,14 @@ trait HasAssertFixture
         foreach ($data as $key => $value) {
             $this->assertObjectHasProperty($key, $dto);
 
+            //@phpstan-ignore-next-line
             if (is_array($dto->{$key}) && isset($dto->{$key}[0]) && $dto->{$key}[0] instanceof AbstractDTO) {
                 foreach ($dto->{$key} as $itemKey => $itemValue) {
+                    /**
+                     * @var array<string, array<string, mixed>> $value
+                     * @var string $itemKey
+                     * @var AbstractDTO $itemValue
+                     */
                     $this->assertFixture($value[$itemKey], $itemValue);
                 }
 
