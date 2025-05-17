@@ -10,4 +10,13 @@ abstract class AbstractFixture
      * @var array<string, mixed>
      */
     abstract public array $data { get; }
+
+    public string $name = 'default';
+
+    public function withName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

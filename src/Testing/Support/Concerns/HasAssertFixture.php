@@ -19,6 +19,14 @@ trait HasAssertFixture
         foreach ($data as $key => $value) {
             $this->assertObjectHasProperty($key, $dto);
 
+            if (is_array($dto->{$key}) && isset($dto->{$key}[0]) && $dto->{$key}[0] instanceof AbstractDTO) {
+                foreach ($dto->{$key} as $itemKey => $itemValue) {
+                    $this->assertFixture($value[$itemKey], $itemValue);
+                }
+
+                continue;
+            }
+
             if ($dto->{$key} instanceof AbstractDTO) {
                 /** @var array<string, mixed> $value */
                 $this->assertFixture($value, $dto->{$key});
