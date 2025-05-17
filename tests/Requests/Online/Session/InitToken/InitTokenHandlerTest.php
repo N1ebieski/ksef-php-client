@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\InitToken;
 
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;

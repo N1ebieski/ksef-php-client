@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Get;
 
+use Override;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
 
 final class GetResponseFixture extends AbstractResponseFixture
@@ -17,6 +18,7 @@ final class GetResponseFixture extends AbstractResponseFixture
         'contents' => 'xml-string'
     ];
 
+    #[Override]
     public function toContents(): string
     {
         /** @var string */
