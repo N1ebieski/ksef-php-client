@@ -32,7 +32,7 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         public Podmiot1 $podmiot1,
         public Podmiot2 $podmiot2,
         public Fa $fa,
-        // public ?Stopka $stopka = null
+        public ?Stopka $stopka = null
     ) {
     }
 
@@ -61,6 +61,10 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         $fa = $dom->importNode($this->fa->toDom()->documentElement, true);
 
         $faktura->appendChild($fa);
+
+        $stopka = $dom->importNode($this->stopka->toDom()->documentElement, true);
+
+        $faktura->appendChild($stopka);
 
         return $dom;
     }
