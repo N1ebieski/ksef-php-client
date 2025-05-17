@@ -9,4 +9,9 @@ use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
 abstract class AbstractResponseFixture extends AbstractFixture
 {
     abstract public int $statusCode { get; }
+
+    public function toContents(): string
+    {
+        return json_encode($this->data);
+    }
 }

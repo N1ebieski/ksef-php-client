@@ -24,6 +24,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
+use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
 final readonly class SessionResource extends AbstractResource implements SessionResourceInterface
@@ -79,7 +80,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new StatusHandler($this->client)->handle($request);
     }
 
-    public function terminate(): ResponseInterface
+    public function terminate(): TerminateResponse
     {
         return new TerminateHandler($this->client)->handle();
     }

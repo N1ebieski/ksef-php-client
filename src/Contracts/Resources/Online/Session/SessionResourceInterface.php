@@ -14,6 +14,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
+use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 
 interface SessionResourceInterface
 {
@@ -37,5 +38,5 @@ interface SessionResourceInterface
      */
     public function status(StatusRequest | array $request = new StatusRequest()): StatusResponse;
 
-    public function terminate(): ResponseInterface;
+    public function terminate(): TerminateResponse;
 }

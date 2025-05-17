@@ -17,10 +17,12 @@ final readonly class TerminateHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(): ResponseInterface
+    public function handle(): TerminateResponse
     {
-        return $this->client->sendRequest(new Request(
+        $response = $this->client->sendRequest(new Request(
             uri: Uri::from('online/Session/Terminate')
         ));
+
+        return TerminateResponse::fromResponse($response);
     }
 }
