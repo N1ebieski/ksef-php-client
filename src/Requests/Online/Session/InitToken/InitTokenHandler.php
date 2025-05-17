@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\EncryptedTokenFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;

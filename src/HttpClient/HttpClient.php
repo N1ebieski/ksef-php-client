@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient;
 
 use Http\Discovery\Psr17Factory;
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
-use N1ebieski\KSEFClient\Contracts\ResponseInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;

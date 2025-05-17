@@ -8,7 +8,7 @@ use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;

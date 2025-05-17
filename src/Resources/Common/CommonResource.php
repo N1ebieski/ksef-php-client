@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Common;
 
 use CuyZ\Valinor\Mapper\MappingError;
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Common\CommonResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusHandler;

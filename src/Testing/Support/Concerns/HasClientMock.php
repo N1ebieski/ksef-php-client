@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Support\Concerns;
 
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\RootResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;

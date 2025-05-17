@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Get;
 
-use N1ebieski\KSEFClient\Contracts\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
