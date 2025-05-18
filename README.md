@@ -359,9 +359,9 @@ $xml = $commonStatus->upo->toXml();
 
 The package uses unit tests via [phpunit](https://github.com/sebastianbergmann/phpunit). 
 
-TestCase is located in the location of ```N1ebieski\KSEFClient\Testing\TestCase```.
+TestCase is located in the location of ```N1ebieski\KSEFClient\Testing\TestCase```
 
-Fake request fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Requests```.
+Fake request fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Requests```
 
 Fake response fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Responses```
 
