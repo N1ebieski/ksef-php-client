@@ -116,14 +116,16 @@ use N1ebieski\KSEFClient\ValueObjects\NIP;
 
 $client = new ClientBuilder()->build();
 
+$nip = NIP::from('NIP_NUMBER');
+
 $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
-    new AuthorisationChallengeRequest(NIP::from('NIP_NUMBER'))
+    new AuthorisationChallengeRequest($nip)
 );
 
 $xml = new InitSignedRequest(
     challenge: $authorisationChallengeResponse->challenge,
     timestamp: $authorisationChallengeResponse->timestamp,
-    nip: $this->nip
+    nip: $nip
 )->toXml();
 
 $signedXml = // Sign a xml document via Szafir, ePUAP etc.
