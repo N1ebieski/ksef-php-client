@@ -23,8 +23,7 @@ final readonly class InitTokenHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private LogXmlHandler $logXml,
-        private Config $config
+        private LogXmlHandler $logXml
     ) {
     }
 
@@ -38,14 +37,12 @@ final readonly class InitTokenHandler extends AbstractHandler
 
         $xml = $request->toXml($encryptedToken);
 
-        if ($this->config->logXmlPath instanceof LogXmlPath) {
-            $this->logXml->handle(
-                new LogXmlAction(
-                    logXmlFilename: LogXmlFilename::from('init-token.xml'),
-                    document: $xml
-                )
-            );
-        }
+        $this->logXml->handle(
+            new LogXmlAction(
+                logXmlFilename: LogXmlFilename::from('init-token.xml'),
+                document: $xml
+            )
+        );
 
         $response = $this->client->sendRequest(new Request(
             method: Method::Post,

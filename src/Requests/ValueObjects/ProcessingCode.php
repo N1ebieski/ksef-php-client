@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Requests\Online\ValueObjects;
+namespace N1ebieski\KSEFClient\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;

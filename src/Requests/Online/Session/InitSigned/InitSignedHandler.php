@@ -9,7 +9,6 @@ use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
-use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
@@ -18,39 +17,47 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+use N1ebieski\KSEFClient\Validator\Rules\Utility\RequiredRule;
+use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
-use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 
 final readonly class InitSignedHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
         private SignDocumentHandler $signDocument,
-        private LogXmlHandler $logXml,
-        private Config $config
+        private LogXmlHandler $logXml
     ) {
     }
 
     public function handle(InitSignedRequest | InitSignedXmlRequest $request): InitSignedResponse
     {
         $signedXml = match (true) {
-            $request instanceof InitSignedRequest => $this->signDocument->handle(
-                new SignDocumentAction(
-                    certificate: CertificateFactory::make($request->certificatePath),
-                    document: $request->toXml()
-                )
-            ),
+            $request instanceof InitSignedRequest => value(function () use ($request) {
+                Validator::validate(['certificatePath' => $request->certificatePath], [
+                    new RequiredRule()
+                ]);
+
+                /** @var CertificatePath $certificatePath */
+                $certificatePath = $request->certificatePath;
+
+                return $this->signDocument->handle(
+                    new SignDocumentAction(
+                        certificate: CertificateFactory::make($certificatePath),
+                        document: $request->toXml()
+                    )
+                );
+            }),
             default => $request->toXml(),
         };
 
-        if ($this->config->logXmlPath instanceof LogXmlPath) {
-            $this->logXml->handle(
-                new LogXmlAction(
-                    logXmlFilename: LogXmlFilename::from('init-signed.xml'),
-                    document: $signedXml
-                )
-            );
-        }
+        $this->logXml->handle(
+            new LogXmlAction(
+                logXmlFilename: LogXmlFilename::from('init-signed.xml'),
+                document: $signedXml
+            )
+        );
 
         $response = $this->client->sendRequest(new Request(
             method: Method::Post,

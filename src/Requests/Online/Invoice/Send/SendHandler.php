@@ -21,8 +21,7 @@ final readonly class SendHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private LogXmlHandler $logXml,
-        private Config $config
+        private LogXmlHandler $logXml
     ) {
     }
 
@@ -34,14 +33,12 @@ final readonly class SendHandler extends AbstractHandler
         $invoiceBody = base64_encode($xml);
         $fileSize = strlen($xml);
 
-        if ($this->config->logXmlPath instanceof LogXmlPath) {
-            $this->logXml->handle(
-                new LogXmlAction(
-                    logXmlFilename: LogXmlFilename::from('send-invoice.xml'),
-                    document: $xml
-                )
-            );
-        }
+        $this->logXml->handle(
+            new LogXmlAction(
+                logXmlFilename: LogXmlFilename::from('send-invoice.xml'),
+                document: $xml
+            )
+        );
 
         $response = $this->client->sendRequest(new Request(
             method: Method::Put,

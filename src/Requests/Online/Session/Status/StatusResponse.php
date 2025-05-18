@@ -8,9 +8,9 @@ use DateTimeImmutable;
 use N1ebieski\KSEFClient\Requests\AbstractResponse;
 use N1ebieski\KSEFClient\Requests\Online\DTOs\EntityType;
 use N1ebieski\KSEFClient\Requests\Online\Session\DTOs\InvoiceStatus;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ProcessingCode;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ProcessingDescription;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ReferenceNumber;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ProcessingCode;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ProcessingDescription;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
 
 final readonly class StatusResponse extends AbstractResponse
 {

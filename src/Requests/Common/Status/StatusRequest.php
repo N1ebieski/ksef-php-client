@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Common\Status;
 
 use N1ebieski\KSEFClient\Requests\AbstractRequest;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ReferenceNumber;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
 
 final readonly class StatusRequest extends AbstractRequest
 {

@@ -6,9 +6,9 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\Terminate;
 
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Requests\AbstractResponse;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ProcessingCode;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ProcessingDescription;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ReferenceNumber;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ProcessingCode;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ProcessingDescription;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
 
 final readonly class TerminateResponse extends AbstractResponse
 {

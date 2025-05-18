@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\InitSigned;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Requests\AbstractResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\DTOs\SessionToken;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\ReferenceNumber;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
 
 final readonly class InitSignedResponse extends AbstractResponse
 {

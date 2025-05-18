@@ -49,11 +49,7 @@ final readonly class SessionResource extends AbstractResource implements Session
             $request = InitTokenRequest::from($request);
         }
 
-        return new InitTokenHandler(
-            client: $this->client,
-            logXml: new LogXmlHandler($this->config),
-            config: $this->config
-        )->handle($request);
+        return new InitTokenHandler($this->client, new LogXmlHandler($this->config))->handle($request);
     }
 
     public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse
@@ -65,8 +61,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new InitSignedHandler(
             client: $this->client,
             signDocument: new SignDocumentHandler(),
-            logXml: new LogXmlHandler($this->config),
-            config: $this->config
+            logXml: new LogXmlHandler($this->config)
         )->handle($request);
     }
 

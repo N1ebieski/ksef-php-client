@@ -20,4 +20,11 @@ final class InitSignedRequestFixture extends AbstractFixture
         'timestamp' => '2022-01-01T00:00:00+01:00',
         'nip' => '1111111111'
     ];
+
+    public function withoutCertificatePath(): self
+    {
+        unset($this->data['certificate_path']);
+
+        return $this;
+    }
 }

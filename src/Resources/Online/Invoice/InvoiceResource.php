@@ -33,11 +33,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
             $request = SendRequest::from($request);
         }
 
-        return new SendHandler(
-            client: $this->client,
-            logXml: new LogXmlHandler($this->config),
-            config: $this->config
-        )->handle($request);
+        return new SendHandler($this->client, new LogXmlHandler($this->config))->handle($request);
     }
 
     public function status(StatusRequest | array $request): StatusResponse

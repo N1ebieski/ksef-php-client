@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Requests\Online\ValueObjects;
+namespace N1ebieski\KSEFClient\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use Stringable;
 
-final readonly class ProcessingDescription extends AbstractValueObject implements Stringable, FromInterface
+final readonly class ReferenceNumber extends AbstractValueObject implements Stringable, FromInterface
 {
     public function __construct(public string $value)
     {

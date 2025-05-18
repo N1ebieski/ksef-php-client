@@ -23,12 +23,12 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
 
     public function __construct(
         #[SensitiveParameter]
-        public CertificatePath $certificatePath,
-        #[SensitiveParameter]
         public Challenge $challenge,
         #[SensitiveParameter]
         public DateTimeImmutable $timestamp,
         public NIP $nip,
+        #[SensitiveParameter]
+        public ?CertificatePath $certificatePath = null,
         public SystemCode $systemCode = SystemCode::Fa2
     ) {
     }
