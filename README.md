@@ -5,7 +5,20 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
 ## Table of Contents
 
 - [Get Started](#get-started)
-  - [Auto authorization via API Token](#auto-authorization-via-api-token)
+    - [Client configuration](#client-configuration)
+    - [Auto mapping](#auto-mapping)
+- [Authorization](#authorization)
+    - [Auto authorization via API Token](#auto-authorization-via-api-token)
+    - [Auto authorization via certificate .p12](#auto-authorization-via-certificate-p12)
+    - [Manual authorization](#manual-authorization)
+- [Resources](#resources)
+    - [Online](#online)
+        - [Session](#session)
+            - [Authorisation challenge](#authorization-challenge)
+            - [Init token](#init-token)
+            - [Init signed](#init-signed)
+            - [Session status](#session-status)
+            - [Terminate](#terminate)
 
 ## Get Started
 
@@ -23,7 +36,43 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
-Then, interact with KSEF's API:
+### Client configuration
+
+```php
+use N1ebieski\KSEFClient\ValueObjects\Mode;
+
+$client = new ClientBuilder()
+    ->withMode(Mode::Production) // Choice between: Test, Demo, Production
+    ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
+    ->withHttpClient(new \GuzzleHttp\Client([])) // Optional, default is set by Psr18ClientDiscovery::find()
+    ->withApiToken($_ENV['KSEF_KEY']) // Required for API Token authorization
+    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization, you can find it on https://ksef.mf.gov.pl
+    ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
+    ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo, optional for Mode::Test
+    ->withLogXmlPath('PATH_TO_SAVE_XML_FILES') // Some endpoints generate xml files, useful for debug
+    ->build();
+```
+
+### Auto mapping
+
+Each resource supports mapping through both an array and a DTO, for example:
+
+```php
+use N1ebieski\KSEFClient\Requests\Common\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
+
+$commonStatus = $client->common()->status(new StatusRequest(
+    referenceNumber: ReferenceNumber::from('20250508-EE-B395BBC9CD-A7DB4E6095-BD')
+));
+```
+
+```php
+$commonStatus = $client->common()->status([
+    'reference_number' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
+]);
+```
+
+## Authorization
 
 ### Auto authorization via API Token
 
@@ -33,6 +82,7 @@ use N1ebieski\KSEFClient\ClientBuilder;
 $client = new ClientBuilder()
     ->withApiToken($_ENV['KSEF_KEY'])
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
+    ->withNIP('NIP_NUMBER')
     ->build();
 
 // Do something with the available resources
@@ -46,7 +96,8 @@ $client->online()->session()->terminate();
 use N1ebieski\KSEFClient\ClientBuilder;
 
 $client = new ClientBuilder()
-    ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], 'passphrase')
+    ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
+    ->withNIP('NIP_NUMBER')
     ->build();
 
 // Do something with the available resources
@@ -60,18 +111,25 @@ $client->online()->session()->terminate();
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
 $client = new ClientBuilder()->build();
 
 $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
-    new AuthorisationChallengeRequest(NIP::from('NIP-NUMBER'))
+    new AuthorisationChallengeRequest(NIP::from('NIP_NUMBER'))
 );
 
-$xml = file_get_contents('PATH_TO_SIGNED_XML');
+$xml = new InitSignedRequest(
+    challenge: $authorisationChallengeResponse->challenge,
+    timestamp: $authorisationChallengeResponse->timestamp,
+    nip: $this->nip
+)->toXml();
+
+$signedXml = // Sign a xml document via Szafir, ePUAP etc.
 
 $initSignedResponse = $client->online()->session()->initSigned(
-    new InitSignedXmlRequest($xml)
+    new InitSignedXmlRequest($signedXml)
 );
 
 $client = $client->withSessionToken($initSignedResponse->sessionToken->token);
@@ -79,4 +137,89 @@ $client = $client->withSessionToken($initSignedResponse->sessionToken->token);
 // Do something with the available resources
 
 $client->online()->session()->terminate();
+```
+
+## Resources
+
+### Online
+
+#### Session
+
+##### Authorisation challenge
+
+Initialize the authentication and authorization mechanism.
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
+
+/** @var AuthorisationChallengeResponse $response */
+$response = $client->online()->session()->authorisationChallenge(
+    new AuthorisationChallengeRequest(...)
+);
+```
+
+##### Init token
+
+Initializing an interactive session. KSeF public key encrypted document http://ksef.mf.gov.pl/schema/gtw/svc/online/auth/request/2021/10/01/0001/InitSessionTokenRequest
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+
+/** @var InitTokenResponse $response */
+$response = $client->online()->session()->initToken(
+    new InitTokenRequest(...)
+),
+```
+
+##### Init signed
+
+Initializing an interactive session. Signed document http://ksef.mf.gov.pl/schema/gtw/svc/online/auth/request/2021/10/01/0001/InitSessionSignedRequest
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+
+/** @var InitSignedResponse $response */
+$response = $client->online()->session()->initSigned(
+    new InitSignedRequest(...)
+),
+```
+
+or:
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
+
+/** @var InitSignedResponse $response */
+$response = $client->online()->session()->initSigned(
+    new InitSignedXmlRequest($signedXml)
+),
+```
+
+##### Session status
+
+Checking the status of current interactive processing or based on the reference number.
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
+
+/** @var StatusResponse $response */
+$response = $client->online()->session()->status(
+    new StatusRequest(...)
+),
+```
+
+##### Terminate
+
+Forcing the closing of an active interactive session
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
+
+/** @var TerminateResponse $response */
+$response = $client->online()->session()->terminate(),
 ```
