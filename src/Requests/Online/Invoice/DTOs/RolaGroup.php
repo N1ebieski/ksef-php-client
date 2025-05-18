@@ -25,7 +25,7 @@ final readonly class RolaGroup extends AbstractDTO implements DomSerializableInt
         $dom->appendChild($rolagroup);
 
         $rola = $dom->createElement('Rola');
-        $rola->appendChild($dom->createTextNode((string) $this->rola));
+        $rola->appendChild($dom->createTextNode((string) $this->rola->value));
 
         $rolagroup->appendChild($rola);
 

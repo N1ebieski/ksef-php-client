@@ -6,9 +6,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Email;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\EmailPU;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Telefon;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\TelefonPU;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
@@ -28,13 +26,13 @@ final readonly class PodmiotUpowaznionyDaneKontaktowe extends AbstractDTO implem
         $daneKontaktowe = $dom->createElement('DaneKontaktowe');
         $dom->appendChild($daneKontaktowe);
 
-        if ($this->emailPU instanceof Email) {
+        if ($this->emailPU instanceof EmailPU) {
             $emailPU = $dom->createElement('EmailPU');
             $emailPU->appendChild($dom->createTextNode((string) $this->emailPU));
             $daneKontaktowe->appendChild($emailPU);
         }
 
-        if ($this->telefonPU instanceof Telefon) {
+        if ($this->telefonPU instanceof TelefonPU) {
             $telefonPU = $dom->createElement('TelefonPU');
             $telefonPU->appendChild($dom->createTextNode((string) $this->telefonPU));
             $daneKontaktowe->appendChild($telefonPU);
