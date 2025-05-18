@@ -12,6 +12,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Fa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Naglowek;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Podmiot1;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Podmiot2;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Podmiot3;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Stopka;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
@@ -23,6 +24,7 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
     /**
      * @param Podmiot1 $podmiot1 Dane podatnika. Imię i nazwisko lub nazwa sprzedawcy towarów lub usług
      * @param Podmiot2 $podmiot2 Dane nabywcy
+     * @param Podmiot3|null $podmiot3 Dane podmiotu/-ów trzeciego/-ich (innego/-ych niż sprzedawca i nabywca wymieniony w części Podmiot2), związanego/-ych z fakturą
      * @param Fa $fa Na podstawie art. 106a - 106q ustawy. Pola dotyczące wartości sprzedaży i podatku wypełnia się w walucie, w której wystawiono fakturę, z wyjątkiem pól dotyczących podatku przeliczonego zgodnie z przepisami Działu VI w związku z art. 106e ust. 11 ustawy. W przypadku wystawienia faktury korygującej, wypełnia się wszystkie pola wg stanu po korekcie, a pola dotyczące podstaw opodatkowania, podatku oraz należności ogółem wypełnia się poprzez różnicę
      * @param null|Stopka $stopka Pozostałe dane na fakturze
      * @return void
@@ -32,6 +34,7 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         public Podmiot1 $podmiot1,
         public Podmiot2 $podmiot2,
         public Fa $fa,
+        public ?Podmiot3 $podmiot3 = null,
         public ?Stopka $stopka = null
     ) {
     }
@@ -57,6 +60,12 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         $podmiot2 = $dom->importNode($this->podmiot2->toDom()->documentElement, true);
 
         $faktura->appendChild($podmiot2);
+
+        if ($this->podmiot3 instanceof Podmiot3) {
+            $podmiot3 = $dom->importNode($this->podmiot3->toDom()->documentElement, true);
+
+            $faktura->appendChild($podmiot3);
+        }
 
         $fa = $dom->importNode($this->fa->toDom()->documentElement, true);
 

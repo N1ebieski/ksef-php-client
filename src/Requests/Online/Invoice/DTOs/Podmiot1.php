@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Podmiot1PrefiksPodatnika;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PrefiksPodatnika;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\StatusInfoPodatnika;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
@@ -18,7 +18,7 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
      * @param Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
      * @param Adres $adres Adres podatnika
      * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podatnika
-     * @param Podmiot1PrefiksPodatnika|null $prefiksPodatnika Kod (prefiks) podatnika VAT UE dla przypadków określonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 3 ustawy
+     * @param PrefiksPodatnika|null $prefiksPodatnika Kod (prefiks) podatnika VAT UE dla przypadków określonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 3 ustawy
      * @param NrEORI|null $nrEORI Numer EORI podatnika (sprzedawcy)
      * @return void
      */
@@ -26,7 +26,7 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
         public Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
         public array $daneKontaktowe = [],
-        public ?Podmiot1PrefiksPodatnika $prefiksPodatnika = null,
+        public ?PrefiksPodatnika $prefiksPodatnika = null,
         public ?NrEORI $nrEORI = null,
         public ?AdresKoresp $adresKoresp = null,
         public ?StatusInfoPodatnika $statusInfoPodatnika = null
@@ -41,7 +41,7 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
         $podmiot1 = $dom->createElement('Podmiot1');
         $dom->appendChild($podmiot1);
 
-        if ($this->prefiksPodatnika instanceof Podmiot1PrefiksPodatnika) {
+        if ($this->prefiksPodatnika instanceof PrefiksPodatnika) {
             $prefiksPodatnika = $dom->createElement('PrefiksPodatnika');
             $prefiksPodatnika->appendChild($dom->createTextNode((string) $this->prefiksPodatnika));
             $podmiot1->appendChild($prefiksPodatnika);

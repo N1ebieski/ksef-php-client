@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
+
+use DOMDocument;
+use DOMElement;
+use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Nazwa;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+
+final readonly class Podmiot3DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface
+{
+    public function __construct(
+        public NIPGroup | IDWewGroup | UEGroup | KrajGroup | BrakIDGroup $idgroup,
+        public ?Nazwa $nazwa = null
+    ) {
+    }
+
+    public function toDom(): DOMDocument
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
+        $dom->appendChild($daneIdentyfikacyjne);
+
+        /** @var DOMElement $nipGroup */
+        $nipGroup = $this->idgroup->toDom()->documentElement;
+
+        foreach ($nipGroup->childNodes as $child) {
+            $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));
+        }
+
+        $nazwa = $dom->createElement('Nazwa');
+        $nazwa->appendChild($dom->createTextNode((string) $this->nazwa));
+
+        $daneIdentyfikacyjne->appendChild($nazwa);
+
+        return $dom;
+    }
+}

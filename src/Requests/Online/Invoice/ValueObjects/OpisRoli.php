@@ -6,18 +6,20 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\String\CountryUERule;
+use N1ebieski\KSEFClient\Validator\Rules\String\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class Podmiot1PrefiksPodatnika extends AbstractValueObject implements ValueAwareInterface, Stringable
+final readonly class OpisRoli extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 
     public function __construct(string $value)
     {
         Validator::validate($value, [
-            new CountryUERule(),
+            new MinRule(1),
+            new MaxRule(256),
         ]);
 
         $this->value = $value;

@@ -13,11 +13,11 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class BrakIDGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param BrakID $brakId Podmiot nie posiada identyfikatora podatkowego lub identyfikator nie występuje na fakturze: 1- tak
+     * @param BrakID $brakID Podmiot nie posiada identyfikatora podatkowego lub identyfikator nie występuje na fakturze: 1- tak
      * @return void
      */
     public function __construct(
-        public BrakID $brakId,
+        public BrakID $brakID,
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class BrakIDGroup extends AbstractDTO implements DomSerializableI
         $dom->appendChild($brakIdGroup);
 
         $brakId = $dom->createElement('BrakID');
-        $brakId->appendChild($dom->createTextNode((string) $this->brakId->value));
+        $brakId->appendChild($dom->createTextNode((string) $this->brakID->value));
 
         $brakIdGroup->appendChild($brakId);
 
