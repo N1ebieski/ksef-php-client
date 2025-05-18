@@ -46,52 +46,52 @@ final readonly class FaWiersz extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $faWiersz = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FaWiersz');
+        $faWiersz = $dom->createElement('FaWiersz');
         $dom->appendChild($faWiersz);
 
-        $nrWierszaFa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrWierszaFa');
+        $nrWierszaFa = $dom->createElement('NrWierszaFa');
         $nrWierszaFa->appendChild($dom->createTextNode((string) $this->nrWierszaFa));
 
         $faWiersz->appendChild($nrWierszaFa);
 
         if ($this->uu_id instanceof UU_ID) {
-            $uu_id = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'UU_ID');
+            $uu_id = $dom->createElement('UU_ID');
             $uu_id->appendChild($dom->createTextNode((string) $this->uu_id));
             $faWiersz->appendChild($uu_id);
         }
 
         if ($this->p_7 instanceof P_7) {
-            $p_7 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_7');
+            $p_7 = $dom->createElement('P_7');
             $p_7->appendChild($dom->createTextNode((string) $this->p_7));
             $faWiersz->appendChild($p_7);
         }
 
         if ($this->p_8a instanceof P_8A) {
-            $p_8a = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_8A');
+            $p_8a = $dom->createElement('P_8A');
             $p_8a->appendChild($dom->createTextNode((string) $this->p_8a));
             $faWiersz->appendChild($p_8a);
         }
 
         if ($this->p_8b instanceof P_8B) {
-            $p_8b = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_8B');
+            $p_8b = $dom->createElement('P_8B');
             $p_8b->appendChild($dom->createTextNode((string) $this->p_8b));
             $faWiersz->appendChild($p_8b);
         }
 
         if ($this->p_9a instanceof P_9A) {
-            $p_9a = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_9A');
+            $p_9a = $dom->createElement('P_9A');
             $p_9a->appendChild($dom->createTextNode((string) $this->p_9a));
             $faWiersz->appendChild($p_9a);
         }
 
         if ($this->p_11 instanceof P_11) {
-            $p_11 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_11');
+            $p_11 = $dom->createElement('P_11');
             $p_11->appendChild($dom->createTextNode((string) $this->p_11));
             $faWiersz->appendChild($p_11);
         }
 
         if ($this->p_12 instanceof P_12) {
-            $p_12 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_12');
+            $p_12 = $dom->createElement('P_12');
             $p_12->appendChild($dom->createTextNode((string) $this->p_12->value));
             $faWiersz->appendChild($p_12);
         }

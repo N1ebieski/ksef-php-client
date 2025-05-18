@@ -41,7 +41,7 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $faktura = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Faktura');
+        $faktura = $dom->createElementNS($this->naglowek->wariantFormularza->getTargetNamespace(), 'Faktura');
         $faktura->setAttribute('xmlns:xsi', (string) XmlNamespace::Xsi->value);
 
         $dom->appendChild($faktura);

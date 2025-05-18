@@ -22,7 +22,7 @@ final readonly class Zwolnienie extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $zwolnienie = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zwolnienie');
+        $zwolnienie = $dom->createElement('Zwolnienie');
         $dom->appendChild($zwolnienie);
 
         /** @var DOMElement $p_19group */

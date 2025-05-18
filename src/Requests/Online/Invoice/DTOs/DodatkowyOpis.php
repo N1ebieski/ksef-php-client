@@ -30,21 +30,21 @@ final readonly class DodatkowyOpis extends AbstractDTO implements DomSerializabl
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $dodatkowyOpis = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DodatkowyOpis');
+        $dodatkowyOpis = $dom->createElement('DodatkowyOpis');
         $dom->appendChild($dodatkowyOpis);
 
         if ($this->nrWiersza instanceof NrWiersza) {
-            $nrWiersza = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrWiersza');
+            $nrWiersza = $dom->createElement('NrWiersza');
             $nrWiersza->appendChild($dom->createTextNode((string) $this->nrWiersza));
             $dodatkowyOpis->appendChild($nrWiersza);
         }
 
-        $klucz = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Klucz');
+        $klucz = $dom->createElement('Klucz');
         $klucz->appendChild($dom->createTextNode((string) $this->klucz));
 
         $dodatkowyOpis->appendChild($klucz);
 
-        $wartosc = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Wartosc');
+        $wartosc = $dom->createElement('Wartosc');
         $wartosc->appendChild($dom->createTextNode((string) $this->wartosc));
 
         $dodatkowyOpis->appendChild($wartosc);

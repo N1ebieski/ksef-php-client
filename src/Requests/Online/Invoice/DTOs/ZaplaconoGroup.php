@@ -29,15 +29,15 @@ final readonly class ZaplaconoGroup extends AbstractDTO implements DomSerializab
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $zaplaconoGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'ZaplaconoGroup');
+        $zaplaconoGroup = $dom->createElement('ZaplaconoGroup');
         $dom->appendChild($zaplaconoGroup);
 
-        $zaplacono = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zaplacono');
+        $zaplacono = $dom->createElement('Zaplacono');
         $zaplacono->appendChild($dom->createTextNode((string) $this->zaplacono->value));
 
         $zaplaconoGroup->appendChild($zaplacono);
 
-        $dataZaplaty = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataZaplaty');
+        $dataZaplaty = $dom->createElement('DataZaplaty');
         $dataZaplaty->appendChild($dom->createTextNode((string) $this->dataZaplaty));
 
         $zaplaconoGroup->appendChild($dataZaplaty);

@@ -17,6 +17,4 @@ enum XmlNamespace: string
     case KsefOnlineTypes = 'http://ksef.mf.gov.pl/schema/gtw/svc/online/types/2021/10/01/0001';
 
     case Xsi = 'http://www.w3.org/2001/XMLSchema-instance';
-
-    case Faktura = 'http://crd.gov.pl/wzor/2023/06/29/12648/';
 }

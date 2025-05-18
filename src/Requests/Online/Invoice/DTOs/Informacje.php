@@ -25,11 +25,11 @@ final readonly class Informacje extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $informacje = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Informacje');
+        $informacje = $dom->createElement('Informacje');
         $dom->appendChild($informacje);
 
         if ($this->stopkaFaktury instanceof StopkaFaktury) {
-            $stopkaFaktury = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'StopkaFaktury');
+            $stopkaFaktury = $dom->createElement('StopkaFaktury');
             $stopkaFaktury->appendChild($dom->createTextNode((string) $this->stopkaFaktury));
             $informacje->appendChild($stopkaFaktury);
         }

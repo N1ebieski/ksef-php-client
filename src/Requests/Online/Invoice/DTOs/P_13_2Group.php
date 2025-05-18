@@ -29,15 +29,15 @@ final readonly class P_13_2Group extends AbstractDTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_13_2group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_2Group');
+        $p_13_2group = $dom->createElement('P_13_2Group');
         $dom->appendChild($p_13_2group);
 
-        $p_13_2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_2');
+        $p_13_2 = $dom->createElement('P_13_2');
         $p_13_2->appendChild($dom->createTextNode((string) $this->p_13_2));
 
         $p_13_2group->appendChild($p_13_2);
 
-        $p_14_2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_14_2');
+        $p_14_2 = $dom->createElement('P_14_2');
         $p_14_2->appendChild($dom->createTextNode((string) $this->p_14_2));
 
         $p_13_2group->appendChild($p_14_2);

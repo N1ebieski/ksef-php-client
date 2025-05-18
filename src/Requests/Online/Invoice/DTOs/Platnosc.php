@@ -23,7 +23,7 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $platnosc = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Platnosc');
+        $platnosc = $dom->createElement('Platnosc');
         $dom->appendChild($platnosc);
 
         if ($this->zaplataGroup instanceof ZaplaconoGroup) {

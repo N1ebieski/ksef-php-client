@@ -29,15 +29,15 @@ final readonly class PlatnoscInnaGroup extends AbstractDTO implements DomSeriali
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $platnoscInnaGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PlatnoscInnaGroup');
+        $platnoscInnaGroup = $dom->createElement('PlatnoscInnaGroup');
         $dom->appendChild($platnoscInnaGroup);
 
-        $platnoscInna = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PlatnoscInna');
+        $platnoscInna = $dom->createElement('PlatnoscInna');
         $platnoscInna->appendChild($dom->createTextNode((string) $this->platnoscInna->value));
 
         $platnoscInnaGroup->appendChild($platnoscInna);
 
-        $opisPlatnosci = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OpisPlatnosci');
+        $opisPlatnosci = $dom->createElement('OpisPlatnosci');
         $opisPlatnosci->appendChild($dom->createTextNode((string) $this->opisPlatnosci));
 
         $platnoscInnaGroup->appendChild($opisPlatnosci);

@@ -29,16 +29,16 @@ final readonly class P_13_5Group extends AbstractDTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_13_5group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_5Group');
+        $p_13_5group = $dom->createElement('P_13_5Group');
         $dom->appendChild($p_13_5group);
 
-        $p_13_5 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_13_5');
+        $p_13_5 = $dom->createElement('P_13_5');
         $p_13_5->appendChild($dom->createTextNode((string) $this->p_13_5));
 
         $p_13_5group->appendChild($p_13_5);
 
         if ($this->p_14_5 instanceof P_14_5) {
-            $p_14_5 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_14_5');
+            $p_14_5 = $dom->createElement('P_14_5');
             $p_14_5->appendChild($dom->createTextNode((string) $this->p_14_5));
 
             $p_13_5group->appendChild($p_14_5);

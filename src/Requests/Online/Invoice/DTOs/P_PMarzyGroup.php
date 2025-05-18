@@ -28,10 +28,10 @@ final readonly class P_PMarzyGroup extends AbstractDTO implements DomSerializabl
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzygroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzyGroup');
+        $p_pmarzygroup = $dom->createElement('P_PMarzyGroup');
         $dom->appendChild($p_pmarzygroup);
 
-        $p_pmarzy = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy');
+        $p_pmarzy = $dom->createElement('P_PMarzy');
         $p_pmarzy->appendChild($dom->createTextNode((string) $this->p_pmarzy->value));
 
         $p_pmarzygroup->appendChild($p_pmarzy);

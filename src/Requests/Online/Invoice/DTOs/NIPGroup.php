@@ -22,10 +22,10 @@ final readonly class NIPGroup extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $nipGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NIPGroup');
+        $nipGroup = $dom->createElement('NIPGroup');
         $dom->appendChild($nipGroup);
 
-        $nip = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NIP');
+        $nip = $dom->createElement('NIP');
         $nip->appendChild($dom->createTextNode((string) $this->nip));
 
         $nipGroup->appendChild($nip);

@@ -28,10 +28,10 @@ final readonly class P_19Group extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_19group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_19Group');
+        $p_19group = $dom->createElement('P_19Group');
         $dom->appendChild($p_19group);
 
-        $p_19 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_19');
+        $p_19 = $dom->createElement('P_19');
         $p_19->appendChild($dom->createTextNode((string) $this->p_19->value));
 
         $p_19group->appendChild($p_19);

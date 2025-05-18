@@ -33,29 +33,29 @@ final readonly class Rejestry extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $rejestry = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Rejestry');
+        $rejestry = $dom->createElement('Rejestry');
         $dom->appendChild($rejestry);
 
         if ($this->pelnaNazwa instanceof PelnaNazwa) {
-            $pelnaNazwa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PelnaNazwa');
+            $pelnaNazwa = $dom->createElement('PelnaNazwa');
             $pelnaNazwa->appendChild($dom->createTextNode((string) $this->pelnaNazwa));
             $rejestry->appendChild($pelnaNazwa);
         }
 
         if ($this->krs instanceof KRS) {
-            $krs = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KRS');
+            $krs = $dom->createElement('KRS');
             $krs->appendChild($dom->createTextNode((string) $this->krs));
             $rejestry->appendChild($krs);
         }
 
         if ($this->regon instanceof REGON) {
-            $regon = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'REGON');
+            $regon = $dom->createElement('REGON');
             $regon->appendChild($dom->createTextNode((string) $this->regon));
             $rejestry->appendChild($regon);
         }
 
         if ($this->bdo instanceof BDO) {
-            $bdo = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BDO');
+            $bdo = $dom->createElement('BDO');
             $bdo->appendChild($dom->createTextNode((string) $this->bdo));
             $rejestry->appendChild($bdo);
         }

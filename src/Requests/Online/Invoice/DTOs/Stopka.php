@@ -27,7 +27,7 @@ final readonly class Stopka extends AbstractDTO implements DomSerializableInterf
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $stopka = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Stopka');
+        $stopka = $dom->createElement('Stopka');
         $dom->appendChild($stopka);
 
         foreach ($this->informacje as $informacje) {

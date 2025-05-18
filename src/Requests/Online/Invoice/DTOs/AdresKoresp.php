@@ -10,17 +10,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\AdresL1;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\AdresL2;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\GLN;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KodKraju;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final readonly class Adres extends AbstractDTO implements DomSerializableInterface
+final readonly class AdresKoresp extends AbstractDTO implements DomSerializableInterface
 {
     /**
      * @param null|GLN $gln Globalny Numer Lokalizacyjny [Global Location Number]
      */
     public function __construct(
+        public KodKraju $kodKraju,
         public AdresL1 $adresL1,
-        public KodKraju $kodKraju = new KodKraju('PL'),
         public ?AdresL2 $adresL2 = null,
         public ?GLN $gln = null
     ) {
@@ -31,7 +30,7 @@ final readonly class Adres extends AbstractDTO implements DomSerializableInterfa
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $adres = $dom->createElement('Adres');
+        $adres = $dom->createElement('AdresKoresp');
         $dom->appendChild($adres);
 
         $kodKraju = $dom->createElement('KodKraju');

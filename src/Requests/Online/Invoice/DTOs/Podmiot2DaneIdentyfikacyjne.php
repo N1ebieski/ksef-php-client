@@ -24,7 +24,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends AbstractDTO implements 
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $daneIdentyfikacyjne = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DaneIdentyfikacyjne');
+        $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
         $dom->appendChild($daneIdentyfikacyjne);
 
         /** @var DOMElement $nipGroup */
@@ -34,7 +34,7 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends AbstractDTO implements 
             $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));
         }
 
-        $nazwa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Nazwa');
+        $nazwa = $dom->createElement('Nazwa');
         $nazwa->appendChild($dom->createTextNode((string) $this->nazwa));
 
         $daneIdentyfikacyjne->appendChild($nazwa);

@@ -22,7 +22,7 @@ final readonly class NoweSrodkiTransportu extends AbstractDTO implements DomSeri
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $noweSrodkiTransportu = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NoweSrodkiTransportu');
+        $noweSrodkiTransportu = $dom->createElement('NoweSrodkiTransportu');
         $dom->appendChild($noweSrodkiTransportu);
 
         /** @var DOMElement $p_22group */

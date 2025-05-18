@@ -29,15 +29,15 @@ final readonly class P_22Group extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_22Group');
+        $p_22group = $dom->createElement('P_22Group');
         $dom->appendChild($p_22group);
 
-        $p_42_5 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_42_5');
+        $p_42_5 = $dom->createElement('P_42_5');
         $p_42_5->appendChild($dom->createTextNode((string) $this->p_42_5->value));
 
         $p_22group->appendChild($p_42_5);
 
-        $p_22 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_22');
+        $p_22 = $dom->createElement('P_22');
         $p_22->appendChild($dom->createTextNode((string) $this->p_22->value));
 
         $p_22group->appendChild($p_22);

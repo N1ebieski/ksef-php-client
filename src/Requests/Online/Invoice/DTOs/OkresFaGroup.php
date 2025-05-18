@@ -25,7 +25,7 @@ final readonly class OkresFaGroup extends AbstractDTO implements DomSerializable
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $okresFaGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OkresFaGroup');
+        $okresFaGroup = $dom->createElement('OkresFaGroup');
         $dom->appendChild($okresFaGroup);
 
         $okresFa = $dom->importNode($this->okresFa->toDom()->documentElement, true);

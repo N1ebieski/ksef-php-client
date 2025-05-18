@@ -29,15 +29,15 @@ final readonly class UEGroup extends AbstractDTO implements DomSerializableInter
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $ueGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'UEGroup');
+        $ueGroup = $dom->createElement('UEGroup');
         $dom->appendChild($ueGroup);
 
-        $kodUe = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodUE');
+        $kodUe = $dom->createElement('KodUE');
         $kodUe->appendChild($dom->createTextNode((string) $this->kodUe));
 
         $ueGroup->appendChild($kodUe);
 
-        $nrVatUe = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'nrVatUe');
+        $nrVatUe = $dom->createElement('nrVatUe');
         $nrVatUe->appendChild($dom->createTextNode((string) $this->nrVatUe));
 
         $ueGroup->appendChild($nrVatUe);

@@ -6,12 +6,12 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_16;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_17;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_18;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_18A;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_23;
+use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Adnotacje extends AbstractDTO implements DomSerializableInterface
@@ -41,25 +41,25 @@ final readonly class Adnotacje extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $adnotacje = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Adnotacje');
+        $adnotacje = $dom->createElement('Adnotacje');
         $dom->appendChild($adnotacje);
 
-        $p_16 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_16');
+        $p_16 = $dom->createElement('P_16');
         $p_16->appendChild($dom->createTextNode((string) $this->p_16->value));
 
         $adnotacje->appendChild($p_16);
 
-        $p_17 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_17');
+        $p_17 = $dom->createElement('P_17');
         $p_17->appendChild($dom->createTextNode((string) $this->p_17->value));
 
         $adnotacje->appendChild($p_17);
 
-        $p_18 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_18');
+        $p_18 = $dom->createElement('P_18');
         $p_18->appendChild($dom->createTextNode((string) $this->p_18->value));
 
         $adnotacje->appendChild($p_18);
 
-        $p_23 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_18A');
+        $p_23 = $dom->createElement('P_18A');
         $p_23->appendChild($dom->createTextNode((string) $this->p_18a->value));
 
         $adnotacje->appendChild($p_23);
@@ -72,7 +72,7 @@ final readonly class Adnotacje extends AbstractDTO implements DomSerializableInt
 
         $adnotacje->appendChild($noweSrodkiTransportu);
 
-        $p_23 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_23');
+        $p_23 = $dom->createElement('P_23');
         $p_23->appendChild($dom->createTextNode((string) $this->p_23->value));
 
         $adnotacje->appendChild($p_23);

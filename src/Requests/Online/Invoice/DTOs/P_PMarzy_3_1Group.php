@@ -26,10 +26,10 @@ final readonly class P_PMarzy_3_1Group extends AbstractDTO implements DomSeriali
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzy_3_1group = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_3_1Group');
+        $p_pmarzy_3_1group = $dom->createElement('P_PMarzy_3_1Group');
         $dom->appendChild($p_pmarzy_3_1group);
 
-        $p_pmarzy_3_1 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_PMarzy_3_1');
+        $p_pmarzy_3_1 = $dom->createElement('P_PMarzy_3_1');
         $p_pmarzy_3_1->appendChild($dom->createTextNode((string) $this->p_pmarzy_3_1->value));
 
         $p_pmarzy_3_1group->appendChild($p_pmarzy_3_1);

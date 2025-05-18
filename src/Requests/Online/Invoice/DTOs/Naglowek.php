@@ -31,28 +31,28 @@ final readonly class Naglowek extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $naglowek = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Naglowek');
+        $naglowek = $dom->createElement('Naglowek');
         $dom->appendChild($naglowek);
 
-        $kodFormularza = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodFormularza');
+        $kodFormularza = $dom->createElement('KodFormularza');
         $kodFormularza->setAttribute('kodSystemowy', (string) $this->wariantFormularza->value);
         $kodFormularza->setAttribute('wersjaSchemy', $this->wariantFormularza->getSchemaVersion());
         $kodFormularza->appendChild($dom->createTextNode('FA'));
 
         $naglowek->appendChild($kodFormularza);
 
-        $wariantFormularza = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'WariantFormularza');
+        $wariantFormularza = $dom->createElement('WariantFormularza');
         $wariantFormularza->appendChild($dom->createTextNode($this->wariantFormularza->getWariantFormularza()));
 
         $naglowek->appendChild($wariantFormularza);
 
-        $dataWytworzeniaFa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataWytworzeniaFa');
+        $dataWytworzeniaFa = $dom->createElement('DataWytworzeniaFa');
         $dataWytworzeniaFa->appendChild($dom->createTextNode((string) $this->dataWytworzeniaFa));
 
         $naglowek->appendChild($dataWytworzeniaFa);
 
         if ($this->systemInfo instanceof SystemInfo) {
-            $systemInfo = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'SystemInfo');
+            $systemInfo = $dom->createElement('SystemInfo');
             $systemInfo->appendChild($dom->createTextNode((string) $this->systemInfo));
             $naglowek->appendChild($systemInfo);
         }

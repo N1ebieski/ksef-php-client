@@ -22,7 +22,7 @@ final readonly class PMarzy extends AbstractDTO implements DomSerializableInterf
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $pmarzy = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'PMarzy');
+        $pmarzy = $dom->createElement('PMarzy');
         $dom->appendChild($pmarzy);
 
         /** @var DOMElement $p_pmarzygroup */

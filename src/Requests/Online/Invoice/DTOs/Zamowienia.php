@@ -24,18 +24,18 @@ final readonly class Zamowienia extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $zamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Zamowienia');
+        $zamowienia = $dom->createElement('Zamowienia');
         $dom->appendChild($zamowienia);
 
         if ($this->dataZamowienia instanceof DataZamowienia) {
-            $dataZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'DataZamowienia');
+            $dataZamowienia = $dom->createElement('DataZamowienia');
             $dataZamowienia->appendChild($dom->createTextNode((string) $this->dataZamowienia));
 
             $zamowienia->appendChild($dataZamowienia);
         }
 
         if ($this->nrZamowienia instanceof NrZamowienia) {
-            $nrZamowienia = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrZamowienia');
+            $nrZamowienia = $dom->createElement('NrZamowienia');
             $nrZamowienia->appendChild($dom->createTextNode((string) $this->nrZamowienia));
 
             $zamowienia->appendChild($nrZamowienia);

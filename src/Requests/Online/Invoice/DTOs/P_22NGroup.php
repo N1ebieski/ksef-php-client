@@ -26,10 +26,10 @@ final readonly class P_22NGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22ngroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_22NGroup');
+        $p_22ngroup = $dom->createElement('P_22NGroup');
         $dom->appendChild($p_22ngroup);
 
-        $p_22n = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_22N');
+        $p_22n = $dom->createElement('P_22N');
         $p_22n->appendChild($dom->createTextNode((string) $this->p_22n->value));
 
         $p_22ngroup->appendChild($p_22n);

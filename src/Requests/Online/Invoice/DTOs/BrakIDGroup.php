@@ -26,10 +26,10 @@ final readonly class BrakIDGroup extends AbstractDTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $brakIdGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BrakIDGroup');
+        $brakIdGroup = $dom->createElement('BrakIDGroup');
         $dom->appendChild($brakIdGroup);
 
-        $brakId = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'BrakID');
+        $brakId = $dom->createElement('BrakID');
         $brakId->appendChild($dom->createTextNode((string) $this->brakId->value));
 
         $brakIdGroup->appendChild($brakId);

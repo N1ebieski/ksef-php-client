@@ -29,15 +29,15 @@ final readonly class OkresFa extends AbstractDTO implements DomSerializableInter
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $okresFa = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'OkresFa');
+        $okresFa = $dom->createElement('OkresFa');
         $dom->appendChild($okresFa);
 
-        $p6Od = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_6_Od');
+        $p6Od = $dom->createElement('P_6_Od');
         $p6Od->appendChild($dom->createTextNode((string) $this->p_6_od));
 
         $okresFa->appendChild($p6Od);
 
-        $p6Do = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'P_6_Do');
+        $p6Do = $dom->createElement('P_6_Do');
         $p6Do->appendChild($dom->createTextNode((string) $this->p_6_do));
 
         $okresFa->appendChild($p6Do);

@@ -32,7 +32,7 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $podmiot2 = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'Podmiot2');
+        $podmiot2 = $dom->createElement('Podmiot2');
         $dom->appendChild($podmiot2);
 
         $daneIdentyfikacyjne = $dom->importNode($this->daneIdentyfikacyjne->toDom()->documentElement, true);
@@ -51,7 +51,7 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
         }
 
         if ($this->nrKlienta instanceof NrKlienta) {
-            $nrKlienta = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrKlienta');
+            $nrKlienta = $dom->createElement('NrKlienta');
             $nrKlienta->appendChild($dom->createTextNode((string) $this->nrKlienta));
             $podmiot2->appendChild($nrKlienta);
         }

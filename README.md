@@ -39,6 +39,7 @@ composer require guzzlehttp/guzzle
 ### Client configuration
 
 ```php
+use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 
 $client = new ClientBuilder()

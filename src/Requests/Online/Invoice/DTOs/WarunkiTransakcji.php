@@ -25,7 +25,7 @@ final readonly class WarunkiTransakcji extends AbstractDTO implements DomSeriali
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $warunkiTransakcji = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'WarunkiTransakcji');
+        $warunkiTransakcji = $dom->createElement('WarunkiTransakcji');
         $dom->appendChild($warunkiTransakcji);
 
         foreach ($this->zamowienia as $zamowienie) {

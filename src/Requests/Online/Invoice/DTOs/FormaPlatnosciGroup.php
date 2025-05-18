@@ -22,10 +22,10 @@ final readonly class FormaPlatnosciGroup extends AbstractDTO implements DomSeria
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $formaPlatnosciGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FormaPlatnosciGroup');
+        $formaPlatnosciGroup = $dom->createElement('FormaPlatnosciGroup');
         $dom->appendChild($formaPlatnosciGroup);
 
-        $formaPlatnosci = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'FormaPlatnosci');
+        $formaPlatnosci = $dom->createElement('FormaPlatnosci');
         $formaPlatnosci->appendChild($dom->createTextNode((string) $this->formaPlatnosci->value));
 
         $formaPlatnosciGroup->appendChild($formaPlatnosci);

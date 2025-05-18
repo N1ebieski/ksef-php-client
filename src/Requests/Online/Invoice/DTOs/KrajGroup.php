@@ -29,16 +29,16 @@ final readonly class KrajGroup extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $krajGroup = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KrajGroup');
+        $krajGroup = $dom->createElement('KrajGroup');
         $dom->appendChild($krajGroup);
 
-        $nrId = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'NrID');
+        $nrId = $dom->createElement('NrID');
         $nrId->appendChild($dom->createTextNode((string) $this->nrId));
 
         $krajGroup->appendChild($nrId);
 
         if ($this->kodKraju instanceof KodKraju) {
-            $kodKraju = $dom->createElementNS((string) XmlNamespace::Faktura->value, 'KodKraju');
+            $kodKraju = $dom->createElement('KodKraju');
             $kodKraju->appendChild($dom->createTextNode((string) $this->kodKraju));
             $krajGroup->appendChild($kodKraju);
         }
