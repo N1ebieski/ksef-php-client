@@ -12,6 +12,8 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
     - [Auto authorization via certificate .p12](#auto-authorization-via-certificate-p12)
     - [Manual authorization](#manual-authorization)
 - [Resources](#resources)
+    - [Common](#common)
+        - [Status](#status)        
     - [Online](#online)
         - [Session](#session)
             - [Authorisation challenge](#authorization-challenge)
@@ -19,6 +21,13 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
             - [Init signed](#init-signed)
             - [Session status](#session-status)
             - [Terminate](#terminate)
+        - [Invoice](#invoice)
+            - [Get an invoice](#get-an-invoice)
+            - [Send an invoice](#send-an-invoice)
+            - [Invoice status](#invoice-status)
+- [Examples](#examples)
+    - [Send an invoice and check for UPO](#send-an-invoice-and-check-for-upo)
+- [Testing](#testing)
 
 ## Get Started
 
@@ -144,6 +153,22 @@ $client->online()->session()->terminate();
 
 ## Resources
 
+### Common
+
+#### Status
+
+Checking the status of batch processing (with UPO after finalization)
+
+```php
+use N1ebieski\KSEFClient\Requests\Common\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
+
+/** @var StatusResponse $response */
+$response = $client->common()->status(
+    new StatusRequest(...)
+);
+```
+
 ### Online
 
 #### Session
@@ -173,7 +198,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 /** @var InitTokenResponse $response */
 $response = $client->online()->session()->initToken(
     new InitTokenRequest(...)
-),
+);
 ```
 
 ##### Init signed
@@ -187,7 +212,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 /** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedRequest(...)
-),
+);
 ```
 
 or:
@@ -199,7 +224,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 /** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedXmlRequest($signedXml)
-),
+);
 ```
 
 ##### Session status
@@ -213,7 +238,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 /** @var StatusResponse $response */
 $response = $client->online()->session()->status(
     new StatusRequest(...)
-),
+);
 ```
 
 ##### Terminate
@@ -224,5 +249,126 @@ Forcing the closing of an active interactive session
 use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 
 /** @var TerminateResponse $response */
-$response = $client->online()->session()->terminate(),
+$response = $client->online()->session()->terminate();
+```
+
+#### Invoice
+
+##### Get an invoice
+
+Invoice download.
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
+
+/** @var GetResponse $response */
+$response = $client->online()->invoice()->get(
+    new GetRequest(...)
+);
+```
+
+##### Send an invoice
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
+
+/** @var SendResponse $response */
+$response = $client->online()->invoice()->send(
+    new SendRequest(...)
+);
+```
+
+##### Invoice status
+
+Checking the status of a sent invoice.
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
+
+/** @var StatusResponse $response */
+$response = $client->online()->invoice()->status(
+    new StatusRequest(...)
+);
+```
+
+## Examples
+
+### Send an invoice and check for UPO
+
+```php
+use N1ebieski\KSEFClient\ClientBuilder;
+use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
+use N1ebieski\KSEFClient\Support\Utility;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
+use N1ebieski\KSEFClient\ValueObjects\Mode;
+
+$client = new ClientBuilder()
+    ->withMode(Mode::Test)
+    ->withApiToken($_ENV['KSEF_KEY'])
+    ->withLogXmlPath(__DIR__ . '/../var/xml/')
+    ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->build();
+
+try {
+    // Send an invoice
+    $sendResponse = $client->online()->invoice()->send(new SendRequestFixture()->withTodayDate()->data);
+
+    // Check status of invoice generation
+    Utility::retry(function () use ($client, $sendResponse) {
+        $statusResponse = $client->online()->invoice()->status([
+            'invoice_element_reference_number' => $sendResponse->elementReferenceNumber->value
+        ]);
+
+        if ($statusResponse->processingCode->value === 200) {
+            return $statusResponse;
+        }
+    });
+} catch (Throwable $e) {
+    $client->online()->session()->terminate();
+
+    throw $e;
+}
+
+// Close session (only then will the UPO be generated)
+$client->online()->session()->terminate();
+
+// We don't need to authorize for UPO
+$client = new ClientBuilder()
+    ->withMode(Mode::Test)
+    ->build();
+
+// Check status of UPO generation
+/** @var StatusResponse $commonStatus */
+$commonStatus = Utility::retry(function () use ($client, $sendResponse) {
+    $commonStatus = $client->common()->status([
+        'reference_number' => $sendResponse->referenceNumber
+    ]);
+
+    if ($commonStatus->processingCode->value === 200) {
+        return $commonStatus;
+    }
+});
+
+$xml = $commonStatus->upo->toXml();
+```
+
+## Testing
+
+The package uses unit tests via [phpunit](https://github.com/sebastianbergmann/phpunit). 
+
+TestCase is located in the location of ```N1ebieski\KSEFClient\Testing\TestCase```.
+Fake request fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Requests```
+Fake response fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Responses```
+
+Run all tests:
+
+```bash
+composer install
+```
+
+```bash
+vendor/bin/phpunit
 ```
