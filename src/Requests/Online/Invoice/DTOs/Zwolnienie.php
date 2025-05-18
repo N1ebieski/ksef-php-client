@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Zwolnienie extends AbstractDTO implements DomSerializableInterface

@@ -15,7 +15,6 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_1;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_2;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\RodzajFaktury;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Fa extends AbstractDTO implements DomSerializableInterface

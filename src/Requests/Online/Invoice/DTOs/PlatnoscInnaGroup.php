@@ -8,7 +8,6 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\OpisPlatnosci;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PlatnoscInna;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class PlatnoscInnaGroup extends AbstractDTO implements DomSerializableInterface

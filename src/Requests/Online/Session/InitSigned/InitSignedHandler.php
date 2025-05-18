@@ -34,7 +34,7 @@ final readonly class InitSignedHandler extends AbstractHandler
     public function handle(InitSignedRequest | InitSignedXmlRequest $request): InitSignedResponse
     {
         $signedXml = match (true) {
-            $request instanceof InitSignedRequest => value(function () use ($request) {
+            $request instanceof InitSignedRequest => value(function () use ($request): string {
                 Validator::validate(['certificatePath' => $request->certificatePath], [
                     new RequiredRule()
                 ]);

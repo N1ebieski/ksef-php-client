@@ -8,7 +8,6 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataZaplaty;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Zaplacono;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class ZaplaconoGroup extends AbstractDTO implements DomSerializableInterface

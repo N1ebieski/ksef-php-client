@@ -10,7 +10,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final readonly class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface
+final readonly class PodmiotUpowaznionyDaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
         public NIP $nip,

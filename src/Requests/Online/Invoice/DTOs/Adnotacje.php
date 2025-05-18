@@ -11,7 +11,6 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_17;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_18;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_18A;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_23;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Adnotacje extends AbstractDTO implements DomSerializableInterface

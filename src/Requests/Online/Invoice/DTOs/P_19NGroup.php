@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_19N;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class P_19NGroup extends AbstractDTO implements DomSerializableInterface

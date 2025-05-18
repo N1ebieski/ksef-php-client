@@ -8,7 +8,6 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KodUE;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrVatUE;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class UEGroup extends AbstractDTO implements DomSerializableInterface

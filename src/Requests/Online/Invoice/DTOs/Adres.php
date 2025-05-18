@@ -10,7 +10,6 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\AdresL1;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\AdresL2;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\GLN;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KodKraju;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Adres extends AbstractDTO implements DomSerializableInterface

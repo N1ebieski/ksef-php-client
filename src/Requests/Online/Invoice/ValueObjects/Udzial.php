@@ -24,7 +24,7 @@ final readonly class Udzial extends AbstractValueObject implements ValueAwareInt
             new MaxDigitsRule(9),
         ]);
 
-        Validator::validate((float) $value, [
+        Validator::validate($value, [
             new MinRule(0),
             new MaxRule(100),
         ]);

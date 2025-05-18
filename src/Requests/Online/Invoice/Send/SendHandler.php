@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Send;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
-use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
@@ -15,7 +14,6 @@ use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
-use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 
 final readonly class SendHandler extends AbstractHandler
 {

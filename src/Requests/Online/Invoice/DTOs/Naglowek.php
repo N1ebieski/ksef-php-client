@@ -10,7 +10,6 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataWytworzeniaFa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\SystemInfo;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Naglowek extends AbstractDTO implements DomSerializableInterface

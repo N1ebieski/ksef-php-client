@@ -8,7 +8,6 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_6_Do;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_6_Od;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class OkresFa extends AbstractDTO implements DomSerializableInterface

@@ -10,7 +10,6 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\BDO;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KRS;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PelnaNazwa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\REGON;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class Rejestry extends AbstractDTO implements DomSerializableInterface

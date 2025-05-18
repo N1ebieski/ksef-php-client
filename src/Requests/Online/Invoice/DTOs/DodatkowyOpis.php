@@ -9,7 +9,6 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Klucz;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrWiersza;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Wartosc;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class DodatkowyOpis extends AbstractDTO implements DomSerializableInterface

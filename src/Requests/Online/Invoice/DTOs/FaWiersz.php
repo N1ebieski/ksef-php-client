@@ -14,7 +14,6 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_8A;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_8B;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_9A;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\UU_ID;
-use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class FaWiersz extends AbstractDTO implements DomSerializableInterface
