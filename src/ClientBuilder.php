@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient;
 
+use function PHPSTORM_META\map;
 use Http\Discovery\Psr18ClientDiscovery;
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
@@ -14,6 +16,12 @@ use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\Authoris
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
+use N1ebieski\KSEFClient\Validator\Rules\String\MaxBytesRule;
+use N1ebieski\KSEFClient\Validator\Rules\String\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\String\MinBytesRule;
+use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
+use N1ebieski\KSEFClient\Validator\Rules\Utility\RequiredRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
@@ -22,6 +30,8 @@ use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
+use PhpParser\Node\Expr\AssignOp\Minus;
+
 use Psr\Http\Client\ClientInterface;
 
 final class ClientBuilder
@@ -67,10 +77,28 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withEncryptionKey(EncryptionKey $encryptionKey): self
+    public function withEncryptionKey(EncryptionKey | string $encryptionKey, ?string $iv = null): self
     {
-        if ($encryptionKey === null) {
-            $encryptionKey = EncryptionKeyFactory::makeRandom();
+        if (is_string($encryptionKey)) {
+            if ($iv === null) {
+                throw new InvalidArgumentException('IV is required when key is string.');
+            }
+
+            Validator::validate([
+                'key' => $encryptionKey,
+                'iv' => $iv
+            ], [
+                'key' => [
+                    new MinBytesRule(32),
+                    new MaxBytesRule(32)
+                ],
+                'iv' => [
+                    new MinBytesRule(16),
+                    new MaxBytesRule(16),
+                ]
+            ]);
+
+            $encryptionKey = new EncryptionKey($encryptionKey, $iv);
         }
 
         $this->encryptionKey = $encryptionKey;

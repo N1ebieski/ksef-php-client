@@ -26,7 +26,6 @@ use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 final readonly class SendRequest extends AbstractRequest implements XmlSerializableInterface, DomSerializableInterface
 {
     use HasToXml;
-    use HasDocumentHash;
 
     /**
      * @param Podmiot1 $podmiot1 Dane podatnika. Imię i nazwisko lub nazwa sprzedawcy towarów lub usług
@@ -87,10 +86,5 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         }
 
         return $dom;
-    }
-
-    public function toDocument(): string
-    {
-        return $this->toXml();
     }
 }

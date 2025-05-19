@@ -37,6 +37,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
         return new SendHandler(
             client: $this->client,
             logXml: new LogXmlHandler($this->config),
+            encryptDocument: new EncryptDocumentHandler(),
             config: $this->config
         )->handle($request);
     }

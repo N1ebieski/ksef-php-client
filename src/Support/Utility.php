@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support;
 
-use RuntimeException;
 use Closure;
+use RuntimeException;
+use SensitiveParameter;
 
 final class Utility
 {
@@ -28,5 +29,22 @@ final class Utility
                 throw new RuntimeException("Operation did not return a result after retrying for {$retryUntil} seconds.");
             }
         }
+    }
+
+    public static function hash(
+        #[SensitiveParameter]
+        string $document,
+    ): array {
+        $hashSHA = base64_encode(hash('sha256', $document, true));
+        $fileSize = strlen($document);
+
+        return [
+            'hashSHA' => [
+                'algorithm' => 'SHA-256',
+                'encoding' => 'Base64',
+                'value' => $hashSHA,
+            ],
+            'fileSize' => $fileSize,
+        ];
     }
 }
