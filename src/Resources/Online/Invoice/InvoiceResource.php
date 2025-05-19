@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice;
 
+use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice\InvoiceResourceInterface;
@@ -33,7 +34,11 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
             $request = SendRequest::from($request);
         }
 
-        return new SendHandler($this->client, new LogXmlHandler($this->config))->handle($request);
+        return new SendHandler(
+            client: $this->client,
+            logXml: new LogXmlHandler($this->config),
+            config: $this->config
+        )->handle($request);
     }
 
     public function status(StatusRequest | array $request): StatusResponse

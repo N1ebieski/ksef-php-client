@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Send;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
+use N1ebieski\KSEFClient\Factories\EncryptedDocumentFactory;
 use N1ebieski\KSEFClient\Requests\AbstractRequest;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Fa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Naglowek;
@@ -16,11 +17,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Podmiot3;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\PodmiotUpowazniony;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs\Stopka;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
+use N1ebieski\KSEFClient\Requests\ValueObjects\Type;
+use N1ebieski\KSEFClient\Support\Concerns\HasDocumentHash;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
+use N1ebieski\KSEFClient\ValueObjects\EncryptedDocument;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 
 final readonly class SendRequest extends AbstractRequest implements XmlSerializableInterface, DomSerializableInterface
 {
     use HasToXml;
+    use HasDocumentHash;
 
     /**
      * @param Podmiot1 $podmiot1 Dane podatnika. Imię i nazwisko lub nazwa sprzedawcy towarów lub usług
@@ -81,5 +87,10 @@ final readonly class SendRequest extends AbstractRequest implements XmlSerializa
         }
 
         return $dom;
+    }
+
+    public function toDocument(): string
+    {
+        return $this->toXml();
     }
 }

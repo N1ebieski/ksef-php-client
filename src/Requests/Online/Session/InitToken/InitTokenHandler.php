@@ -7,6 +7,8 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Factories\EncryptedKeyFactory;
 use N1ebieski\KSEFClient\Factories\EncryptedTokenFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
@@ -21,7 +23,8 @@ final readonly class InitTokenHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private LogXmlHandler $logXml
+        private LogXmlHandler $logXml,
+        private Config $config
     ) {
     }
 
@@ -33,7 +36,16 @@ final readonly class InitTokenHandler extends AbstractHandler
             publicKeyPath: $request->ksefPublicKeyPath
         );
 
-        $xml = $request->toXml($encryptedToken);
+        $encryptedKey = null;
+
+        if ($this->config->encryptionKey !== null) {
+            $encryptedKey = EncryptedKeyFactory::make(
+                encryptionKey: $this->config->encryptionKey,
+                ksefPublicKeyPath: $request->ksefPublicKeyPath
+            );
+        }
+
+        $xml = $request->toXml($encryptedToken, $encryptedKey?->toDom());
 
         $this->logXml->handle(
             new LogXmlAction(

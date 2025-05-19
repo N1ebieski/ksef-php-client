@@ -12,6 +12,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
@@ -32,14 +33,14 @@ final readonly class InitTokenRequest extends AbstractRequest
     ) {
     }
 
-    public function toXml(EncryptedToken $encryptedToken): string
+    public function toXml(EncryptedToken $encryptedToken, ?DOMDocument $encryptionDom = null): string
     {
-        return $this->toDom($encryptedToken)->saveXML() ?: throw new RuntimeException(
+        return $this->toDom($encryptedToken, $encryptionDom)->saveXML() ?: throw new RuntimeException(
             'Unable to serialize to XML'
         );
     }
 
-    public function toDom(EncryptedToken $encryptedToken): DOMDocument
+    public function toDom(EncryptedToken $encryptedToken, ?DOMDocument $encryptionDom = null): DOMDocument
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -99,6 +100,12 @@ final readonly class InitTokenRequest extends AbstractRequest
         $value->appendChild($dom->createTextNode('FA'));
 
         $formCode->appendChild($value);
+
+        if ($encryptionDom !== null) {
+            $encryption = $dom->importNode($encryptionDom->documentElement, true);
+
+            $context->appendChild($encryption);
+        }
 
         $token = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:Token');
         $token->appendChild($dom->createTextNode((string) $encryptedToken));

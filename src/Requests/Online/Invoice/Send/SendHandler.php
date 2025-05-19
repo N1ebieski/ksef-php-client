@@ -7,6 +7,8 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Send;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Factories\EncryptedDocumentFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
@@ -19,7 +21,8 @@ final readonly class SendHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private LogXmlHandler $logXml
+        private LogXmlHandler $logXml,
+        private Config $config
     ) {
     }
 
@@ -27,9 +30,14 @@ final readonly class SendHandler extends AbstractHandler
     {
         $xml = $request->toXml();
 
-        $hashSHA = base64_encode(hash('sha256', $xml, true));
-        $invoiceBody = base64_encode($xml);
-        $fileSize = strlen($xml);
+        $encrypted = null;
+
+        if ($this->config->encryptionKey !== null) {
+            $encrypted = EncryptedDocumentFactory::make(
+                encryption: $this->config->encryptionKey,
+                document: $xml
+            );
+        }
 
         $this->logXml->handle(
             new LogXmlAction(
@@ -42,17 +50,14 @@ final readonly class SendHandler extends AbstractHandler
             method: Method::Put,
             uri: Uri::from('online/Invoice/Send'),
             data: [
-                'invoiceHash' => [
-                    'fileSize' => $fileSize,
-                    'hashSHA' => [
-                        'algorithm' => 'SHA-256',
-                        'encoding' => 'Base64',
-                        'value' => $hashSHA,
-                    ],
-                ],
-                'invoicePayload' => [
+                'invoiceHash' => $request->getDocumentHash(),
+                'invoicePayload' => $encrypted !== null ? [
+                    'type' => 'encrypted',
+                    'encryptedInvoiceHash' => $encrypted->getDocumentHash(),
+                    'encryptedInvoiceBody' => $encrypted->getBase64Body()
+                ] : [
                     'type' => 'plain',
-                    'invoiceBody' => $invoiceBody
+                    'invoiceBody' => $request->getBase64Body()
                 ]
             ]
         ));

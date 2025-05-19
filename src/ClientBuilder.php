@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient;
 
 use Http\Discovery\Psr18ClientDiscovery;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
@@ -16,6 +17,7 @@ use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
@@ -40,6 +42,8 @@ final class ClientBuilder
 
     private ?LogXmlPath $logXmlPath = null;
 
+    private ?EncryptionKey $encryptionKey = null;
+
     public function __construct()
     {
         $this->httpClient = Psr18ClientDiscovery::find();
@@ -59,6 +63,17 @@ final class ClientBuilder
         if ($this->mode->isEquals(Mode::Test)) {
             $this->nip = new NIP('1111111111');
         }
+
+        return $this;
+    }
+
+    public function withEncryptionKey(EncryptionKey $encryptionKey): self
+    {
+        if ($encryptionKey === null) {
+            $encryptionKey = EncryptionKeyFactory::makeRandom();
+        }
+
+        $this->encryptionKey = $encryptionKey;
 
         return $this;
     }
@@ -143,7 +158,9 @@ final class ClientBuilder
     public function build(): RootResource
     {
         $config = new Config(
-            logXmlPath: $this->logXmlPath
+            logXmlPath: $this->logXmlPath,
+            encryptionKey: $this->encryptionKey,
+            ksefPublicKeyPath: $this->publicKeyPath,
         );
 
         $httpClientConfig = new HttpClientConfig(new BaseUri($this->apiUrl->value));

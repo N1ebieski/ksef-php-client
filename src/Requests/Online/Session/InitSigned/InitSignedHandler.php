@@ -17,9 +17,6 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
-use N1ebieski\KSEFClient\Validator\Rules\Utility\RequiredRule;
-use N1ebieski\KSEFClient\Validator\Validator;
-use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 
 final readonly class InitSignedHandler extends AbstractHandler
@@ -35,16 +32,13 @@ final readonly class InitSignedHandler extends AbstractHandler
     {
         $signedXml = match (true) {
             $request instanceof InitSignedRequest => value(function () use ($request): string {
-                Validator::validate(['certificatePath' => $request->certificatePath], [
-                    new RequiredRule()
-                ]);
-
-                /** @var CertificatePath $certificatePath */
-                $certificatePath = $request->certificatePath;
+                if ($request->certificatePath === null) {
+                    throw new \InvalidArgumentException('Certificate path is required for this request.');
+                }
 
                 return $this->signDocument->handle(
                     new SignDocumentAction(
-                        certificate: CertificateFactory::make($certificatePath),
+                        certificate: CertificateFactory::make($request->certificatePath),
                         document: $request->toXml()
                     )
                 );
