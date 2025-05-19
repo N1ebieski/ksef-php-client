@@ -41,7 +41,7 @@ final class ClientBuilder
 
     private NIP $nip;
 
-    private KSEFPublicKeyPath $publicKeyPath;
+    private KSEFPublicKeyPath $ksefPublicKeyPath;
 
     private ?LogXmlPath $logXmlPath = null;
 
@@ -160,7 +160,7 @@ final class ClientBuilder
             $publicKeyPath = KSEFPublicKeyPath::from($publicKeyPath);
         }
 
-        $this->publicKeyPath = $publicKeyPath;
+        $this->ksefPublicKeyPath = $publicKeyPath;
 
         return $this;
     }
@@ -181,7 +181,7 @@ final class ClientBuilder
         $config = new Config(
             logXmlPath: $this->logXmlPath,
             encryptionKey: $this->encryptionKey,
-            ksefPublicKeyPath: $this->publicKeyPath,
+            ksefPublicKeyPath: $this->ksefPublicKeyPath,
         );
 
         $httpClientConfig = new HttpClientConfig(new BaseUri($this->apiUrl->value));
