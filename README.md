@@ -357,7 +357,7 @@ $xml = $commonStatus->upo->toXml();
 
 ## Testing
 
-The package uses unit tests via [phpunit](https://github.com/sebastianbergmann/phpunit). 
+The package uses unit tests via [PHPUnit](https://github.com/sebastianbergmann/phpunit). 
 
 TestCase is located in the location of ```N1ebieski\KSEFClient\Testing\TestCase```
 
