@@ -31,6 +31,9 @@ final class Utility
         }
     }
 
+    /**
+     * @return array{hashSHA: array{algorithm: string, encoding: string, value: string}, fileSize: int}
+     */
     public static function hash(
         #[SensitiveParameter]
         string $document,

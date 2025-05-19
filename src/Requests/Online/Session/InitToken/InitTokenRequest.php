@@ -12,7 +12,6 @@ use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
-use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
@@ -101,7 +100,7 @@ final readonly class InitTokenRequest extends AbstractRequest
 
         $formCode->appendChild($value);
 
-        if ($encryptionDom !== null) {
+        if ($encryptionDom instanceof DOMDocument) {
             $encryption = $dom->importNode($encryptionDom->documentElement, true);
 
             $context->appendChild($encryption);

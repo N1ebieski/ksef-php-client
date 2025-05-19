@@ -54,7 +54,7 @@ final class InitSignedHandlerTest extends AbstractTestCase
     public function testWhenRequestHasEmptyCertificatePath(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The value is required for attribute certificatePath');
+        $this->expectExceptionMessage('Certificate path is required for this request');
 
         $clientStub = $this->getClientStub(new InitSignedResponseFixture());
 

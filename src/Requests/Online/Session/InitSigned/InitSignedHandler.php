@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Session\InitSigned;
 
+use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
@@ -32,8 +34,8 @@ final readonly class InitSignedHandler extends AbstractHandler
     {
         $signedXml = match (true) {
             $request instanceof InitSignedRequest => value(function () use ($request): string {
-                if ($request->certificatePath === null) {
-                    throw new \InvalidArgumentException('Certificate path is required for this request.');
+                if (!$request->certificatePath instanceof CertificatePath) {
+                    throw new InvalidArgumentException('Certificate path is required for this request.');
                 }
 
                 return $this->signDocument->handle(

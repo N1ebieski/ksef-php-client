@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient;
 
-use function PHPSTORM_META\map;
 use Http\Discovery\Psr18ClientDiscovery;
 use InvalidArgumentException;
 use N1ebieski\KSEFClient\DTOs\Config;
-use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
@@ -17,10 +15,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Validator\Rules\String\MaxBytesRule;
-use N1ebieski\KSEFClient\Validator\Rules\String\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\MinBytesRule;
-use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
-use N1ebieski\KSEFClient\Validator\Rules\Utility\RequiredRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
@@ -30,8 +25,6 @@ use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
-use PhpParser\Node\Expr\AssignOp\Minus;
-
 use Psr\Http\Client\ClientInterface;
 
 final class ClientBuilder

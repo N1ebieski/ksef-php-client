@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
@@ -38,7 +39,7 @@ final readonly class InitTokenHandler extends AbstractHandler
 
         $encryptedKey = null;
 
-        if ($this->config->encryptionKey !== null) {
+        if ($this->config->encryptionKey instanceof EncryptionKey) {
             $encryptedKey = EncryptedKeyFactory::make(
                 encryptionKey: $this->config->encryptionKey,
                 ksefPublicKeyPath: $request->ksefPublicKeyPath

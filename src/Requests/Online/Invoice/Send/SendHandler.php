@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Send;
 
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
@@ -34,7 +35,7 @@ final readonly class SendHandler extends AbstractHandler
     {
         $xml = $request->toXml();
 
-        if ($this->config->encryptionKey !== null) {
+        if ($this->config->encryptionKey instanceof EncryptionKey) {
             $encryptedXml = $this->encryptDocument->handle(new EncryptDocumentAction(
                 encryption: $this->config->encryptionKey,
                 document: $xml
