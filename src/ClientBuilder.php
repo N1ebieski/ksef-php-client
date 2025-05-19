@@ -203,7 +203,6 @@ final class ClientBuilder
                         apiToken: $this->apiToken,
                         challenge: $authorisationChallengeResponse->challenge,
                         timestamp: $authorisationChallengeResponse->timestamp,
-                        ksefPublicKeyPath: $this->publicKeyPath,
                         nip: $this->nip
                     )
                 ),

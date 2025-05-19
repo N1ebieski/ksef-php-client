@@ -18,16 +18,16 @@ final readonly class EncryptedTokenFactory extends AbstractFactory
         ApiToken $apiToken,
         #[SensitiveParameter]
         DateTimeImmutable $timestamp,
-        KSEFPublicKeyPath $publicKeyPath,
+        KSEFPublicKeyPath $ksefPublicKeyPath,
     ): EncryptedToken {
         $timestampAsMiliseconds = $timestamp->getTimestamp() * 1000;
 
         $data = "{$apiToken->value}|{$timestampAsMiliseconds}";
 
-        $publicKey = file_get_contents($publicKeyPath->value);
+        $publicKey = file_get_contents($ksefPublicKeyPath->value);
 
         if ($publicKey === false) {
-            throw new RuntimeException("Unable to read public key from the file: {$publicKeyPath->value}");
+            throw new RuntimeException("Unable to read public key from the file: {$ksefPublicKeyPath->value}");
         }
 
         $encryption = openssl_public_encrypt($data, $encryptedToken, $publicKey, OPENSSL_PKCS1_PADDING);

@@ -12,9 +12,9 @@ use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
 final readonly class Config extends AbstractDTO
 {
     public function __construct(
+        public KSEFPublicKeyPath $ksefPublicKeyPath,
         public ?LogXmlPath $logXmlPath = null,
         public ?EncryptionKey $encryptionKey = null,
-        public ?KSEFPublicKeyPath $ksefPublicKeyPath = null
     ) {
     }
 }

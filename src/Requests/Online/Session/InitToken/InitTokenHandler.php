@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 
-use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
@@ -18,6 +17,7 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 
 final readonly class InitTokenHandler extends AbstractHandler
@@ -34,7 +34,7 @@ final readonly class InitTokenHandler extends AbstractHandler
         $encryptedToken = EncryptedTokenFactory::make(
             apiToken: $request->apiToken,
             timestamp: $request->timestamp,
-            publicKeyPath: $request->ksefPublicKeyPath
+            ksefPublicKeyPath: $this->config->ksefPublicKeyPath
         );
 
         $encryptedKey = null;
@@ -42,7 +42,7 @@ final readonly class InitTokenHandler extends AbstractHandler
         if ($this->config->encryptionKey instanceof EncryptionKey) {
             $encryptedKey = EncryptedKeyFactory::make(
                 encryptionKey: $this->config->encryptionKey,
-                ksefPublicKeyPath: $request->ksefPublicKeyPath
+                ksefPublicKeyPath: $this->config->ksefPublicKeyPath
             );
         }
 

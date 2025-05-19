@@ -15,12 +15,11 @@ use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
+use RuntimeException;
 use SensitiveParameter;
 
 final readonly class InitSignedRequest extends AbstractRequest implements XmlSerializableInterface, DomSerializableInterface
 {
-    use HasToXml;
-
     public function __construct(
         #[SensitiveParameter]
         public Challenge $challenge,
@@ -33,7 +32,14 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
     ) {
     }
 
-    public function toDom(): DOMDocument
+    public function toXml(?DOMDocument $encryptionDom = null): string
+    {
+        return $this->toDom($encryptionDom)->saveXML() ?: throw new RuntimeException(
+            'Unable to serialize to XML'
+        );
+    }
+
+    public function toDom(?DOMDocument $encryptionDom = null): DOMDocument
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
@@ -93,6 +99,12 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
         $value->appendChild($dom->createTextNode('FA'));
 
         $formCode->appendChild($value);
+
+        if ($encryptionDom instanceof DOMDocument) {
+            $encryption = $dom->importNode($encryptionDom->documentElement, true);
+
+            $context->appendChild($encryption);
+        }
 
         $type = $dom->createElementNS((string) XmlNamespace::KsefOnlineTypes->value, 'online.types:Type');
         $type->appendChild($dom->createTextNode('SerialNumber'));

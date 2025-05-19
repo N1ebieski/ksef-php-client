@@ -50,14 +50,16 @@ composer require guzzlehttp/guzzle
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 
 $client = new ClientBuilder()
     ->withMode(Mode::Production) // Choice between: Test, Demo, Production
     ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
     ->withHttpClient(new \GuzzleHttp\Client([])) // Optional, default is set by Psr18ClientDiscovery::find()
     ->withApiToken($_ENV['KSEF_KEY']) // Required for API Token authorization
-    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization, you can find it on https://ksef.mf.gov.pl
+    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization and encryption, you can find it on https://ksef.mf.gov.pl
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
+    ->withEncryptionKey(EncryptionKeyFactory::makeRandom()) // Optional for online resources, required for batch resources. Remember to save this value!
     ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo, optional for Mode::Test
     ->withLogXmlPath('PATH_TO_SAVE_XML_FILES') // Some endpoints generate xml files, useful for debug
     ->build();
@@ -107,6 +109,7 @@ use N1ebieski\KSEFClient\ClientBuilder;
 
 $client = new ClientBuilder()
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
+    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
     ->withNIP('NIP_NUMBER')
     ->build();
 
@@ -124,7 +127,9 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-$client = new ClientBuilder()->build();
+$client = new ClientBuilder()
+    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
+    ->build();
 
 $nip = NIP::from('NIP_NUMBER');
 

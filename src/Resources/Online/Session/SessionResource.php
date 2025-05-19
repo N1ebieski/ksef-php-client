@@ -65,7 +65,8 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new InitSignedHandler(
             client: $this->client,
             signDocument: new SignDocumentHandler(),
-            logXml: new LogXmlHandler($this->config)
+            logXml: new LogXmlHandler($this->config),
+            config: $this->config
         )->handle($request);
     }
 
