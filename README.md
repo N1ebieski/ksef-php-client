@@ -1,5 +1,7 @@
 # KSEF PHP Client
 
+> **This package is not production ready yet!**
+
 PHP API client that allows you to interact with the [API Krajowego Systemu e-Faktur](https://www.gov.pl/web/kas/api-krajowego-system-e-faktur)
 
 ## Table of Contents
@@ -75,13 +77,13 @@ use N1ebieski\KSEFClient\Requests\ValueObjects\ReferenceNumber;
 
 $commonStatus = $client->common()->status(new StatusRequest(
     referenceNumber: ReferenceNumber::from('20250508-EE-B395BBC9CD-A7DB4E6095-BD')
-));
+))->object();
 ```
 
 ```php
 $commonStatus = $client->common()->status([
     'reference_number' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
-]);
+])->object();
 ```
 
 ## Authorization
@@ -125,7 +127,9 @@ use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
+use DateTimeImmutable;
 
 $client = new ClientBuilder()
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
@@ -135,11 +139,11 @@ $nip = NIP::from('NIP_NUMBER');
 
 $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
     new AuthorisationChallengeRequest($nip)
-);
+)->object();
 
 $xml = new InitSignedRequest(
-    challenge: $authorisationChallengeResponse->challenge,
-    timestamp: $authorisationChallengeResponse->timestamp,
+    challenge: Challenge::from($authorisationChallengeResponse->challenge),
+    timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
     nip: $nip
 )->toXml();
 
@@ -147,7 +151,7 @@ $signedXml = // Sign a xml document via Szafir, ePUAP etc.
 
 $initSignedResponse = $client->online()->session()->initSigned(
     new InitSignedXmlRequest($signedXml)
-);
+)->object();
 
 $client = $client->withSessionToken($initSignedResponse->sessionToken->token);
 
@@ -171,7 +175,7 @@ use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
 /** @var StatusResponse $response */
 $response = $client->common()->status(
     new StatusRequest(...)
-);
+)->object();
 ```
 
 ### Online
@@ -189,7 +193,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\Authoris
 /** @var AuthorisationChallengeResponse $response */
 $response = $client->online()->session()->authorisationChallenge(
     new AuthorisationChallengeRequest(...)
-);
+)->object();
 ```
 
 ##### Init token
@@ -203,7 +207,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 /** @var InitTokenResponse $response */
 $response = $client->online()->session()->initToken(
     new InitTokenRequest(...)
-);
+)->object();
 ```
 
 ##### Init signed
@@ -217,7 +221,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 /** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedRequest(...)
-);
+)->object();
 ```
 
 or:
@@ -229,7 +233,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 /** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedXmlRequest($signedXml)
-);
+)->object();
 ```
 
 ##### Session status
@@ -243,7 +247,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 /** @var StatusResponse $response */
 $response = $client->online()->session()->status(
     new StatusRequest(...)
-);
+)->object();
 ```
 
 ##### Terminate
@@ -254,7 +258,7 @@ Forcing the closing of an active interactive session
 use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 
 /** @var TerminateResponse $response */
-$response = $client->online()->session()->terminate();
+$response = $client->online()->session()->terminate()->object();
 ```
 
 #### Invoice
@@ -270,7 +274,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
 /** @var GetResponse $response */
 $response = $client->online()->invoice()->get(
     new GetRequest(...)
-);
+)->body();
 ```
 
 ##### Send an invoice
@@ -282,7 +286,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 /** @var SendResponse $response */
 $response = $client->online()->invoice()->send(
     new SendRequest(...)
-);
+)->object();
 ```
 
 ##### Invoice status
@@ -296,7 +300,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 /** @var StatusResponse $response */
 $response = $client->online()->invoice()->status(
     new StatusRequest(...)
-);
+)->object();
 ```
 
 ## Examples
@@ -319,15 +323,17 @@ $client = new ClientBuilder()
 
 try {
     // Send an invoice
-    $sendResponse = $client->online()->invoice()->send(new SendRequestFixture()->withTodayDate()->data);
+    $sendResponse = $client->online()->invoice()->send(
+        new SendRequestFixture()->withTodayDate()->data
+    )->object();
 
     // Check status of invoice generation
     Utility::retry(function () use ($client, $sendResponse) {
         $statusResponse = $client->online()->invoice()->status([
-            'invoice_element_reference_number' => $sendResponse->elementReferenceNumber->value
-        ]);
+            'invoice_element_reference_number' => $sendResponse->elementReferenceNumber
+        ])->object();
 
-        if ($statusResponse->processingCode->value === 200) {
+        if ($statusResponse->processingCode === 200) {
             return $statusResponse;
         }
     });
@@ -343,6 +349,7 @@ $client->online()->session()->terminate();
 // We don't need to authorize for UPO
 $client = new ClientBuilder()
     ->withMode(Mode::Test)
+    ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
     ->build();
 
 // Check status of UPO generation
@@ -350,14 +357,14 @@ $client = new ClientBuilder()
 $commonStatus = Utility::retry(function () use ($client, $sendResponse) {
     $commonStatus = $client->common()->status([
         'reference_number' => $sendResponse->referenceNumber
-    ]);
+    ])->object();
 
-    if ($commonStatus->processingCode->value === 200) {
+    if ($commonStatus->processingCode === 200) {
         return $commonStatus;
     }
 });
 
-$xml = $commonStatus->upo->toXml();
+$xml = base64_decode($commonStatus->upo);
 ```
 
 ## Testing

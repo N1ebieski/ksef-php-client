@@ -11,7 +11,7 @@ use Stringable;
 
 final readonly class DataWytworzeniaFa extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
-    public DateTimeImmutable $value;
+    public \DateTimeInterface $value;
 
     public function __construct(DateTimeImmutable | string $value)
     {

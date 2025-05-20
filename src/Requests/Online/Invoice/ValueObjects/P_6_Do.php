@@ -15,7 +15,7 @@ use Stringable;
 
 final readonly class P_6_Do extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
-    public DateTimeImmutable $value;
+    public \DateTimeInterface $value;
 
     public function __construct(DateTimeImmutable | string $value)
     {

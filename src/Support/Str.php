@@ -16,6 +16,11 @@ final class Str
         return strtolower($replace);
     }
 
+    public static function camel(string $string): string
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $string))));
+    }
+
     public static function guid(): string
     {
         return 'ID-' . Uuid::v4();

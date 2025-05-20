@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Invoice;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice\InvoiceResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetHandler;
@@ -28,7 +29,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
     ) {
     }
 
-    public function send(SendRequest | array $request): SendResponse
+    public function send(SendRequest | array $request): ResponseInterface
     {
         if ($request instanceof SendRequest == false) {
             $request = SendRequest::from($request);
@@ -42,7 +43,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
         )->handle($request);
     }
 
-    public function status(StatusRequest | array $request): StatusResponse
+    public function status(StatusRequest | array $request): ResponseInterface
     {
         if ($request instanceof StatusRequest == false) {
             $request = StatusRequest::from($request);
@@ -51,7 +52,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
         return new StatusHandler($this->client)->handle($request);
     }
 
-    public function get(GetRequest | array $request): GetResponse
+    public function get(GetRequest | array $request): ResponseInterface
     {
         if ($request instanceof GetRequest == false) {
             $request = GetRequest::from($request);

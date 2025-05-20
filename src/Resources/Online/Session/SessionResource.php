@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Resources\Online\Session;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeHandler;
@@ -34,7 +35,7 @@ final readonly class SessionResource extends AbstractResource implements Session
     ) {
     }
 
-    public function authorisationChallenge(AuthorisationChallengeRequest | array $request): AuthorisationChallengeResponse
+    public function authorisationChallenge(AuthorisationChallengeRequest | array $request): ResponseInterface
     {
         if ($request instanceof AuthorisationChallengeRequest == false) {
             $request = AuthorisationChallengeRequest::from($request);
@@ -43,7 +44,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new AuthorisationChallengeHandler($this->client)->handle($request);
     }
 
-    public function initToken(InitTokenRequest | array $request): InitTokenResponse
+    public function initToken(InitTokenRequest | array $request): ResponseInterface
     {
         if ($request instanceof InitTokenRequest == false) {
             $request = InitTokenRequest::from($request);
@@ -56,7 +57,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         )->handle($request);
     }
 
-    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): InitSignedResponse
+    public function initSigned(InitSignedRequest | InitSignedXmlRequest | array $request): ResponseInterface
     {
         if (is_array($request)) {
             $request = InitSignedRequest::from($request);
@@ -70,7 +71,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         )->handle($request);
     }
 
-    public function status(StatusRequest | array $request = new StatusRequest()): StatusResponse
+    public function status(StatusRequest | array $request = new StatusRequest()): ResponseInterface
     {
         if (is_array($request)) {
             $request = StatusRequest::from($request);
@@ -79,7 +80,7 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new StatusHandler($this->client)->handle($request);
     }
 
-    public function terminate(): TerminateResponse
+    public function terminate(): ResponseInterface
     {
         return new TerminateHandler($this->client)->handle();
     }

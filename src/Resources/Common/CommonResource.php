@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Common;
 
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Common\CommonResourceInterface;
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusRequest;
@@ -21,7 +22,7 @@ final readonly class CommonResource extends AbstractResource implements CommonRe
     /**
      * @param StatusRequest|array<string, mixed> $request
      */
-    public function status(StatusRequest | array $request): StatusResponse
+    public function status(StatusRequest | array $request): ResponseInterface
     {
         if (is_array($request)) {
             $request = StatusRequest::from($request);

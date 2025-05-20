@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\EncryptedKeyFactory;
 use N1ebieski\KSEFClient\Factories\EncryptedTokenFactory;
@@ -29,7 +30,7 @@ final readonly class InitTokenHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(InitTokenRequest $request): InitTokenResponse
+    public function handle(InitTokenRequest $request): ResponseInterface
     {
         $encryptedToken = EncryptedTokenFactory::make(
             apiToken: $request->apiToken,
@@ -55,15 +56,13 @@ final readonly class InitTokenHandler extends AbstractHandler
             )
         );
 
-        $response = $this->client->sendRequest(new Request(
+        return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('online/Session/InitToken'),
             headers: [
                 new Header('Content-Type', 'application/octet-stream')
             ],
-            data: $xml
+            body: $xml
         ));
-
-        return InitTokenResponse::fromResponse($response);
     }
 }

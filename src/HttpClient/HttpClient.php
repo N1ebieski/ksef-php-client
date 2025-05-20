@@ -9,7 +9,6 @@ use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
-use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use Psr\Http\Client\ClientInterface;
 
@@ -30,11 +29,10 @@ final readonly class HttpClient implements HttpClientInterface
     {
         $psr17Factory = new Psr17Factory();
 
-        $uri = $request->uri->withBaseUrl($this->config->baseUri)->withoutSlashAtEnd();
-
-        if ($request->method->isEquals(Method::Get) && is_array($request->data)) {
-            $uri = $uri->withParameters($request->data);
-        }
+        $uri = $request->uri
+            ->withBaseUrl($this->config->baseUri)
+            ->withoutSlashAtEnd()
+            ->withParameters($request->getParametersAsString());
 
         $clientRequest = $psr17Factory
             ->createRequest(
@@ -53,13 +51,11 @@ final readonly class HttpClient implements HttpClientInterface
         }
 
         if ($request->method->hasBody()) {
-            $content = match (true) {
-                is_string($request->data) => $request->data,
-                is_array($request->data) => json_encode($request->data, JSON_THROW_ON_ERROR),
-                default => ''
-            };
+            $body = $request->getBodyAsString();
 
-            $clientRequest = $clientRequest->withBody($psr17Factory->createStream($content));
+            $clientRequest = $clientRequest->withBody(
+                $psr17Factory->createStream($body)
+            );
         }
 
         return new Response($this->client->sendRequest($clientRequest));

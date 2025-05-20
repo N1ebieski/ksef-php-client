@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient;
 
+use DateTimeImmutable;
 use Http\Discovery\Psr18ClientDiscovery;
 use InvalidArgumentException;
 use N1ebieski\KSEFClient\DTOs\Config;
@@ -13,6 +14,7 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Validator\Rules\String\MaxBytesRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\MinBytesRule;
@@ -81,14 +83,8 @@ final class ClientBuilder
                 'key' => $encryptionKey,
                 'iv' => $iv
             ], [
-                'key' => [
-                    new MinBytesRule(32),
-                    new MaxBytesRule(32)
-                ],
-                'iv' => [
-                    new MinBytesRule(16),
-                    new MaxBytesRule(16),
-                ]
+                'key' => [new MinBytesRule(32), new MaxBytesRule(32)],
+                'iv' => [new MinBytesRule(16), new MaxBytesRule(16)]
             ]);
 
             $encryptionKey = new EncryptionKey($encryptionKey, $iv);
@@ -195,26 +191,28 @@ final class ClientBuilder
         if ($this->isAuthorisation()) {
             $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
                 new AuthorisationChallengeRequest($this->nip)
-            );
+            )->object();
 
             $authorisationSessionResponse = match (true) { //@phpstan-ignore-line
                 $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
                     new InitTokenRequest(
                         apiToken: $this->apiToken,
-                        challenge: $authorisationChallengeResponse->challenge,
-                        timestamp: $authorisationChallengeResponse->timestamp,
+                        challenge: Challenge::from($authorisationChallengeResponse->challenge),
+                        timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
                         nip: $this->nip
                     )
                 ),
                 $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
                     new InitSignedRequest(
                         certificatePath: $this->certificatePath,
-                        challenge: $authorisationChallengeResponse->challenge,
-                        timestamp: $authorisationChallengeResponse->timestamp,
+                        challenge: Challenge::from($authorisationChallengeResponse->challenge),
+                        timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
                         nip: $this->nip
                     )
                 )
             };
+
+            $authorisationSessionResponse = $authorisationSessionResponse->object();
 
             $client = $client->withSessionToken($authorisationSessionResponse->sessionToken->token);
         }

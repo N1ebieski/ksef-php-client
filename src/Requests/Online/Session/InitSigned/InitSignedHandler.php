@@ -10,6 +10,7 @@ use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentAction;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\Factories\EncryptedKeyFactory;
@@ -35,7 +36,7 @@ final readonly class InitSignedHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(InitSignedRequest | InitSignedXmlRequest $request): InitSignedResponse
+    public function handle(InitSignedRequest | InitSignedXmlRequest $request): ResponseInterface
     {
         $encryptedKey = null;
 
@@ -68,15 +69,13 @@ final readonly class InitSignedHandler extends AbstractHandler
             )
         );
 
-        $response = $this->client->sendRequest(new Request(
+        return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('online/Session/InitSigned'),
             headers: [
                 new Header('Content-Type', 'application/octet-stream'),
             ],
-            data: $signedXml
+            body: $signedXml
         ));
-
-        return InitSignedResponse::fromResponse($response);
     }
 }

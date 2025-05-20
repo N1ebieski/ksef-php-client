@@ -17,7 +17,7 @@ final readonly class EncryptedTokenFactory extends AbstractFactory
         #[SensitiveParameter]
         ApiToken $apiToken,
         #[SensitiveParameter]
-        DateTimeImmutable $timestamp,
+        \DateTimeInterface $timestamp,
         KSEFPublicKeyPath $ksefPublicKeyPath,
     ): EncryptedToken {
         $timestampAsMiliseconds = $timestamp->getTimestamp() * 1000;

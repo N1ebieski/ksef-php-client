@@ -25,7 +25,7 @@ final readonly class InitTokenRequest extends AbstractRequest
         #[SensitiveParameter]
         public Challenge $challenge,
         #[SensitiveParameter]
-        public DateTimeImmutable $timestamp,
+        public \DateTimeInterface $timestamp,
         public NIP $nip,
         public SystemCode $systemCode = SystemCode::Fa2
     ) {

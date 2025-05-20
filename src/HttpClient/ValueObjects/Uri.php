@@ -25,14 +25,9 @@ final readonly class Uri extends AbstractValueObject implements ValueAwareInterf
         return new self($value);
     }
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function withParameters(array $parameters): self
+    public function withParameters(string $parameters): self
     {
-        $parameters = array_filter($parameters);
-
-        return $parameters === [] ? $this : new self($this->value . '?' . http_build_query($parameters));
+        return new self($this->value . '?' . $parameters);
     }
 
     public function withBaseUrl(BaseUri $baseUri): self

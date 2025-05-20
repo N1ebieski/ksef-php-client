@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Get;
 
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
@@ -18,9 +19,9 @@ final readonly class GetHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(GetRequest $request): GetResponse
+    public function handle(GetRequest $request): ResponseInterface
     {
-        $response = $this->client->sendRequest(new Request(
+        return $this->client->sendRequest(new Request(
             method: Method::Get,
             uri: Uri::from(
                 sprintf('online/Invoice/Get/%s', $request->ksefReferenceNumber->value)
@@ -29,7 +30,5 @@ final readonly class GetHandler extends AbstractHandler
                 new Header('Accept', 'application/octet-stream')
             ]
         ));
-
-        return GetResponse::fromResponse($response);
     }
 }

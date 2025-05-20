@@ -22,8 +22,12 @@ final readonly class RootResource extends AbstractResource implements RootResour
     ) {
     }
 
-    public function withSessionToken(SessionToken $sessionToken): self
+    public function withSessionToken(SessionToken | string $sessionToken): self
     {
+        if ($sessionToken instanceof SessionToken === false) {
+            $sessionToken = SessionToken::from($sessionToken);
+        }
+
         return new self($this->client->withSessionToken($sessionToken), $this->config);
     }
 

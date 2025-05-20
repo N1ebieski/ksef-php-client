@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\Send;
 
-use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
 use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
+use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Request;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
@@ -19,6 +19,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\Requests\ValueObjects\Type;
 use N1ebieski\KSEFClient\Support\Utility;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 
 final readonly class SendHandler extends AbstractHandler
@@ -31,7 +32,7 @@ final readonly class SendHandler extends AbstractHandler
     ) {
     }
 
-    public function handle(SendRequest $request): SendResponse
+    public function handle(SendRequest $request): ResponseInterface
     {
         $xml = $request->toXml();
 
@@ -47,10 +48,10 @@ final readonly class SendHandler extends AbstractHandler
             document: $xml
         ));
 
-        $response = $this->client->sendRequest(new Request(
+        return $this->client->sendRequest(new Request(
             method: Method::Put,
             uri: Uri::from('online/Invoice/Send'),
-            data: [
+            body: [
                 'invoiceHash' => Utility::hash($xml),
                 'invoicePayload' => isset($encryptedXml) ? [
                     'type' => Type::Encrypted->value,
@@ -62,7 +63,5 @@ final readonly class SendHandler extends AbstractHandler
                 ]
             ]
         ));
-
-        return SendResponse::fromResponse($response);
     }
 }
