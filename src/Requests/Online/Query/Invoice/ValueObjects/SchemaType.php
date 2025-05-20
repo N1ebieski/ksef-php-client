@@ -6,11 +6,11 @@ namespace N1ebieski\KSEFClient\Requests\Online\Query\Invoice\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\EnumInterface;
 
-enum Type: string implements EnumInterface
+enum SchemaType: string implements EnumInterface
 {
-    case Detail = 'detail';
+    case Vat = 'VAT';
 
-    case Incremental = 'incremental';
+    case VatRr = 'VAT_RR';
 
-    case Range = 'range';
+    case Pef = 'PEF';
 }

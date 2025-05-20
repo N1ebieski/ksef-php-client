@@ -17,9 +17,9 @@ final readonly class DataZamowienia extends AbstractValueObject implements Value
 {
     public DateTimeInterface $value;
 
-    public function __construct(DateTimeImmutable | string $value)
+    public function __construct(DateTimeInterface | string $value)
     {
-        if ($value instanceof DateTimeImmutable === false) {
+        if ($value instanceof \DateTimeInterface === false) {
             $value = new DateTimeImmutable($value);
         }
 

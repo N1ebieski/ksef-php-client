@@ -26,7 +26,7 @@ trait HasToArray
             $newParameters[$name] = match (true) {
                 $value instanceof ArrayableInterface => $value->toArray($keyType),
                 $value instanceof ValueAwareInterface => $value->value,
-                $value instanceof DateTimeImmutable => $value->format('Y-m-d\TH:i:s'),
+                $value instanceof \DateTimeInterface => $value->format('Y-m-d\TH:i:s'),
                 default => $value
             };
         }
