@@ -20,7 +20,7 @@ final readonly class SubjectIdentifierByCompanyGroup extends AbstractDTO impleme
         $this->type = SubjectIdentifierBy::Onip;
     }
 
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         return [
             'type' => $this->type->value,

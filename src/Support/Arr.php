@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Support;
 
 use Closure;
+use DateTimeInterface;
+use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
+use N1ebieski\KSEFClient\Contracts\BodyInterface;
+use N1ebieski\KSEFClient\Contracts\OriginalInterface;
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
+use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
 final class Arr
 {
@@ -34,5 +40,52 @@ final class Arr
         }
 
         return $filtered;
+    }
+
+    public static function toArray(array $parameters, KeyType $keyType = KeyType::Snake): array
+    {
+        $newParameters = [];
+
+        foreach ($parameters as $key => $value) {
+            if ($value instanceof Optional) {
+                continue;
+            }
+
+            $name = is_string($key) ? match ($keyType) {
+                KeyType::Camel => Str::camel($key),
+                KeyType::Snake => Str::snake($key)
+            } : $key;
+
+            $newParameters[$name] = match (true) {
+                is_array($value) => self::toArray($value, $keyType),
+                $value instanceof ArrayableInterface => $value->toArray($keyType),
+                $value instanceof OriginalInterface => $value->toOriginal(),
+                $value instanceof ValueAwareInterface => $value->value,
+                $value instanceof DateTimeInterface => $value->format('Y-m-d\TH:i:s'),
+                default => $value
+            };
+        }
+
+        return $newParameters;
+    }
+
+    public static function toBody(array $parameters, KeyType $keyType = KeyType::Camel): array
+    {
+        $toArray = self::toArray($parameters, $keyType);
+
+        $newParameters = [];
+
+        foreach ($parameters as $key => $value) {
+            $name = match ($keyType) {
+                KeyType::Camel => Str::camel($key),
+                KeyType::Snake => Str::snake($key)
+            };
+
+            if ($value instanceof BodyInterface) {
+                $newParameters[$name] = $value->toBody($keyType);
+            }
+        }
+
+        return array_merge($toArray, $newParameters);
     }
 }

@@ -23,7 +23,7 @@ final readonly class SubjectIdentifierToOtherGroup extends AbstractDTO implement
     /**
      * @return array<string, mixed>
      */
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         return [
             'type' => $this->type->value,

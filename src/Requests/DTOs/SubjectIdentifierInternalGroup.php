@@ -20,7 +20,7 @@ final readonly class SubjectIdentifierInternalGroup extends AbstractDTO implemen
         $this->type = SubjectIdentifierBy::Int;
     }
 
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         return [
             'type' => $this->type->value,

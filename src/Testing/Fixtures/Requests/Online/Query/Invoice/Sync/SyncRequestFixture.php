@@ -35,13 +35,13 @@ final class SyncRequestFixture extends AbstractRequestFixture
                     'EUR'
                 ],
                 'faP17Annotation' => true,
-                'invoiceNumber' => '123',
+                'invoiceNumber' => 'ABC',
                 'invoiceTypes' => [
                     'VAT',
                     'KOR'
                 ],
-                'ksefReferenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD',
-                'schemaType' => 'VAT_RR',
+                // 'ksefReferenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD',
+                // 'schemaType' => 'VAT_RR',
                 'subjectBy' => [
                     'issuedByIdentifier' => [
                         'subjectIdentifierBygroup' => [

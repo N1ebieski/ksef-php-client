@@ -25,7 +25,7 @@ final readonly class QueryCriteria extends AbstractDTO implements BodyInterface
     /**
      * @return array<string, mixed>
      */
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         /** @var array{queryCriteria: array<string, array<string, mixed>>} */
         $array = parent::toArray(KeyType::Camel);

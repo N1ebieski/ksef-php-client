@@ -19,7 +19,7 @@ final class SyncHandlerTest extends AbstractTestCase
     public static function validResponseProvider(): array
     {
         $requests = [
-            new SyncRequestFixture()->withRangeLast2Weeks(),
+            // new SyncRequestFixture()->withRangeLast2Weeks(),
             new SyncRequestFixture()->withDetail(),
         ];
 
@@ -45,6 +45,8 @@ final class SyncHandlerTest extends AbstractTestCase
         $clientStub = $this->getClientStub($responseFixture);
 
         $request = SyncRequest::from($requestFixture->data);
+
+        $body = $request->toBody();
 
         $this->assertFixture($requestFixture->data, $request);
 

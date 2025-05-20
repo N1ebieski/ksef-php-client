@@ -21,7 +21,7 @@ final readonly class SubjectName extends AbstractDTO implements BodyInterface
     /**
      * @return array<string, mixed>
      */
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         $array = $this->toArray(KeyType::Camel);
 

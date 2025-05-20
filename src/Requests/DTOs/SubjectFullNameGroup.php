@@ -20,7 +20,7 @@ final readonly class SubjectFullNameGroup extends AbstractDTO implements BodyInt
         $this->type = SubjectName::Fn;
     }
 
-    public function toBody(KeyType $keyType = KeyType::Snake): array
+    public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         return [
             'type' => $this->type->value,

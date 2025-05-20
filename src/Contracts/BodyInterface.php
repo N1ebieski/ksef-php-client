@@ -11,5 +11,5 @@ interface BodyInterface
     /**
      * @return array<string, mixed>
      */
-    public function toBody(KeyType $keyType = KeyType::Snake): array;
+    public function toBody(KeyType $keyType = KeyType::Camel): array;
 }
