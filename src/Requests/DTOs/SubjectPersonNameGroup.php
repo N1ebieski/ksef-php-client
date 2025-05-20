@@ -20,6 +20,9 @@ final readonly class SubjectPersonNameGroup extends AbstractDTO implements BodyI
         $this->type = SubjectName::Pn;
     }
 
+    /**
+     * @return array<string|int, mixed>
+     */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {
         return [

@@ -42,11 +42,15 @@ final class Arr
         return $filtered;
     }
 
-    public static function toArray(array $parameters, KeyType $keyType = KeyType::Snake): array
+    /**
+     * @param array<string|int, mixed> $array
+     * @return array<string|int, mixed>
+     */
+    public static function toArray(array $array, KeyType $keyType = KeyType::Snake): array
     {
-        $newParameters = [];
+        $newArray = [];
 
-        foreach ($parameters as $key => $value) {
+        foreach ($array as $key => $value) {
             if ($value instanceof Optional) {
                 continue;
             }
@@ -56,7 +60,7 @@ final class Arr
                 KeyType::Snake => Str::snake($key)
             } : $key;
 
-            $newParameters[$name] = match (true) {
+            $newArray[$name] = match (true) {
                 is_array($value) => self::toArray($value, $keyType),
                 $value instanceof ArrayableInterface => $value->toArray($keyType),
                 $value instanceof OriginalInterface => $value->toOriginal(),
@@ -66,26 +70,30 @@ final class Arr
             };
         }
 
-        return $newParameters;
+        return $newArray;
     }
 
-    public static function toBody(array $parameters, KeyType $keyType = KeyType::Camel): array
+    /**
+     * @param array<string, mixed> $array
+     * @return array<string|int, mixed>
+     */
+    public static function toBody(array $array, KeyType $keyType = KeyType::Camel): array
     {
-        $toArray = self::toArray($parameters, $keyType);
+        $toArray = self::toArray($array, $keyType);
 
-        $newParameters = [];
+        $newArray = [];
 
-        foreach ($parameters as $key => $value) {
+        foreach ($array as $key => $value) {
             $name = match ($keyType) {
                 KeyType::Camel => Str::camel($key),
                 KeyType::Snake => Str::snake($key)
             };
 
             if ($value instanceof BodyInterface) {
-                $newParameters[$name] = $value->toBody($keyType);
+                $newArray[$name] = $value->toBody($keyType);
             }
         }
 
-        return array_merge($toArray, $newParameters);
+        return array_merge($toArray, $newArray);
     }
 }

@@ -23,7 +23,7 @@ final readonly class QueryCriteria extends AbstractDTO implements BodyInterface
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string|int, mixed>
      */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {

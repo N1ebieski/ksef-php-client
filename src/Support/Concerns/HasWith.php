@@ -8,6 +8,7 @@ trait HasWith
 {
     public function with(array $data): static
     {
+        //@phpstan-ignore-next-line
         return static::from([...$this->toArray(), ...$data]);
     }
 

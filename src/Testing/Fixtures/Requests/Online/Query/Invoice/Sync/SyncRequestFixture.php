@@ -23,7 +23,7 @@ final class SyncRequestFixture extends AbstractRequestFixture
         $now = new DateTimeImmutable('now');
 
         $this->data['queryCriteria'] = [
-            ...$this->data['queryCriteria'],
+            ...$this->data['queryCriteria'], //@phpstan-ignore-line
             'queryCriteriagroup' => [
                 'invoicingDateFrom' => $now->modify('-2 weeks')->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->format('Y-m-d\TH:i:s'),
@@ -78,7 +78,7 @@ final class SyncRequestFixture extends AbstractRequestFixture
         $now = new DateTimeImmutable('now');
 
         $this->data['queryCriteria'] = [
-            ...$this->data['queryCriteria'],
+            ...$this->data['queryCriteria'], //@phpstan-ignore-line
             'queryCriteriagroup' => [
                 'invoicingDateFrom' => $now->modify('-2 weeks')->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->format('Y-m-d\TH:i:s')

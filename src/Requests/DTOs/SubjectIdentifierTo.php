@@ -16,7 +16,7 @@ final readonly class SubjectIdentifierTo extends AbstractDTO implements BodyInte
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string|int, mixed>
      */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {
