@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\AuthorisationChallenge;
 
+use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequestFixture;
@@ -42,7 +43,11 @@ final class AuthorisationChallengeHandlerTest extends AbstractTestCase
     {
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->session()->authorisationChallenge($requestFixture->data)->object();
+        $request = AuthorisationChallengeRequest::from($requestFixture->data);
+
+        $this->assertFixture($requestFixture->data, $request);
+
+        $response = $clientStub->online()->session()->authorisationChallenge($request)->object();
 
         $this->assertFixture($responseFixture->data, $response);
     }

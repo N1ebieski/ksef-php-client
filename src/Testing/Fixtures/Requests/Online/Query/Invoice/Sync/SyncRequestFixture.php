@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Query\Invoice\Sync;
 
 use DateTimeImmutable;
-use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-final class SyncRequestFixture extends AbstractFixture
+final class SyncRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>

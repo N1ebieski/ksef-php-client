@@ -4,44 +4,44 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\Status\Status;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-final class StatusRequestFixture extends AbstractFixture
+final class StatusRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>
      */
     public array $data = [
-        'reference_number' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD',
-        'page_size' => 10,
-        'page_offset' => 0,
-        'include_details' => true
+        'referenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD',
+        'pageSize' => 10,
+        'pageOffset' => 0,
+        'includeDetails' => true
     ];
 
     public function withoutReferenceNumber(): self
     {
-        unset($this->data['reference_number']);
+        unset($this->data['referenceNumber']);
 
         return $this;
     }
 
     public function withoutPageSize(): self
     {
-        unset($this->data['page_size']);
+        unset($this->data['pageSize']);
 
         return $this;
     }
 
     public function withoutPageOffset(): self
     {
-        unset($this->data['page_offset']);
+        unset($this->data['pageOffset']);
 
         return $this;
     }
 
     public function withoutIncludeDetails(): self
     {
-        unset($this->data['include_details']);
+        unset($this->data['includeDetails']);
 
         return $this;
     }

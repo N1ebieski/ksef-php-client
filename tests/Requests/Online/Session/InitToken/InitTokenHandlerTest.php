@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\InitToken;
 
+use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\InitToken\InitTokenRequestFixture;
@@ -42,7 +43,11 @@ final class InitTokenHandlerTest extends AbstractTestCase
     {
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->session()->initToken($requestFixture->data)->object();
+        $request = InitTokenRequest::from($requestFixture->data);
+
+        $this->assertFixture($requestFixture->data, $request);
+
+        $response = $clientStub->online()->session()->initToken($request)->object();
 
         $this->assertFixture($responseFixture->data, $response);
     }

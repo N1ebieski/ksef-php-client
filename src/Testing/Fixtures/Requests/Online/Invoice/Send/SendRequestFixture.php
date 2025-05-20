@@ -5,42 +5,42 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send;
 
 use DateTimeImmutable;
-use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-final class SendRequestFixture extends AbstractFixture
+final class SendRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>
      */
     public array $data = [
         'naglowek' => [
-            'wariant_formularza' => 'FA (2)',
-            'system_info' => 'KSEF-PHP-Client'
+            'wariantFormularza' => 'FA (2)',
+            'systemInfo' => 'KSEF-PHP-Client'
         ],
         'podmiot1' => [
-            'dane_identyfikacyjne' => [
+            'daneIdentyfikacyjne' => [
                 'nip' => '1111111111',
                 'nazwa' => 'Testowa Firma'
             ],
             'adres' => [
-                'kod_kraju' => 'PL',
-                'adres_l1' => '30-549 Kraków',
+                'kodKraju' => 'PL',
+                'adresL1' => '30-549 Kraków',
             ]
         ],
         'podmiot2' => [
-            'dane_identyfikacyjne' => [
+            'daneIdentyfikacyjne' => [
                 'idgroup' => [
                     'nip' => '5123957531'
                 ],
                 'nazwa' => 'Firma'
             ],
             'adres' => [
-                'kod_kraju' => 'PL',
-                'adres_l1' => 'Ulica 1/2, 11-111 Kraszawa',
+                'kodKraju' => 'PL',
+                'adresL1' => 'Ulica 1/2, 11-111 Kraszawa',
             ]
         ],
         'fa' => [
-            'kod_waluty' => 'PLN',
+            'kodWaluty' => 'PLN',
             'p_1' => '2025-05-11',
             'p_1m' => 'Warszawa',
             'p_2' => '1/05/2025',
@@ -56,10 +56,10 @@ final class SendRequestFixture extends AbstractFixture
                 'p_14_3' => 0.05,
             ],
             'p_15' => 2050.99,
-            'rodzaj_faktury' => 'VAT',
-            'fa_wiersz' => [
+            'rodzajFaktury' => 'VAT',
+            'faWiersz' => [
                 [
-                    'nr_wiersza_fa' => 1,
+                    'nrWierszaFa' => 1,
                     'p_7' => 'lodówka Zimnotech mk1',
                     'p_8a' => 'szt',
                     'p_8b' => 1,
@@ -68,7 +68,7 @@ final class SendRequestFixture extends AbstractFixture
                     'p_12' => '23'
                 ],
                 [
-                    'nr_wiersza_fa' => 2,
+                    'nrWierszaFa' => 2,
                     'p_7' => 'wniesienie sprzętu',
                     'p_8a' => 'szt',
                     'p_8b' => 1,
@@ -77,7 +77,7 @@ final class SendRequestFixture extends AbstractFixture
                     'p_12' => '23'
                 ],
                 [
-                    'nr_wiersza_fa' => 3,
+                    'nrWierszaFa' => 3,
                     'p_7' => 'promocja lodówka pełna mleka',
                     'p_8a' => 'szt',
                     'p_8b' => 1,
@@ -87,12 +87,12 @@ final class SendRequestFixture extends AbstractFixture
                 ]
             ],
             'platnosc' => [
-                'zaplata_group' => [
+                'zaplatagroup' => [
                     'zaplacono' => '1',
-                    'data_zaplaty' => '2022-01-27',
+                    'dataZaplaty' => '2022-01-27',
                 ],
-                'platnosc_group' => [
-                    'forma_platnosci' => '6'
+                'platnoscgroup' => [
+                    'formaPlatnosci' => '6'
                 ]
             ]
         ]

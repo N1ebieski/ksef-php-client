@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Get;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-final class GetRequestFixture extends AbstractFixture
+final class GetRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>
      */
     public array $data = [
-        'ksef_reference_number' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
+        'ksefReferenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
     ];
 }

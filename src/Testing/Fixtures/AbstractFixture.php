@@ -18,5 +18,5 @@ abstract class AbstractFixture
         $this->name = $name;
 
         return $this;
-    }
+    }  
 }

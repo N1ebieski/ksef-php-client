@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\InitSigned;
 
-use N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-final class InitSignedRequestFixture extends AbstractFixture
+final class InitSignedRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>
      */
     public array $data = [
-        'certificate_path' => [
+        'certificatePath' => [
             'path' => __DIR__ . '/../../../../../../../config/certificates/certificate.p12',
             'passphrase' => 'password',
         ],
@@ -23,7 +23,7 @@ final class InitSignedRequestFixture extends AbstractFixture
 
     public function withoutCertificatePath(): self
     {
-        unset($this->data['certificate_path']);
+        unset($this->data['certificatePath']);
 
         return $this;
     }
