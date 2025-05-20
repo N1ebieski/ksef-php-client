@@ -13,12 +13,11 @@ final class SyncRequestFixture extends AbstractRequestFixture
      * @var array<string, mixed>
      */
     public array $data = [
-        'query_criteria' => [
-            'type' => 'range',
-            'subject_type' => 'subject2',
-            'type_criteriagroup' => [
-                'invoicing_date_from' => '2023-11-01T00:00:00.000+01:00',
-                'invoicing_date_to' => '2023-12-01T00:00:00.000+01:00'
+        'queryCriteria' => [
+            'subjectType' => 'subject2',
+            'typeCriteriagroup' => [
+                'invoicingDateFrom' => '2023-11-01T00:00:00.000+01:00',
+                'invoicingDateTo' => '2023-12-01T00:00:00.000+01:00'
             ]
         ],
     ];
@@ -28,11 +27,9 @@ final class SyncRequestFixture extends AbstractRequestFixture
         $now = new DateTimeImmutable('now');
 
         //@phpstan-ignore-next-line
-        $this->data['query_criteria']['type'] = 'range';
+        $this->data['queryCriteria']['typeCriteriagroup']['invoicingDateFrom'] = $now->modify('-2 weeks');
         //@phpstan-ignore-next-line
-        $this->data['query_criteria']['type_criteriagroup']['invoicing_date_from'] = $now->modify('-2 weeks');
-        //@phpstan-ignore-next-line
-        $this->data['query_criteria']['type_criteriagroup']['invoicing_date_to'] = $now;
+        $this->data['queryCriteria']['typeCriteriagroup']['invoicingDateTo'] = $now;
 
         return $this;
     }
