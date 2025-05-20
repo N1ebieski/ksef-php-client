@@ -27,6 +27,9 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
             - [Get an invoice](#get-an-invoice)
             - [Send an invoice](#send-an-invoice)
             - [Invoice status](#invoice-status)
+        - [Query](#query)
+            - [Invoice](#invoice)
+                - [Sync](#sync)
 - [Examples](#examples)
     - [Send an invoice and check for UPO](#send-an-invoice-and-check-for-upo)
 - [Testing](#testing)
@@ -82,7 +85,7 @@ $commonStatus = $client->common()->status(new StatusRequest(
 
 ```php
 $commonStatus = $client->common()->status([
-    'reference_number' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
+    'referenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
 ])->object();
 ```
 
@@ -170,9 +173,7 @@ Checking the status of batch processing (with UPO after finalization)
 
 ```php
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
 
-/** @var StatusResponse $response */
 $response = $client->common()->status(
     new StatusRequest(...)
 )->object();
@@ -188,9 +189,7 @@ Initialize the authentication and authorization mechanism.
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
 
-/** @var AuthorisationChallengeResponse $response */
 $response = $client->online()->session()->authorisationChallenge(
     new AuthorisationChallengeRequest(...)
 )->object();
@@ -202,9 +201,7 @@ Initializing an interactive session. KSeF public key encrypted document http://k
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 
-/** @var InitTokenResponse $response */
 $response = $client->online()->session()->initToken(
     new InitTokenRequest(...)
 )->object();
@@ -216,9 +213,7 @@ Initializing an interactive session. Signed document http://ksef.mf.gov.pl/schem
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 
-/** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedRequest(...)
 )->object();
@@ -228,9 +223,7 @@ or:
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 
-/** @var InitSignedResponse $response */
 $response = $client->online()->session()->initSigned(
     new InitSignedXmlRequest($signedXml)
 )->object();
@@ -242,9 +235,7 @@ Checking the status of current interactive processing or based on the reference 
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 
-/** @var StatusResponse $response */
 $response = $client->online()->session()->status(
     new StatusRequest(...)
 )->object();
@@ -255,9 +246,6 @@ $response = $client->online()->session()->status(
 Forcing the closing of an active interactive session
 
 ```php
-use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
-
-/** @var TerminateResponse $response */
 $response = $client->online()->session()->terminate()->object();
 ```
 
@@ -269,9 +257,7 @@ Invoice download.
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
 
-/** @var GetResponse $response */
 $response = $client->online()->invoice()->get(
     new GetRequest(...)
 )->body();
@@ -281,9 +267,7 @@ $response = $client->online()->invoice()->get(
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 
-/** @var SendResponse $response */
 $response = $client->online()->invoice()->send(
     new SendRequest(...)
 )->object();
@@ -295,11 +279,25 @@ Checking the status of a sent invoice.
 
 ```php
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 
-/** @var StatusResponse $response */
 $response = $client->online()->invoice()->status(
     new StatusRequest(...)
+)->object();
+```
+
+#### Query
+
+##### Invoice
+
+###### Sync
+
+Search and filter invoices
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Sync\SyncRequest;
+
+$response = $client->online()->query()->invoice()->sync(
+    new SyncRequest(...)
 )->object();
 ```
 
@@ -309,7 +307,6 @@ $response = $client->online()->invoice()->status(
 
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
-use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
@@ -330,7 +327,7 @@ try {
     // Check status of invoice generation
     Utility::retry(function () use ($client, $sendResponse) {
         $statusResponse = $client->online()->invoice()->status([
-            'invoice_element_reference_number' => $sendResponse->elementReferenceNumber
+            'invoiceElementReferenceNumber' => $sendResponse->elementReferenceNumber
         ])->object();
 
         if ($statusResponse->processingCode === 200) {
@@ -353,10 +350,9 @@ $client = new ClientBuilder()
     ->build();
 
 // Check status of UPO generation
-/** @var StatusResponse $commonStatus */
 $commonStatus = Utility::retry(function () use ($client, $sendResponse) {
     $commonStatus = $client->common()->status([
-        'reference_number' => $sendResponse->referenceNumber
+        'referenceNumber' => $sendResponse->referenceNumber
     ])->object();
 
     if ($commonStatus->processingCode === 200) {
