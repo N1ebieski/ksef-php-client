@@ -15,7 +15,6 @@ final class InitTokenRequestFixture extends AbstractFixture
         'api_token' => '1234567890',
         'challenge' => '20250516-CR-70912D5DEF-7402B64FF3-CD',
         'timestamp' => '2022-01-01T00:00:00+01:00',
-        'nip' => '1111111111',
-        'ksef_public_key_path' => __DIR__ . '/../../../../../../../config/keys/publicKey.pem',
+        'nip' => '1111111111'
     ];
 }

@@ -11,7 +11,6 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
 
 final readonly class AuthorisationChallengeHandler extends AbstractHandler
 {

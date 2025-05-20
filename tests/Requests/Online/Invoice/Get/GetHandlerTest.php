@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Get;
 
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Get\GetRequestFixture;
@@ -43,11 +42,9 @@ final class GetHandlerTest extends AbstractTestCase
     {
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->invoice()->get($requestFixture->data);
+        $response = $clientStub->online()->invoice()->get($requestFixture->data)->body();
 
-        $this->assertInstanceOf(GetResponse::class, $response);
-
-        $this->assertFixture($responseFixture->data, $response);
+        $this->assertSame($responseFixture->data, $response);
     }
 
     public function testInvalidResponse(): void

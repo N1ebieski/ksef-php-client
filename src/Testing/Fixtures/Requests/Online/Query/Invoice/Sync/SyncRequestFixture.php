@@ -27,8 +27,11 @@ final class SyncRequestFixture extends AbstractFixture
     {
         $now = new DateTimeImmutable('now');
 
+        //@phpstan-ignore-next-line
         $this->data['query_criteria']['type'] = 'range';
+        //@phpstan-ignore-next-line
         $this->data['query_criteria']['type_criteriagroup']['invoicing_date_from'] = $now->modify('-2 weeks');
+        //@phpstan-ignore-next-line
         $this->data['query_criteria']['type_criteriagroup']['invoicing_date_to'] = $now;
 
         return $this;

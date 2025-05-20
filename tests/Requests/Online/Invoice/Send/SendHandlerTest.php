@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Send;
 
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
@@ -43,9 +42,7 @@ final class SendHandlerTest extends AbstractTestCase
     {
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->invoice()->send($requestFixture->data);
-
-        $this->assertInstanceOf(SendResponse::class, $response);
+        $response = $clientStub->online()->invoice()->send($requestFixture->data)->object();
 
         $this->assertFixture($responseFixture->data, $response);
     }

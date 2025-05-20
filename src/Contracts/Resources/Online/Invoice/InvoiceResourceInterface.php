@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice;
 
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
-use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Get\GetResponse;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 
 interface InvoiceResourceInterface
 {

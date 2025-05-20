@@ -11,7 +11,6 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusResponse;
 
 final readonly class StatusHandler extends AbstractHandler
 {

@@ -12,7 +12,7 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
 trait HasToArray
 {
-    public function toArray(?KeyType $keyType = KeyType::Snake): array
+    public function toArray(KeyType $keyType = KeyType::Snake): array
     {
         $parameters = get_object_vars($this);
         $newParameters = [];

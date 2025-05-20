@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Factories;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
@@ -17,7 +17,7 @@ final readonly class EncryptedTokenFactory extends AbstractFactory
         #[SensitiveParameter]
         ApiToken $apiToken,
         #[SensitiveParameter]
-        \DateTimeInterface $timestamp,
+        DateTimeInterface $timestamp,
         KSEFPublicKeyPath $ksefPublicKeyPath,
     ): EncryptedToken {
         $timestampAsMiliseconds = $timestamp->getTimestamp() * 1000;

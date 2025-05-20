@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\Status;
 
-use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\Status\Status\StatusRequestFixture;
@@ -48,9 +47,7 @@ final class StatusHandlerTest extends AbstractTestCase
     {
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->session()->status($requestFixture->data);
-
-        $this->assertInstanceOf(StatusResponse::class, $response);
+        $response = $clientStub->online()->session()->status($requestFixture->data)->object();
 
         $this->assertFixture($responseFixture->data, $response);
     }

@@ -189,6 +189,7 @@ final class ClientBuilder
         $client = new RootResource($httpClient, $config);
 
         if ($this->isAuthorisation()) {
+            /** @var object{challenge: string, timestamp: string} $authorisationChallengeResponse */
             $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
                 new AuthorisationChallengeRequest($this->nip)
             )->object();
@@ -212,6 +213,7 @@ final class ClientBuilder
                 )
             };
 
+            /** @var object{sessionToken: object{token: string}} $authorisationSessionResponse */
             $authorisationSessionResponse = $authorisationSessionResponse->object();
 
             $client = $client->withSessionToken($authorisationSessionResponse->sessionToken->token);

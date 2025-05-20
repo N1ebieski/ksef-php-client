@@ -17,7 +17,6 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 

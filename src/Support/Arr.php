@@ -8,12 +8,17 @@ use Closure;
 
 final class Arr
 {
+    /**
+     * @param array<string, mixed> $array
+     * @return array<string, mixed> $array
+     */
     public static function filterRecursive(array $array, Closure $closure): array
     {
         $filtered = [];
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
+                //@phpstan-ignore-next-line
                 $value = self::filterRecursive($value, $closure);
 
                 if ($value === []) {

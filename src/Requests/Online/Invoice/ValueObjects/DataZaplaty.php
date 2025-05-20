@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects;
 
+use DateTimeInterface;
 use DateTimeImmutable;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
@@ -14,7 +15,7 @@ use Stringable;
 
 final readonly class DataZaplaty extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
-    public \DateTimeInterface $value;
+    public DateTimeInterface $value;
 
     public function __construct(DateTimeImmutable | string $value)
     {

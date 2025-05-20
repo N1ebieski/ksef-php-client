@@ -10,6 +10,7 @@ use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\RootResource;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
+use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -30,6 +31,8 @@ trait HasClientMock
         $httpClientStub = $this->createStub(HttpClientInterface::class);
         $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub));
 
-        return new RootResource($httpClientStub, new Config());
+        return new RootResource($httpClientStub, new Config(
+            ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/publicKey.pem')
+        ));
     }
 }

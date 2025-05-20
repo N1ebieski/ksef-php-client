@@ -20,10 +20,8 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
-use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 
 final readonly class InitSignedHandler extends AbstractHandler

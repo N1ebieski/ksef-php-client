@@ -16,7 +16,6 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendResponse;
 use N1ebieski\KSEFClient\Requests\ValueObjects\Type;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;

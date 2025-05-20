@@ -17,8 +17,12 @@ final readonly class SyncRequest extends AbstractRequest
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toBody(): array
     {
+        /** @var array{queryCriteria: array{typeCriteriagroup: array<string, mixed>}, pageSize: int, pageOffset: int} */
         $array = parent::toArray(KeyType::Camel);
 
         $array['queryCriteria'] = array_merge($array['queryCriteria'], $array['queryCriteria']['typeCriteriagroup']);

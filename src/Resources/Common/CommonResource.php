@@ -9,7 +9,6 @@ use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Common\CommonResourceInterface;
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Common\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Common\Status\StatusResponse;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
 final readonly class CommonResource extends AbstractResource implements CommonResourceInterface

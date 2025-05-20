@@ -11,5 +11,5 @@ interface ArrayableInterface
     /**
      * @return array<string, mixed>
      */
-    public function toArray(?KeyType $keyType = KeyType::Snake): array;
+    public function toArray(KeyType $keyType = KeyType::Snake): array;
 }

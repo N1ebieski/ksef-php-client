@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\Terminate;
 
-use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Session\Terminate\TerminateResponseFixture;
@@ -17,9 +16,7 @@ final class TerminateHandlerTest extends AbstractTestCase
 
         $clientStub = $this->getClientStub($responseFixture);
 
-        $response = $clientStub->online()->session()->terminate();
-
-        $this->assertInstanceOf(TerminateResponse::class, $response);
+        $response = $clientStub->online()->session()->terminate()->object();
 
         $this->assertFixture($responseFixture->data, $response);
     }

@@ -34,8 +34,8 @@ final class ArrTest extends TestCase
             ],
         ];
 
-        $result = Arr::filterRecursive($array, fn (mixed $value) => ! $value instanceof Optional);
+        $result = Arr::filterRecursive($array, fn (mixed $value): bool => ! $value instanceof Optional);
 
-        $this->assertEquals($expectedArray, $result);
+        $this->assertSame($expectedArray, $result);
     }
 }

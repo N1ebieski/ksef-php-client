@@ -15,6 +15,7 @@ final readonly class Request extends AbstractDTO
 {
     /**
      * @param array<int, Header> $headers
+     * @param array<string, mixed> $parameters
      * @param string|array<string, mixed>|null $body
      */
     public function __construct(
@@ -28,7 +29,7 @@ final readonly class Request extends AbstractDTO
 
     public function getParametersAsString(): string
     {
-        $parameters = Arr::filterRecursive($this->parameters, fn (mixed $value) => ! $value instanceof Optional);
+        $parameters = Arr::filterRecursive($this->parameters, fn (mixed $value): bool => ! $value instanceof Optional);
 
         return $parameters === [] ? '' : http_build_query($parameters);
     }
@@ -38,7 +39,7 @@ final readonly class Request extends AbstractDTO
         return match (true) {
             is_string($this->body) => $this->body,
             is_array($this->body) => json_encode(
-                Arr::filterRecursive($this->body, fn (mixed $value) => ! $value instanceof Optional),
+                Arr::filterRecursive($this->body, fn (mixed $value): bool => ! $value instanceof Optional),
                 JSON_THROW_ON_ERROR
             ),
             default => ''

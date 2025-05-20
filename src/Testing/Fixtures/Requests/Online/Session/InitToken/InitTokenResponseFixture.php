@@ -18,10 +18,10 @@ final class InitTokenResponseFixture extends AbstractResponseFixture
         'referenceNumber' => '20250516-SE-F2D9E68F0A-519AAC34D6-19',
         'sessionToken' => [
             'token' => '6b790ceffabce9348a56279ecfb0fb2d52a28552dc952660d932b7df05e50ca2',
-            'context' => [
-                'many' => 'information',
-                'here' => 'and here'
-            ]
+            // 'context' => [
+            //     'many' => 'information',
+            //     'here' => 'and here'
+            // ]
         ]
     ];
 }

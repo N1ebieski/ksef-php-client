@@ -12,19 +12,14 @@ use N1ebieski\KSEFClient\Contracts\Resources\Online\Session\SessionResourceInter
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\Status\StatusResponse;
 use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateHandler;
-use N1ebieski\KSEFClient\Requests\Online\Session\Terminate\TerminateResponse;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 
 final readonly class SessionResource extends AbstractResource implements SessionResourceInterface

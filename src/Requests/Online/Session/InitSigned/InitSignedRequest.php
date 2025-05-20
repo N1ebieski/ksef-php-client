@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Session\InitSigned;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
@@ -12,7 +12,6 @@ use N1ebieski\KSEFClient\Requests\AbstractRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
-use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
@@ -24,7 +23,7 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
         #[SensitiveParameter]
         public Challenge $challenge,
         #[SensitiveParameter]
-        public \DateTimeInterface $timestamp,
+        public DateTimeInterface $timestamp,
         public NIP $nip,
         #[SensitiveParameter]
         public ?CertificatePath $certificatePath = null,

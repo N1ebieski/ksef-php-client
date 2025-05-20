@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Testing\Support\Concerns;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 
 trait HasAssertFixture
@@ -14,18 +14,18 @@ trait HasAssertFixture
     /**
      * @param array<string, mixed> $data
      */
-    public function assertFixture(array $data, AbstractDTO $dto): void
+    public function assertFixture(array $data, object $object): void
     {
         foreach ($data as $key => $value) {
-            $this->assertObjectHasProperty($key, $dto);
+            $this->assertObjectHasProperty($key, $object);
 
             //@phpstan-ignore-next-line
-            if (is_array($dto->{$key}) && isset($dto->{$key}[0]) && $dto->{$key}[0] instanceof AbstractDTO) {
-                foreach ($dto->{$key} as $itemKey => $itemValue) {
+            if (is_array($object->{$key}) && isset($object->{$key}[0]) && is_object($object->{$key}[0])) {
+                foreach ($object->{$key} as $itemKey => $itemValue) {
                     /**
                      * @var array<string, array<string, mixed>> $value
                      * @var string $itemKey
-                     * @var AbstractDTO $itemValue
+                     * @var object $itemValue
                      */
                     $this->assertFixture($value[$itemKey], $itemValue);
                 }
@@ -33,22 +33,23 @@ trait HasAssertFixture
                 continue;
             }
 
-            if ($dto->{$key} instanceof AbstractDTO) {
+            if (is_object($object->{$key})) {
                 /** @var array<string, mixed> $value */
-                $this->assertFixture($value, $dto->{$key});
+                $this->assertFixture($value, $object->{$key});
 
                 continue;
             }
 
             $this->assertEquals(match (true) {
                 //@phpstan-ignore-next-line
-                $dto->{$key} instanceof DateTimeImmutable => new DateTimeImmutable($value),
+                $object->{$key} instanceof DateTimeInterface => new DateTimeImmutable($value),
                 default => $value,
             }, match (true) {
                 //@phpstan-ignore-next-line
-                $dto->{$key} instanceof AbstractValueObject => $dto->{$key}->value,
-                $dto->{$key} instanceof DateTimeImmutable => $dto->{$key},
-                default => $dto->{$key},
+                $object->{$key} instanceof AbstractValueObject => $object->{$key}->value,
+                //@phpstan-ignore-next-line
+                $object->{$key} instanceof DateTimeInterface => $object->{$key},
+                default => $object->{$key},
             });
         }
     }
