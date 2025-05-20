@@ -20,14 +20,11 @@ final readonly class SyncRequest extends AbstractRequest
     /**
      * @return array<string, mixed>
      */
-    public function toBody(): array
+    public function toBody(KeyType $keyType = KeyType::Snake): array
     {
-        /** @var array{queryCriteria: array{typeCriteriagroup: array<string, mixed>}, pageSize: int, pageOffset: int} */
-        $array = parent::toArray(KeyType::Camel);
+        /** @var array{queryCriteria: array{queryCriteriagroup: array<string, mixed>}, pageSize: int, pageOffset: int} */
+        $array = parent::toBody(KeyType::Camel);
 
-        $array['queryCriteria'] = array_merge($array['queryCriteria'], $array['queryCriteria']['typeCriteriagroup']);
-
-        unset($array['queryCriteria']['typeCriteriagroup']);
         unset($array['pageSize']);
         unset($array['pageOffset']);
 

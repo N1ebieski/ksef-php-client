@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\ValueObjects;
 
+use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
+use N1ebieski\KSEFClient\Support\Concerns\HasToArray;
 use N1ebieski\KSEFClient\Validator\Rules\String\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final readonly class SubjectPersonName extends AbstractValueObject implements FromInterface
+final readonly class SubjectPersonName extends AbstractValueObject implements FromInterface, ArrayableInterface
 {
+    use HasToArray;
+
     public string $firstName;
 
     public string $surname;

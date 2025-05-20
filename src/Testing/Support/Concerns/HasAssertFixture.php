@@ -20,8 +20,12 @@ trait HasAssertFixture
             $this->assertObjectHasProperty($key, $object);
 
             //@phpstan-ignore-next-line
-            if (is_array($object->{$key}) && isset($object->{$key}[0]) && is_object($object->{$key}[0])) {
+            if (is_array($value) && is_array($object->{$key}) && isset($object->{$key}[0]) && is_object($object->{$key}[0])) {
                 foreach ($object->{$key} as $itemKey => $itemValue) {
+                    if (is_string($value[$itemKey])) {
+                        $value[$itemKey] = ['value' => $value[$itemKey]];
+                    }
+
                     /**
                      * @var array<string, array<string, mixed>> $value
                      * @var string $itemKey
@@ -33,7 +37,7 @@ trait HasAssertFixture
                 continue;
             }
 
-            if (is_object($object->{$key}) && is_array($value)) {
+            if (is_array($value) && is_object($object->{$key})) {
                 /** @var array<string, mixed> $value */
                 $this->assertFixture($value, $object->{$key});
 

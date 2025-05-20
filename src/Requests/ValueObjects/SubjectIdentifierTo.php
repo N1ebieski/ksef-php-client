@@ -6,9 +6,13 @@ namespace N1ebieski\KSEFClient\Requests\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\EnumInterface;
 
-enum SubjectIdentifier: string implements EnumInterface
+enum SubjectIdentifierTo: string implements EnumInterface
 {
-    case Int = 'int';
+    case None = 'none';
 
     case Onip = 'onip';
+
+    case Other = 'other';
+
+    case VatUe = 'vatUE';
 }

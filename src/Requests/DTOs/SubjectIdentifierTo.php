@@ -8,10 +8,10 @@ use N1ebieski\KSEFClient\Contracts\BodyInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
-final readonly class SubjectIdentifierBy extends AbstractDTO implements BodyInterface
+final readonly class SubjectIdentifierTo extends AbstractDTO implements BodyInterface
 {
     public function __construct(
-        public SubjectIdentifierInternalGroup | SubjectIdentifierByCompanyGroup $subjectIdentifierBygroup
+        public SubjectIdentifierToNoneGroup | SubjectIdentifierToVatUeGroup | SubjectIdentifierToCompanyGroup | SubjectIdentifierToOtherGroup $subjectIdentifierTogroup
     ) {
     }
 
@@ -20,6 +20,6 @@ final readonly class SubjectIdentifierBy extends AbstractDTO implements BodyInte
      */
     public function toBody(KeyType $keyType = KeyType::Snake): array
     {
-        return $this->subjectIdentifierBygroup->toBody($keyType);
+        return $this->subjectIdentifierTogroup->toBody($keyType);
     }
 }
