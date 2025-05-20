@@ -11,7 +11,7 @@ use N1ebieski\KSEFClient\Validator\Rules\String\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class SubjectFullName extends AbstractValueObject implements FromInterface
+final readonly class SubjectFullName extends AbstractValueObject implements FromInterface, Stringable
 {
     public string $value;
 

@@ -16,7 +16,7 @@ final readonly class P_1 extends AbstractValueObject implements ValueAwareInterf
 
     public function __construct(DateTimeInterface | string $value)
     {
-        if ($value instanceof \DateTimeInterface === false) {
+        if ($value instanceof DateTimeInterface === false) {
             $value = new DateTimeImmutable($value);
         }
 

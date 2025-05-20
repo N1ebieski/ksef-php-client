@@ -11,6 +11,7 @@ return \Rector\Config\RectorConfig::configure()
         \N1ebieski\KSEFClient\Overrides\Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
     ])
     ->withSkip([
+        \Rector\Carbon\Rector\MethodCall\DateTimeMethodCallToCarbonRector::class,
         \Rector\Php82\Rector\Class_\ReadOnlyClassRector::class,
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
         \Rector\Php81\Rector\Array_\FirstClassCallableRector::class,

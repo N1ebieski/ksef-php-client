@@ -12,7 +12,7 @@ final readonly class SubjectName extends AbstractDTO
 {
     public function __construct(
         public SubjectFullNameGroup | SubjectPersonNameGroup | SubjectNoneGroup $subjectNamegroup,
-        public ?TradeName $tradeName = new Optional()
+        public Optional | TradeName | null $tradeName = new Optional()
     ) {
     }
 }

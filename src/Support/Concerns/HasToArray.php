@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Support\Concerns;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
+use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\Str;
 use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
-use Stringable;
 
 trait HasToArray
 {
@@ -27,7 +26,7 @@ trait HasToArray
 
             $newParameters[$name] = match (true) {
                 $value instanceof ArrayableInterface => $value->toArray($keyType),
-                $value instanceof Stringable => (string) $value,
+                $value instanceof OriginalInterface => $value->toOriginal(),
                 $value instanceof ValueAwareInterface => $value->value,
                 $value instanceof DateTimeInterface => $value->format('Y-m-d\TH:i:s'),
                 default => $value

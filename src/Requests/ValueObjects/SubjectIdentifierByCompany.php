@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\ValueObjects;
 
+use Stringable;
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final readonly class SubjectIdentifierByCompany extends AbstractValueObject implements FromInterface
+final readonly class SubjectIdentifierByCompany extends AbstractValueObject implements FromInterface, Stringable
 {
     public string $value;
 

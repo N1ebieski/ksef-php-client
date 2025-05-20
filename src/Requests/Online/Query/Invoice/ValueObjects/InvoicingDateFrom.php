@@ -6,14 +6,14 @@ namespace N1ebieski\KSEFClient\Requests\Online\Query\Invoice\ValueObjects;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use N1ebieski\KSEFClient\Contracts\FromInterface;
+use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\Date\AfterRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class InvoicingDateFrom extends AbstractValueObject implements ValueAwareInterface, Stringable
+final readonly class InvoicingDateFrom extends AbstractValueObject implements ValueAwareInterface, Stringable, OriginalInterface
 {
     public DateTimeInterface $value;
 
@@ -33,6 +33,11 @@ final readonly class InvoicingDateFrom extends AbstractValueObject implements Va
     public function __toString(): string
     {
         return $this->value->format('Y-m-d\TH:i:s');
+    }
+
+    public function toOriginal(): string
+    {
+        return (string) $this;
     }
 
     public static function from(string $value): self

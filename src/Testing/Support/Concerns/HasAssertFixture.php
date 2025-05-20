@@ -6,10 +6,8 @@ namespace N1ebieski\KSEFClient\Testing\Support\Concerns;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use N1ebieski\KSEFClient\Contracts\EnumInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\HttpClient\Exceptions\BadRequestException;
-use N1ebieski\KSEFClient\Support\AbstractValueObject;
 
 trait HasAssertFixture
 {
@@ -45,6 +43,7 @@ trait HasAssertFixture
             $this->assertEquals(match (true) {
                 //@phpstan-ignore-next-line
                 $object->{$key} instanceof DateTimeInterface => new DateTimeImmutable($value),
+                //@phpstan-ignore-next-line
                 $object->{$key} instanceof ValueAwareInterface && $object->{$key}->value instanceof DateTimeInterface => new DateTimeImmutable($value),
                 default => $value,
             }, match (true) {
