@@ -11,10 +11,8 @@ use N1ebieski\KSEFClient\Overrides\CuyZ\Valinor\Mapper\Source\Modifier\CamelCase
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Concerns\HasToBody;
 
-abstract readonly class AbstractRequest extends AbstractDTO implements BodyInterface
+abstract readonly class AbstractRequest extends AbstractDTO
 {
-    use HasToBody;
-
     public static function from(array $data): static
     {
         return new MapperBuilder()
