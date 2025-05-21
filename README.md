@@ -72,7 +72,7 @@ $client = new ClientBuilder()
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization and encryption, you can find it on https://ksef.mf.gov.pl
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
     ->withEncryptionKey(EncryptionKeyFactory::makeRandom()) // Optional for online resources, required for batch resources. Remember to save this value!
-    ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo, optional for Mode::Test
+    ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo if you want to use auto authorization, optional for Mode::Test
     ->withLogXmlPath('PATH_TO_SAVE_XML_FILES') // Some endpoints generate xml files, useful for debug
     ->build();
 ```
