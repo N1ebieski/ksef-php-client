@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Support;
 use Closure;
 use DateTimeInterface;
 use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
-use N1ebieski\KSEFClient\Contracts\BodyInterface;
 use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
@@ -46,7 +45,7 @@ final class Arr
      * @param array<string|int, mixed> $array
      * @return array<string|int, mixed>
      */
-    public static function toArray(array $array, KeyType $keyType = KeyType::Snake): array
+    public static function normalize(array $array, KeyType $keyType = KeyType::Camel): array
     {
         $newArray = [];
 
@@ -61,7 +60,7 @@ final class Arr
             } : $key;
 
             $newArray[$name] = match (true) {
-                is_array($value) => self::toArray($value, $keyType),
+                is_array($value) => self::normalize($value, $keyType),
                 $value instanceof ArrayableInterface => $value->toArray($keyType),
                 $value instanceof OriginalInterface => $value->toOriginal(),
                 $value instanceof ValueAwareInterface => $value->value,
@@ -71,29 +70,5 @@ final class Arr
         }
 
         return $newArray;
-    }
-
-    /**
-     * @param array<string, mixed> $array
-     * @return array<string|int, mixed>
-     */
-    public static function toBody(array $array, KeyType $keyType = KeyType::Camel): array
-    {
-        $toArray = self::toArray($array, $keyType);
-
-        $newArray = [];
-
-        foreach ($array as $key => $value) {
-            $name = match ($keyType) {
-                KeyType::Camel => Str::camel($key),
-                KeyType::Snake => Str::snake($key)
-            };
-
-            if ($value instanceof BodyInterface) {
-                $newArray[$name] = $value->toBody($keyType);
-            }
-        }
-
-        return array_merge($toArray, $newArray);
     }
 }

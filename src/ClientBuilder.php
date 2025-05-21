@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\Authoris
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
-use N1ebieski\KSEFClient\Resources\RootResource;
+use N1ebieski\KSEFClient\Resources\ClientResource;
 use N1ebieski\KSEFClient\Validator\Rules\String\MaxBytesRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\MinBytesRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -172,7 +172,7 @@ final class ClientBuilder
         return $this;
     }
 
-    public function build(): RootResource
+    public function build(): ClientResource
     {
         $config = new Config(
             logXmlPath: $this->logXmlPath,
@@ -186,7 +186,7 @@ final class ClientBuilder
             config: $httpClientConfig
         );
 
-        $client = new RootResource($httpClient, $config);
+        $client = new ClientResource($httpClient, $config);
 
         if ($this->isAuthorisation()) {
             /** @var object{challenge: string, timestamp: string} $authorisationChallengeResponse */

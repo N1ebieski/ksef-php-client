@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Contracts\Resources;
 use N1ebieski\KSEFClient\Contracts\Resources\Common\CommonResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\OnlineResourceInterface;
 
-interface RootResourceInterface
+interface ClientResourceInterface
 {
     public function online(): OnlineResourceInterface;
 

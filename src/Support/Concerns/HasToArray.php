@@ -12,8 +12,8 @@ trait HasToArray
     /**
      * @return array<string|int, mixed>
      */
-    public function toArray(KeyType $keyType = KeyType::Snake): array
+    public function toArray(KeyType $keyType = KeyType::Camel): array
     {
-        return Arr::toArray(get_object_vars($this), $keyType);
+        return Arr::normalize(get_object_vars($this), $keyType);
     }
 }
