@@ -37,7 +37,7 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
 
 - [Examples](#examples)
     - [Send an invoice and check for UPO](#send-an-invoice-and-check-for-upo)
-    - [Fetch invoices using encryption key]
+    - [Fetch invoices using encryption key](#fetch-invoices-using-encryption-key)
 - [Testing](#testing)
 
 ## Get Started
