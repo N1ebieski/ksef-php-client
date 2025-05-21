@@ -13,7 +13,7 @@ trait HasToBody
     use HasToArray;
 
     /**
-     * @return array<string|int, mixed>
+     * @return array<string, mixed>
      */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {
@@ -22,16 +22,17 @@ trait HasToBody
         $newArray = [];
 
         foreach (get_object_vars($this) as $key => $value) {
-            $name = is_string($key) ? match ($keyType) {
+            $name = match ($keyType) {
                 KeyType::Camel => Str::camel($key),
                 KeyType::Snake => Str::snake($key)
-            } : $key;
+            };
 
             if ($value instanceof BodyInterface) {
                 $newArray[$name] = $value->toBody($keyType);
             }
         }
 
+        /** @var array<string, mixed> */
         return array_merge($toArray, $newArray);
     }
 }

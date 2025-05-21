@@ -85,7 +85,7 @@ final class InitRequestFixture extends AbstractRequestFixture
         $now = new DateTimeImmutable('now');
 
         $this->data['queryCriteria'] = [
-            ...$this->data['queryCriteria'], //@phpstan-ignore-line
+            ...$this->data['queryCriteria'],
             'queryCriteriagroup' => [
                 'invoicingDateFrom' => $now->modify($range)->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->format('Y-m-d\TH:i:s')

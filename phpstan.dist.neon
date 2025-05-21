@@ -8,6 +8,7 @@ parameters:
 		- N1ebieski\KSEFClient\Contracts\ValueAwareInterface
 	excludePaths:
 		- ./src/Overrides/Rector/Php74/Rector/Closure/ClosureToArrowFunctionRector.php
+		- ./src/Testing/Fixtures/Requests
 
 	ignoreErrors:
 		- '#^Parameter \#1 \$node of method DOMDocument::importNode\(\) expects DOMNode, DOMElement\|null given.$#'

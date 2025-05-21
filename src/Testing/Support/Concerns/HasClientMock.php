@@ -32,7 +32,7 @@ trait HasClientMock
         $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub));
 
         return new ClientResource($httpClientStub, new Config(
-            ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/publicKey.pem')
+            ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/testPublicKey.pem')
         ));
     }
 }
