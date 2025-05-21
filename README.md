@@ -482,6 +482,7 @@ foreach ($statusResponse->partList as $part) {
 }
 
 $client->online()->session()->terminate();
+```
 
 ## Testing
 
