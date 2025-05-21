@@ -73,14 +73,21 @@ final class InitRequestFixture extends AbstractRequestFixture
         return $this;
     }
 
-    public function withRangeLast2Weeks(): self
+    public function withSubjectType(string $subjectType): self
+    {
+        $this->data['queryCriteria']['subjectType'] = $subjectType;
+
+        return $this;
+    }
+
+    public function withRange(string $range): self
     {
         $now = new DateTimeImmutable('now');
 
         $this->data['queryCriteria'] = [
             ...$this->data['queryCriteria'], //@phpstan-ignore-line
             'queryCriteriagroup' => [
-                'invoicingDateFrom' => $now->modify('-2 weeks')->format('Y-m-d\TH:i:s'),
+                'invoicingDateFrom' => $now->modify($range)->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->format('Y-m-d\TH:i:s')
             ]
         ];

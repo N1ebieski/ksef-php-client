@@ -12,5 +12,7 @@ interface HttpClientInterface
 {
     public function sendRequest(Request $request): ResponseInterface;
 
+    public function getSessionToken(): ?SessionToken;
+
     public function withSessionToken(SessionToken $sessionToken): self;
 }

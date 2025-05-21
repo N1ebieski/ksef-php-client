@@ -98,6 +98,13 @@ final class SendRequestFixture extends AbstractRequestFixture
         ]
     ];
 
+    public function withNIP(string $nip): self
+    {
+        $this->data['podmiot1']['daneIdentyfikacyjne']['nip'] = $nip;
+
+        return $this;
+    }
+
     public function withTodayDate(): self
     {
         $todayDate = new DateTimeImmutable()->format('Y-m-d');

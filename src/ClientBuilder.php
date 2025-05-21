@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
+use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
@@ -38,6 +39,8 @@ final class ClientBuilder
     private ApiUrl $apiUrl;
 
     private ?ApiToken $apiToken = null;
+
+    private ?SessionToken $sessionToken = null;
 
     private ?CertificatePath $certificatePath = null;
 
@@ -119,6 +122,20 @@ final class ClientBuilder
         return $this;
     }
 
+    public function withSessionToken(SessionToken | string $sessionToken): self
+    {
+        if ($sessionToken instanceof SessionToken === false) {
+            $sessionToken = SessionToken::from($sessionToken);
+        }
+
+        $this->certificatePath = null;
+        $this->apiToken = null;
+
+        $this->sessionToken = $sessionToken;
+
+        return $this;
+    }
+
     public function withCertificatePath(CertificatePath | string $certificatePath, ?string $passphrase = null): self
     {
         if ($certificatePath instanceof CertificatePath === false) {
@@ -180,13 +197,20 @@ final class ClientBuilder
             ksefPublicKeyPath: $this->ksefPublicKeyPath,
         );
 
-        $httpClientConfig = new HttpClientConfig(new BaseUri($this->apiUrl->value));
+        $httpClientConfig = new HttpClientConfig(
+            baseUri: new BaseUri($this->apiUrl->value)
+        );
+
         $httpClient = new HttpClient(
             client: $this->httpClient,
             config: $httpClientConfig
         );
 
         $client = new ClientResource($httpClient, $config);
+
+        if ($this->sessionToken instanceof SessionToken) {
+            return $client->withSessionToken($this->sessionToken);
+        }
 
         if ($this->isAuthorisation()) {
             /** @var object{challenge: string, timestamp: string} $authorisationChallengeResponse */
@@ -224,6 +248,8 @@ final class ClientBuilder
 
     private function isAuthorisation(): bool
     {
-        return $this->apiToken instanceof ApiToken || $this->certificatePath instanceof CertificatePath;
+        return $this->sessionToken === null && (
+            $this->apiToken instanceof ApiToken || $this->certificatePath instanceof CertificatePath
+        );
     }
 }

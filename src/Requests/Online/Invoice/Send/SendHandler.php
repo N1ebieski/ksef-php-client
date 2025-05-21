@@ -37,7 +37,7 @@ final readonly class SendHandler extends AbstractHandler
 
         if ($this->config->encryptionKey instanceof EncryptionKey) {
             $encryptedXml = $this->encryptDocument->handle(new EncryptDocumentAction(
-                encryption: $this->config->encryptionKey,
+                encryptionKey: $this->config->encryptionKey,
                 document: $xml
             ));
         }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions\EncryptDocument;
+namespace N1ebieski\KSEFClient\Actions\DecryptDocument;
 
 use N1ebieski\KSEFClient\Actions\AbstractAction;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use SensitiveParameter;
 
-final readonly class EncryptDocumentAction extends AbstractAction
+final readonly class DecryptDocumentAction extends AbstractAction
 {
     public function __construct(
         #[SensitiveParameter]

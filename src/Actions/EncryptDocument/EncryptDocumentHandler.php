@@ -14,9 +14,9 @@ final readonly class EncryptDocumentHandler extends AbstractHandler
         $encryptedDocument = openssl_encrypt(
             $action->document,
             'AES-256-CBC',
-            $action->encryption->key,
+            $action->encryptionKey->key,
             OPENSSL_RAW_DATA,
-            $action->encryption->iv
+            $action->encryptionKey->iv
         );
 
         if ($encryptedDocument === false) {

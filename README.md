@@ -30,8 +30,14 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
         - [Query](#query)
             - [Invoice](#invoice)
                 - [Sync](#sync)
+                - [Async](#async)
+                    - [Fetch init](#init-fetch)
+                    - [Fetch status](#fetch-status)
+                    - [Fetch invoices](#fetch-invoices)
+
 - [Examples](#examples)
     - [Send an invoice and check for UPO](#send-an-invoice-and-check-for-upo)
+    - [Fetch invoices using encryption key]
 - [Testing](#testing)
 
 ## Get Started
@@ -61,6 +67,7 @@ $client = new ClientBuilder()
     ->withMode(Mode::Production) // Choice between: Test, Demo, Production
     ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
     ->withHttpClient(new \GuzzleHttp\Client([])) // Optional, default is set by Psr18ClientDiscovery::find()
+    ->withSessionToken($_ENV['SESSION_TOKEN']) // Optional, if present, auto authorization is skipped
     ->withApiToken($_ENV['KSEF_KEY']) // Required for API Token authorization
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization and encryption, you can find it on https://ksef.mf.gov.pl
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
@@ -301,6 +308,44 @@ $response = $client->online()->query()->invoice()->sync(
 )->object();
 ```
 
+###### Async
+
+###### Fetch init
+
+Initialization of invoice fetch request
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Async\Init\InitRequest;
+
+$response = $client->online()->query()->invoice()->async()->init(
+    new InitRequest(...)
+)->object();
+```
+
+###### Fetch status
+
+Checking the status of invoice fetch request
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Async\Status\StatusRequest;
+
+$response = $client->online()->query()->invoice()->async()->status(
+    new StatusRequest(...)
+)->object();
+```
+
+###### Fetch invoices
+
+Downloading invoice query results
+
+```php
+use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Async\Fetch\FetchRequest;
+
+$response = $client->online()->query()->invoice()->async()->fetch(
+    new FetchRequest(...)
+)->body();
+```
+
 ## Examples
 
 ### Send an invoice and check for UPO
@@ -362,6 +407,81 @@ $commonStatus = Utility::retry(function () use ($client, $sendResponse) {
 
 $xml = base64_decode($commonStatus->upo);
 ```
+
+### Fetch invoices using encryption key
+
+```php
+use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentAction;
+use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentHandler;
+use N1ebieski\KSEFClient\ClientBuilder;
+use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Utility;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Query\Invoice\Async\Init\InitRequestFixture;
+use N1ebieski\KSEFClient\ValueObjects\Mode;
+
+$encryptionKey = EncryptionKeyFactory::makeRandom();
+
+$client = new ClientBuilder()
+    ->withMode(Mode::Test)
+    ->withApiToken($_ENV['KSEF_KEY'])
+    ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->withEncryptionKey($encryptionKey)
+    ->build();
+
+Utility::retry(function () use ($client) {
+    $statusResponse = $client->online()->session()->status()->object();
+
+    if ($statusResponse->processingCode === 315) {
+        return $statusResponse;
+    }
+});
+
+// Firstly we need to init the preparation of the invoice package based on the query parameters
+$initResponse = $client->online()->query()->invoice()->async()->init(
+    new InitRequestFixture()->withRange('-2 hours')->withSubjectType('subject1')->data
+)->object();
+
+// Preparing invoice packs is asynchronous so it's better to save SessionToken 
+// and queryElementReferenceNumber, go for coffee and come back in a while :)
+$sessionToken = $client->getSessionToken();
+$queryElementReferenceNumber = $initResponse->elementReferenceNumber;
+
+// Ok after a few hours...
+
+$client = new ClientBuilder()
+    ->withMode(Mode::Test)
+    ->withSessionToken($sessionToken)
+    ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->build();
+
+// Check if packages are ready to download
+$statusResponse = Utility::retry(function () use ($client, $queryElementReferenceNumber) {
+    $statusResponse = $client->online()->query()->invoice()->async()->status([
+        'queryElementReferenceNumber' => $queryElementReferenceNumber
+    ])->object();
+
+    if ($statusResponse->processingCode === 200) {
+        return $statusResponse;
+    }
+});
+
+// Downloading...
+foreach ($statusResponse->partList as $part) {
+    $fetchResponse = $client->online()->query()->invoice()->async()->fetch([
+        'queryElementReferenceNumber' => $queryElementReferenceNumber,
+        'partElementReferenceNumber' => $part->partReferenceNumber
+    ])->body();
+
+    // We need to decrypt the content because we used EncrypionKey
+    $decryptedDocument = new DecryptDocumentHandler()->handle(DecryptDocumentAction::from([
+        'document' => $fetchResponse,
+        'encryptionKey' => $encryptionKey
+    ]));
+
+    file_put_contents(__DIR__ . "/../var/zip/{$part->partReferenceNumber}.zip", $decryptedDocument);
+}
+
+$client->online()->session()->terminate();
 
 ## Testing
 

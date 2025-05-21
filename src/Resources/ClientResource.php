@@ -22,6 +22,11 @@ final readonly class ClientResource extends AbstractResource implements ClientRe
     ) {
     }
 
+    public function getSessionToken(): ?SessionToken
+    {
+        return $this->client->getSessionToken();
+    }
+
     public function withSessionToken(SessionToken | string $sessionToken): self
     {
         if ($sessionToken instanceof SessionToken === false) {

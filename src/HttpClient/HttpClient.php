@@ -20,6 +20,11 @@ final readonly class HttpClient implements HttpClientInterface
     ) {
     }
 
+    public function getSessionToken(): ?SessionToken
+    {
+        return $this->config->sessionToken;
+    }
+
     public function withSessionToken(SessionToken $sessionToken): self
     {
         return new self($this->client, $this->config->withSessionToken($sessionToken));
