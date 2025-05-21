@@ -248,7 +248,7 @@ final class ClientBuilder
 
     private function isAuthorisation(): bool
     {
-        return $this->sessionToken === null && (
+        return !$this->sessionToken instanceof SessionToken && (
             $this->apiToken instanceof ApiToken || $this->certificatePath instanceof CertificatePath
         );
     }
