@@ -451,6 +451,7 @@ $client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withSessionToken($sessionToken)
     ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->withEncryptionKey($encryptionKey)
     ->build();
 
 // Check if packages are ready to download
@@ -498,4 +499,4 @@ vendor/bin/phpunit
 ## Roadmap
 
 1. Batch endpoints
-2. Prepare a package for release candidate
+2. Prepare the package for release candidate
