@@ -31,7 +31,7 @@ final readonly class FetchHandler extends AbstractHandler
         $response = $this->client->sendRequest(new Request(
             method: Method::Get,
             headers: [
-                new Header('Accept', 'application/octet-stream')
+                'Accept' => 'application/octet-stream'
             ],
             uri: Uri::from(
                 sprintf(

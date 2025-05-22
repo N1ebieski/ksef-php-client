@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\HttpClient\DTOs;
 
-use N1ebieski\KSEFClient\HttpClient\ValueObjects\Header;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Method;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
@@ -14,7 +13,7 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Request extends AbstractDTO
 {
     /**
-     * @param array<int, Header> $headers
+     * @param array<string, string|array<int, string>> $headers
      * @param array<string, mixed> $parameters
      * @param string|array<string, mixed>|null $body
      */

@@ -59,7 +59,7 @@ final readonly class InitTokenHandler extends AbstractHandler
             method: Method::Post,
             uri: Uri::from('online/Session/InitToken'),
             headers: [
-                new Header('Content-Type', 'application/octet-stream')
+                'Content-Type' => 'application/octet-stream'
             ],
             body: $xml
         ));

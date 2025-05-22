@@ -51,8 +51,8 @@ final readonly class HttpClient implements HttpClientInterface
             $clientRequest = $clientRequest->withHeader('SessionToken', $this->config->sessionToken->value);
         }
 
-        foreach ($request->headers as $header) {
-            $clientRequest = $clientRequest->withHeader($header->name, $header->value);
+        foreach ($request->headers as $name => $value) {
+            $clientRequest = $clientRequest->withHeader($name, $value);
         }
 
         if ($request->method->hasBody()) {

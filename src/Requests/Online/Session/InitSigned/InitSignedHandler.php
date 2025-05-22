@@ -71,7 +71,7 @@ final readonly class InitSignedHandler extends AbstractHandler
             method: Method::Post,
             uri: Uri::from('online/Session/InitSigned'),
             headers: [
-                new Header('Content-Type', 'application/octet-stream'),
+                'Content-Type' => 'application/octet-stream',
             ],
             body: $signedXml
         ));

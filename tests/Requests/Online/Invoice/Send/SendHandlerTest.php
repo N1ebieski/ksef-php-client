@@ -39,7 +39,6 @@ final class SendHandlerTest extends AbstractTestCase
             }
         }
 
-        /** @var array<string, array{AbstractSendRequestFixture, SendResponseFixture}> */
         return $combinations;
     }
 

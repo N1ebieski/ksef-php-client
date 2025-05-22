@@ -27,7 +27,7 @@ final readonly class GetHandler extends AbstractHandler
                 sprintf('online/Invoice/Get/%s', $request->ksefReferenceNumber->value)
             ),
             headers: [
-                new Header('Accept', 'application/octet-stream')
+                'Accept' => 'application/octet-stream'
             ]
         ));
     }
