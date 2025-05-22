@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Async\Fetch;
 
-use GuzzleHttp\Psr7\Utils;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
