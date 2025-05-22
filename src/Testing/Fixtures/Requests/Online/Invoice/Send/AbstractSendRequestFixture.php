@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send;
 
-use DateTimeImmutable;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
 abstract class AbstractSendRequestFixture extends AbstractRequestFixture

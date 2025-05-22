@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Contracts\HttpClient;
 
 use Psr\Http\Message\ResponseInterface as BaseResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 interface ResponseInterface
 {

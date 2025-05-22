@@ -28,7 +28,7 @@ final readonly class P_22B1Group extends AbstractDTO implements DomSerializableI
         $dom->appendChild($p_22b1group);
 
         $p_22b1 = $dom->createElement('P_22B1');
-        $p_22b1->appendChild($dom->createTextNode((string) $this->p_22b1->value));
+        $p_22b1->appendChild($dom->createTextNode($this->p_22b1->value));
 
         $p_22b1group->appendChild($p_22b1);
 
