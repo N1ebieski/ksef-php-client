@@ -15,10 +15,12 @@ final readonly class P_22Group extends AbstractDTO implements DomSerializableInt
     /**
      * @param P_22 $p_22 Znacznik wewnątrzwspólnotowej dostawy nowych środków transportu
      * @param P_42_5 $p_42_5 Jeśli występuje obowiązek, o którym mowa w art. 42 ust. 5 ustawy, należy podać wartość "1", w przeciwnym przypadku - wartość "2
+     * @param array<int, NowySrodekTransportu>
      * @return void
      */
     public function __construct(
         public P_42_5 $p_42_5,
+        public array $nowySrodekTransportu,
         public P_22 $p_22 = P_22::Default,
     ) {
     }
@@ -31,15 +33,21 @@ final readonly class P_22Group extends AbstractDTO implements DomSerializableInt
         $p_22group = $dom->createElement('P_22Group');
         $dom->appendChild($p_22group);
 
+        $p_22 = $dom->createElement('P_22');
+        $p_22->appendChild($dom->createTextNode((string) $this->p_22->value));
+
+        $p_22group->appendChild($p_22);
+
         $p_42_5 = $dom->createElement('P_42_5');
         $p_42_5->appendChild($dom->createTextNode((string) $this->p_42_5->value));
 
         $p_22group->appendChild($p_42_5);
 
-        $p_22 = $dom->createElement('P_22');
-        $p_22->appendChild($dom->createTextNode((string) $this->p_22->value));
+        foreach ($this->nowySrodekTransportu as $nowySrodekTransportu) {
+            $nowySrodekTransportu = $dom->importNode($nowySrodekTransportu->toDom()->documentElement, true);
 
-        $p_22group->appendChild($p_22);
+            $p_22group->appendChild($nowySrodekTransportu);
+        }
 
         return $dom;
     }

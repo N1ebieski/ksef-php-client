@@ -17,8 +17,8 @@ final readonly class P_19Group extends AbstractDTO implements DomSerializableInt
      * @return void
      */
     public function __construct(
-        public P_19 $p_19,
-        public P_19AGroup | P_19BGroup | P_19CGroup $p_19abcgroup
+        public P_19AGroup | P_19BGroup | P_19CGroup $p_19abcgroup,
+        public P_19 $p_19 = P_19::Default,
     ) {
     }
 
