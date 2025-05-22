@@ -10,17 +10,18 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Klucz;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrWiersza;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Wartosc;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class DodatkowyOpis extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param NrWiersza|null $nrWiersza Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeśli informacja odnosi się wyłącznie do danej pozycji faktury
+     * @param NrWiersza|Optional $nrWiersza Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeśli informacja odnosi się wyłącznie do danej pozycji faktury
      * @return void
      */
     public function __construct(
         public Klucz $klucz,
         public Wartosc $wartosc,
-        public ?NrWiersza $nrWiersza = null,
+        public Optional | NrWiersza $nrWiersza = new Optional(),
     ) {
     }
 

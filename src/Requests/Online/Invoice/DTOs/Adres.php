@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\AdresL2;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\GLN;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KodKraju;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Adres extends AbstractDTO implements DomSerializableInterface
 {
@@ -20,8 +21,8 @@ final readonly class Adres extends AbstractDTO implements DomSerializableInterfa
     public function __construct(
         public AdresL1 $adresL1,
         public KodKraju $kodKraju = new KodKraju('PL'),
-        public ?AdresL2 $adresL2 = null,
-        public ?GLN $gln = null
+        public Optional | AdresL2 $adresL2 = new Optional(),
+        public Optional | GLN $gln = new Optional()
     ) {
     }
 

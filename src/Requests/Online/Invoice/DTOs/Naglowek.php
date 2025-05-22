@@ -11,17 +11,18 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataWytworzeniaFa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\SystemInfo;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Naglowek extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param null|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
+     * @param Optional|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
      * @return void
      */
     public function __construct(
         public SystemCode $wariantFormularza = SystemCode::Fa2,
         public DataWytworzeniaFa $dataWytworzeniaFa = new DataWytworzeniaFa(new DateTimeImmutable()),
-        public ?SystemInfo $systemInfo = null,
+        public Optional | SystemInfo $systemInfo = new Optional(),
     ) {
     }
 

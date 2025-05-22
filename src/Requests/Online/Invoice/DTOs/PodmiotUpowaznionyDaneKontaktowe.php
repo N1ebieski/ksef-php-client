@@ -9,12 +9,13 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\EmailPU;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\TelefonPU;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class PodmiotUpowaznionyDaneKontaktowe extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public ?EmailPU $emailPU = null,
-        public ?TelefonPU $telefonPU = null
+        public Optional | EmailPU $emailPU = new Optional(),
+        public Optional | TelefonPU $telefonPU = new Optional()
     ) {
     }
 

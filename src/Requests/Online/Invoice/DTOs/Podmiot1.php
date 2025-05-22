@@ -10,6 +10,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PrefiksPodatnika;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\StatusInfoPodatnika;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInterface
 {
@@ -17,18 +18,18 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
      * @param Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
      * @param Adres $adres Adres podatnika
      * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podatnika
-     * @param PrefiksPodatnika|null $prefiksPodatnika Kod (prefiks) podatnika VAT UE dla przypadków określonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 3 ustawy
-     * @param NrEORI|null $nrEORI Numer EORI podatnika (sprzedawcy)
+     * @param PrefiksPodatnika|Optional $prefiksPodatnika Kod (prefiks) podatnika VAT UE dla przypadków określonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 3 ustawy
+     * @param NrEORI|Optional $nrEORI Numer EORI podatnika (sprzedawcy)
      * @return void
      */
     public function __construct(
         public Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
         public array $daneKontaktowe = [],
-        public ?PrefiksPodatnika $prefiksPodatnika = null,
-        public ?NrEORI $nrEORI = null,
-        public ?AdresKoresp $adresKoresp = null,
-        public ?StatusInfoPodatnika $statusInfoPodatnika = null
+        public Optional | PrefiksPodatnika $prefiksPodatnika = new Optional(),
+        public Optional | NrEORI $nrEORI = new Optional(),
+        public Optional | AdresKoresp $adresKoresp = new Optional(),
+        public Optional | StatusInfoPodatnika $statusInfoPodatnika = new Optional()
     ) {
     }
 

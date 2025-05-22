@@ -11,19 +11,20 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KRS;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PelnaNazwa;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\REGON;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Rejestry extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param KRS|null $krs Numer Krajowego Rejestru Sądowego
-     * @param BDO|null $bdo Numer w Bazie Danych o Odpadach
+     * @param KRS|Optional $krs Numer Krajowego Rejestru Sądowego
+     * @param BDO|Optional $bdo Numer w Bazie Danych o Odpadach
      * @return void
      */
     public function __construct(
-        public ?PelnaNazwa $pelnaNazwa = null,
-        public ?KRS $krs = null,
-        public ?REGON $regon = null,
-        public ?BDO $bdo = null,
+        public Optional | PelnaNazwa $pelnaNazwa = new Optional(),
+        public Optional | KRS $krs = new Optional(),
+        public Optional | REGON $regon = new Optional(),
+        public Optional | BDO $bdo = new Optional(),
     ) {
     }
 

@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\StopkaFaktury;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Informacje extends AbstractDTO implements DomSerializableInterface
 {
@@ -15,7 +16,7 @@ final readonly class Informacje extends AbstractDTO implements DomSerializableIn
      * @return void
      */
     public function __construct(
-        public ?StopkaFaktury $stopkaFaktury = null,
+        public Optional | StopkaFaktury $stopkaFaktury = new Optional(),
     ) {
     }
 

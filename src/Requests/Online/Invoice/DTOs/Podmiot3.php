@@ -11,28 +11,29 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrKlienta;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Udzial;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param null|IDNabywcy $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
-     * @param NrEORI|null $nrEORI Numer EORI podmiotu trzeciego
+     * @param Optional|IDNabywcy $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
+     * @param NrEORI|Optional $nrEORI Numer EORI podmiotu trzeciego
      * @param Podmiot3DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podmiot trzeci
      * @param Adres $adres Adres podmiotu trzeciego
      * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu trzeciego
-     * @param Udzial|null $udzial Udział - procentowy udział dodatkowego nabywcy. Różnica pomiędzy wartością 100% a sumą udziałów dodatkowych nabywców jest udziałem nabywcy wymienionego w części Podmiot2. W przypadku niewypełnienia pola przyjmuje się, że udziały występujących na fakturze nabywców są równe
-     * @param null|NrKlienta $nrKlienta Numer klienta dla przypadków, w których podmiot wymieniony jako podmiot trzeci posługuje się nim w umowie lub zamówieniu
+     * @param Udzial|Optional $udzial Udział - procentowy udział dodatkowego nabywcy. Różnica pomiędzy wartością 100% a sumą udziałów dodatkowych nabywców jest udziałem nabywcy wymienionego w części Podmiot2. W przypadku niewypełnienia pola przyjmuje się, że udziały występujących na fakturze nabywców są równe
+     * @param Optional|NrKlienta $nrKlienta Numer klienta dla przypadków, w których podmiot wymieniony jako podmiot trzeci posługuje się nim w umowie lub zamówieniu
      */
     public function __construct(
         public Podmiot3DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
         public RolaGroup | RolaInnaGroup $rolagroup,
-        public ?IDNabywcy $idNabywcy = null,
-        public ?NrEORI $nrEORI = null,
-        public ?AdresKoresp $adresKoresp = null,
+        public Optional | IDNabywcy $idNabywcy = new Optional(),
+        public Optional | NrEORI $nrEORI = new Optional(),
+        public Optional | AdresKoresp $adresKoresp = new Optional(),
         public array $daneKontaktowe = [],
-        public ?Udzial $udzial = null,
-        public ?NrKlienta $nrKlienta = null
+        public Optional | Udzial $udzial = new Optional(),
+        public Optional | NrKlienta $nrKlienta = new Optional()
     ) {
     }
 

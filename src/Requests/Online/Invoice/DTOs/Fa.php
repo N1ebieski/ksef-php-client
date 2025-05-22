@@ -16,22 +16,23 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_1M;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_2;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\RodzajFaktury;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Fa extends AbstractDTO implements DomSerializableInterface
 {
     /**
      * @param KodWaluty $kodWaluty Trzyliterowy kod waluty (ISO 4217)
      * @param P_1 $p_1 Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy
-     * @param P_1M|null $p_1m Miejsce wystawienia faktury
+     * @param P_1M|Optional $p_1m Miejsce wystawienia faktury
      * @param P_2 $p_2 Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny identyfikuje fakturę
-     * @param P_13_7|null $p_13_7 Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
+     * @param P_13_7|Optional $p_13_7 Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
      * @param P_15 $p_15 Kwota należności ogółem. W przypadku faktur zaliczkowych kwota zapłaty dokumentowana fakturą. W przypadku faktur o których mowa w art. 106f ust. 3 ustawy kwota pozostała do zapłaty. W przypadku faktur korygujących korekta kwoty wynikającej z faktury korygowanej. W przypadku, o którym mowa w art. 106j ust. 3 ustawy korekta kwot wynikających z faktur korygowanych
      * @param Adnotacje $adnotacje Inne adnotacje na fakturze
-     * @param FP|null $fP Faktura, o której mowa w art. 109 ust. 3d ustawy
+     * @param FP|Optional $fP Faktura, o której mowa w art. 109 ust. 3d ustawy
      * @param array<int, DodatkowyOpis> $dodatkowyOpis Pola przeznaczone dla wykazywania dodatkowych danych na fakturze, w tym wymaganych przepisami prawa, dla których nie przewidziano innych pól/elementów
      * @param array<int, FaWiersz> $faWiersz Szczegółowe pozycje faktury w walucie, w której wystawiono fakturę - węzeł opcjonalny dla faktury zaliczkowej, faktury korygującej fakturę zaliczkową, oraz faktur korygujących dotyczących wszystkich dostaw towarów lub usług dokonanych lub świadczonych w danym okresie, o których mowa w art. 106j ust. 3 ustawy, dla których należy podać dane dotyczące opustu lub obniżki w podziale na stawki podatku i procedury w części Fa. W przypadku faktur korygujących, o których mowa w art. 106j ust. 3 ustawy, gdy opust lub obniżka ceny odnosi się do części dostaw towarów lub usług dokonanych lub świadczonych w danym okresie w części FaWiersz należy podać nazwy (rodzaje) towarów lub usług objętych korektą. W przypadku faktur, o których mowa w art. 106f ust. 3 ustawy, należy wykazać pełne wartości zamówienia lub umowy. W przypadku faktur korygujących pozycje faktury (w tym faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta dotyczy wartości zamówienia), należy wykazać różnice wynikające z korekty poszczególnych pozycji lub dane pozycji korygowanych w stanie przed korektą i po korekcie jako osobne wiersze. W przypadku faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta nie dotyczy wartości zamówienia i jednocześnie zmienia wysokość podstawy opodatkowania lub podatku, należy wprowadzić zapis wg stanu przed korektą i zapis w stanie po korekcie w celu potwierdzenia braku zmiany wartości danej pozycji faktury
-     * @param Platnosc|null $platnosc Warunki płatności
-     * @param WarunkiTransakcji|null $warunkiTransakcji Warunki transakcji, o ile występują
+     * @param Platnosc|Optional $platnosc Warunki płatności
+     * @param WarunkiTransakcji|Optional $warunkiTransakcji Warunki transakcji, o ile występują
      * @return void
      */
     public function __construct(
@@ -40,20 +41,20 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public P_2 $p_2,
         public P_6Group | OkresFaGroup $p_6group,
         public P_15 $p_15,
-        public ?P_13_1Group $p_13_1group = null,
-        public ?P_13_2Group $p_13_2group = null,
-        public ?P_13_3Group $p_13_3group = null,
-        public ?P_13_4Group $p_13_4group = null,
-        public ?P_13_5Group $p_13_5group = null,
-        public ?P_1M $p_1m = null,
-        public ?P_13_7 $p_13_7 = null,
+        public Optional | P_13_1Group $p_13_1group = new Optional(),
+        public Optional | P_13_2Group $p_13_2group = new Optional(),
+        public Optional | P_13_3Group $p_13_3group = new Optional(),
+        public Optional | P_13_4Group $p_13_4group = new Optional(),
+        public Optional | P_13_5Group $p_13_5group = new Optional(),
+        public Optional | P_1M $p_1m = new Optional(),
+        public Optional | P_13_7 $p_13_7 = new Optional(),
         public Adnotacje $adnotacje = new Adnotacje(),
         public RodzajFaktury $rodzajFaktury = RodzajFaktury::Vat,
-        public ?FP $fP = null,
+        public Optional | FP $fP = new Optional(),
         public array $dodatkowyOpis = [],
         public array $faWiersz = [],
-        public ?Platnosc $platnosc = null,
-        public ?WarunkiTransakcji $warunkiTransakcji = null
+        public Optional | Platnosc $platnosc = new Optional(),
+        public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional()
     ) {
     }
 

@@ -34,7 +34,6 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
                     - [Fetch init](#init-fetch)
                     - [Fetch status](#fetch-status)
                     - [Fetch invoices](#fetch-invoices)
-
 - [Examples](#examples)
     - [Send an invoice and check for UPO](#send-an-invoice-and-check-for-upo)
     - [Fetch invoices using encryption key](#fetch-invoices-using-encryption-key)
@@ -445,7 +444,7 @@ $initResponse = $client->online()->query()->invoice()->async()->init(
 $sessionToken = $client->getSessionToken();
 $queryElementReferenceNumber = $initResponse->elementReferenceNumber;
 
-// Ok after a few hours...
+// Ok after a few minutes...
 
 $client = new ClientBuilder()
     ->withMode(Mode::Test)

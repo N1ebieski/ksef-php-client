@@ -9,13 +9,14 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\RolaPU;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface
 {
     /**
      * @param PodmiotUpowaznionyDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podmiotu upoważnionego
      * @param Adres $adres Adres podmiotu upoważnionego
-     * @param NrEORI|null $nrEORI Numer EORI podmiotu upoważnionego
+     * @param NrEORI|Optional $nrEORI Numer EORI podmiotu upoważnionego
      * @param array<int, PodmiotUpowaznionyDaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu upoważnionego
      * @param RolaPU $rolaPU Rola podmiotu upoważnionego
      */
@@ -23,8 +24,8 @@ final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerial
         public PodmiotUpowaznionyDaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
         public RolaPU $rolaPU,
-        public ?NrEORI $nrEORI = null,
-        public ?AdresKoresp $adresKoresp = null,
+        public Optional | NrEORI $nrEORI = new Optional(),
+        public Optional | AdresKoresp $adresKoresp = new Optional(),
         public array $daneKontaktowe = [],
     ) {
     }

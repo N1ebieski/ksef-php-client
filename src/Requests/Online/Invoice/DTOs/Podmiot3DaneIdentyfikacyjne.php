@@ -9,12 +9,13 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Nazwa;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Podmiot3DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
         public NIPGroup | IDWewGroup | UEGroup | KrajGroup | BrakIDGroup $idgroup,
-        public ?Nazwa $nazwa = null
+        public Optional | Nazwa $nazwa = new Optional()
     ) {
     }
 

@@ -9,12 +9,13 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataZamowienia;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrZamowienia;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Zamowienia extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public ?DataZamowienia $dataZamowienia = null,
-        public ?NrZamowienia $nrZamowienia = null,
+        public Optional | DataZamowienia $dataZamowienia = new Optional(),
+        public Optional | NrZamowienia $nrZamowienia = new Optional(),
     ) {
     }
 

@@ -8,12 +8,13 @@ use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Platnosc extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public ?ZaplaconoGroup $zaplatagroup = null,
-        public FormaPlatnosciGroup | PlatnoscInnaGroup | null $platnoscgroup = null,
+        public Optional | ZaplaconoGroup $zaplatagroup = new Optional(),
+        public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscgroup = new Optional(),
     ) {
     }
 
@@ -34,7 +35,7 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
             }
         }
 
-        if ($this->platnoscgroup !== null) {
+        if ( ! $this->platnoscgroup instanceof Optional) {
             /** @var DOMElement $platnoscgroup */
             $platnoscgroup = $this->platnoscgroup->toDom()->documentElement;
 

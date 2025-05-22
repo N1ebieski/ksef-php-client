@@ -10,26 +10,27 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\IDNabywcy;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrKlienta;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInterface
 {
     /**
      * @param Podmiot2DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące nabywcę
-     * @param Adres|null $adres Adres nabywcy
+     * @param Adres|Optional $adres Adres nabywcy
      * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe nabywcy
-     * @param null|NrKlienta $nrKlienta Numer klienta dla przypadków, w których nabywca posługuje się nim w umowie lub zamówieniu
-     * @param NrEORI|null $nrEORI Numer EORI podatnika (nabywcy)
-     * @param IDNabywcy|null $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
+     * @param Optional|NrKlienta $nrKlienta Numer klienta dla przypadków, w których nabywca posługuje się nim w umowie lub zamówieniu
+     * @param NrEORI|Optional $nrEORI Numer EORI podatnika (nabywcy)
+     * @param IDNabywcy|Optional $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
      * @return void
      */
     public function __construct(
         public Podmiot2DaneIdentyfikacyjne $daneIdentyfikacyjne,
-        public ?NrEORI $nrEORI = null,
-        public ?Adres $adres = null,
-        public ?AdresKoresp $adresKoresp = null,
+        public Optional | NrEORI $nrEORI = new Optional(),
+        public Optional | Adres $adres = new Optional(),
+        public Optional | AdresKoresp $adresKoresp = new Optional(),
         public array $daneKontaktowe = [],
-        public ?NrKlienta $nrKlienta = null,
-        public ?IDNabywcy $idNabywcy = null
+        public Optional | NrKlienta $nrKlienta = new Optional(),
+        public Optional | IDNabywcy $idNabywcy = new Optional()
     ) {
     }
 
