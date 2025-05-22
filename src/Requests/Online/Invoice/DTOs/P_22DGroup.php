@@ -14,12 +14,12 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class P_22DGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_22D $p_22d Jeśli dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy, należy podać liczbę godzin roboczych używania nowego środka transportu
-     * @param Optional|P_22D1 $p_22d1 Jeśli dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy, można podać numer fabryczny nowego środka transportu
+     * @param P_22D $p_22D Jeśli dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy, należy podać liczbę godzin roboczych używania nowego środka transportu
+     * @param Optional|P_22D1 $p_22D1 Jeśli dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy, można podać numer fabryczny nowego środka transportu
      */
     public function __construct(
-        public P_22D $p_22d,
-        public Optional | P_22D1 $p_22d1 = new Optional(),
+        public P_22D $p_22D,
+        public Optional | P_22D1 $p_22D1 = new Optional(),
     ) {
     }
 
@@ -28,19 +28,19 @@ final readonly class P_22DGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22dgroup = $dom->createElement('P_22DGroup');
-        $dom->appendChild($p_22dgroup);
+        $p_22DGroup = $dom->createElement('P_22DGroup');
+        $dom->appendChild($p_22DGroup);
 
-        $p_22d = $dom->createElement('P_22D');
-        $p_22d->appendChild($dom->createTextNode((string) $this->p_22d));
+        $p_22D = $dom->createElement('P_22D');
+        $p_22D->appendChild($dom->createTextNode((string) $this->p_22D));
 
-        $p_22dgroup->appendChild($p_22d);
+        $p_22DGroup->appendChild($p_22D);
 
-        if ($this->p_22d1 instanceof P_22D1) {
-            $p_22d1 = $dom->createElement('P_22D1');
-            $p_22d1->appendChild($dom->createTextNode((string) $this->p_22d1));
+        if ($this->p_22D1 instanceof P_22D1) {
+            $p_22D1 = $dom->createElement('P_22D1');
+            $p_22D1->appendChild($dom->createTextNode((string) $this->p_22D1));
 
-            $p_22dgroup->appendChild($p_22d1);
+            $p_22DGroup->appendChild($p_22D1);
         }
 
         return $dom;

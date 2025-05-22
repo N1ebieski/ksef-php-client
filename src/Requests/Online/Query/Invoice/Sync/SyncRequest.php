@@ -28,7 +28,7 @@ final readonly class SyncRequest extends AbstractRequest implements BodyInterfac
      */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {
-        /** @var array{queryCriteria: array{queryCriteriagroup: array<string, mixed>}, pageSize: int, pageOffset: int} */
+        /** @var array{queryCriteria: array{queryCriteriaGroup: array<string, mixed>}, pageSize: int, pageOffset: int} */
         $array = $this->parentToBody($keyType);
 
         unset($array['pageSize']);

@@ -13,7 +13,7 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 final readonly class SubjectName extends AbstractDTO implements BodyInterface
 {
     public function __construct(
-        public SubjectFullNameGroup | SubjectPersonNameGroup | SubjectNoneGroup $subjectNamegroup,
+        public SubjectFullNameGroup | SubjectPersonNameGroup | SubjectNoneGroup $subjectNameGroup,
         public Optional | TradeName | null $tradeName = new Optional()
     ) {
     }
@@ -25,9 +25,9 @@ final readonly class SubjectName extends AbstractDTO implements BodyInterface
     {
         $array = $this->toArray(KeyType::Camel);
 
-        $array = array_merge($array, $this->subjectNamegroup->toBody($keyType));
+        $array = array_merge($array, $this->subjectNameGroup->toBody($keyType));
 
-        unset($array['subjectNamegroup']);
+        unset($array['subjectNameGroup']);
 
         return $array;
     }

@@ -12,7 +12,7 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class PMarzy extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public P_PMarzyGroup | P_PMarzyNGroup $p_pmarzygroup = new P_PMarzyNGroup(),
+        public P_PMarzyGroup | P_PMarzyNGroup $p_PMarzyGroup = new P_PMarzyNGroup(),
     ) {
     }
 
@@ -21,17 +21,17 @@ final readonly class PMarzy extends AbstractDTO implements DomSerializableInterf
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $pmarzy = $dom->createElement('PMarzy');
-        $dom->appendChild($pmarzy);
+        $pMarzy = $dom->createElement('PMarzy');
+        $dom->appendChild($pMarzy);
 
-        /** @var DOMElement $p_pmarzygroup */
-        $p_pmarzygroup = $this->p_pmarzygroup->toDom()->documentElement;
+        /** @var DOMElement $p_PMarzyGroup */
+        $p_PMarzyGroup = $this->p_PMarzyGroup->toDom()->documentElement;
 
-        foreach ($p_pmarzygroup->childNodes as $child) {
-            $pmarzy->appendChild($dom->importNode($child, true));
+        foreach ($p_PMarzyGroup->childNodes as $child) {
+            $pMarzy->appendChild($dom->importNode($child, true));
         }
 
-        $dom->appendChild($pmarzy);
+        $dom->appendChild($pMarzy);
 
         return $dom;
     }

@@ -13,8 +13,8 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Platnosc extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public Optional | ZaplaconoGroup $zaplatagroup = new Optional(),
-        public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscgroup = new Optional(),
+        public Optional | ZaplaconoGroup $zaplataGroup = new Optional(),
+        public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscGroup = new Optional(),
     ) {
     }
 
@@ -26,20 +26,20 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
         $platnosc = $dom->createElement('Platnosc');
         $dom->appendChild($platnosc);
 
-        if ($this->zaplatagroup instanceof ZaplaconoGroup) {
-            /** @var DOMElement $zaplatagroup */
-            $zaplatagroup = $this->zaplatagroup->toDom()->documentElement;
+        if ($this->zaplataGroup instanceof ZaplaconoGroup) {
+            /** @var DOMElement $zaplataGroup */
+            $zaplataGroup = $this->zaplataGroup->toDom()->documentElement;
 
-            foreach ($zaplatagroup->childNodes as $child) {
+            foreach ($zaplataGroup->childNodes as $child) {
                 $platnosc->appendChild($dom->importNode($child, true));
             }
         }
 
-        if ( ! $this->platnoscgroup instanceof Optional) {
-            /** @var DOMElement $platnoscgroup */
-            $platnoscgroup = $this->platnoscgroup->toDom()->documentElement;
+        if ( ! $this->platnoscGroup instanceof Optional) {
+            /** @var DOMElement $platnoscGroup */
+            $platnoscGroup = $this->platnoscGroup->toDom()->documentElement;
 
-            foreach ($platnoscgroup->childNodes as $child) {
+            foreach ($platnoscGroup->childNodes as $child) {
                 $platnosc->appendChild($dom->importNode($child, true));
             }
         }

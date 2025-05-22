@@ -25,13 +25,13 @@ final readonly class IDWewGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $iDWewgroup = $dom->createElement('IDWewGroup');
-        $dom->appendChild($iDWewgroup);
+        $iDWewGroup = $dom->createElement('IDWewGroup');
+        $dom->appendChild($iDWewGroup);
 
         $iDWew = $dom->createElement('IDWew');
         $iDWew->appendChild($dom->createTextNode($this->iDWew->value));
 
-        $iDWewgroup->appendChild($iDWew);
+        $iDWewGroup->appendChild($iDWew);
 
         return $dom;
     }

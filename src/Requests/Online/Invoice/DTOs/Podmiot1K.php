@@ -30,22 +30,22 @@ final readonly class Podmiot1K extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $podmiot1k = $dom->createElement('Podmiot1K');
-        $dom->appendChild($podmiot1k);
+        $podmiot1K = $dom->createElement('Podmiot1K');
+        $dom->appendChild($podmiot1K);
 
         if ($this->prefiksPodatnika instanceof PrefiksPodatnika) {
             $prefiksPodatnika = $dom->createElement('PrefiksPodatnika');
             $prefiksPodatnika->appendChild($dom->createTextNode((string) $this->prefiksPodatnika));
-            $podmiot1k->appendChild($prefiksPodatnika);
+            $podmiot1K->appendChild($prefiksPodatnika);
         }
 
         $daneIdentyfikacyjne = $dom->importNode($this->daneIdentyfikacyjne->toDom()->documentElement, true);
 
-        $podmiot1k->appendChild($daneIdentyfikacyjne);
+        $podmiot1K->appendChild($daneIdentyfikacyjne);
 
         $adres = $dom->importNode($this->adres->toDom()->documentElement, true);
 
-        $podmiot1k->appendChild($adres);
+        $podmiot1K->appendChild($adres);
 
         return $dom;
     }

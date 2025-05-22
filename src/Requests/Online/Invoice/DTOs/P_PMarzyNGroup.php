@@ -12,11 +12,11 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class P_PMarzyNGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_PMarzyN $p_pmarzyn Znacznik braku wystąpienia procedur marży, o których mowa w art. 119 lub art. 120 ustawy
+     * @param P_PMarzyN $p_PMarzyN Znacznik braku wystąpienia procedur marży, o których mowa w art. 119 lub art. 120 ustawy
      * @return void
      */
     public function __construct(
-        public P_PMarzyN $p_pmarzyn = P_PMarzyN::Default,
+        public P_PMarzyN $p_PMarzyN = P_PMarzyN::Default,
     ) {
     }
 
@@ -25,13 +25,13 @@ final readonly class P_PMarzyNGroup extends AbstractDTO implements DomSerializab
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_pmarzyngroup = $dom->createElement('P_PMarzyNGroup');
-        $dom->appendChild($p_pmarzyngroup);
+        $p_PMarzyNGroup = $dom->createElement('P_PMarzyNGroup');
+        $dom->appendChild($p_PMarzyNGroup);
 
-        $p_pmarzyn = $dom->createElement('P_PMarzyN');
-        $p_pmarzyn->appendChild($dom->createTextNode((string) $this->p_pmarzyn->value));
+        $p_PMarzyN = $dom->createElement('P_PMarzyN');
+        $p_PMarzyN->appendChild($dom->createTextNode((string) $this->p_PMarzyN->value));
 
-        $p_pmarzyngroup->appendChild($p_pmarzyn);
+        $p_PMarzyNGroup->appendChild($p_PMarzyN);
 
         return $dom;
     }

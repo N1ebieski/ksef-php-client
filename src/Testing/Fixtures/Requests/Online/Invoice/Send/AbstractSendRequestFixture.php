@@ -15,8 +15,8 @@ abstract class AbstractSendRequestFixture extends AbstractRequestFixture
 
         $this->data['fa']['p_1'] = $todayDate;
 
-        if (isset($this->data['fa']['p_6group']['p_6'])) {
-            $this->data['fa']['p_6group']['p_6'] = $todayDate;
+        if (isset($this->data['fa']['p_6Group']['p_6'])) {
+            $this->data['fa']['p_6Group']['p_6'] = $todayDate;
         }
 
         return $this;

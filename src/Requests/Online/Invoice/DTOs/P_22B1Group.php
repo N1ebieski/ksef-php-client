@@ -12,10 +12,10 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class P_22B1Group extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_22B1 $p_22b1 Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - można podać numer VIN
+     * @param P_22B1 $p_22B1 Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - można podać numer VIN
      */
     public function __construct(
-        public P_22B1 $p_22b1,
+        public P_22B1 $p_22B1,
     ) {
     }
 
@@ -24,13 +24,13 @@ final readonly class P_22B1Group extends AbstractDTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22b1group = $dom->createElement('P_22B1Group');
-        $dom->appendChild($p_22b1group);
+        $p_22B1Group = $dom->createElement('P_22B1Group');
+        $dom->appendChild($p_22B1Group);
 
-        $p_22b1 = $dom->createElement('P_22B1');
-        $p_22b1->appendChild($dom->createTextNode($this->p_22b1->value));
+        $p_22B1 = $dom->createElement('P_22B1');
+        $p_22B1->appendChild($dom->createTextNode($this->p_22B1->value));
 
-        $p_22b1group->appendChild($p_22b1);
+        $p_22B1Group->appendChild($p_22B1);
 
         return $dom;
     }

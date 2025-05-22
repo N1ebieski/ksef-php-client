@@ -12,7 +12,7 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class Zwolnienie extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public P_19Group | P_19NGroup $p_19group = new P_19NGroup(),
+        public P_19Group | P_19NGroup $p_19Group = new P_19NGroup(),
     ) {
     }
 
@@ -24,10 +24,10 @@ final readonly class Zwolnienie extends AbstractDTO implements DomSerializableIn
         $zwolnienie = $dom->createElement('Zwolnienie');
         $dom->appendChild($zwolnienie);
 
-        /** @var DOMElement $p_19group */
-        $p_19group = $this->p_19group->toDom()->documentElement;
+        /** @var DOMElement $p_19Group */
+        $p_19Group = $this->p_19Group->toDom()->documentElement;
 
-        foreach ($p_19group->childNodes as $child) {
+        foreach ($p_19Group->childNodes as $child) {
             $zwolnienie->appendChild($dom->importNode($child, true));
         }
 

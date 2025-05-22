@@ -15,13 +15,13 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class P_22BGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_22B $p_22b Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - należy podać przebieg pojazdu
-     * @param Optional|P_22BT $p_22bt Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - można podać typ nowego środka transportu
+     * @param P_22B $p_22B Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - należy podać przebieg pojazdu
+     * @param Optional|P_22BT $p_22BT Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - można podać typ nowego środka transportu
      */
     public function __construct(
-        public P_22B $p_22b,
-        public Optional | P_22B1Group | P_22B2Group | P_22B3Group | P_22B4Group $p_22b1234group = new Optional(),
-        public Optional | P_22BT $p_22bt = new Optional(),
+        public P_22B $p_22B,
+        public Optional | P_22B1Group | P_22B2Group | P_22B3Group | P_22B4Group $p_22B1234Group = new Optional(),
+        public Optional | P_22BT $p_22BT = new Optional(),
     ) {
     }
 
@@ -30,28 +30,28 @@ final readonly class P_22BGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22bgroup = $dom->createElement('P_22BGroup');
-        $dom->appendChild($p_22bgroup);
+        $p_22BGroup = $dom->createElement('P_22BGroup');
+        $dom->appendChild($p_22BGroup);
 
-        $p_22b = $dom->createElement('P_22B');
-        $p_22b->appendChild($dom->createTextNode((string) $this->p_22b));
+        $p_22B = $dom->createElement('P_22B');
+        $p_22B->appendChild($dom->createTextNode((string) $this->p_22B));
 
-        $p_22bgroup->appendChild($p_22b);
+        $p_22BGroup->appendChild($p_22B);
 
-        if ( ! $this->p_22b1234group instanceof Optional) {
-            /** @var DOMElement $p_22b1234group */
-            $p_22b1234group = $this->p_22b1234group->toDom()->documentElement;
+        if ( ! $this->p_22B1234Group instanceof Optional) {
+            /** @var DOMElement $p_22B1234Group */
+            $p_22B1234Group = $this->p_22B1234Group->toDom()->documentElement;
 
-            foreach ($p_22b1234group->childNodes as $child) {
-                $p_22bgroup->appendChild($dom->importNode($child, true));
+            foreach ($p_22B1234Group->childNodes as $child) {
+                $p_22BGroup->appendChild($dom->importNode($child, true));
             }
         }
 
-        if ($this->p_22bt instanceof P_22BT) {
-            $p_22bt = $dom->createElement('P_22BT');
-            $p_22bt->appendChild($dom->createTextNode((string) $this->p_22bt));
+        if ($this->p_22BT instanceof P_22BT) {
+            $p_22BT = $dom->createElement('P_22BT');
+            $p_22BT->appendChild($dom->createTextNode((string) $this->p_22BT));
 
-            $p_22bgroup->appendChild($p_22bt);
+            $p_22BGroup->appendChild($p_22BT);
         }
 
         return $dom;

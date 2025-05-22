@@ -27,7 +27,7 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
     public function __construct(
         public Podmiot3DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
-        public RolaGroup | RolaInnaGroup $rolagroup,
+        public RolaGroup | RolaInnaGroup $rolaGroup,
         public Optional | IDNabywcy $idNabywcy = new Optional(),
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
@@ -76,9 +76,9 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
             $podmiot3->appendChild($daneKontaktowe);
         }
 
-        $rolagroup = $dom->importNode($this->rolagroup->toDom()->documentElement, true);
+        $rolaGroup = $dom->importNode($this->rolaGroup->toDom()->documentElement, true);
 
-        $podmiot3->appendChild($rolagroup);
+        $podmiot3->appendChild($rolaGroup);
 
         if ($this->udzial instanceof Udzial) {
             $udzial = $dom->createElement('Udzial');

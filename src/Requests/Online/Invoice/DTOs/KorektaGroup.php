@@ -21,8 +21,8 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
      * @param Optional|TypKorekty $typKorekty Typ skutku korekty w ewidencji dla podatku od towarów i usług
      * @param Optional|OkresFaKorygowanej $okresFaKorygowanej Dla faktury korygującej, o której mowa w art. 106j ust. 3 ustawy - okres, do którego odnosi się udzielany opust lub udzielana obniżka, w przypadku gdy podatnik udziela opustu lub obniżki ceny w odniesieniu do dostaw towarów lub usług dokonanych lub świadczonych na rzecz jednego odbiorcy w danym okresie
      * @param Optional|NrFaKorygowany $nrFaKorygowany Poprawny numer faktury korygowanej w przypadku, gdy przyczyną korekty jest błędny numer faktury korygowanej. W takim przypadku błędny numer faktury należy wskazać w polu NrFaKorygowanej
-     * @param Optional|Podmiot1K $podmiot1k W przypadku korekty danych sprzedawcy należy podać pełne dane sprzedawcy występujące na fakturze korygowanej. Pole nie dotyczy przypadku korekty błędnego NIP występującego na fakturze pierwotnej - wówczas wymagana jest korekta faktury do wartości zerowych
-     * @param array<int, Podmiot2K> $podmiot2k W przypadku korekty danych nabywcy występującego jako Podmiot2 lub dodatkowego nabywcy występującego jako Podmiot3 należy podać pełne dane tego podmiotu występujące na fakturze korygowanej. Korekcie nie podlegają błędne numery identyfikujące nabywcę oraz dodatkowego nabywcę. W przypadku korygowania pozostałych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma być tożsamy z numerem w części Podmiot2 względnie Podmiot3 faktury korygującej
+     * @param Optional|Podmiot1K $podmiot1K W przypadku korekty danych sprzedawcy należy podać pełne dane sprzedawcy występujące na fakturze korygowanej. Pole nie dotyczy przypadku korekty błędnego NIP występującego na fakturze pierwotnej - wówczas wymagana jest korekta faktury do wartości zerowych
+     * @param array<int, Podmiot2K> $podmiot2K W przypadku korekty danych nabywcy występującego jako Podmiot2 lub dodatkowego nabywcy występującego jako Podmiot3 należy podać pełne dane tego podmiotu występujące na fakturze korygowanej. Korekcie nie podlegają błędne numery identyfikujące nabywcę oraz dodatkowego nabywcę. W przypadku korygowania pozostałych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma być tożsamy z numerem w części Podmiot2 względnie Podmiot3 faktury korygującej
      */
     public function __construct(
         public array $daneFaKorygowanej,
@@ -30,9 +30,9 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
         public Optional | TypKorekty $typKorekty = new Optional(),
         public Optional | OkresFaKorygowanej $okresFaKorygowanej = new Optional(),
         public Optional | NrFaKorygowany $nrFaKorygowany = new Optional(),
-        public Optional | Podmiot1K $podmiot1k = new Optional(),
-        public array $podmiot2k = [],
-        public Optional | P_15ZKGroup $p15zkgroup = new Optional(),
+        public Optional | Podmiot1K $podmiot1K = new Optional(),
+        public array $podmiot2K = [],
+        public Optional | P_15ZKGroup $p15ZKGroup = new Optional(),
     ) {
     }
 
@@ -78,23 +78,23 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
             $korektaGroup->appendChild($nrFaKorygowany);
         }
 
-        if ($this->podmiot1k instanceof Podmiot1K) {
-            $podmiot1k = $dom->importNode($this->podmiot1k->toDom()->documentElement, true);
+        if ($this->podmiot1K instanceof Podmiot1K) {
+            $podmiot1K = $dom->importNode($this->podmiot1K->toDom()->documentElement, true);
 
-            $korektaGroup->appendChild($podmiot1k);
+            $korektaGroup->appendChild($podmiot1K);
         }
 
-        foreach ($this->podmiot2k as $podmiot2k) {
-            $podmiot2k = $dom->importNode($podmiot2k->toDom()->documentElement, true);
+        foreach ($this->podmiot2K as $podmiot2K) {
+            $podmiot2K = $dom->importNode($podmiot2K->toDom()->documentElement, true);
 
-            $korektaGroup->appendChild($podmiot2k);
+            $korektaGroup->appendChild($podmiot2K);
         }
 
-        if ($this->p15zkgroup instanceof P_15ZKGroup) {
-            /** @var DOMElement $p15zkgroup */
-            $p15zkgroup = $this->p15zkgroup->toDom()->documentElement;
+        if ($this->p15ZKGroup instanceof P_15ZKGroup) {
+            /** @var DOMElement $p15ZKGroup */
+            $p15ZKGroup = $this->p15ZKGroup->toDom()->documentElement;
 
-            foreach ($p15zkgroup->childNodes as $child) {
+            foreach ($p15ZKGroup->childNodes as $child) {
                 $korektaGroup->appendChild($dom->importNode($child, true));
             }
         }

@@ -11,7 +11,7 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 final readonly class SubjectIdentifierTo extends AbstractDTO implements BodyInterface
 {
     public function __construct(
-        public SubjectIdentifierToNoneGroup | SubjectIdentifierToVatUeGroup | SubjectIdentifierToCompanyGroup | SubjectIdentifierToOtherGroup $subjectIdentifierTogroup
+        public SubjectIdentifierToNoneGroup | SubjectIdentifierToVatUeGroup | SubjectIdentifierToCompanyGroup | SubjectIdentifierToOtherGroup $subjectIdentifierToGroup
     ) {
     }
 
@@ -20,6 +20,6 @@ final readonly class SubjectIdentifierTo extends AbstractDTO implements BodyInte
      */
     public function toBody(KeyType $keyType = KeyType::Camel): array
     {
-        return $this->subjectIdentifierTogroup->toBody($keyType);
+        return $this->subjectIdentifierToGroup->toBody($keyType);
     }
 }

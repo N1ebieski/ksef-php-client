@@ -45,6 +45,7 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
         if ($this->nrEORI instanceof NrEORI) {
             $nrEORI = $dom->createElement('NrEORI');
             $nrEORI->appendChild($dom->createTextNode((string) $this->nrEORI));
+
             $podmiot2->appendChild($nrEORI);
         }
 
@@ -72,12 +73,14 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
         if ($this->nrKlienta instanceof NrKlienta) {
             $nrKlienta = $dom->createElement('NrKlienta');
             $nrKlienta->appendChild($dom->createTextNode((string) $this->nrKlienta));
+
             $podmiot2->appendChild($nrKlienta);
         }
 
         if ($this->idNabywcy instanceof IDNabywcy) {
             $idNabywcy = $dom->createElement('IDNabywcy');
             $idNabywcy->appendChild($dom->createTextNode((string) $this->idNabywcy));
+
             $podmiot2->appendChild($idNabywcy);
         }
 

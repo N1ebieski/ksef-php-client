@@ -27,18 +27,18 @@ final readonly class NrKSeFGroup extends AbstractDTO implements DomSerializableI
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $nrKSeFgroup = $dom->createElement('NrKSeFGroup');
-        $dom->appendChild($nrKSeFgroup);
+        $nrKSeFGroup = $dom->createElement('NrKSeFGroup');
+        $dom->appendChild($nrKSeFGroup);
 
         $nrKSeF = $dom->createElement('NrKSeF');
         $nrKSeF->appendChild($dom->createTextNode((string) $this->nrKSeF->value));
 
-        $nrKSeFgroup->appendChild($nrKSeF);
+        $nrKSeFGroup->appendChild($nrKSeF);
 
         $nrKSeFFaKorygowanej = $dom->createElement('NrKSeFFaKorygowanej');
         $nrKSeFFaKorygowanej->appendChild($dom->createTextNode((string) $this->nrKSeFFaKorygowanej));
 
-        $nrKSeFgroup->appendChild($nrKSeFFaKorygowanej);
+        $nrKSeFGroup->appendChild($nrKSeFFaKorygowanej);
 
         return $dom;
     }

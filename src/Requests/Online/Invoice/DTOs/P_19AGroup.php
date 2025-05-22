@@ -12,11 +12,11 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class P_19AGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_19A $p_19a Jeśli pole P_19 równa się "1" - należy wskazać przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie którego podatnik stosuje zwolnienie od podatku
+     * @param P_19A $p_19A Jeśli pole P_19 równa się "1" - należy wskazać przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie którego podatnik stosuje zwolnienie od podatku
      * @return void
      */
     public function __construct(
-        public P_19A $p_19a,
+        public P_19A $p_19A,
     ) {
     }
 
@@ -25,13 +25,13 @@ final readonly class P_19AGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_19agroup = $dom->createElement('P_19AGroup');
-        $dom->appendChild($p_19agroup);
+        $p_19AGroup = $dom->createElement('P_19AGroup');
+        $dom->appendChild($p_19AGroup);
 
-        $p_19a = $dom->createElement('P_19A');
-        $p_19a->appendChild($dom->createTextNode((string) $this->p_19a));
+        $p_19A = $dom->createElement('P_19A');
+        $p_19A->appendChild($dom->createTextNode((string) $this->p_19A));
 
-        $p_19agroup->appendChild($p_19a);
+        $p_19AGroup->appendChild($p_19A);
 
         return $dom;
     }

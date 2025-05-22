@@ -17,7 +17,7 @@ final readonly class P_19Group extends AbstractDTO implements DomSerializableInt
      * @return void
      */
     public function __construct(
-        public P_19AGroup | P_19BGroup | P_19CGroup $p_19abcgroup,
+        public P_19AGroup | P_19BGroup | P_19CGroup $p_19ABCGroup,
         public P_19 $p_19 = P_19::Default,
     ) {
     }
@@ -27,19 +27,19 @@ final readonly class P_19Group extends AbstractDTO implements DomSerializableInt
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_19group = $dom->createElement('P_19Group');
-        $dom->appendChild($p_19group);
+        $p_19Group = $dom->createElement('P_19Group');
+        $dom->appendChild($p_19Group);
 
         $p_19 = $dom->createElement('P_19');
         $p_19->appendChild($dom->createTextNode((string) $this->p_19->value));
 
-        $p_19group->appendChild($p_19);
+        $p_19Group->appendChild($p_19);
 
-        /** @var DOMElement $p_19abcgroup */
-        $p_19abcgroup = $this->p_19abcgroup->toDom()->documentElement;
+        /** @var DOMElement $p_19ABCGroup */
+        $p_19ABCGroup = $this->p_19ABCGroup->toDom()->documentElement;
 
-        foreach ($p_19abcgroup->childNodes as $child) {
-            $p_19group->appendChild($dom->importNode($child, true));
+        foreach ($p_19ABCGroup->childNodes as $child) {
+            $p_19Group->appendChild($dom->importNode($child, true));
         }
 
         return $dom;

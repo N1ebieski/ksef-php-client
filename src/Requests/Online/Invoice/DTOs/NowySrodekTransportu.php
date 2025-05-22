@@ -20,23 +20,23 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_22A $p_22a Data dopuszczenia nowego środka transportu do użytku
-     * @param P_NrWierszaNST $p_nrwierszanst Numer wiersza faktury, w którym wykazano dostawę nowego środka transportu
-     * @param Optional|P_22BMK $p_22bmk Marka nowego środka transportu
-     * @param Optional|P_22BMD $p_22bmd Model nowego środka transportu
-     * @param Optional|P_22BK $p_22bk Kolor nowego środka transportu
-     * @param Optional|P_22BNR $p_22bnr Numer rejestracyjny nowego środka transportu
-     * @param Optional|P_22BRP $p_22brp Rok produkcji nowego środka transportu
+     * @param P_22A $p_22A Data dopuszczenia nowego środka transportu do użytku
+     * @param P_NrWierszaNST $p_nrWierszaNST Numer wiersza faktury, w którym wykazano dostawę nowego środka transportu
+     * @param Optional|P_22BMK $p_22BMK Marka nowego środka transportu
+     * @param Optional|P_22BMD $p_22BMD Model nowego środka transportu
+     * @param Optional|P_22BK $p_22BK Kolor nowego środka transportu
+     * @param Optional|P_22BNR $p_22BNR Numer rejestracyjny nowego środka transportu
+     * @param Optional|P_22BRP $p_22BRP Rok produkcji nowego środka transportu
      */
     public function __construct(
-        public P_22A $p_22a,
-        public P_NrWierszaNST $p_nrwierszanst,
-        public P_22BGroup | P_22CGroup | P_22DGroup $p_22bcdgroup,
-        public Optional | P_22BMK $p_22bmk = new Optional(),
-        public Optional | P_22BMD $p_22bmd = new Optional(),
-        public Optional | P_22BK $p_22bk = new Optional(),
-        public Optional | P_22BNR $p_22bnr = new Optional(),
-        public Optional | P_22BRP $p_22brp = new Optional(),
+        public P_22A $p_22A,
+        public P_NrWierszaNST $p_nrWierszaNST,
+        public P_22BGroup | P_22CGroup | P_22DGroup $p_22BCDGroup,
+        public Optional | P_22BMK $p_22BMK = new Optional(),
+        public Optional | P_22BMD $p_22BMD = new Optional(),
+        public Optional | P_22BK $p_22BK = new Optional(),
+        public Optional | P_22BNR $p_22BNR = new Optional(),
+        public Optional | P_22BRP $p_22BRP = new Optional(),
     ) {
     }
 
@@ -48,55 +48,55 @@ final readonly class NowySrodekTransportu extends AbstractDTO implements DomSeri
         $nowySrodekTransportu = $dom->createElement('NowySrodekTransportu');
         $dom->appendChild($nowySrodekTransportu);
 
-        $p_22a = $dom->createElement('P_22A');
-        $p_22a->appendChild($dom->createTextNode((string) $this->p_22a));
+        $p_22A = $dom->createElement('P_22A');
+        $p_22A->appendChild($dom->createTextNode((string) $this->p_22A));
 
-        $nowySrodekTransportu->appendChild($p_22a);
+        $nowySrodekTransportu->appendChild($p_22A);
 
-        $p_nrwierszanst = $dom->createElement('P_NrWierszaNST');
-        $p_nrwierszanst->appendChild($dom->createTextNode((string) $this->p_nrwierszanst));
+        $p_nrWierszaNST = $dom->createElement('P_NrWierszaNST');
+        $p_nrWierszaNST->appendChild($dom->createTextNode((string) $this->p_nrWierszaNST));
 
-        $nowySrodekTransportu->appendChild($p_nrwierszanst);
+        $nowySrodekTransportu->appendChild($p_nrWierszaNST);
 
-        if ($this->p_22bmk instanceof P_22BMK) {
-            $p_22bmk = $dom->createElement('P_22BMK');
-            $p_22bmk->appendChild($dom->createTextNode((string) $this->p_22bmk));
+        if ($this->p_22BMK instanceof P_22BMK) {
+            $p_22BMK = $dom->createElement('P_22BMK');
+            $p_22BMK->appendChild($dom->createTextNode((string) $this->p_22BMK));
 
-            $nowySrodekTransportu->appendChild($p_22bmk);
+            $nowySrodekTransportu->appendChild($p_22BMK);
         }
 
-        if ($this->p_22bmd instanceof P_22BMD) {
-            $p_22bmd = $dom->createElement('P_22BMD');
-            $p_22bmd->appendChild($dom->createTextNode((string) $this->p_22bmd));
+        if ($this->p_22BMD instanceof P_22BMD) {
+            $p_22BMD = $dom->createElement('P_22BMD');
+            $p_22BMD->appendChild($dom->createTextNode((string) $this->p_22BMD));
 
-            $nowySrodekTransportu->appendChild($p_22bmd);
+            $nowySrodekTransportu->appendChild($p_22BMD);
         }
 
-        if ($this->p_22bk instanceof P_22BK) {
-            $p_22bk = $dom->createElement('P_22BK');
-            $p_22bk->appendChild($dom->createTextNode((string) $this->p_22bk));
+        if ($this->p_22BK instanceof P_22BK) {
+            $p_22BK = $dom->createElement('P_22BK');
+            $p_22BK->appendChild($dom->createTextNode((string) $this->p_22BK));
 
-            $nowySrodekTransportu->appendChild($p_22bk);
+            $nowySrodekTransportu->appendChild($p_22BK);
         }
 
-        if ($this->p_22bnr instanceof P_22BNR) {
-            $p_22bnr = $dom->createElement('P_22BNR');
-            $p_22bnr->appendChild($dom->createTextNode((string) $this->p_22bnr));
+        if ($this->p_22BNR instanceof P_22BNR) {
+            $p_22BNR = $dom->createElement('P_22BNR');
+            $p_22BNR->appendChild($dom->createTextNode((string) $this->p_22BNR));
 
-            $nowySrodekTransportu->appendChild($p_22bnr);
+            $nowySrodekTransportu->appendChild($p_22BNR);
         }
 
-        if ($this->p_22brp instanceof P_22BRP) {
-            $p_22brp = $dom->createElement('P_22BRP');
-            $p_22brp->appendChild($dom->createTextNode((string) $this->p_22brp));
+        if ($this->p_22BRP instanceof P_22BRP) {
+            $p_22BRP = $dom->createElement('P_22BRP');
+            $p_22BRP->appendChild($dom->createTextNode((string) $this->p_22BRP));
 
-            $nowySrodekTransportu->appendChild($p_22brp);
+            $nowySrodekTransportu->appendChild($p_22BRP);
         }
 
-        /** @var DOMElement $p_22bcdgroup */
-        $p_22bcdgroup = $this->p_22bcdgroup->toDom()->documentElement;
+        /** @var DOMElement $p_22BCDGroup */
+        $p_22BCDGroup = $this->p_22BCDGroup->toDom()->documentElement;
 
-        foreach ($p_22bcdgroup->childNodes as $child) {
+        foreach ($p_22BCDGroup->childNodes as $child) {
             $nowySrodekTransportu->appendChild($dom->importNode($child, true));
         }
 

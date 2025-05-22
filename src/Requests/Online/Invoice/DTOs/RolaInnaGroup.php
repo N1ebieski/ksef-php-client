@@ -28,18 +28,18 @@ final readonly class RolaInnaGroup extends AbstractDTO implements DomSerializabl
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $rolaInnagroup = $dom->createElement('RolaInnaGroup');
-        $dom->appendChild($rolaInnagroup);
+        $rolaInnaGroup = $dom->createElement('RolaInnaGroup');
+        $dom->appendChild($rolaInnaGroup);
 
         $rolaInna = $dom->createElement('RolaInna');
         $rolaInna->appendChild($dom->createTextNode((string) $this->rolaInna->value));
 
-        $rolaInnagroup->appendChild($rolaInna);
+        $rolaInnaGroup->appendChild($rolaInna);
 
         $opisRoli = $dom->createElement('OpisRoli');
         $opisRoli->appendChild($dom->createTextNode((string) $this->opisRoli));
 
-        $rolaInnagroup->appendChild($opisRoli);
+        $rolaInnaGroup->appendChild($opisRoli);
 
         return $dom;
     }

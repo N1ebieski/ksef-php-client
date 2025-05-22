@@ -24,13 +24,13 @@ final readonly class NrKSeFNGroup extends AbstractDTO implements DomSerializable
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $nrKSeFNgroup = $dom->createElement('NrKSeFNGroup');
-        $dom->appendChild($nrKSeFNgroup);
+        $nrKSeFNGroup = $dom->createElement('NrKSeFNGroup');
+        $dom->appendChild($nrKSeFNGroup);
 
         $nrKSeFN = $dom->createElement('NrKSeFN');
         $nrKSeFN->appendChild($dom->createTextNode((string) $this->nrKSeFN->value));
 
-        $nrKSeFNgroup->appendChild($nrKSeFN);
+        $nrKSeFNGroup->appendChild($nrKSeFN);
 
         return $dom;
     }

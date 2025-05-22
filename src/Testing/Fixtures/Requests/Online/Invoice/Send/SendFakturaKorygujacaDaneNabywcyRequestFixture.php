@@ -33,7 +33,7 @@ final class SendFakturaKorygujacaDaneNabywcyRequestFixture extends AbstractSendR
         ],
         'podmiot2' => [
             'daneIdentyfikacyjne' => [
-                'idgroup' => [
+                'idGroup' => [
                     'nip' => '5123957531'
                 ],
                 'nazwa' => 'F.H.U. Jan Kowalski'
@@ -55,26 +55,26 @@ final class SendFakturaKorygujacaDaneNabywcyRequestFixture extends AbstractSendR
         'fa' => [
             'kodWaluty' => 'PLN',
             'p_1' => '2025-05-11',
-            'p_1m' => 'Warszawa',
+            'p_1M' => 'Warszawa',
             'p_2' => 'FK2022/03/200',
             'p_15' => 0,
             'rodzajFaktury' => 'KOR',
-            'korektagroup' => [
+            'korektaGroup' => [
                 'przyczynaKorekty' => 'błędna nazwa nabywcy',
                 'typKorekty' => '1',
                 'daneFaKorygowanej' => [
                     [
                         'dataWystFaKorygowanej' => '2022-03-20',
                         'nrFaKorygowanej' => 'FV2022/02/150',
-                        'nrKSeFgroup' => [
+                        'nrKSeFGroup' => [
                             'nrKSeFFaKorygowanej' => '9999999999-20230908-8BEF280C8D35-4D'
                         ]
                     ]
                 ],
-                'podmiot2k' => [
+                'podmiot2K' => [
                     [
                         'daneIdentyfikacyjne' => [
-                            'idgroup' => [
+                            'idGroup' => [
                                 'nip' => '5123957531'
                             ],
                             'nazwa' => 'CDE sp. j.'

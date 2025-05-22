@@ -19,7 +19,7 @@ final readonly class DaneFaKorygowanej implements DomSerializableInterface
     public function __construct(
         public DataWystFaKorygowanej $dataWystFaKorygowanej,
         public NrFaKorygowanej $nrFaKorygowanej,
-        public NrKSeFGroup | NrKSeFNGroup $nrKSeFgroup
+        public NrKSeFGroup | NrKSeFNGroup $nrKSeFGroup
     ) {
     }
 
@@ -41,10 +41,10 @@ final readonly class DaneFaKorygowanej implements DomSerializableInterface
 
         $daneFaKorygowanej->appendChild($nrFaKorygowanej);
 
-        /** @var DOMElement $nrKSeFgroup */
-        $nrKSeFgroup = $this->nrKSeFgroup->toDom()->documentElement;
+        /** @var DOMElement $nrKSeFGroup */
+        $nrKSeFGroup = $this->nrKSeFGroup->toDom()->documentElement;
 
-        foreach ($nrKSeFgroup->childNodes as $child) {
+        foreach ($nrKSeFGroup->childNodes as $child) {
             $daneFaKorygowanej->appendChild($dom->importNode($child, true));
         }
 

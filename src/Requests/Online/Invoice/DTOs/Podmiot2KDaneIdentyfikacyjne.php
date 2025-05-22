@@ -14,7 +14,7 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Podmiot2KDaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface
 {
     public function __construct(
-        public NIPGroup | UEGroup | KrajGroup | BrakIDGroup $idgroup,
+        public NIPGroup | UEGroup | KrajGroup | BrakIDGroup $idGroup,
         public Optional | Nazwa $nazwa = new Optional()
     ) {
     }
@@ -27,10 +27,10 @@ final readonly class Podmiot2KDaneIdentyfikacyjne extends AbstractDTO implements
         $daneIdentyfikacyjne = $dom->createElement('DaneIdentyfikacyjne');
         $dom->appendChild($daneIdentyfikacyjne);
 
-        /** @var DOMElement $nipGroup */
-        $nipGroup = $this->idgroup->toDom()->documentElement;
+        /** @var DOMElement $idGroup */
+        $idGroup = $this->idGroup->toDom()->documentElement;
 
-        foreach ($nipGroup->childNodes as $child) {
+        foreach ($idGroup->childNodes as $child) {
             $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));
         }
 

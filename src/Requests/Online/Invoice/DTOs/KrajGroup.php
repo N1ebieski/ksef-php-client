@@ -14,12 +14,12 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class KrajGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param NrID $nrId Dane identyfikujące nabywcę
+     * @param NrID $nrID Dane identyfikujące nabywcę
      * @param Optional|KodKraju $kodKraju Kod (prefiks) nabywcy VAT UE, o którym mowa w art. 106e ust. 1 pkt 24 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 4 ustawy
      * @return void
      */
     public function __construct(
-        public NrID $nrId,
+        public NrID $nrID,
         public Optional | KodKraju $kodKraju = new Optional()
     ) {
     }
@@ -32,10 +32,10 @@ final readonly class KrajGroup extends AbstractDTO implements DomSerializableInt
         $krajGroup = $dom->createElement('KrajGroup');
         $dom->appendChild($krajGroup);
 
-        $nrId = $dom->createElement('NrID');
-        $nrId->appendChild($dom->createTextNode((string) $this->nrId));
+        $nrID = $dom->createElement('NrID');
+        $nrID->appendChild($dom->createTextNode((string) $this->nrID));
 
-        $krajGroup->appendChild($nrId);
+        $krajGroup->appendChild($nrID);
 
         if ($this->kodKraju instanceof KodKraju) {
             $kodKraju = $dom->createElement('KodKraju');

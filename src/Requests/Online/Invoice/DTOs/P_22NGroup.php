@@ -12,11 +12,11 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class P_22NGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_22N $p_22n Znacznik braku wewnątrzwspólnotowej dostawy nowych środków transportu
+     * @param P_22N $p_22N Znacznik braku wewnątrzwspólnotowej dostawy nowych środków transportu
      * @return void
      */
     public function __construct(
-        public P_22N $p_22n = P_22N::Default,
+        public P_22N $p_22N = P_22N::Default,
     ) {
     }
 
@@ -25,13 +25,13 @@ final readonly class P_22NGroup extends AbstractDTO implements DomSerializableIn
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
 
-        $p_22ngroup = $dom->createElement('P_22NGroup');
-        $dom->appendChild($p_22ngroup);
+        $p_22NGroup = $dom->createElement('P_22NGroup');
+        $dom->appendChild($p_22NGroup);
 
-        $p_22n = $dom->createElement('P_22N');
-        $p_22n->appendChild($dom->createTextNode((string) $this->p_22n->value));
+        $p_22N = $dom->createElement('P_22N');
+        $p_22N->appendChild($dom->createTextNode((string) $this->p_22N->value));
 
-        $p_22ngroup->appendChild($p_22n);
+        $p_22NGroup->appendChild($p_22N);
 
         return $dom;
     }

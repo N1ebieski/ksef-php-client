@@ -15,7 +15,7 @@ final readonly class QueryCriteria extends AbstractDTO implements BodyInterface
 {
     public function __construct(
         public SubjectType $subjectType,
-        public QueryCriteriaInvoiceRangeGroup | QueryCriteriaInvoiceIncrementalGroup | QueryCriteriaInvoiceDetailGroup $queryCriteriagroup,
+        public QueryCriteriaInvoiceRangeGroup | QueryCriteriaInvoiceIncrementalGroup | QueryCriteriaInvoiceDetailGroup $queryCriteriaGroup,
         public Optional | DateTimeInterface $hidingDateFrom = new Optional(),
         public Optional | DateTimeInterface $hidingDateTo = new Optional(),
         public Optional | bool $isHidden = new Optional()
@@ -30,9 +30,9 @@ final readonly class QueryCriteria extends AbstractDTO implements BodyInterface
         /** @var array{queryCriteria: array<string, array<string, mixed>>} */
         $array = parent::toArray(KeyType::Camel);
 
-        $array = array_merge($array, $this->queryCriteriagroup->toBody($keyType));
+        $array = array_merge($array, $this->queryCriteriaGroup->toBody($keyType));
 
-        unset($array['queryCriteriagroup']);
+        unset($array['queryCriteriaGroup']);
 
         return $array;
     }

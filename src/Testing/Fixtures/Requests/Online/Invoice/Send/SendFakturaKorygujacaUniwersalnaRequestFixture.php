@@ -33,7 +33,7 @@ final class SendFakturaKorygujacaUniwersalnaRequestFixture extends AbstractSendR
         ],
         'podmiot2' => [
             'daneIdentyfikacyjne' => [
-                'idgroup' => [
+                'idGroup' => [
                     'nip' => '5123957531'
                 ],
                 'nazwa' => 'F.H.U. Jan Kowalski'
@@ -54,25 +54,25 @@ final class SendFakturaKorygujacaUniwersalnaRequestFixture extends AbstractSendR
         'fa' => [
             'kodWaluty' => 'PLN',
             'p_1' => '2025-05-11',
-            'p_1m' => 'Warszawa',
+            'p_1M' => 'Warszawa',
             'p_2' => 'FK2022/03/200',
-            'p_6group' => [
+            'p_6Group' => [
                 'p_6' => '2025-05-11'
             ],
-            'p_13_1group' => [
+            'p_13_1Group' => [
                 'p_13_1' => -162.60,
                 'p_14_1' => -37.40,
             ],
             'p_15' => -200,
             'rodzajFaktury' => 'KOR',
-            'korektagroup' => [
+            'korektaGroup' => [
                 'przyczynaKorekty' => 'obniżka ceny o 200 zł z uwagi na uszkodzenia estetyczne',
                 'typKorekty' => '3',
                 'daneFaKorygowanej' => [
                     [
                         'dataWystFaKorygowanej' => '2022-03-20',
                         'nrFaKorygowanej' => 'FV2022/02/150',
-                        'nrKSeFgroup' => [
+                        'nrKSeFGroup' => [
                             'nrKSeFFaKorygowanej' => '9999999999-20230908-8BEF280C8D35-4D'
                         ]
                     ]
@@ -83,9 +83,9 @@ final class SendFakturaKorygujacaUniwersalnaRequestFixture extends AbstractSendR
                     'nrWierszaFa' => 1,
                     'uu_id' => 'aaaa111133339990',
                     'p_7' => 'lodówka Zimnotech mk1',
-                    'p_8a' => 'szt',
-                    'p_8b' => 1,
-                    'p_9a' => 1626.01,
+                    'p_8A' => 'szt',
+                    'p_8B' => 1,
+                    'p_9A' => 1626.01,
                     'p_11' => 1626.01,
                     'p_12' => '23',
                     'stanPrzed' => '1'
@@ -94,9 +94,9 @@ final class SendFakturaKorygujacaUniwersalnaRequestFixture extends AbstractSendR
                     'nrWierszaFa' => 1,
                     'uu_id' => 'aaaa111133339990',
                     'p_7' => 'lodówka Zimnotech mk1',
-                    'p_8a' => 'szt',
-                    'p_8b' => 1,
-                    'p_9a' => 1463.41,
+                    'p_8A' => 'szt',
+                    'p_8B' => 1,
+                    'p_9A' => 1463.41,
                     'p_11' => 1463.41,
                     'p_12' => '23'
                 ]

@@ -24,7 +24,7 @@ final class SyncRequestFixture extends AbstractRequestFixture
 
         $this->data['queryCriteria'] = [
             ...$this->data['queryCriteria'], //@phpstan-ignore-line
-            'queryCriteriagroup' => [
+            'queryCriteriaGroup' => [
                 'invoicingDateFrom' => $now->modify('-2 weeks')->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->format('Y-m-d\TH:i:s'),
                 'amountFrom' => 0.32,
@@ -44,12 +44,12 @@ final class SyncRequestFixture extends AbstractRequestFixture
                 // 'schemaType' => 'VAT_RR',
                 'subjectBy' => [
                     'issuedByIdentifier' => [
-                        'subjectIdentifierBygroup' => [
+                        'subjectIdentifierByGroup' => [
                             'subjectIdentifierByCompany' => '1111111111'
                         ]
                     ],
                     'issuedByName' => [
-                        'subjectNamegroup' => [
+                        'subjectNameGroup' => [
                             'subjectPersonName' => [
                                 'firstName' => 'Jan',
                                 'surname' => 'Kowalski'
@@ -59,12 +59,12 @@ final class SyncRequestFixture extends AbstractRequestFixture
                 ],
                 'subjectTo' => [
                     'issuedToIdentifier' => [
-                        'subjectIdentifierTogroup' => [
+                        'subjectIdentifierToGroup' => [
                             'subjectIdentifierToCompany' => '1111111111'
                         ]
                     ],
                     'issuedToName' => [
-                        'subjectNamegroup' => []
+                        'subjectNameGroup' => []
                     ]
                 ]
             ]
@@ -86,7 +86,7 @@ final class SyncRequestFixture extends AbstractRequestFixture
 
         $this->data['queryCriteria'] = [
             ...$this->data['queryCriteria'],
-            'queryCriteriagroup' => [
+            'queryCriteriaGroup' => [
                 'invoicingDateFrom' => $now->modify($range)->format('Y-m-d\TH:i:s'),
                 'invoicingDateTo' => $now->modify('+1 hour')->format('Y-m-d\TH:i:s')
             ]
