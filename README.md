@@ -363,27 +363,29 @@ $client = new ClientBuilder()
     ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
     ->build();
 
-try {
-    // Send an invoice
-    $sendResponse = $client->online()->invoice()->send(
-        new SendRequestFixture()->withTodayDate()->data
-    )->object();
+Utility::retry(function () use ($client) {
+    $statusResponse = $client->online()->session()->status()->object();
 
-    // Check status of invoice generation
-    Utility::retry(function () use ($client, $sendResponse) {
-        $statusResponse = $client->online()->invoice()->status([
-            'invoiceElementReferenceNumber' => $sendResponse->elementReferenceNumber
-        ])->object();
+    if ($statusResponse->processingCode === 315) {
+        return $statusResponse;
+    }
+});
 
-        if ($statusResponse->processingCode === 200) {
-            return $statusResponse;
-        }
-    });
-} catch (Throwable $e) {
-    $client->online()->session()->terminate();
+// Send an invoice
+$sendResponse = $client->online()->invoice()->send(
+    new SendRequestFixture()->withTodayDate()->data
+)->object();
 
-    throw $e;
-}
+// Check status of invoice generation
+Utility::retry(function () use ($client, $sendResponse) {
+    $statusResponse = $client->online()->invoice()->status([
+        'invoiceElementReferenceNumber' => $sendResponse->elementReferenceNumber
+    ])->object();
+
+    if ($statusResponse->processingCode === 200) {
+        return $statusResponse;
+    }
+});
 
 // Close session (only then will the UPO be generated)
 $client->online()->session()->terminate();

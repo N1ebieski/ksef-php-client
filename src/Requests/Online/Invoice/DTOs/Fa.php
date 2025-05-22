@@ -77,6 +77,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public Optional | KursWalutyZ $kursWalutyZ = new Optional(),
         public Adnotacje $adnotacje = new Adnotacje(),
         public RodzajFaktury $rodzajFaktury = RodzajFaktury::Vat,
+        public Optional | KorektaGroup $korektagroup = new Optional(),
         public Optional | FP $fP = new Optional(),
         public array $dodatkowyOpis = [],
         public array $faWiersz = [],
@@ -249,6 +250,14 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         $rodzajFaktury->appendChild($dom->createTextNode((string) $this->rodzajFaktury->value));
 
         $fa->appendChild($rodzajFaktury);
+
+        if ($this->korektagroup instanceof KorektaGroup) {
+            $korektaGroup = $this->korektagroup->toDom()->documentElement;
+
+            foreach ($korektaGroup->childNodes as $child) {
+                $korektaGroup->appendChild($dom->importNode($child, true));
+            }
+        }
 
         if ($this->fP instanceof FP) {
             $fP = $dom->createElement('FP');
