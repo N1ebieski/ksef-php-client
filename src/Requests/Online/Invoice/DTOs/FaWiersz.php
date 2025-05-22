@@ -13,6 +13,7 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_7;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_8A;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_8B;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_9A;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\StanPrzed;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\UU_ID;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -27,6 +28,7 @@ final readonly class FaWiersz extends AbstractDTO implements DomSerializableInte
      * @param P_9A|Optional $p_9a Cena jednostkowa towaru lub usługi bez kwoty podatku (cena jednostkowa netto). Pole opcjonalne dla przypadków określonych w art. 106e ust. 2 i 3 oraz ust. 5 pkt 3 ustawy
      * @param P_11|Optional $p_11 Wartość dostarczonych towarów lub wykonanych usług, objętych transakcją, bez kwoty podatku (wartość sprzedaży netto). Pole opcjonalne dla przypadków określonych w art. 106e ust. 2 i 3 oraz ust. 5 pkt 3 ustawy
      * @param P_12|Optional $p_12 Stawka podatku. Pole opcjonalne dla przypadków określonych w art. 106e ust. 2, 3, ust. 4 pkt 3 i ust. 5 pkt 3 ustawy
+     * @param StanPrzed|Optional $stanPrzed Znacznik stanu przed korektą w przypadku faktury korygującej lub faktury korygującej fakturę wystawioną w związku z art. 106f ust. 3 ustawy, w przypadku gdy korekta dotyczy danych wykazanych w pozycjach faktury i jest dokonywana w sposób polegający na wykazaniu danych przed korektą i po korekcie jako osobnych wierszy z odrębną numeracją oraz w przypadku potwierdzania braku zmiany wartości danej pozycji
      * @return void
      */
     public function __construct(
@@ -37,7 +39,8 @@ final readonly class FaWiersz extends AbstractDTO implements DomSerializableInte
         public Optional | P_8B $p_8b = new Optional(),
         public Optional | P_9A $p_9a = new Optional(),
         public Optional | P_11 $p_11 = new Optional(),
-        public Optional | P_12 $p_12 = new Optional()
+        public Optional | P_12 $p_12 = new Optional(),
+        public Optional | StanPrzed $stanPrzed = new Optional(),
     ) {
     }
 
@@ -94,6 +97,13 @@ final readonly class FaWiersz extends AbstractDTO implements DomSerializableInte
             $p_12 = $dom->createElement('P_12');
             $p_12->appendChild($dom->createTextNode((string) $this->p_12->value));
             $faWiersz->appendChild($p_12);
+        }
+
+        if ($this->stanPrzed instanceof StanPrzed) {
+            $stanPrzed = $dom->createElement('StanPrzed');
+            $stanPrzed->appendChild($dom->createTextNode((string) $this->stanPrzed));
+
+            $faWiersz->appendChild($stanPrzed);
         }
 
         $dom->appendChild($faWiersz);

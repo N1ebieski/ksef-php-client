@@ -7,19 +7,19 @@ namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Send;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\FakturaSprzedazyTowaruRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SendHandlerTest extends AbstractTestCase
 {
     /**
-     * @return array<string, array{SendRequestFixture, SendResponseFixture}>
+     * @return array<string, array{FakturaSprzedazyTowaruRequestFixture, SendResponseFixture}>
      */
     public static function validResponseProvider(): array
     {
         $requests = [
-            new SendRequestFixture(),
+            new FakturaSprzedazyTowaruRequestFixture(),
         ];
 
         $responses = [
@@ -34,12 +34,12 @@ final class SendHandlerTest extends AbstractTestCase
             }
         }
 
-        /** @var array<string, array{SendRequestFixture, SendResponseFixture}> */
+        /** @var array<string, array{FakturaSprzedazyTowaruRequestFixture, SendResponseFixture}> */
         return $combinations;
     }
 
     #[DataProvider('validResponseProvider')]
-    public function testValidResponse(SendRequestFixture $requestFixture, SendResponseFixture $responseFixture): void
+    public function testValidResponse(FakturaSprzedazyTowaruRequestFixture $requestFixture, SendResponseFixture $responseFixture): void
     {
         $clientStub = $this->getClientStub($responseFixture);
 
@@ -54,7 +54,7 @@ final class SendHandlerTest extends AbstractTestCase
 
     public function testInvalidResponse(): void
     {
-        $requestFixture = new SendRequestFixture();
+        $requestFixture = new FakturaSprzedazyTowaruRequestFixture();
         $responseFixture = new ErrorResponseFixture();
 
         $this->assertExceptionFixture($responseFixture->data);
