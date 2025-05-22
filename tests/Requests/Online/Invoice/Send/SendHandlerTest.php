@@ -7,19 +7,24 @@ namespace N1ebieski\KSEFClient\Tests\Requests\Online\Invoice\Send;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
-use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\FakturaSprzedazyTowaruRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\AbstractSendRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaKorygujacaDaneNabywcyRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaKorygujacaUniwersalnaRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyTowaruRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SendHandlerTest extends AbstractTestCase
 {
     /**
-     * @return array<string, array{FakturaSprzedazyTowaruRequestFixture, SendResponseFixture}>
+     * @return array<string, array{AbstractSendRequestFixture, SendResponseFixture}>
      */
     public static function validResponseProvider(): array
     {
         $requests = [
-            new FakturaSprzedazyTowaruRequestFixture(),
+            new SendFakturaSprzedazyTowaruRequestFixture(),
+            new SendFakturaKorygujacaUniwersalnaRequestFixture(),
+            new SendFakturaKorygujacaDaneNabywcyRequestFixture(),
         ];
 
         $responses = [
@@ -34,12 +39,12 @@ final class SendHandlerTest extends AbstractTestCase
             }
         }
 
-        /** @var array<string, array{FakturaSprzedazyTowaruRequestFixture, SendResponseFixture}> */
+        /** @var array<string, array{AbstractSendRequestFixture, SendResponseFixture}> */
         return $combinations;
     }
 
     #[DataProvider('validResponseProvider')]
-    public function testValidResponse(FakturaSprzedazyTowaruRequestFixture $requestFixture, SendResponseFixture $responseFixture): void
+    public function testValidResponse(AbstractSendRequestFixture $requestFixture, SendResponseFixture $responseFixture): void
     {
         $clientStub = $this->getClientStub($responseFixture);
 
@@ -54,7 +59,7 @@ final class SendHandlerTest extends AbstractTestCase
 
     public function testInvalidResponse(): void
     {
-        $requestFixture = new FakturaSprzedazyTowaruRequestFixture();
+        $requestFixture = new SendFakturaSprzedazyTowaruRequestFixture();
         $responseFixture = new ErrorResponseFixture();
 
         $this->assertExceptionFixture($responseFixture->data);

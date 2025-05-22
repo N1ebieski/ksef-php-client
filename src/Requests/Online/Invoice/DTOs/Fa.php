@@ -57,10 +57,10 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public KodWaluty $kodWaluty,
         public P_1 $p_1,
         public P_2 $p_2,
-        public P_6Group | OkresFaGroup $p_6group,
         public P_15 $p_15,
         public array $wz = [],
         public Optional | P_1M $p_1m = new Optional(),
+        public Optional | P_6Group | OkresFaGroup $p_6group = new Optional(),
         public Optional | P_13_1Group $p_13_1group = new Optional(),
         public Optional | P_13_2Group $p_13_2group = new Optional(),
         public Optional | P_13_3Group $p_13_3group = new Optional(),
@@ -122,11 +122,13 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $fa->appendChild($wz);
         }
 
-        /** @var DOMElement $p_6group */
-        $p_6group = $this->p_6group->toDom()->documentElement;
+        if ( ! $this->p_6group instanceof Optional) {
+            /** @var DOMElement $p_6group */
+            $p_6group = $this->p_6group->toDom()->documentElement;
 
-        foreach ($p_6group->childNodes as $child) {
-            $fa->appendChild($dom->importNode($child, true));
+            foreach ($p_6group->childNodes as $child) {
+                $fa->appendChild($dom->importNode($child, true));
+            }
         }
 
         if ($this->p_13_1group instanceof P_13_1Group) {
@@ -256,7 +258,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $korektagroup = $this->korektagroup->toDom()->documentElement;
 
             foreach ($korektagroup->childNodes as $child) {
-                $korektagroup->appendChild($dom->importNode($child, true));
+                $fa->appendChild($dom->importNode($child, true));
             }
         }
 

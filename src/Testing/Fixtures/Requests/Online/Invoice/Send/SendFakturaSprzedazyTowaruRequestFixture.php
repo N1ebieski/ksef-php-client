@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send;
 
-final class FakturaSprzedazyTowaruRequestFixture extends AbstractSendRequestFixture
+use DateTimeImmutable;
+
+final class SendFakturaSprzedazyTowaruRequestFixture extends AbstractSendRequestFixture
 {
     /**
      * @var array<string, mixed>

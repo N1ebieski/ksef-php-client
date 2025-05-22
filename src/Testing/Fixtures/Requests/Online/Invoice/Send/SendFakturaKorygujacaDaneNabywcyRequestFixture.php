@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send;
 
-final class FakturaSprzedazyTowaruRequestFixture extends AbstractSendRequestFixture
+final class SendFakturaKorygujacaDaneNabywcyRequestFixture extends AbstractSendRequestFixture
 {
     /**
      * @var array<string, mixed>
@@ -49,25 +49,19 @@ final class FakturaSprzedazyTowaruRequestFixture extends AbstractSendRequestFixt
                     'telefon' => '555777999'
                 ]
             ],
-            'nrKlienta' => 'fdfd778343'
+            'nrKlienta' => 'fdfd778343',
+            'idNabywcy' => '0001'
         ],
         'fa' => [
             'kodWaluty' => 'PLN',
             'p_1' => '2025-05-11',
             'p_1m' => 'Warszawa',
             'p_2' => 'FK2022/03/200',
-            'p_6group' => [
-                'p_6' => '2025-05-11'
-            ],
-            'p_13_1group' => [
-                'p_13_1' => -162.60,
-                'p_14_1' => -37.40,
-            ],
-            'p_15' => -200,
+            'p_15' => 0,
             'rodzajFaktury' => 'KOR',
             'korektagroup' => [
-                'przyczynaKorekty' => 'obniżka ceny o 200 zł z uwagi na uszkodzenia estetyczne',
-                'typKorekty' => '3',
+                'przyczynaKorekty' => 'błędna nazwa nabywcy',
+                'typKorekty' => '1',
                 'daneFaKorygowanej' => [
                     [
                         'dataWystFaKorygowanej' => '2022-03-20',
@@ -76,43 +70,36 @@ final class FakturaSprzedazyTowaruRequestFixture extends AbstractSendRequestFixt
                             'nrKSeFFaKorygowanej' => '9999999999-20230908-8BEF280C8D35-4D'
                         ]
                     ]
+                ],
+                'podmiot2k' => [
+                    [
+                        'daneIdentyfikacyjne' => [
+                            'idgroup' => [
+                                'nip' => '5123957531'
+                            ],
+                            'nazwa' => 'CDE sp. j.'
+                        ],
+                        'adres' => [
+                            'kodKraju' => 'PL',
+                            'adresL1' => 'ul. Sadowa 1 lok. 3',
+                            'adresL2' => '00-002 Kraków'
+                        ],
+                        'idNabywcy' => '0001'
+                    ]
                 ]
             ],
-            'faWiersz' => [
+        ],
+        'stopka' => [
+            'informacje' => [
                 [
-                    'nrWierszaFa' => 1,
-                    'uu_id' => 'aaaa111133339990',
-                    'p_7' => 'lodówka Zimnotech mk1',
-                    'p_8a' => 'szt',
-                    'p_8b' => 1,
-                    'p_9a' => 1626.01,
-                    'p_11' => 1626.01,
-                    'p_12' => '23',
-                    'stanPrzed' => '1'
-                ],
-                [
-                    'nrWierszaFa' => 1,
-                    'uu_id' => 'aaaa111133339990',
-                    'p_7' => 'lodówka Zimnotech mk1',
-                    'p_8a' => 'szt',
-                    'p_8b' => 1,
-                    'p_9a' => 1463.41,
-                    'p_11' => 1463.41,
-                    'p_12' => '23'
+                    'stopkaFaktury' => 'Kapiał zakładowy 5 000 000'
                 ]
             ],
-            'stopka' => [
-                'informacje' => [
-                    [
-                        'stopkaFaktury' => 'Kapiał zakładowy 5 000 000'
-                    ]
-                ],
-                'rejestry' => [
-                    [
-                        'krs' => '0000099999',
-                        'regon' => '999999999',
-                        'bdo' => '000099999'
-                    ]
+            'rejestry' => [
+                [
+                    'krs' => '0000099999',
+                    'regon' => '999999999',
+                    'bdo' => '000099999'
                 ]
             ]
         ]
