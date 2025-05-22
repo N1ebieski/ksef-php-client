@@ -470,7 +470,7 @@ foreach ($statusResponse->partList as $part) {
         'partElementReferenceNumber' => $part->partReferenceNumber
     ])->body();
 
-    file_put_contents(__DIR__ . "/../var/zip/{$part->partReferenceNumber}.zip", $decryptedDocument);
+    file_put_contents(__DIR__ . "/../var/zip/{$part->partReferenceNumber}.zip", $fetchResponse);
 }
 
 $client->online()->session()->terminate();
