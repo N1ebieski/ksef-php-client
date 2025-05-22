@@ -240,7 +240,7 @@ final class ClientBuilder
             /** @var object{sessionToken: object{token: string}} $authorisationSessionResponse */
             $authorisationSessionResponse = $authorisationSessionResponse->object();
 
-            $client = $client->withSessionToken($authorisationSessionResponse->sessionToken->token);
+            return $client->withSessionToken($authorisationSessionResponse->sessionToken->token);
         }
 
         return $client;
@@ -248,7 +248,7 @@ final class ClientBuilder
 
     private function isAuthorisation(): bool
     {
-        return !$this->sessionToken instanceof SessionToken && (
+        return ! $this->sessionToken instanceof SessionToken && (
             $this->apiToken instanceof ApiToken || $this->certificatePath instanceof CertificatePath
         );
     }

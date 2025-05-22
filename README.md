@@ -411,8 +411,6 @@ $xml = base64_decode($commonStatus->upo);
 ### Fetch invoices using encryption key
 
 ```php
-use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentAction;
-use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentHandler;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\Support\Utility;
@@ -471,12 +469,6 @@ foreach ($statusResponse->partList as $part) {
         'queryElementReferenceNumber' => $queryElementReferenceNumber,
         'partElementReferenceNumber' => $part->partReferenceNumber
     ])->body();
-
-    // We need to decrypt the content because we used EncrypionKey
-    $decryptedDocument = new DecryptDocumentHandler()->handle(DecryptDocumentAction::from([
-        'document' => $fetchResponse,
-        'encryptionKey' => $encryptionKey
-    ]));
 
     file_put_contents(__DIR__ . "/../var/zip/{$part->partReferenceNumber}.zip", $decryptedDocument);
 }

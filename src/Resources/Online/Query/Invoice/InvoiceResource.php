@@ -8,6 +8,7 @@ use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Query\Invoice\Async\AsyncResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Query\Invoice\InvoiceResourceInterface;
+use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Sync\SyncHandler;
 use N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Sync\SyncRequest;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
@@ -16,7 +17,8 @@ use N1ebieski\KSEFClient\Resources\Online\Query\Invoice\Async\AsyncResource;
 final readonly class InvoiceResource extends AbstractResource implements InvoiceResourceInterface
 {
     public function __construct(
-        private HttpClientInterface $client
+        private HttpClientInterface $client,
+        private Config $config
     ) {
     }
 
@@ -31,6 +33,6 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
 
     public function async(): AsyncResourceInterface
     {
-        return new AsyncResource($this->client);
+        return new AsyncResource($this->client, $this->config);
     }
 }

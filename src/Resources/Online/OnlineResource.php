@@ -35,6 +35,6 @@ final readonly class OnlineResource extends AbstractResource implements OnlineRe
 
     public function query(): QueryResourceInterface
     {
-        return new QueryResource($this->client);
+        return new QueryResource($this->client, $this->config);
     }
 }

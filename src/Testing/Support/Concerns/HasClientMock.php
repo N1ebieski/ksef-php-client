@@ -10,6 +10,7 @@ use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\ClientResource;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
+use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -17,7 +18,7 @@ use Psr\Http\Message\StreamInterface;
 
 trait HasClientMock
 {
-    public function getClientStub(AbstractResponseFixture $response): ClientResourceInterface
+    public function getClientStub(AbstractResponseFixture $response, ?EncryptionKey $encryptionKey = null): ClientResourceInterface
     {
         /** @var TestCase $this */
         //@phpstan-ignore-next-line
@@ -32,7 +33,8 @@ trait HasClientMock
         $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub));
 
         return new ClientResource($httpClientStub, new Config(
-            ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/testPublicKey.pem')
+            ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/testPublicKey.pem'),
+            encryptionKey: $encryptionKey
         ));
     }
 }
