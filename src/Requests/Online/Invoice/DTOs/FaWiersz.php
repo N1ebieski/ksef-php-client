@@ -101,7 +101,7 @@ final readonly class FaWiersz extends AbstractDTO implements DomSerializableInte
 
         if ($this->stanPrzed instanceof StanPrzed) {
             $stanPrzed = $dom->createElement('StanPrzed');
-            $stanPrzed->appendChild($dom->createTextNode((string) $this->stanPrzed));
+            $stanPrzed->appendChild($dom->createTextNode((string) $this->stanPrzed->value));
 
             $faWiersz->appendChild($stanPrzed);
         }

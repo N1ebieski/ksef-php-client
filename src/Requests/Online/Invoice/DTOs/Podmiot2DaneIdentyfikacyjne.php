@@ -34,10 +34,12 @@ final readonly class Podmiot2DaneIdentyfikacyjne extends AbstractDTO implements 
             $daneIdentyfikacyjne->appendChild($dom->importNode($child, true));
         }
 
-        $nazwa = $dom->createElement('Nazwa');
-        $nazwa->appendChild($dom->createTextNode((string) $this->nazwa));
+        if ($this->nazwa instanceof Nazwa) {
+            $nazwa = $dom->createElement('Nazwa');
+            $nazwa->appendChild($dom->createTextNode((string) $this->nazwa));
 
-        $daneIdentyfikacyjne->appendChild($nazwa);
+            $daneIdentyfikacyjne->appendChild($nazwa);
+        }
 
         return $dom;
     }

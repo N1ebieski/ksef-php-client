@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrFaKorygowany;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\OkresFaKorygowanej;
@@ -90,6 +91,7 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
         }
 
         if ($this->p15zkgroup instanceof P_15ZKGroup) {
+            /** @var DOMElement $p15zkgroup */
             $p15zkgroup = $this->p15zkgroup->toDom()->documentElement;
 
             foreach ($p15zkgroup->childNodes as $child) {

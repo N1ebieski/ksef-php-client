@@ -16,7 +16,7 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Adres extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param null|GLN $gln Globalny Numer Lokalizacyjny [Global Location Number]
+     * @param Optional|GLN $gln Globalny Numer Lokalizacyjny [Global Location Number]
      */
     public function __construct(
         public AdresL1 $adresL1,

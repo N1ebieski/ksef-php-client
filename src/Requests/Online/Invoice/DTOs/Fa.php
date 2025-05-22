@@ -252,10 +252,11 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         $fa->appendChild($rodzajFaktury);
 
         if ($this->korektagroup instanceof KorektaGroup) {
-            $korektaGroup = $this->korektagroup->toDom()->documentElement;
+            /** @var DOMElement $korektagroup */
+            $korektagroup = $this->korektagroup->toDom()->documentElement;
 
-            foreach ($korektaGroup->childNodes as $child) {
-                $korektaGroup->appendChild($dom->importNode($child, true));
+            foreach ($korektagroup->childNodes as $child) {
+                $korektagroup->appendChild($dom->importNode($child, true));
             }
         }
 

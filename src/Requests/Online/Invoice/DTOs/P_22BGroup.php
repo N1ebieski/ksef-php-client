@@ -39,7 +39,7 @@ final readonly class P_22BGroup extends AbstractDTO implements DomSerializableIn
         $p_22bgroup->appendChild($p_22b);
 
         if ( ! $this->p_22b1234group instanceof Optional) {
-            /** @var DOMElement $p_22bgroup */
+            /** @var DOMElement $p_22b1234group */
             $p_22b1234group = $this->p_22b1234group->toDom()->documentElement;
 
             foreach ($p_22b1234group->childNodes as $child) {
