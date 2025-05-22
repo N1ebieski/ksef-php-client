@@ -480,11 +480,9 @@ $client->online()->session()->terminate();
 
 The package uses unit tests via [PHPUnit](https://github.com/sebastianbergmann/phpunit). 
 
-TestCase is located in the location of ```N1ebieski\KSEFClient\Testing\TestCase```
+TestCase is located in the location of ```src/Testing/AbstractTestCase```
 
-Fake request fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Requests```
-
-Fake response fixtures are located in the location of ```N1ebieski\KSEFClient\Testing\Fixtures\Responses```
+Fake request and responses fixtures for resources are located in the location of ```src/Testing/Fixtures/Requests```
 
 Run all tests:
 
@@ -495,3 +493,8 @@ composer install
 ```bash
 vendor/bin/phpunit
 ```
+
+## Roadmap
+
+1. Batch endpoints
+2. Prepare a package for release candidate
