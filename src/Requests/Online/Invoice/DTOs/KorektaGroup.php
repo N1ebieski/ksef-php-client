@@ -22,7 +22,7 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
      * @param Optional|OkresFaKorygowanej $okresFaKorygowanej Dla faktury korygującej, o której mowa w art. 106j ust. 3 ustawy - okres, do którego odnosi się udzielany opust lub udzielana obniżka, w przypadku gdy podatnik udziela opustu lub obniżki ceny w odniesieniu do dostaw towarów lub usług dokonanych lub świadczonych na rzecz jednego odbiorcy w danym okresie
      * @param Optional|NrFaKorygowany $nrFaKorygowany Poprawny numer faktury korygowanej w przypadku, gdy przyczyną korekty jest błędny numer faktury korygowanej. W takim przypadku błędny numer faktury należy wskazać w polu NrFaKorygowanej
      * @param Optional|Podmiot1K $podmiot1K W przypadku korekty danych sprzedawcy należy podać pełne dane sprzedawcy występujące na fakturze korygowanej. Pole nie dotyczy przypadku korekty błędnego NIP występującego na fakturze pierwotnej - wówczas wymagana jest korekta faktury do wartości zerowych
-     * @param array<int, Podmiot2K> $podmiot2K W przypadku korekty danych nabywcy występującego jako Podmiot2 lub dodatkowego nabywcy występującego jako Podmiot3 należy podać pełne dane tego podmiotu występujące na fakturze korygowanej. Korekcie nie podlegają błędne numery identyfikujące nabywcę oraz dodatkowego nabywcę. W przypadku korygowania pozostałych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma być tożsamy z numerem w części Podmiot2 względnie Podmiot3 faktury korygującej
+     * @param Optional|array<int, Podmiot2K> $podmiot2K W przypadku korekty danych nabywcy występującego jako Podmiot2 lub dodatkowego nabywcy występującego jako Podmiot3 należy podać pełne dane tego podmiotu występujące na fakturze korygowanej. Korekcie nie podlegają błędne numery identyfikujące nabywcę oraz dodatkowego nabywcę. W przypadku korygowania pozostałych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma być tożsamy z numerem w części Podmiot2 względnie Podmiot3 faktury korygującej
      */
     public function __construct(
         public array $daneFaKorygowanej,
@@ -31,7 +31,7 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
         public Optional | OkresFaKorygowanej $okresFaKorygowanej = new Optional(),
         public Optional | NrFaKorygowany $nrFaKorygowany = new Optional(),
         public Optional | Podmiot1K $podmiot1K = new Optional(),
-        public array $podmiot2K = [],
+        public Optional | array $podmiot2K = new Optional(),
         public Optional | P_15ZKGroup $p15ZKGroup = new Optional(),
     ) {
     }
@@ -84,10 +84,12 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
             $korektaGroup->appendChild($podmiot1K);
         }
 
-        foreach ($this->podmiot2K as $podmiot2K) {
-            $podmiot2K = $dom->importNode($podmiot2K->toDom()->documentElement, true);
+        if ( ! $this->podmiot2K instanceof Optional) {
+            foreach ($this->podmiot2K as $podmiot2K) {
+                $podmiot2K = $dom->importNode($podmiot2K->toDom()->documentElement, true);
 
-            $korektaGroup->appendChild($podmiot2K);
+                $korektaGroup->appendChild($podmiot2K);
+            }
         }
 
         if ($this->p15ZKGroup instanceof P_15ZKGroup) {

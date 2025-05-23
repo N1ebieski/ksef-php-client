@@ -13,16 +13,16 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Platnosc extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param array<int, TerminPlatnosci> $terminPlatnosci
-     * @param array<int, RachunekBankowy> $rachunekBankowy
-     * @param array<int, RachunekBankowyFaktora> $rachunekBankowyFaktora
+     * @param Optional|array<int, TerminPlatnosci> $terminPlatnosci
+     * @param Optional|array<int, RachunekBankowy> $rachunekBankowy
+     * @param Optional|array<int, RachunekBankowyFaktora> $rachunekBankowyFaktora
      */
     public function __construct(
         public Optional | ZaplaconoGroup $zaplaconoGroup = new Optional(),
-        public array $terminPlatnosci = [],
+        public Optional | array $terminPlatnosci = new Optional(),
         public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscGroup = new Optional(),
-        public array $rachunekBankowy = [],
-        public array $rachunekBankowyFaktora = [],
+        public Optional | array $rachunekBankowy = new Optional(),
+        public Optional | array $rachunekBankowyFaktora = new Optional(),
         public Optional | Skonto $skonto = new Optional()
     ) {
     }
@@ -44,10 +44,12 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
             }
         }
 
-        foreach ($this->terminPlatnosci as $terminPlatnosci) {
-            $terminPlatnosci = $dom->importNode($terminPlatnosci->toDom()->documentElement, true);
+        if ( ! $this->terminPlatnosci instanceof Optional) {
+            foreach ($this->terminPlatnosci as $terminPlatnosci) {
+                $terminPlatnosci = $dom->importNode($terminPlatnosci->toDom()->documentElement, true);
 
-            $platnosc->appendChild($terminPlatnosci);
+                $platnosc->appendChild($terminPlatnosci);
+            }
         }
 
         if ( ! $this->platnoscGroup instanceof Optional) {
@@ -59,16 +61,21 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
             }
         }
 
-        foreach ($this->rachunekBankowy as $rachunekBankowy) {
-            $rachunekBankowy = $dom->importNode($rachunekBankowy->toDom()->documentElement, true);
+        if ( ! $this->rachunekBankowy instanceof Optional) {
+            foreach ($this->rachunekBankowy as $rachunekBankowy) {
+                $rachunekBankowy = $dom->importNode($rachunekBankowy->toDom()->documentElement, true);
 
-            $platnosc->appendChild($rachunekBankowy);
+                $platnosc->appendChild($rachunekBankowy);
+            }
         }
 
-        foreach ($this->rachunekBankowyFaktora as $rachunekBankowyFaktora) {
-            $rachunekBankowyFaktora = $dom->importNode($rachunekBankowyFaktora->toDom()->documentElement, true);
 
-            $platnosc->appendChild($rachunekBankowyFaktora);
+        if ( ! $this->rachunekBankowyFaktora instanceof Optional) {
+            foreach ($this->rachunekBankowyFaktora as $rachunekBankowyFaktora) {
+                $rachunekBankowyFaktora = $dom->importNode($rachunekBankowyFaktora->toDom()->documentElement, true);
+
+                $platnosc->appendChild($rachunekBankowyFaktora);
+            }
         }
 
         if ($this->skonto instanceof Skonto) {

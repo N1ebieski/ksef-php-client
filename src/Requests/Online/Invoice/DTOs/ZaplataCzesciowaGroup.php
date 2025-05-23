@@ -8,15 +8,16 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\ZnacznikZaplatyCzesciowej;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param array<int, ZaplataCzesciowa> $zaplataCzesciowa Dane zapłat częściowych
+     * @param Optional|array<int, ZaplataCzesciowa> $zaplataCzesciowa Dane zapłat częściowych
      * @param ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej Znacznik informujący, że kwota należności wynikająca z faktury została zapłacona w części: 1 - zapłacono w części
      */
     public function __construct(
-        public array $zaplataCzesciowa = [],
+        public Optional | array $zaplataCzesciowa = new Optional(),
         public ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej = ZnacznikZaplatyCzesciowej::Default
     ) {
     }
@@ -34,10 +35,12 @@ final readonly class ZaplataCzesciowaGroup extends AbstractDTO implements DomSer
 
         $zaplataCzesciowaGroup->appendChild($znacznikZaplatyCzesciowej);
 
-        foreach ($this->zaplataCzesciowa as $zaplataCzesciowa) {
-            $zaplataCzesciowa = $dom->importNode($zaplataCzesciowa->toDom()->documentElement, true);
+        if ( ! $this->zaplataCzesciowa instanceof Optional) {
+            foreach ($this->zaplataCzesciowa as $zaplataCzesciowa) {
+                $zaplataCzesciowa = $dom->importNode($zaplataCzesciowa->toDom()->documentElement, true);
 
-            $zaplataCzesciowaGroup->appendChild($zaplataCzesciowa);
+                $zaplataCzesciowaGroup->appendChild($zaplataCzesciowa);
+            }
         }
 
         return $dom;

@@ -17,7 +17,7 @@ final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerial
      * @param PodmiotUpowaznionyDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podmiotu upoważnionego
      * @param Adres $adres Adres podmiotu upoważnionego
      * @param NrEORI|Optional $nrEORI Numer EORI podmiotu upoważnionego
-     * @param array<int, PodmiotUpowaznionyDaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu upoważnionego
+     * @param Optional|array<int, PodmiotUpowaznionyDaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu upoważnionego
      * @param RolaPU $rolaPU Rola podmiotu upoważnionego
      */
     public function __construct(
@@ -26,7 +26,7 @@ final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerial
         public RolaPU $rolaPU,
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
-        public array $daneKontaktowe = [],
+        public Optional|array $daneKontaktowe = new Optional(),
     ) {
     }
 
@@ -58,10 +58,12 @@ final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerial
             $podmiotUpowazniony->appendChild($adresKoresp);
         }
 
-        foreach ($this->daneKontaktowe as $daneKontaktowe) {
-            $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
+        if ( ! $this->daneKontaktowe instanceof Optional) {
+            foreach ($this->daneKontaktowe as $daneKontaktowe) {
+                $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
 
-            $podmiotUpowazniony->appendChild($daneKontaktowe);
+                $podmiotUpowazniony->appendChild($daneKontaktowe);
+            }
         }
 
         $rolaPU = $dom->createElement('RolaPU');

@@ -6,16 +6,20 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\WarunkiDostawy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param array<int, Zamowienia> $zamowienia
+     * @param Optional|array<int, Zamowienia> $zamowienia
+     * @param Optional|WarunkiDostawy $warunkiDostawy Warunki dostawy towarów - w przypadku istnienia pomiędzy stronami transakcji, umowy określającej warunki dostawy tzw. Incoterms
      * @return void
      */
     public function __construct(
-        public array $zamowienia = []
+        public Optional | array $zamowienia = new Optional(),
+        public Optional | WarunkiDostawy $warunkiDostawy = new Optional()
     ) {
     }
 
@@ -27,9 +31,18 @@ final readonly class WarunkiTransakcji extends AbstractDTO implements DomSeriali
         $warunkiTransakcji = $dom->createElement('WarunkiTransakcji');
         $dom->appendChild($warunkiTransakcji);
 
-        foreach ($this->zamowienia as $zamowienie) {
-            $zamowienie = $dom->importNode($zamowienie->toDom()->documentElement, true);
-            $warunkiTransakcji->appendChild($zamowienie);
+        if ( ! $this->zamowienia instanceof Optional) {
+            foreach ($this->zamowienia as $zamowienie) {
+                $zamowienie = $dom->importNode($zamowienie->toDom()->documentElement, true);
+                $warunkiTransakcji->appendChild($zamowienie);
+            }
+        }
+
+        if ($this->warunkiDostawy instanceof WarunkiDostawy) {
+            $warunkiDostawy = $dom->createElement('WarunkiDostawy');
+            $warunkiDostawy->appendChild($dom->createTextNode((string) $this->warunkiDostawy));
+
+            $warunkiTransakcji->appendChild($warunkiDostawy);
         }
 
         return $dom;

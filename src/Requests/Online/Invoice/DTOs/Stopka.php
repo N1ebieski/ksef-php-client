@@ -7,17 +7,18 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Stopka extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param array<int, Informacje> $informacje Pozostałe dane
-     * @param array<int, Rejestry> $rejestry
+     * @param Optional|array<int, Informacje> $informacje Pozostałe dane
+     * @param Optional|array<int, Rejestry> $rejestry
      * @return void
      */
     public function __construct(
-        public array $informacje = [],
-        public array $rejestry = []
+        public Optional | array $informacje = new Optional(),
+        public Optional | array $rejestry = new Optional()
     ) {
     }
 
@@ -29,14 +30,18 @@ final readonly class Stopka extends AbstractDTO implements DomSerializableInterf
         $stopka = $dom->createElement('Stopka');
         $dom->appendChild($stopka);
 
-        foreach ($this->informacje as $informacje) {
-            $informacje = $dom->importNode($informacje->toDom()->documentElement, true);
-            $stopka->appendChild($informacje);
+        if ( ! $this->informacje instanceof Optional) {
+            foreach ($this->informacje as $informacje) {
+                $informacje = $dom->importNode($informacje->toDom()->documentElement, true);
+                $stopka->appendChild($informacje);
+            }
         }
 
-        foreach ($this->rejestry as $rejestry) {
-            $rejestry = $dom->importNode($rejestry->toDom()->documentElement, true);
-            $stopka->appendChild($rejestry);
+        if ( ! $this->rejestry instanceof Optional) {
+            foreach ($this->rejestry as $rejestry) {
+                $rejestry = $dom->importNode($rejestry->toDom()->documentElement, true);
+                $stopka->appendChild($rejestry);
+            }
         }
 
         return $dom;

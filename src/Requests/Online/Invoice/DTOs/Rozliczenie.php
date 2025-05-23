@@ -15,15 +15,15 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Rozliczenie extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param array<int, Obciazenia> $obciazenia
+     * @param Optional|array<int, Obciazenia> $obciazenia
      * @param Optional|SumaObciazen $sumaObciazen
-     * @param array<int, Odliczenia> $odliczenia
+     * @param Optional|array<int, Odliczenia> $odliczenia
      * @param Optional|SumaOdliczen $sumaOdliczen
      */
     public function __construct(
-        public array $obciazenia = [],
+        public Optional | array $obciazenia = new Optional(),
         public Optional | SumaObciazen $sumaObciazen = new Optional(),
-        public array $odliczenia = [],
+        public Optional | array $odliczenia = new Optional(),
         public Optional | SumaOdliczen $sumaOdliczen = new Optional(),
         public Optional | RozliczenieGroup $rozliczenieGroup = new Optional()
     ) {
@@ -37,10 +37,12 @@ final readonly class Rozliczenie extends AbstractDTO implements DomSerializableI
         $rozliczenie = $dom->createElement('Rozliczenie');
         $dom->appendChild($rozliczenie);
 
-        foreach ($this->obciazenia as $obciazenia) {
-            $obciazenia = $dom->importNode($obciazenia->toDom()->documentElement, true);
+        if ( ! $this->obciazenia instanceof Optional) {
+            foreach ($this->obciazenia as $obciazenia) {
+                $obciazenia = $dom->importNode($obciazenia->toDom()->documentElement, true);
 
-            $rozliczenie->appendChild($obciazenia);
+                $rozliczenie->appendChild($obciazenia);
+            }
         }
 
         if ($this->sumaObciazen instanceof SumaObciazen) {
@@ -50,10 +52,12 @@ final readonly class Rozliczenie extends AbstractDTO implements DomSerializableI
             $rozliczenie->appendChild($sumaObciazen);
         }
 
-        foreach ($this->odliczenia as $odliczenia) {
-            $odliczenia = $dom->importNode($odliczenia->toDom()->documentElement, true);
+        if ( ! $this->odliczenia instanceof Optional) {
+            foreach ($this->odliczenia as $odliczenia) {
+                $odliczenia = $dom->importNode($odliczenia->toDom()->documentElement, true);
 
-            $rozliczenie->appendChild($odliczenia);
+                $rozliczenie->appendChild($odliczenia);
+            }
         }
 
         if ($this->sumaOdliczen instanceof SumaOdliczen) {

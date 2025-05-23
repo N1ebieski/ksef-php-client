@@ -20,7 +20,7 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
      * @param NrEORI|Optional $nrEORI Numer EORI podmiotu trzeciego
      * @param Podmiot3DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podmiot trzeci
      * @param Adres $adres Adres podmiotu trzeciego
-     * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu trzeciego
+     * @param Optional|array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podmiotu trzeciego
      * @param Udzial|Optional $udzial Udział - procentowy udział dodatkowego nabywcy. Różnica pomiędzy wartością 100% a sumą udziałów dodatkowych nabywców jest udziałem nabywcy wymienionego w części Podmiot2. W przypadku niewypełnienia pola przyjmuje się, że udziały występujących na fakturze nabywców są równe
      * @param Optional|NrKlienta $nrKlienta Numer klienta dla przypadków, w których podmiot wymieniony jako podmiot trzeci posługuje się nim w umowie lub zamówieniu
      */
@@ -31,7 +31,7 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
         public Optional | IDNabywcy $idNabywcy = new Optional(),
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
-        public array $daneKontaktowe = [],
+        public Optional | array $daneKontaktowe = new Optional(),
         public Optional | Udzial $udzial = new Optional(),
         public Optional | NrKlienta $nrKlienta = new Optional()
     ) {
@@ -71,9 +71,11 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
             $podmiot3->appendChild($adresKoresp);
         }
 
-        foreach ($this->daneKontaktowe as $daneKontaktowe) {
-            $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
-            $podmiot3->appendChild($daneKontaktowe);
+        if ( ! $this->daneKontaktowe instanceof Optional) {
+            foreach ($this->daneKontaktowe as $daneKontaktowe) {
+                $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
+                $podmiot3->appendChild($daneKontaktowe);
+            }
         }
 
         $rolaGroup = $dom->importNode($this->rolaGroup->toDom()->documentElement, true);

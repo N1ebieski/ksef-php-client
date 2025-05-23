@@ -88,6 +88,7 @@ final class SendFakturaKorygujacaDaneNabywcyRequestFixture extends AbstractSendR
                     ]
                 ]
             ],
+            'warunkiTransakcji' => ''
         ],
         'stopka' => [
             'informacje' => [

@@ -47,17 +47,17 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
      * @param Optional|KursWalutyZ $kursWalutyZ Kurs waluty stosowany do wyliczenia kwoty podatku w przypadkach, o których mowa w przepisach Działu VI ustawy na fakturach, o których mowa w art. 106b ust. 1 pkt 4 ustawy
      * @param P_15 $p_15 Kwota należności ogółem. W przypadku faktur zaliczkowych kwota zapłaty dokumentowana fakturą. W przypadku faktur o których mowa w art. 106f ust. 3 ustawy kwota pozostała do zapłaty. W przypadku faktur korygujących korekta kwoty wynikającej z faktury korygowanej. W przypadku, o którym mowa w art. 106j ust. 3 ustawy korekta kwot wynikających z faktur korygowanych
      * @param Adnotacje $adnotacje Inne adnotacje na fakturze
-     * @param array<int, ZaliczkaCzesciowa> $zaliczkaCzesciowa Dane dla przypadków faktur dokumentujących otrzymanie więcej niż jednej płatności, o której mowa w art. 106b ust. 1 pkt 4 ustawy. W przypadku, gdy faktura, o której mowa w art. 106f ust. 3 ustawy dokumentuje jednocześnie otrzymanie części zapłaty przed dokonaniem czynności, różnica kwoty w polu P_15 i sumy poszczególnych pól P_15Z stanowi kwotę pozostałą ponad płatności otrzymane przed wykonaniem czynności udokumentowanej fakturą
+     * @param Optional|array<int, ZaliczkaCzesciowa> $zaliczkaCzesciowa Dane dla przypadków faktur dokumentujących otrzymanie więcej niż jednej płatności, o której mowa w art. 106b ust. 1 pkt 4 ustawy. W przypadku, gdy faktura, o której mowa w art. 106f ust. 3 ustawy dokumentuje jednocześnie otrzymanie części zapłaty przed dokonaniem czynności, różnica kwoty w polu P_15 i sumy poszczególnych pól P_15Z stanowi kwotę pozostałą ponad płatności otrzymane przed wykonaniem czynności udokumentowanej fakturą
      * @param TP|Optional $tp Istniejące powiązania między nabywcą a dokonującym dostawy towarów lub usługodawcą, zgodnie z § 10 ust. 4 pkt 3, z zastrzeżeniem ust. 4b rozporządzenia w sprawie szczegółowego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towarów i usług
      * @param FP|Optional $fp Faktura, o której mowa w art. 109 ust. 3d ustawy
-     * @param array<int, DodatkowyOpis> $dodatkowyOpis Pola przeznaczone dla wykazywania dodatkowych danych na fakturze, w tym wymaganych przepisami prawa, dla których nie przewidziano innych pól/elementów
-     * @param array<int, FakturaZaliczkowa> $fakturaZaliczkowa Numery faktur zaliczkowych lub ich numery KSeF, jeśli zostały wystawione z użyciem KSeF
+     * @param Optional|array<int, DodatkowyOpis> $dodatkowyOpis Pola przeznaczone dla wykazywania dodatkowych danych na fakturze, w tym wymaganych przepisami prawa, dla których nie przewidziano innych pól/elementów
+     * @param Optional|array<int, FakturaZaliczkowa> $fakturaZaliczkowa Numery faktur zaliczkowych lub ich numery KSeF, jeśli zostały wystawione z użyciem KSeF
      * @param ZwrotAkcyzy|Optional $zwrotAkcyzy Informacja dodatkowa niezbędna dla rolników ubiegających się o zwrot podatku akcyzowego zawartego w cenie oleju napędowego
-     * @param array<int, FaWiersz> $faWiersz Szczegółowe pozycje faktury w walucie, w której wystawiono fakturę - węzeł opcjonalny dla faktury zaliczkowej, faktury korygującej fakturę zaliczkową, oraz faktur korygujących dotyczących wszystkich dostaw towarów lub usług dokonanych lub świadczonych w danym okresie, o których mowa w art. 106j ust. 3 ustawy, dla których należy podać dane dotyczące opustu lub obniżki w podziale na stawki podatku i procedury w części Fa. W przypadku faktur korygujących, o których mowa w art. 106j ust. 3 ustawy, gdy opust lub obniżka ceny odnosi się do części dostaw towarów lub usług dokonanych lub świadczonych w danym okresie w części FaWiersz należy podać nazwy (rodzaje) towarów lub usług objętych korektą. W przypadku faktur, o których mowa w art. 106f ust. 3 ustawy, należy wykazać pełne wartości zamówienia lub umowy. W przypadku faktur korygujących pozycje faktury (w tym faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta dotyczy wartości zamówienia), należy wykazać różnice wynikające z korekty poszczególnych pozycji lub dane pozycji korygowanych w stanie przed korektą i po korekcie jako osobne wiersze. W przypadku faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta nie dotyczy wartości zamówienia i jednocześnie zmienia wysokość podstawy opodatkowania lub podatku, należy wprowadzić zapis wg stanu przed korektą i zapis w stanie po korekcie w celu potwierdzenia braku zmiany wartości danej pozycji faktury
+     * @param Optional|array<int, FaWiersz> $faWiersz Szczegółowe pozycje faktury w walucie, w której wystawiono fakturę - węzeł opcjonalny dla faktury zaliczkowej, faktury korygującej fakturę zaliczkową, oraz faktur korygujących dotyczących wszystkich dostaw towarów lub usług dokonanych lub świadczonych w danym okresie, o których mowa w art. 106j ust. 3 ustawy, dla których należy podać dane dotyczące opustu lub obniżki w podziale na stawki podatku i procedury w części Fa. W przypadku faktur korygujących, o których mowa w art. 106j ust. 3 ustawy, gdy opust lub obniżka ceny odnosi się do części dostaw towarów lub usług dokonanych lub świadczonych w danym okresie w części FaWiersz należy podać nazwy (rodzaje) towarów lub usług objętych korektą. W przypadku faktur, o których mowa w art. 106f ust. 3 ustawy, należy wykazać pełne wartości zamówienia lub umowy. W przypadku faktur korygujących pozycje faktury (w tym faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta dotyczy wartości zamówienia), należy wykazać różnice wynikające z korekty poszczególnych pozycji lub dane pozycji korygowanych w stanie przed korektą i po korekcie jako osobne wiersze. W przypadku faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta nie dotyczy wartości zamówienia i jednocześnie zmienia wysokość podstawy opodatkowania lub podatku, należy wprowadzić zapis wg stanu przed korektą i zapis w stanie po korekcie w celu potwierdzenia braku zmiany wartości danej pozycji faktury
      * @param Platnosc|Optional $platnosc Warunki płatności
      * @param Rozliczenie|Optional $rozliczenie Dodatkowe rozliczenia na fakturze
      * @param WarunkiTransakcji|Optional $warunkiTransakcji Warunki transakcji, o ile występują
-     * @param array<int, WZ> $wz Numery dokumentów magazynowych WZ (wydanie na zewnątrz) związane z fakturą
+     * @param Optional|array<int, WZ> $wz Numery dokumentów magazynowych WZ (wydanie na zewnątrz) związane z fakturą
      * @return void
      */
     public function __construct(
@@ -65,7 +65,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public P_1 $p_1,
         public P_2 $p_2,
         public P_15 $p_15,
-        public array $wz = [],
+        public Optional | array $wz = new Optional(),
         public Optional | P_1M $p_1M = new Optional(),
         public Optional | P_6Group | OkresFaGroup $p_6Group = new Optional(),
         public Optional | P_13_1Group $p_13_1Group = new Optional(),
@@ -85,13 +85,13 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public Adnotacje $adnotacje = new Adnotacje(),
         public RodzajFaktury $rodzajFaktury = RodzajFaktury::Vat,
         public Optional | KorektaGroup $korektaGroup = new Optional(),
-        public array $zaliczkaCzesciowa = [],
+        public Optional | array $zaliczkaCzesciowa = new Optional(),
         public Optional | TP $tp = new Optional(),
         public Optional | FP $fp = new Optional(),
-        public array $dodatkowyOpis = [],
-        public array $fakturaZaliczkowa = [],
+        public Optional | array $dodatkowyOpis = new Optional(),
+        public Optional | array $fakturaZaliczkowa = new Optional(),
         public Optional | ZwrotAkcyzy $zwrotAkcyzy = new Optional(),
-        public array $faWiersz = [],
+        public Optional | array $faWiersz = new Optional(),
         public Optional | Rozliczenie $rozliczenie = new Optional(),
         public Optional | Platnosc $platnosc = new Optional(),
         public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional()
@@ -127,11 +127,13 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
 
         $fa->appendChild($p_2);
 
-        foreach ($this->wz as $wz) {
-            $_wz = $dom->createElement('WZ');
-            $_wz->appendChild($dom->createTextNode((string) $wz));
+        if ( ! $this->wz instanceof Optional) {
+            foreach ($this->wz as $wz) {
+                $_wz = $dom->createElement('WZ');
+                $_wz->appendChild($dom->createTextNode((string) $wz));
 
-            $fa->appendChild($_wz);
+                $fa->appendChild($_wz);
+            }
         }
 
         if ( ! $this->p_6Group instanceof Optional) {
@@ -288,16 +290,20 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $fa->appendChild($fp);
         }
 
-        foreach ($this->dodatkowyOpis as $dodatkowyOpis) {
-            $dodatkowyOpis = $dom->importNode($dodatkowyOpis->toDom()->documentElement, true);
+        if ( ! $this->dodatkowyOpis instanceof Optional) {
+            foreach ($this->dodatkowyOpis as $dodatkowyOpis) {
+                $dodatkowyOpis = $dom->importNode($dodatkowyOpis->toDom()->documentElement, true);
 
-            $fa->appendChild($dodatkowyOpis);
+                $fa->appendChild($dodatkowyOpis);
+            }
         }
 
-        foreach ($this->fakturaZaliczkowa as $fakturaZaliczkowa) {
-            $fakturaZaliczkowa = $dom->importNode($fakturaZaliczkowa->toDom()->documentElement, true);
+        if ( ! $this->fakturaZaliczkowa instanceof Optional) {
+            foreach ($this->fakturaZaliczkowa as $fakturaZaliczkowa) {
+                $fakturaZaliczkowa = $dom->importNode($fakturaZaliczkowa->toDom()->documentElement, true);
 
-            $fa->appendChild($fakturaZaliczkowa);
+                $fa->appendChild($fakturaZaliczkowa);
+            }
         }
 
         if ($this->zwrotAkcyzy instanceof ZwrotAkcyzy) {
@@ -307,10 +313,12 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $fa->appendChild($zwrotAkcyzy);
         }
 
-        foreach ($this->faWiersz as $faWiersz) {
-            $faWiersz = $dom->importNode($faWiersz->toDom()->documentElement, true);
+        if ( ! $this->faWiersz instanceof Optional) {
+            foreach ($this->faWiersz as $faWiersz) {
+                $faWiersz = $dom->importNode($faWiersz->toDom()->documentElement, true);
 
-            $fa->appendChild($faWiersz);
+                $fa->appendChild($faWiersz);
+            }
         }
 
         if ($this->rozliczenie instanceof Rozliczenie) {

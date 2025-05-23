@@ -17,7 +17,7 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
     /**
      * @param Podmiot2DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące nabywcę
      * @param Adres|Optional $adres Adres nabywcy
-     * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe nabywcy
+     * @param Optional|array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe nabywcy
      * @param Optional|NrKlienta $nrKlienta Numer klienta dla przypadków, w których nabywca posługuje się nim w umowie lub zamówieniu
      * @param NrEORI|Optional $nrEORI Numer EORI podatnika (nabywcy)
      * @param IDNabywcy|Optional $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
@@ -28,7 +28,7 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | Adres $adres = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
-        public array $daneKontaktowe = [],
+        public Optional | array $daneKontaktowe = new Optional(),
         public Optional | NrKlienta $nrKlienta = new Optional(),
         public Optional | IDNabywcy $idNabywcy = new Optional()
     ) {
@@ -65,9 +65,11 @@ final readonly class Podmiot2 extends AbstractDTO implements DomSerializableInte
             $podmiot2->appendChild($adresKoresp);
         }
 
-        foreach ($this->daneKontaktowe as $daneKontaktowe) {
-            $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
-            $podmiot2->appendChild($daneKontaktowe);
+        if ( ! $this->daneKontaktowe instanceof Optional) {
+            foreach ($this->daneKontaktowe as $daneKontaktowe) {
+                $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
+                $podmiot2->appendChild($daneKontaktowe);
+            }
         }
 
         if ($this->nrKlienta instanceof NrKlienta) {

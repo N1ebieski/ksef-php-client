@@ -17,7 +17,7 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
     /**
      * @param Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
      * @param Adres $adres Adres podatnika
-     * @param array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podatnika
+     * @param Optional|array<int, DaneKontaktowe> $daneKontaktowe Dane kontaktowe podatnika
      * @param PrefiksPodatnika|Optional $prefiksPodatnika Kod (prefiks) podatnika VAT UE dla przypadków określonych w art. 97 ust. 10 pkt 2 i 3 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 3 ustawy
      * @param NrEORI|Optional $nrEORI Numer EORI podatnika (sprzedawcy)
      * @return void
@@ -25,7 +25,7 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
     public function __construct(
         public Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
-        public array $daneKontaktowe = [],
+        public Optional | array $daneKontaktowe = new Optional(),
         public Optional | PrefiksPodatnika $prefiksPodatnika = new Optional(),
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
@@ -66,9 +66,11 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
             $podmiot1->appendChild($adresKoresp);
         }
 
-        foreach ($this->daneKontaktowe as $daneKontaktowe) {
-            $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
-            $podmiot1->appendChild($daneKontaktowe);
+        if ( ! $this->daneKontaktowe instanceof Optional) {
+            foreach ($this->daneKontaktowe as $daneKontaktowe) {
+                $daneKontaktowe = $dom->importNode($daneKontaktowe->toDom()->documentElement, true);
+                $podmiot1->appendChild($daneKontaktowe);
+            }
         }
 
         if ($this->statusInfoPodatnika instanceof StatusInfoPodatnika) {
