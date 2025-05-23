@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\AbstractS
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaKorygujacaDaneNabywcyRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaKorygujacaUniwersalnaRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyTowaruRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -25,6 +26,7 @@ final class SendHandlerTest extends AbstractTestCase
             new SendFakturaSprzedazyTowaruRequestFixture(),
             new SendFakturaKorygujacaUniwersalnaRequestFixture(),
             new SendFakturaKorygujacaDaneNabywcyRequestFixture(),
+            new SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture()
         ];
 
         $responses = [
