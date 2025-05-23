@@ -36,7 +36,7 @@ final readonly class Odliczenia extends AbstractDTO implements DomSerializableIn
         $odliczenia->appendChild($kwota);
 
         $powod = $dom->createElement('Powod');
-        $powod->appendChild($dom->createTextNode((string) $this->powod->value));
+        $powod->appendChild($dom->createTextNode($this->powod->value));
 
         $odliczenia->appendChild($powod);
 

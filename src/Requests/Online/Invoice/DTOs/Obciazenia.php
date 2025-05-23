@@ -36,7 +36,7 @@ final readonly class Obciazenia extends AbstractDTO implements DomSerializableIn
         $obciazenia->appendChild($kwota);
 
         $powod = $dom->createElement('Powod');
-        $powod->appendChild($dom->createTextNode((string) $this->powod->value));
+        $powod->appendChild($dom->createTextNode($this->powod->value));
 
         $obciazenia->appendChild($powod);
 

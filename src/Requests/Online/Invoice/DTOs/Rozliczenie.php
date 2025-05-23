@@ -16,9 +16,7 @@ final readonly class Rozliczenie extends AbstractDTO implements DomSerializableI
 {
     /**
      * @param Optional|array<int, Obciazenia> $obciazenia
-     * @param Optional|SumaObciazen $sumaObciazen
      * @param Optional|array<int, Odliczenia> $odliczenia
-     * @param Optional|SumaOdliczen $sumaOdliczen
      */
     public function __construct(
         public Optional | array $obciazenia = new Optional(),

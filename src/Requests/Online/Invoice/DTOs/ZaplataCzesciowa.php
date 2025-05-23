@@ -13,7 +13,6 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param KwotaZaplatyCzesciowej $kwotaZaplatyCzesciowej
      * @param DataZaplatyCzesciowej $dataZaplatyCzesciowej Data zapłaty częściowej, jeśli do wystawienia faktury płatność częściowa została dokonana
      */
     public function __construct(

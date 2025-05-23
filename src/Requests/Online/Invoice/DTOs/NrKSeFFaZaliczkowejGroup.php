@@ -28,7 +28,7 @@ final readonly class NrKSeFFaZaliczkowejGroup extends AbstractDTO implements Dom
         $dom->appendChild($nrKSeFFaZaliczkowejGroup);
 
         $nrKSeFFaZaliczkowej = $dom->createElement('NrKSeFFaZaliczkowej');
-        $nrKSeFFaZaliczkowej->appendChild($dom->createTextNode((string) $this->nrKSeFFaZaliczkowej->value));
+        $nrKSeFFaZaliczkowej->appendChild($dom->createTextNode($this->nrKSeFFaZaliczkowej->value));
 
         $nrKSeFFaZaliczkowejGroup->appendChild($nrKSeFFaZaliczkowej);
 
