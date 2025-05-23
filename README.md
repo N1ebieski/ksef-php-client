@@ -39,6 +39,7 @@ PHP API client that allows you to interact with the [API Krajowego Systemu e-Fak
     - [Fetch invoices using encryption key](#fetch-invoices-using-encryption-key)
 - [Testing](#testing)
 - [Roadmap](#roadmap)
+- [Special thanks](#special-thanks)
 
 ## Get Started
 
@@ -501,3 +502,10 @@ vendor/bin/phpunit
 
 1. Batch endpoints
 2. Prepare the package for release candidate
+
+## Special thanks
+
+Special thanks to:
+
+- all the helpful people on the [4programmers.net](https://4programmers.net/Forum/Nietuzinkowe_tematy/355933-krajowy_system_e_faktur) topic
+- to the authors of the repository [grafinet/xades-tools](https://github.com/grafinet/xades-tools) for the document signing tool using Xades
