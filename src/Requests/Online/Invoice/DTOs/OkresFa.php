@@ -13,13 +13,13 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class OkresFa extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @param P_6_Od $p_6_od Data początkowa okresu, którego dotyczy faktura
-     * @param P_6_Do $p_6_do Data końcowa okresu, którego dotyczy faktura - data dokonania lub zakończenia dostawy towarów lub wykonania usługi
+     * @param P_6_Od $p_6_Od Data początkowa okresu, którego dotyczy faktura
+     * @param P_6_Do $p_6_Do Data końcowa okresu, którego dotyczy faktura - data dokonania lub zakończenia dostawy towarów lub wykonania usługi
      * @return void
      */
     public function __construct(
-        public P_6_Od $p_6_od,
-        public P_6_Do $p_6_do
+        public P_6_Od $p_6_Od,
+        public P_6_Do $p_6_Do
     ) {
     }
 
@@ -31,15 +31,15 @@ final readonly class OkresFa extends AbstractDTO implements DomSerializableInter
         $okresFa = $dom->createElement('OkresFa');
         $dom->appendChild($okresFa);
 
-        $p6Od = $dom->createElement('P_6_Od');
-        $p6Od->appendChild($dom->createTextNode((string) $this->p_6_od));
+        $p_6_Od = $dom->createElement('P_6_Od');
+        $p_6_Od->appendChild($dom->createTextNode((string) $this->p_6_Od));
 
-        $okresFa->appendChild($p6Od);
+        $okresFa->appendChild($p_6_Od);
 
-        $p6Do = $dom->createElement('P_6_Do');
-        $p6Do->appendChild($dom->createTextNode((string) $this->p_6_do));
+        $p_6_Do = $dom->createElement('P_6_Do');
+        $p_6_Do->appendChild($dom->createTextNode((string) $this->p_6_Do));
 
-        $okresFa->appendChild($p6Do);
+        $okresFa->appendChild($p_6_Do);
 
         $dom->appendChild($okresFa);
 

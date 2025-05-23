@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\IDNabywcy;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
@@ -78,9 +79,12 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
             }
         }
 
-        $rolaGroup = $dom->importNode($this->rolaGroup->toDom()->documentElement, true);
+        /** @var DOMElement $rolaGroup */
+        $rolaGroup = $this->rolaGroup->toDom()->documentElement;
 
-        $podmiot3->appendChild($rolaGroup);
+        foreach ($rolaGroup->childNodes as $child) {
+            $podmiot3->appendChild($dom->importNode($child, true));
+        }
 
         if ($this->udzial instanceof Udzial) {
             $udzial = $dom->createElement('Udzial');
