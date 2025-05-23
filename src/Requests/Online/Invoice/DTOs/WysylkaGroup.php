@@ -68,7 +68,7 @@ final readonly class WysylkaGroup extends AbstractDTO implements DomSerializable
         }
 
         if ($this->wysylkaDo instanceof WysylkaDo) {
-            $wysylkaDo = $dom->importNode($this->wysylkaZ->toDom()->documentElement, true);
+            $wysylkaDo = $dom->importNode($this->wysylkaDo->toDom()->documentElement, true);
 
             $wysylkaGroup->appendChild($wysylkaDo);
         }

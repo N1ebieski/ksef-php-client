@@ -59,10 +59,10 @@ final readonly class WarunkiTransakcji extends AbstractDTO implements DomSeriali
 
         if ( ! $this->nrPartiiTowaru instanceof Optional) {
             foreach ($this->nrPartiiTowaru as $nrPartiiTowaru) {
-                $nrPartiiTowaru = $dom->createElement('NrPartiiTowaru');
-                $nrPartiiTowaru->appendChild($dom->createTextNode((string) $this->nrPartiiTowaru));
+                $_nrPartiiTowaru = $dom->createElement('NrPartiiTowaru');
+                $_nrPartiiTowaru->appendChild($dom->createTextNode((string) $nrPartiiTowaru));
 
-                $warunkiTransakcji->appendChild($nrPartiiTowaru);
+                $warunkiTransakcji->appendChild($_nrPartiiTowaru);
             }
         }
 

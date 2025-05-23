@@ -37,9 +37,11 @@ final readonly class Transport extends AbstractDTO implements DomSerializableInt
             $transport->appendChild($dom->importNode($child, true));
         }
 
-        $przewoznik = $dom->importNode($this->przewoznik->toDom()->documentElement, true);
+        if ($this->przewoznik instanceof Przewoznik) {
+            $przewoznik = $dom->importNode($this->przewoznik->toDom()->documentElement, true);
 
-        $transport->appendChild($przewoznik);
+            $transport->appendChild($przewoznik);
+        }
 
         if ($this->nrZleceniaTransportu instanceof NrZleceniaTransportu) {
             $nrZleceniaTransportu = $dom->createElement('NrZleceniaTransportu');

@@ -58,7 +58,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
      * @param Rozliczenie|Optional $rozliczenie Dodatkowe rozliczenia na fakturze
      * @param WarunkiTransakcji|Optional $warunkiTransakcji Warunki transakcji, o ile występują
      * @param Optional|array<int, WZ> $wz Numery dokumentów magazynowych WZ (wydanie na zewnątrz) związane z fakturą
-     * @return void
+     * @param Optional|Zamowienie $zamowienie Zamówienie lub umowa, o których mowa w art. 106f ust. 1 pkt 4 ustawy (dla faktur zaliczkowych) w walucie, w której wystawiono fakturę zaliczkową. W przypadku faktury korygującej fakturę zaliczkową należy wykazać różnice wynikające z korekty poszczególnych pozycji zamówienia lub umowy lub dane pozycji korygowanych w stanie przed korektą i po korekcie jako osobne wiersze, jeśli korekta dotyczy wartości zamówienia lub umowy. W przypadku faktur korygujących faktury zaliczkowe, jeśli korekta nie dotyczy wartości zamówienia lub umowy i jednocześnie zmienia wysokość podstawy opodatkowania lub podatku, należy wprowadzić zapis wg stanu przed korektą i zapis w stanie po korekcie w celu potwierdzenia braku zmiany wartości danej pozycji
      */
     public function __construct(
         public KodWaluty $kodWaluty,
@@ -94,7 +94,8 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public Optional | array $faWiersz = new Optional(),
         public Optional | Rozliczenie $rozliczenie = new Optional(),
         public Optional | Platnosc $platnosc = new Optional(),
-        public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional()
+        public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional(),
+        public Optional | Zamowienie $zamowienie = new Optional()
     ) {
     }
 
@@ -337,6 +338,12 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $warunkiTransakcji = $dom->importNode($this->warunkiTransakcji->toDom()->documentElement, true);
 
             $fa->appendChild($warunkiTransakcji);
+        }
+
+        if ($this->zamowienie instanceof Zamowienie) {
+            $zamowienie = $dom->importNode($this->zamowienie->toDom()->documentElement, true);
+
+            $fa->appendChild($zamowienie);
         }
 
         return $dom;

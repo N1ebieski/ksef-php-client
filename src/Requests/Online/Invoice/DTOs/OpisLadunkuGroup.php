@@ -12,7 +12,7 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final readonly class OpisLadunkuGroup extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @var OpisLadunku $opisLadunku Rodzaj ładunku
+     * @param OpisLadunku $opisLadunku Rodzaj ładunku
      */
     public function __construct(
         public OpisLadunku $opisLadunku
