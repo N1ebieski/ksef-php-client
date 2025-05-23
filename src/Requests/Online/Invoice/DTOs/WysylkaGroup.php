@@ -8,8 +8,6 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataGodzRozpTransportu;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataGodzZakTransportu;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\KursUmowny;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\WalutaUmowna;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 

@@ -6,11 +6,8 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataZamowienia;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrZamowienia;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\WartoscZamowienia;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
 
 final readonly class Zamowienie extends AbstractDTO implements DomSerializableInterface
 {

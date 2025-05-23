@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\OpisInnegoTransportu;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\RodzajTransportu;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\TransportInny;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
