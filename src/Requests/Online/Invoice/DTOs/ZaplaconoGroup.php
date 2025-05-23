@@ -5,21 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Invoice\DTOs;
 
 use DOMDocument;
+use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataZaplaty;
-use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Zaplacono;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
 final readonly class ZaplaconoGroup extends AbstractDTO implements DomSerializableInterface
 {
-    /**
-     * @param Zaplacono $zaplacono Znacznik informujący, że kwota należności wynikająca z faktury została zapłacona: 1 - zapłacono
-     * @param DataZaplaty $dataZaplaty Data zapłaty, jeśli do wystawienia faktury płatność została dokonana
-     * @return void
-     */
     public function __construct(
-        public DataZaplaty $dataZaplaty,
-        public Zaplacono $zaplacono = Zaplacono::Default,
+        public ZaplataGroup | ZaplataCzesciowaGroup $zaplataGroup
     ) {
     }
 
@@ -31,15 +24,12 @@ final readonly class ZaplaconoGroup extends AbstractDTO implements DomSerializab
         $zaplaconoGroup = $dom->createElement('ZaplaconoGroup');
         $dom->appendChild($zaplaconoGroup);
 
-        $zaplacono = $dom->createElement('Zaplacono');
-        $zaplacono->appendChild($dom->createTextNode((string) $this->zaplacono->value));
+        /** @var DOMElement $zaplataGroup */
+        $zaplataGroup = $this->zaplataGroup->toDom()->documentElement;
 
-        $zaplaconoGroup->appendChild($zaplacono);
-
-        $dataZaplaty = $dom->createElement('DataZaplaty');
-        $dataZaplaty->appendChild($dom->createTextNode((string) $this->dataZaplaty));
-
-        $zaplaconoGroup->appendChild($dataZaplaty);
+        foreach ($zaplataGroup->childNodes as $child) {
+            $zaplaconoGroup->appendChild($dom->importNode($child, true));
+        }
 
         return $dom;
     }

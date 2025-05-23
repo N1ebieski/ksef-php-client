@@ -55,6 +55,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
      * @param ZwrotAkcyzy|Optional $zwrotAkcyzy Informacja dodatkowa niezbędna dla rolników ubiegających się o zwrot podatku akcyzowego zawartego w cenie oleju napędowego
      * @param array<int, FaWiersz> $faWiersz Szczegółowe pozycje faktury w walucie, w której wystawiono fakturę - węzeł opcjonalny dla faktury zaliczkowej, faktury korygującej fakturę zaliczkową, oraz faktur korygujących dotyczących wszystkich dostaw towarów lub usług dokonanych lub świadczonych w danym okresie, o których mowa w art. 106j ust. 3 ustawy, dla których należy podać dane dotyczące opustu lub obniżki w podziale na stawki podatku i procedury w części Fa. W przypadku faktur korygujących, o których mowa w art. 106j ust. 3 ustawy, gdy opust lub obniżka ceny odnosi się do części dostaw towarów lub usług dokonanych lub świadczonych w danym okresie w części FaWiersz należy podać nazwy (rodzaje) towarów lub usług objętych korektą. W przypadku faktur, o których mowa w art. 106f ust. 3 ustawy, należy wykazać pełne wartości zamówienia lub umowy. W przypadku faktur korygujących pozycje faktury (w tym faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta dotyczy wartości zamówienia), należy wykazać różnice wynikające z korekty poszczególnych pozycji lub dane pozycji korygowanych w stanie przed korektą i po korekcie jako osobne wiersze. W przypadku faktur korygujących faktury, o których mowa w art. 106f ust. 3 ustawy, jeśli korekta nie dotyczy wartości zamówienia i jednocześnie zmienia wysokość podstawy opodatkowania lub podatku, należy wprowadzić zapis wg stanu przed korektą i zapis w stanie po korekcie w celu potwierdzenia braku zmiany wartości danej pozycji faktury
      * @param Platnosc|Optional $platnosc Warunki płatności
+     * @param Rozliczenie|Optional $rozliczenie Dodatkowe rozliczenia na fakturze
      * @param WarunkiTransakcji|Optional $warunkiTransakcji Warunki transakcji, o ile występują
      * @param array<int, WZ> $wz Numery dokumentów magazynowych WZ (wydanie na zewnątrz) związane z fakturą
      * @return void
@@ -91,6 +92,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public array $fakturaZaliczkowa = [],
         public Optional | ZwrotAkcyzy $zwrotAkcyzy = new Optional(),
         public array $faWiersz = [],
+        public Optional | Rozliczenie $rozliczenie = new Optional(),
         public Optional | Platnosc $platnosc = new Optional(),
         public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional()
     ) {
@@ -309,6 +311,12 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
             $faWiersz = $dom->importNode($faWiersz->toDom()->documentElement, true);
 
             $fa->appendChild($faWiersz);
+        }
+
+        if ($this->rozliczenie instanceof Rozliczenie) {
+            $rozliczenie = $dom->importNode($this->rozliczenie->toDom()->documentElement, true);
+
+            $fa->appendChild($rozliczenie);
         }
 
         if ($this->platnosc instanceof Platnosc) {
