@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\FromInterface;
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\Number\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Number\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final readonly class PageOffset extends AbstractValueObject implements FromInterface
+final readonly class PageOffset extends AbstractValueObject implements FromInterface, ValueAwareInterface
 {
     public int $value;
 

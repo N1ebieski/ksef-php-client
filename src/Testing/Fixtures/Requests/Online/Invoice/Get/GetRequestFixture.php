@@ -12,6 +12,6 @@ final class GetRequestFixture extends AbstractRequestFixture
      * @var array<string, mixed>
      */
     public array $data = [
-        'ksefReferenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
+        'ksefReferenceNumber' => 'ABC1234567-20290515-A1B2C3-4D5E6F-7A'
     ];
 }

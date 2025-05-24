@@ -18,7 +18,7 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
      * @param Optional|array<int, RachunekBankowyFaktora> $rachunekBankowyFaktora
      */
     public function __construct(
-        public Optional | ZaplaconoGroup $zaplaconoGroup = new Optional(),
+        public Optional | ZaplataGroup | ZaplataCzesciowaGroup $zaplataGroup = new Optional(),
         public Optional | array $terminPlatnosci = new Optional(),
         public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscGroup = new Optional(),
         public Optional | array $rachunekBankowy = new Optional(),
@@ -35,11 +35,11 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
         $platnosc = $dom->createElement('Platnosc');
         $dom->appendChild($platnosc);
 
-        if ($this->zaplaconoGroup instanceof ZaplaconoGroup) {
-            /** @var DOMElement $zaplaconoGroup */
-            $zaplaconoGroup = $this->zaplaconoGroup->toDom()->documentElement;
+        if ( ! $this->zaplataGroup instanceof Optional) {
+            /** @var DOMElement $zaplataGroup */
+            $zaplataGroup = $this->zaplataGroup->toDom()->documentElement;
 
-            foreach ($zaplaconoGroup->childNodes as $child) {
+            foreach ($zaplataGroup->childNodes as $child) {
                 $platnosc->appendChild($dom->importNode($child, true));
             }
         }

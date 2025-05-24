@@ -12,6 +12,10 @@ final class AuthorisationChallengeRequestFixture extends AbstractRequestFixture
      * @var array<string, mixed>
      */
     public array $data = [
-        'nip' => '1111111111'
+        'contextIdentifier' => [
+            'subjectIdentifierByGroup' => [
+                'subjectIdentifierByCompany' => '1111111111'
+            ]
+        ]
     ];
 }
