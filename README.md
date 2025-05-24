@@ -70,7 +70,7 @@ $client = new ClientBuilder()
     ->withHttpClient(new \GuzzleHttp\Client([])) // Optional, default is set by Psr18ClientDiscovery::find()
     ->withSessionToken($_ENV['SESSION_TOKEN']) // Optional, if present, auto authorization is skipped
     ->withApiToken($_ENV['KSEF_KEY']) // Required for API Token authorization
-    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required for API Token authorization and encryption, you can find it on https://ksef.mf.gov.pl
+    ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required (including for API Token authorization and encryption), you can find it on https://ksef.mf.gov.pl
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
     ->withEncryptionKey(EncryptionKeyFactory::makeRandom()) // Optional for online resources, required for batch resources. Remember to save this value!
     ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo if you want to use auto authorization, optional for Mode::Test
@@ -158,7 +158,7 @@ $authorisationChallengeResponse = $client->online()->session()->authorisationCha
 $xml = new InitSignedRequest([
     'challenge' => $authorisationChallengeResponse->challenge,
     'timestamp' => $authorisationChallengeResponse->timestamp,
-    'nip' => $nip
+    'identifier' => $nip
 ])->toXml();
 
 $signedXml = // Sign a xml document via Szafir, ePUAP etc.

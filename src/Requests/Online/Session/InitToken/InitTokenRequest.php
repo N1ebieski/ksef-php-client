@@ -11,8 +11,8 @@ use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\EncryptedToken;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
+use N1ebieski\KSEFClient\Requests\ValueObjects\SubjectIdentifierByCompany;
 use N1ebieski\KSEFClient\ValueObjects\ApiToken;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
 use SensitiveParameter;
 
@@ -25,7 +25,7 @@ final readonly class InitTokenRequest extends AbstractRequest
         public Challenge $challenge,
         #[SensitiveParameter]
         public DateTimeInterface $timestamp,
-        public NIP $nip,
+        public SubjectIdentifierByCompany $identifier,
         public SystemCode $systemCode = SystemCode::Fa2
     ) {
     }
@@ -63,7 +63,7 @@ final readonly class InitTokenRequest extends AbstractRequest
         $context->appendChild($identifier);
 
         $id = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:Identifier');
-        $id->appendChild($dom->createTextNode((string) $this->nip));
+        $id->appendChild($dom->createTextNode((string) $this->identifier));
 
         $identifier->appendChild($id);
 

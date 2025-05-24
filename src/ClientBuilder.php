@@ -49,7 +49,7 @@ final class ClientBuilder
 
     private NIP $nip;
 
-    private KSEFPublicKeyPath $ksefPublicKeyPath;
+    private ?KSEFPublicKeyPath $ksefPublicKeyPath = null;
 
     private ?LogXmlPath $logXmlPath = null;
 
@@ -170,13 +170,13 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withKSEFPublicKeyPath(KSEFPublicKeyPath | string $publicKeyPath): self
+    public function withKSEFPublicKeyPath(KSEFPublicKeyPath | string $ksefPublicKeyPath): self
     {
-        if ($publicKeyPath instanceof KSEFPublicKeyPath === false) {
-            $publicKeyPath = KSEFPublicKeyPath::from($publicKeyPath);
+        if ($ksefPublicKeyPath instanceof KSEFPublicKeyPath === false) {
+            $ksefPublicKeyPath = KSEFPublicKeyPath::from($ksefPublicKeyPath);
         }
 
-        $this->ksefPublicKeyPath = $publicKeyPath;
+        $this->ksefPublicKeyPath = $ksefPublicKeyPath;
 
         return $this;
     }
@@ -194,6 +194,10 @@ final class ClientBuilder
 
     public function build(): ClientResource
     {
+        if ( ! $this->ksefPublicKeyPath instanceof KSEFPublicKeyPath) {
+            throw new InvalidArgumentException('KSEF public key path is required.');
+        }
+
         $config = new Config(
             logXmlPath: $this->logXmlPath,
             encryptionKey: $this->encryptionKey,
@@ -233,7 +237,7 @@ final class ClientBuilder
                         apiToken: $this->apiToken,
                         challenge: Challenge::from($authorisationChallengeResponse->challenge),
                         timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
-                        nip: $this->nip
+                        identifier: SubjectIdentifierByCompany::from($this->nip->value)
                     )
                 ),
                 $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
@@ -241,7 +245,7 @@ final class ClientBuilder
                         certificatePath: $this->certificatePath,
                         challenge: Challenge::from($authorisationChallengeResponse->challenge),
                         timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
-                        nip: $this->nip
+                        identifier: SubjectIdentifierByCompany::from($this->nip->value)
                     )
                 )
             };

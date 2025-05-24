@@ -12,8 +12,8 @@ use N1ebieski\KSEFClient\Requests\AbstractRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\SystemCode;
 use N1ebieski\KSEFClient\Requests\Online\ValueObjects\XmlNamespace;
+use N1ebieski\KSEFClient\Requests\ValueObjects\SubjectIdentifierByCompany;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
 use RuntimeException;
 use SensitiveParameter;
 
@@ -24,7 +24,7 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
         public Challenge $challenge,
         #[SensitiveParameter]
         public DateTimeInterface $timestamp,
-        public NIP $nip,
+        public SubjectIdentifierByCompany $identifier,
         #[SensitiveParameter]
         public ?CertificatePath $certificatePath = null,
         public SystemCode $systemCode = SystemCode::Fa2
@@ -64,7 +64,7 @@ final readonly class InitSignedRequest extends AbstractRequest implements XmlSer
         $context->appendChild($identifier);
 
         $id = $dom->createElementNS((string) XmlNamespace::KsefTypes->value, 'types:Identifier');
-        $id->appendChild($dom->createTextNode((string) $this->nip));
+        $id->appendChild($dom->createTextNode((string) $this->identifier));
 
         $identifier->appendChild($id);
 
