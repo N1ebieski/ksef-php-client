@@ -41,8 +41,8 @@ jobs:
 
       - name: Setop KSEFPublicKey
         run: |
-          mkdir -p config/keys
-          touch config/keys/testPublicKey.pem
+          mkdir -p ./config/keys
+          echo "${{ secrets.KSEF_PUBLIC_KEY }}" > config/keys/testPublicKey.pem
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
