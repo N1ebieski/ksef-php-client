@@ -442,7 +442,7 @@ Utility::retry(function () use ($client) {
 
 // Firstly we need to init the preparation of the invoice package based on the query parameters
 $initResponse = $client->online()->query()->invoice()->async()->init(
-    new InitRequestFixture()->withRange('-2 hours')->withSubjectType('subject1')->data
+    new InitRequestFixture()->withRange('-2 weeks')->withSubjectType('subject1')->data
 )->object();
 
 // Preparing invoice packs is asynchronous so it's better to save SessionToken 
