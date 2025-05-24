@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Tests\Requests\Online\Session\InitSigned;
 
-use InvalidArgumentException;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Testing\AbstractTestCase;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
@@ -51,16 +50,6 @@ final class InitSignedHandlerTest extends AbstractTestCase
         $response = $clientStub->online()->session()->initSigned($request)->object();
 
         $this->assertFixture($responseFixture->data, $response);
-    }
-
-    public function testWhenRequestHasEmptyCertificatePath(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Certificate path is required for this request');
-
-        $clientStub = $this->getClientStub(new InitSignedResponseFixture());
-
-        $clientStub->online()->session()->initSigned(new InitSignedRequestFixture()->withoutCertificatePath()->data);
     }
 
     public function testInvalidResponse(): void

@@ -10,12 +10,12 @@ use N1ebieski\KSEFClient\Requests\AbstractRequest;
 final readonly class InitSignedXmlRequest extends AbstractRequest implements XmlSerializableInterface
 {
     public function __construct(
-        public string $xml
+        public string $initSessionSigned
     ) {
     }
 
     public function toXml(): string
     {
-        return $this->xml;
+        return $this->initSessionSigned;
     }
 }

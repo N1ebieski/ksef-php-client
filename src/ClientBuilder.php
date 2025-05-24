@@ -15,6 +15,8 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\Requests\DTOs\SubjectIdentifierBy;
 use N1ebieski\KSEFClient\Requests\DTOs\SubjectIdentifierByCompanyGroup;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\DTOs\InitSessionSigned;
+use N1ebieski\KSEFClient\Requests\Online\Session\DTOs\InitSessionToken;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
@@ -235,17 +237,21 @@ final class ClientBuilder
                 $this->apiToken instanceof ApiToken => $client->online()->session()->initToken(
                     new InitTokenRequest(
                         apiToken: $this->apiToken,
-                        challenge: Challenge::from($authorisationChallengeResponse->challenge),
-                        timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
-                        identifier: SubjectIdentifierByCompany::from($this->nip->value)
+                        initSessionToken: new InitSessionToken(
+                            challenge: Challenge::from($authorisationChallengeResponse->challenge),
+                            timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
+                            identifier: SubjectIdentifierByCompany::from($this->nip->value)
+                        )
                     )
                 ),
                 $this->certificatePath instanceof CertificatePath => $client->online()->session()->initSigned(
                     new InitSignedRequest(
                         certificatePath: $this->certificatePath,
-                        challenge: Challenge::from($authorisationChallengeResponse->challenge),
-                        timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
-                        identifier: SubjectIdentifierByCompany::from($this->nip->value)
+                        initSessionSigned: new InitSessionSigned(
+                            challenge: Challenge::from($authorisationChallengeResponse->challenge),
+                            timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
+                            identifier: SubjectIdentifierByCompany::from($this->nip->value)
+                        )
                     )
                 )
             };

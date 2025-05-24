@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Validator;
 
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
 
 final readonly class Validator
@@ -18,6 +19,10 @@ final readonly class Validator
         }
 
         foreach ($values as $attribute => $value) {
+            if ($value instanceof Optional) {
+                continue;
+            }
+
             if (is_int($attribute)) {
                 $attribute = null;
             }

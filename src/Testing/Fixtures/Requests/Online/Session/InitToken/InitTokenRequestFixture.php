@@ -13,8 +13,10 @@ final class InitTokenRequestFixture extends AbstractRequestFixture
      */
     public array $data = [
         'apiToken' => '1234567890',
-        'challenge' => '20250516-CR-70912D5DEF-7402B64FF3-CD',
-        'timestamp' => '2022-01-01T00:00:00+01:00',
-        'nip' => '1111111111'
+        'initSessionToken' => [
+            'challenge' => '20250516-CR-70912D5DEF-7402B64FF3-CD',
+            'timestamp' => '2022-01-01T00:00:00+01:00',
+            'identifier' => '1111111111'
+        ]
     ];
 }

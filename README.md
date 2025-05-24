@@ -139,7 +139,7 @@ $client->online()->session()->terminate();
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
+use N1ebieski\KSEFClient\Requests\Online\Session\DTOs\InitSessionSigned;
 
 $client = new ClientBuilder()
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
@@ -155,7 +155,7 @@ $authorisationChallengeResponse = $client->online()->session()->authorisationCha
     ]
 ])->object();
 
-$xml = new InitSignedRequest([
+$xml = new InitSessionSigned([
     'challenge' => $authorisationChallengeResponse->challenge,
     'timestamp' => $authorisationChallengeResponse->timestamp,
     'identifier' => $nip

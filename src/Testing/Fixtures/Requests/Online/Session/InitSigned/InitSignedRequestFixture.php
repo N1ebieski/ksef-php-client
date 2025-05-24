@@ -16,9 +16,11 @@ final class InitSignedRequestFixture extends AbstractRequestFixture
             'path' => __DIR__ . '/../../../../../../../config/certificates/certificate.p12',
             'passphrase' => 'password',
         ],
-        'challenge' => '20250516-CR-70912D5DEF-7402B64FF3-CD',
-        'timestamp' => '2022-01-01T00:00:00+01:00',
-        'nip' => '1111111111'
+        'initSessionSigned' => [
+            'challenge' => '20250516-CR-70912D5DEF-7402B64FF3-CD',
+            'timestamp' => '2022-01-01T00:00:00+01:00',
+            'identifier' => '1111111111'
+        ]
     ];
 
     public function withoutCertificatePath(): self

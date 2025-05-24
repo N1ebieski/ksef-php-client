@@ -47,10 +47,6 @@ final readonly class InitSignedHandler extends AbstractHandler
         $signedXml = $request->toXml();
 
         if ($request instanceof InitSignedRequest) {
-            if ( ! $request->certificatePath instanceof CertificatePath) {
-                throw new InvalidArgumentException('Certificate path is required for this request.');
-            }
-
             $signedXml = $this->signDocument->handle(
                 new SignDocumentAction(
                     certificate: CertificateFactory::make($request->certificatePath),

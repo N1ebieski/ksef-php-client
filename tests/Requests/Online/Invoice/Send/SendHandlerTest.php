@@ -23,10 +23,10 @@ final class SendHandlerTest extends AbstractTestCase
     public static function validResponseProvider(): array
     {
         $requests = [
-            new SendFakturaSprzedazyTowaruRequestFixture(),
-            new SendFakturaKorygujacaUniwersalnaRequestFixture(),
-            new SendFakturaKorygujacaDaneNabywcyRequestFixture(),
-            new SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture()
+            new SendFakturaSprzedazyTowaruRequestFixture()->withName('faktura sprzedaży towaru'),
+            new SendFakturaKorygujacaUniwersalnaRequestFixture()->withName('faktura korygująca uniwersalna'),
+            new SendFakturaKorygujacaDaneNabywcyRequestFixture()->withName('faktura korygująca dane nabywcy'),
+            new SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture()->withName('faktura sprzedaży usług leasingu operacyjnego'),
         ];
 
         $responses = [
@@ -41,6 +41,7 @@ final class SendHandlerTest extends AbstractTestCase
             }
         }
 
+        /** @var array<string, array{AbstractSendRequestFixture, SendResponseFixture}> */
         return $combinations;
     }
 

@@ -32,7 +32,7 @@ final readonly class InitTokenHandler extends AbstractHandler
     {
         $encryptedToken = EncryptedTokenFactory::make(
             apiToken: $request->apiToken,
-            timestamp: $request->timestamp,
+            timestamp: $request->initSessionToken->timestamp,
             ksefPublicKeyPath: $this->config->ksefPublicKeyPath
         );
 
