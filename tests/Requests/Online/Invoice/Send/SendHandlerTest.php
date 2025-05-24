@@ -12,6 +12,10 @@ use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFaktu
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaKorygujacaUniwersalnaRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyTowaruRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaUproszczonaRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaVatMarzaRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaWWalucieObcejRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaZaliczkowaZDodatkowymNabywcaRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendResponseFixture;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -27,6 +31,10 @@ final class SendHandlerTest extends AbstractTestCase
             new SendFakturaKorygujacaUniwersalnaRequestFixture()->withName('faktura korygująca uniwersalna'),
             new SendFakturaKorygujacaDaneNabywcyRequestFixture()->withName('faktura korygująca dane nabywcy'),
             new SendFakturaSprzedazyUslugLeasinguOperacyjnegoRequestFixture()->withName('faktura sprzedaży usług leasingu operacyjnego'),
+            new SendFakturaZaliczkowaZDodatkowymNabywcaRequestFixture()->withName('faktura zaliczkowa z dodatkowym nabywcą'),
+            new SendFakturaUproszczonaRequestFixture()->withName('faktura uproszczona'),
+            new SendFakturaVatMarzaRequestFixture()->withName('faktura VAT marża'),
+            new SendFakturaWWalucieObcejRequestFixture()->withName('faktura w walucie obcej'),
         ];
 
         $responses = [
