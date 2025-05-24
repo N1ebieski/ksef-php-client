@@ -13,10 +13,10 @@ abstract class AbstractSendRequestFixture extends AbstractRequestFixture
     {
         $todayDate = new DateTimeImmutable()->format('Y-m-d');
 
-        $this->data['fa']['p_1'] = $todayDate;
+        $this->data['faktura']['fa']['p_1'] = $todayDate;
 
-        if (isset($this->data['fa']['p_6Group']['p_6'])) {
-            $this->data['fa']['p_6Group']['p_6'] = $todayDate;
+        if (isset($this->data['faktura']['fa']['p_6Group']['p_6'])) {
+            $this->data['faktura']['fa']['p_6Group']['p_6'] = $todayDate;
         }
 
         return $this;
@@ -24,7 +24,7 @@ abstract class AbstractSendRequestFixture extends AbstractRequestFixture
 
     public function withNIP(string $nip): self
     {
-        $this->data['podmiot1']['daneIdentyfikacyjne']['nip'] = $nip;
+        $this->data['faktura']['podmiot1']['daneIdentyfikacyjne']['nip'] = $nip;
 
         return $this;
     }
