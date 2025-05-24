@@ -155,7 +155,7 @@ $authorisationChallengeResponse = $client->online()->session()->authorisationCha
     ]
 ])->object();
 
-$xml = new InitSessionSigned([
+$xml = InitSessionSigned::from([
     'challenge' => $authorisationChallengeResponse->challenge,
     'timestamp' => $authorisationChallengeResponse->timestamp,
     'identifier' => $nip
