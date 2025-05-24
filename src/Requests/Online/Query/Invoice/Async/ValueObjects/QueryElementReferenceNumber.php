@@ -17,7 +17,7 @@ final readonly class QueryElementReferenceNumber extends AbstractValueObject imp
     public function __construct(string $value)
     {
         Validator::validate($value, [
-            new RegexRule('/(20[2-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])-([0-9A-Z]{2})-([0-9A-F]{10})-([0-9A-F]{10})-([0-9A-F]{2})/')
+            new RegexRule('/(20[2-9]\d|2[1-9]\d{2}|[3-9]\d{3})(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])-([0-9A-Z]{2})-([0-9A-F]{10})-([0-9A-F]{10})-([0-9A-F]{2})/')
         ]);
 
         $this->value = $value;

@@ -10,10 +10,11 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 trait HasToArray
 {
     /**
+     * @param array<int, string> $only
      * @return array<string|int, mixed>
      */
-    public function toArray(KeyType $keyType = KeyType::Camel): array
+    public function toArray(KeyType $keyType = KeyType::Camel, array $only = []): array
     {
-        return Arr::normalize(get_object_vars($this), $keyType);
+        return Arr::normalize(get_object_vars($this), $keyType, $only);
     }
 }

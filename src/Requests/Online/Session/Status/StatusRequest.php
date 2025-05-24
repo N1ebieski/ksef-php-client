@@ -22,12 +22,12 @@ final readonly class StatusRequest extends AbstractRequest implements Parameters
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toParameters(KeyType $keyType = KeyType::Camel): array
     {
-        return [
-            'PageSize' => $this->pageSize->value,
-            'PageOffset' => $this->pageOffset->value,
-            'IncludeDetails' => $this->includeDetails
-        ];
+        /** @var array<string, mixed> */
+        return $this->toArray(only: ['pageSize', 'pageOffset', 'includeDetails']);
     }
 }

@@ -43,11 +43,16 @@ final class Arr
 
     /**
      * @param array<string|int, mixed> $array
+     * @param array<int, string> $only
      * @return array<string|int, mixed>
      */
-    public static function normalize(array $array, KeyType $keyType = KeyType::Camel): array
+    public static function normalize(array $array, KeyType $keyType = KeyType::Camel, array $only = []): array
     {
         $newArray = [];
+
+        if ($only !== []) {
+            $array = array_intersect_key($array, array_flip($only));
+        }
 
         foreach ($array as $key => $value) {
             if ($value instanceof Optional) {
