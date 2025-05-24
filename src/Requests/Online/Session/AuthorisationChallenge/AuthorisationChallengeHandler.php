@@ -24,12 +24,7 @@ final readonly class AuthorisationChallengeHandler extends AbstractHandler
         return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('online/Session/AuthorisationChallenge'),
-            body: [
-                'contextIdentifier' => [
-                    'type' => 'onip',
-                    'identifier' => $request->nip->value
-                ]
-            ]
+            body: $request->toBody()
         ));
     }
 }

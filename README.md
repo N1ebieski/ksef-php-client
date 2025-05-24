@@ -91,6 +91,8 @@ $commonStatus = $client->common()->status(new StatusRequest(
 ))->object();
 ```
 
+or:
+
 ```php
 $commonStatus = $client->common()->status([
     'referenceNumber' => '20250508-EE-B395BBC9CD-A7DB4E6095-BD'
@@ -138,25 +140,26 @@ use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedXmlRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
-use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
-use N1ebieski\KSEFClient\ValueObjects\NIP;
-use DateTimeImmutable;
 
 $client = new ClientBuilder()
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY'])
     ->build();
 
-$nip = NIP::from('NIP_NUMBER');
+$nip = 'NIP_NUMBER';
 
-$authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
-    new AuthorisationChallengeRequest($nip)
-)->object();
+$authorisationChallengeResponse = $client->online()->session()->authorisationChallenge([
+    'contextIdentifier' => [
+        'subjectIdentifierByGroup' => [
+            'subjectIdentifierByCompany' => $nip
+        ]
+    ]
+])->object();
 
-$xml = new InitSignedRequest(
-    challenge: Challenge::from($authorisationChallengeResponse->challenge),
-    timestamp: new DateTimeImmutable($authorisationChallengeResponse->timestamp),
-    nip: $nip
-)->toXml();
+$xml = new InitSignedRequest([
+    'challenge' => $authorisationChallengeResponse->challenge,
+    'timestamp' => $authorisationChallengeResponse->timestamp,
+    'nip' => $nip
+])->toXml();
 
 $signedXml = // Sign a xml document via Szafir, ePUAP etc.
 
@@ -508,4 +511,4 @@ vendor/bin/phpunit
 Special thanks to:
 
 - all the helpful people on the [4programmers.net](https://4programmers.net/Forum/Nietuzinkowe_tematy/355933-krajowy_system_e_faktur) forum
-- to the authors of the repository [grafinet/xades-tools](https://github.com/grafinet/xades-tools) for the document signing tool using Xades
+- to the authors of the repository [grafinet/xades-tools](https://github.com/grafinet/xades-tools) for the Xades document signing tool

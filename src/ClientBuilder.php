@@ -12,10 +12,13 @@ use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
+use N1ebieski\KSEFClient\Requests\DTOs\SubjectIdentifierBy;
+use N1ebieski\KSEFClient\Requests\DTOs\SubjectIdentifierByCompanyGroup;
 use N1ebieski\KSEFClient\Requests\Online\Session\AuthorisationChallenge\AuthorisationChallengeRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitSigned\InitSignedRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\Requests\Online\Session\ValueObjects\Challenge;
+use N1ebieski\KSEFClient\Requests\ValueObjects\SubjectIdentifierByCompany;
 use N1ebieski\KSEFClient\Resources\ClientResource;
 use N1ebieski\KSEFClient\Validator\Rules\String\MaxBytesRule;
 use N1ebieski\KSEFClient\Validator\Rules\String\MinBytesRule;
@@ -215,7 +218,13 @@ final class ClientBuilder
         if ($this->isAuthorisation()) {
             /** @var object{challenge: string, timestamp: string} $authorisationChallengeResponse */
             $authorisationChallengeResponse = $client->online()->session()->authorisationChallenge(
-                new AuthorisationChallengeRequest($this->nip)
+                new AuthorisationChallengeRequest(
+                    contextIdentifier: new SubjectIdentifierBy(
+                        subjectIdentifierByGroup: new SubjectIdentifierByCompanyGroup(
+                            subjectIdentifierByCompany: SubjectIdentifierByCompany::from($this->nip->value)
+                        )
+                    )
+                )
             )->object();
 
             $authorisationSessionResponse = match (true) { //@phpstan-ignore-line
