@@ -13,10 +13,7 @@ final readonly class SubjectIdentifierToNoneGroup extends AbstractDTO implements
 {
     use HasToBody;
 
-    public SubjectIdentifierTo $type;
-
-    public function __construct()
+    public function __construct(public SubjectIdentifierTo $type = SubjectIdentifierTo::None)
     {
-        $this->type = SubjectIdentifierTo::None;
     }
 }

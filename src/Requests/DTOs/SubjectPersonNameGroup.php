@@ -12,12 +12,10 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
 final readonly class SubjectPersonNameGroup extends AbstractDTO implements BodyInterface
 {
-    public SubjectName $type;
-
     public function __construct(
         public SubjectPersonName $subjectPersonName,
+        public SubjectName $type = SubjectName::Pn
     ) {
-        $this->type = SubjectName::Pn;
     }
 
     /**

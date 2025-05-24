@@ -13,10 +13,7 @@ final readonly class SubjectNoneGroup extends AbstractDTO implements BodyInterfa
 {
     use HasToBody;
 
-    public SubjectName $type;
-
-    public function __construct()
+    public function __construct(public SubjectName $type = SubjectName::None)
     {
-        $this->type = SubjectName::None;
     }
 }

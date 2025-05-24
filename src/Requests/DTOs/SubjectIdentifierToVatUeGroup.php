@@ -12,12 +12,10 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
 final readonly class SubjectIdentifierToVatUeGroup extends AbstractDTO implements BodyInterface
 {
-    public SubjectIdentifierTo $type;
-
     public function __construct(
-        public SubjectIdentifierToVatUe $subjectIdentifierToVatUe
+        public SubjectIdentifierToVatUe $subjectIdentifierToVatUe,
+        public SubjectIdentifierTo $type = SubjectIdentifierTo::VatUe
     ) {
-        $this->type = SubjectIdentifierTo::VatUe;
     }
 
     /**

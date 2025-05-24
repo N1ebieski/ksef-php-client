@@ -12,12 +12,10 @@ use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 
 final readonly class SubjectFullNameGroup extends AbstractDTO implements BodyInterface
 {
-    public SubjectName $type;
-
     public function __construct(
         public SubjectFullName $subjectFullName,
+        public SubjectName $type = SubjectName::Fn
     ) {
-        $this->type = SubjectName::Fn;
     }
 
     public function toBody(KeyType $keyType = KeyType::Camel): array
