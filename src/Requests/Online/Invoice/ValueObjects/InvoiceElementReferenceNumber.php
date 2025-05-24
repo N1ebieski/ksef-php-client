@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Requests\ValueObjects;
+namespace N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects;
 
-use N1ebieski\KSEFClient\Contracts\FromInterface;
+use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class ReferenceNumber extends AbstractValueObject implements Stringable, FromInterface
+final readonly class InvoiceElementReferenceNumber extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 

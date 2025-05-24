@@ -25,11 +25,7 @@ final readonly class StatusHandler extends AbstractHandler
             uri: Uri::from(
                 sprintf('online/Session/Status/%s', $request->referenceNumber->value ?? '')
             ),
-            parameters: [
-                'PageSize' => $request->pageSize,
-                'PageOffset' => $request->pageOffset,
-                'IncludeDetails' => $request->includeDetails
-            ]
+            parameters: $request->toParameters()
         ));
     }
 }

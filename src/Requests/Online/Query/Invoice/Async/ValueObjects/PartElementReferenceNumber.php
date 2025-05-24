@@ -6,12 +6,21 @@ namespace N1ebieski\KSEFClient\Requests\Online\Query\Invoice\Async\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
+use N1ebieski\KSEFClient\Validator\Rules\String\RegexRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 final readonly class PartElementReferenceNumber extends AbstractValueObject implements Stringable, FromInterface
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
+        Validator::validate($value, [
+            new RegexRule('/(20[2-9][0-9]|2[1-9][0-9]{2}|[3-9][0-9]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])-([0-9A-Z]{2})-([0-9A-F]{10})-([0-9A-F]{10})-([0-9A-F]{2})/')
+        ]);
+
+        $this->value = $value;
     }
 
     public function __toString(): string

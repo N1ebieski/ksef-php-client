@@ -23,10 +23,7 @@ final readonly class SyncHandler extends AbstractHandler
         return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('online/Query/Invoice/Sync'),
-            parameters: [
-                'PageSize' => $request->pageSize,
-                'PageOffset' => $request->pageOffset
-            ],
+            parameters: $request->toParameters(),
             body: $request->toBody()
         ));
     }
