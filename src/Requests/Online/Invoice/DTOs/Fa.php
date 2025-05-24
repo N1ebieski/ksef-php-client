@@ -28,9 +28,36 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\WZ;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\ZwrotAkcyzy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Fa extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, WZ>
+     */
+    public Optional | array $wz;
+
+    /**
+     * @var Optional|array<int, ZaliczkaCzesciowa>
+     */
+    public Optional | array $zaliczkaCzesciowa;
+
+    /**
+     * @var Optional|array<int, DodatkowyOpis>
+     */
+    public Optional | array $dodatkowyOpis;
+
+    /**
+     * @var Optional|array<int, FakturaZaliczkowa>
+     */
+    public Optional | array $fakturaZaliczkowa;
+
+    /**
+     * @var Optional|array<int, FaWiersz>
+     */
+    public Optional | array $faWiersz;
+
     /**
      * @param KodWaluty $kodWaluty Trzyliterowy kod waluty (ISO 4217)
      * @param P_1 $p_1 Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy
@@ -65,7 +92,7 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public P_1 $p_1,
         public P_2 $p_2,
         public P_15 $p_15,
-        public Optional | array $wz = new Optional(),
+        Optional | array $wz = new Optional(),
         public Optional | P_1M $p_1M = new Optional(),
         public Optional | P_6Group | OkresFaGroup $p_6Group = new Optional(),
         public Optional | P_13_1Group $p_13_1Group = new Optional(),
@@ -85,18 +112,37 @@ final readonly class Fa extends AbstractDTO implements DomSerializableInterface
         public Adnotacje $adnotacje = new Adnotacje(),
         public RodzajFaktury $rodzajFaktury = RodzajFaktury::Vat,
         public Optional | KorektaGroup $korektaGroup = new Optional(),
-        public Optional | array $zaliczkaCzesciowa = new Optional(),
+        Optional | array $zaliczkaCzesciowa = new Optional(),
         public Optional | TP $tp = new Optional(),
         public Optional | FP $fp = new Optional(),
-        public Optional | array $dodatkowyOpis = new Optional(),
-        public Optional | array $fakturaZaliczkowa = new Optional(),
+        Optional | array $dodatkowyOpis = new Optional(),
+        Optional | array $fakturaZaliczkowa = new Optional(),
         public Optional | ZwrotAkcyzy $zwrotAkcyzy = new Optional(),
-        public Optional | array $faWiersz = new Optional(),
+        Optional | array $faWiersz = new Optional(),
         public Optional | Rozliczenie $rozliczenie = new Optional(),
         public Optional | Platnosc $platnosc = new Optional(),
         public Optional | WarunkiTransakcji $warunkiTransakcji = new Optional(),
         public Optional | Zamowienie $zamowienie = new Optional()
     ) {
+        Validator::validate([
+            'wz' => $wz,
+            'zaliczkaCzesciowa' => $zaliczkaCzesciowa,
+            'dodatkowyOpis' => $dodatkowyOpis,
+            'fakturaZaliczkowa' => $fakturaZaliczkowa,
+            'faWiersz' => $faWiersz
+        ], [
+            'wz' => [new MaxRule(1000)],
+            'zaliczkaCzesciowa' => [new MaxRule(31)],
+            'dodatkowyOpis' => [new MaxRule(10000)],
+            'fakturaZaliczkowa' => [new MaxRule(100)],
+            'faWiersz' => [new MaxRule(10000)]
+        ]);
+
+        $this->wz = $wz;
+        $this->zaliczkaCzesciowa = $zaliczkaCzesciowa;
+        $this->dodatkowyOpis = $dodatkowyOpis;
+        $this->fakturaZaliczkowa = $fakturaZaliczkowa;
+        $this->faWiersz = $faWiersz;
     }
 
     public function toDom(): DOMDocument

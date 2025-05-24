@@ -12,9 +12,31 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PodmiotPosrednicza
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\WarunkiDostawy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, Umowy>
+     */
+    public Optional | array $umowy;
+
+    /**
+     * @var Optional|array<int, Zamowienia>
+     */
+    public Optional | array $zamowienia;
+
+    /**
+     * @var Optional|array<int, NrPartiiTowaru>
+     */
+    public Optional | array $nrPartiiTowaru;
+
+    /**
+     * @var Optional|array<int, Transport>
+     */
+    public Optional | array $transport;
+
     /**
      * @param Optional|array<int, Umowy> $umowy
      * @param Optional|array<int, Zamowienia> $zamowienia
@@ -25,14 +47,30 @@ final readonly class WarunkiTransakcji extends AbstractDTO implements DomSeriali
      * @return void
      */
     public function __construct(
-        public Optional | array $umowy = new Optional(),
-        public Optional | array $zamowienia = new Optional(),
-        public Optional | array $nrPartiiTowaru = new Optional(),
+        Optional | array $umowy = new Optional(),
+        Optional | array $zamowienia = new Optional(),
+        Optional | array $nrPartiiTowaru = new Optional(),
         public Optional | WarunkiDostawy $warunkiDostawy = new Optional(),
         public Optional | WalutaUmownaGroup $walutaUmownaGroup = new Optional(),
-        public Optional | array $transport = new Optional(),
+        Optional | array $transport = new Optional(),
         public Optional | PodmiotPosredniczacy $podmiotPosredniczacy = new Optional()
     ) {
+        Validator::validate([
+            'umowy' => $umowy,
+            'zamowienia' => $zamowienia,
+            'nrPartiiTowaru' => $nrPartiiTowaru,
+            'transport' => $transport,
+        ], [
+            'umowy' => [new MaxRule(100)],
+            'zamowienia' => [new MaxRule(100)],
+            'nrPartiiTowaru' => [new MaxRule(1000)],
+            'transport' => [new MaxRule(20)]
+        ]);
+
+        $this->umowy = $umowy;
+        $this->zamowienia = $zamowienia;
+        $this->nrPartiiTowaru = $nrPartiiTowaru;
+        $this->transport = $transport;
     }
 
     public function toDom(): DOMDocument

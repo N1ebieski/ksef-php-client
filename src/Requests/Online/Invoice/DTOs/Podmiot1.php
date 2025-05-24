@@ -11,9 +11,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PrefiksPodatnika;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\StatusInfoPodatnika;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, DaneKontaktowe>
+     */
+    public Optional | array $daneKontaktowe;
+
     /**
      * @param Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
      * @param Adres $adres Adres podatnika
@@ -25,12 +32,19 @@ final readonly class Podmiot1 extends AbstractDTO implements DomSerializableInte
     public function __construct(
         public Podmiot1DaneIdentyfikacyjne $daneIdentyfikacyjne,
         public Adres $adres,
-        public Optional | array $daneKontaktowe = new Optional(),
+        Optional | array $daneKontaktowe = new Optional(),
         public Optional | PrefiksPodatnika $prefiksPodatnika = new Optional(),
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
         public Optional | StatusInfoPodatnika $statusInfoPodatnika = new Optional()
     ) {
+        Validator::validate([
+            'daneKontaktowe' => $daneKontaktowe
+        ], [
+            'daneKontaktowe' => [new MaxRule(3)]
+        ]);
+
+        $this->daneKontaktowe = $daneKontaktowe;
     }
 
     public function toDom(): DOMDocument

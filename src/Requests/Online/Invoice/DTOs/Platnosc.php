@@ -9,9 +9,26 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Platnosc extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, TerminPlatnosci>
+     */
+    public Optional | array $terminPlatnosci;
+
+    /**
+     * @var Optional|array<int, RachunekBankowy>
+     */
+    public Optional | array $rachunekBankowy;
+
+    /**
+     * @var Optional|array<int, RachunekBankowyFaktora>
+     */
+    public Optional | array $rachunekBankowyFaktora;
+
     /**
      * @param Optional|array<int, TerminPlatnosci> $terminPlatnosci
      * @param Optional|array<int, RachunekBankowy> $rachunekBankowy
@@ -19,12 +36,25 @@ final readonly class Platnosc extends AbstractDTO implements DomSerializableInte
      */
     public function __construct(
         public Optional | ZaplataGroup | ZaplataCzesciowaGroup $zaplataGroup = new Optional(),
-        public Optional | array $terminPlatnosci = new Optional(),
+        Optional | array $terminPlatnosci = new Optional(),
         public Optional | FormaPlatnosciGroup | PlatnoscInnaGroup $platnoscGroup = new Optional(),
-        public Optional | array $rachunekBankowy = new Optional(),
-        public Optional | array $rachunekBankowyFaktora = new Optional(),
+        Optional | array $rachunekBankowy = new Optional(),
+        Optional | array $rachunekBankowyFaktora = new Optional(),
         public Optional | Skonto $skonto = new Optional()
     ) {
+        Validator::validate([
+            'terminPlatnosci' => $terminPlatnosci,
+            'rachunekBankowy' => $rachunekBankowy,
+            'rachunekBankowyFaktora' => $rachunekBankowyFaktora
+        ], [
+            'terminPlatnosci' => [new MaxRule(100)],
+            'rachunekBankowy' => [new MaxRule(100)],
+            'rachunekBankowyFaktora' => [new MaxRule(20)]
+        ]);
+
+        $this->terminPlatnosci = $terminPlatnosci;
+        $this->rachunekBankowy = $rachunekBankowy;
+        $this->rachunekBankowyFaktora = $rachunekBankowyFaktora;
     }
 
     public function toDom(): DOMDocument

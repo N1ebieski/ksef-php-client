@@ -9,9 +9,17 @@ use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_22;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\P_42_5;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class P_22Group extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var array<int, NowySrodekTransportu>
+     */
+    public array $nowySrodekTransportu;
+
     /**
      * @param P_22 $p_22 Znacznik wewnątrzwspólnotowej dostawy nowych środków transportu
      * @param P_42_5 $p_42_5 Jeśli występuje obowiązek, o którym mowa w art. 42 ust. 5 ustawy, należy podać wartość "1", w przeciwnym przypadku - wartość "2
@@ -20,9 +28,16 @@ final readonly class P_22Group extends AbstractDTO implements DomSerializableInt
      */
     public function __construct(
         public P_42_5 $p_42_5,
-        public array $nowySrodekTransportu,
+        array $nowySrodekTransportu,
         public P_22 $p_22 = P_22::Default,
     ) {
+        Validator::validate([
+            'nowySrodekTransportu' => $nowySrodekTransportu
+        ], [
+            'nowySrodekTransportu' => [new MinRule(1), new MaxRule(10000)]
+        ]);
+
+        $this->nowySrodekTransportu = $nowySrodekTransportu;
     }
 
     public function toDom(): DOMDocument

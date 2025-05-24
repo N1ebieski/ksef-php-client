@@ -13,9 +13,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrKlienta;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\Udzial;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, DaneKontaktowe>
+     */
+    public Optional | array $daneKontaktowe;
+
     /**
      * @param Optional|IDNabywcy $idNabywcy Unikalny klucz powiązania danych nabywcy na fakturach korygujących, w przypadku gdy dane nabywcy na fakturze korygującej zmieniły się w stosunku do danych na fakturze korygowanej
      * @param NrEORI|Optional $nrEORI Numer EORI podmiotu trzeciego
@@ -32,10 +39,17 @@ final readonly class Podmiot3 extends AbstractDTO implements DomSerializableInte
         public Optional | IDNabywcy $idNabywcy = new Optional(),
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
-        public Optional | array $daneKontaktowe = new Optional(),
+        Optional | array $daneKontaktowe = new Optional(),
         public Optional | Udzial $udzial = new Optional(),
         public Optional | NrKlienta $nrKlienta = new Optional()
     ) {
+        Validator::validate([
+            'daneKontaktowe' => $daneKontaktowe
+        ], [
+            'daneKontaktowe' => [new MaxRule(3)]
+        ]);
+
+        $this->daneKontaktowe = $daneKontaktowe;
     }
 
     public function toDom(): DOMDocument

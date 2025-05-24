@@ -8,18 +8,40 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Stopka extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, Informacje>
+     */
+    public Optional | array $informacje;
+
+    /**
+     * @var Optional|array<int, Rejestry>
+     */
+    public Optional | array $rejestry;
+
     /**
      * @param Optional|array<int, Informacje> $informacje Pozostałe dane
      * @param Optional|array<int, Rejestry> $rejestry
      * @return void
      */
     public function __construct(
-        public Optional | array $informacje = new Optional(),
-        public Optional | array $rejestry = new Optional()
+        Optional | array $informacje = new Optional(),
+        Optional | array $rejestry = new Optional()
     ) {
+        Validator::validate([
+            'informacje' => $informacje,
+            'rejestry' => $rejestry
+        ], [
+            'informacje' => [new MaxRule(3)],
+            'rejestry' => [new MaxRule(100)]
+        ]);
+
+        $this->informacje = $informacje;
+        $this->rejestry = $rejestry;
     }
 
     public function toDom(): DOMDocument

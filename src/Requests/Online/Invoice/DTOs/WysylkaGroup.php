@@ -10,9 +10,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataGodzRozpTransp
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\DataGodzZakTransportu;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, WysylkaPrzez>
+     */
+    public Optional | array $wysylkaPrzez;
+
     /**
      * @param Optional|DataGodzRozpTransportu $dataGodzRozpTransportu Data i godzina rozpoczęcia transportu
      * @param Optional|DataGodzZakTransportu $dataGodzZakTransportu Data i godzina zakonczenia transportu
@@ -24,9 +31,16 @@ final readonly class WysylkaGroup extends AbstractDTO implements DomSerializable
         public Optional | DataGodzRozpTransportu $dataGodzRozpTransportu = new Optional(),
         public Optional | DataGodzZakTransportu $dataGodzZakTransportu = new Optional(),
         public Optional | WysylkaZ $wysylkaZ = new Optional(),
-        public Optional | array $wysylkaPrzez = new Optional(),
+        Optional | array $wysylkaPrzez = new Optional(),
         public Optional | WysylkaDo $wysylkaDo = new Optional(),
     ) {
+        Validator::validate([
+            'wysylkaPrzez' => $wysylkaPrzez
+        ], [
+            'wysylkaPrzez' => [new MaxRule(20)]
+        ]);
+
+        $this->wysylkaPrzez = $wysylkaPrzez;
     }
 
     public function toDom(): DOMDocument

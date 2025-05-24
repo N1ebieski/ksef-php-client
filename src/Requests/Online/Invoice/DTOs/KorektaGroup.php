@@ -13,9 +13,22 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\PrzyczynaKorekty;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\TypKorekty;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class KorektaGroup extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var array<int, DaneFaKorygowanej>
+     */
+    public array $daneFaKorygowanej;
+
+    /**
+     * @var Optional|array<int, Podmiot2K>
+     */
+    public Optional | array $podmiot2K;
+
     /**
      * @param array<int, DaneFaKorygowanej> $daneFaKorygowanej
      * @param Optional|TypKorekty $typKorekty Typ skutku korekty w ewidencji dla podatku od towarów i usług
@@ -25,15 +38,25 @@ final readonly class KorektaGroup extends AbstractDTO implements DomSerializable
      * @param Optional|array<int, Podmiot2K> $podmiot2K W przypadku korekty danych nabywcy występującego jako Podmiot2 lub dodatkowego nabywcy występującego jako Podmiot3 należy podać pełne dane tego podmiotu występujące na fakturze korygowanej. Korekcie nie podlegają błędne numery identyfikujące nabywcę oraz dodatkowego nabywcę. W przypadku korygowania pozostałych danych nabywcy lub dodatkowego nabywcy wskazany numer identyfikacyjny ma być tożsamy z numerem w części Podmiot2 względnie Podmiot3 faktury korygującej
      */
     public function __construct(
-        public array $daneFaKorygowanej,
+        array $daneFaKorygowanej,
         public Optional | PrzyczynaKorekty $przyczynaKorekty = new Optional(),
         public Optional | TypKorekty $typKorekty = new Optional(),
         public Optional | OkresFaKorygowanej $okresFaKorygowanej = new Optional(),
         public Optional | NrFaKorygowany $nrFaKorygowany = new Optional(),
         public Optional | Podmiot1K $podmiot1K = new Optional(),
-        public Optional | array $podmiot2K = new Optional(),
+        Optional | array $podmiot2K = new Optional(),
         public Optional | P_15ZKGroup $p15ZKGroup = new Optional(),
     ) {
+        Validator::validate([
+            'daneFaKorygowanej' => $daneFaKorygowanej,
+            'podmiot2K' => $podmiot2K
+        ], [
+            'daneFaKorygowanej' => [new MinRule(1)],
+            'podmiot2K' => [new MaxRule(101)]
+        ]);
+
+        $this->daneFaKorygowanej = $daneFaKorygowanej;
+        $this->podmiot2K = $podmiot2K;
     }
 
     public function toDom(): DOMDocument

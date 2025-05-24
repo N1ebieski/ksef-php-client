@@ -10,9 +10,16 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\NrEORI;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\RolaPU;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, DaneKontaktowe>
+     */
+    public Optional | array $daneKontaktowe;
+
     /**
      * @param PodmiotUpowaznionyDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podmiotu upoważnionego
      * @param Adres $adres Adres podmiotu upoważnionego
@@ -26,8 +33,15 @@ final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerial
         public RolaPU $rolaPU,
         public Optional | NrEORI $nrEORI = new Optional(),
         public Optional | AdresKoresp $adresKoresp = new Optional(),
-        public Optional|array $daneKontaktowe = new Optional(),
+        Optional | array $daneKontaktowe = new Optional(),
     ) {
+        Validator::validate([
+            'daneKontaktowe' => $daneKontaktowe
+        ], [
+            'daneKontaktowe' => [new MaxRule(3)]
+        ]);
+
+        $this->daneKontaktowe = $daneKontaktowe;
     }
 
     public function toDom(): DOMDocument

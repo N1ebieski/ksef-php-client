@@ -11,20 +11,42 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\SumaObciazen;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\ValueObjects\SumaOdliczen;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
+use N1ebieski\KSEFClient\Validator\Validator;
 
 final readonly class Rozliczenie extends AbstractDTO implements DomSerializableInterface
 {
+    /**
+     * @var Optional|array<int, Obciazenia>
+     */
+    public Optional | array $obciazenia;
+
+    /**
+     * @var Optional|array<int, Odliczenia>
+     */
+    public Optional | array $odliczenia;
+
     /**
      * @param Optional|array<int, Obciazenia> $obciazenia
      * @param Optional|array<int, Odliczenia> $odliczenia
      */
     public function __construct(
-        public Optional | array $obciazenia = new Optional(),
+        Optional | array $obciazenia = new Optional(),
         public Optional | SumaObciazen $sumaObciazen = new Optional(),
-        public Optional | array $odliczenia = new Optional(),
+        Optional | array $odliczenia = new Optional(),
         public Optional | SumaOdliczen $sumaOdliczen = new Optional(),
         public Optional | RozliczenieGroup $rozliczenieGroup = new Optional()
     ) {
+        Validator::validate([
+            'obciazenia' => $obciazenia,
+            'odliczenia' => $odliczenia
+        ], [
+            'obciazenia' => [new MaxRule(100)],
+            'odliczenia' => [new MaxRule(100)]
+        ]);
+
+        $this->obciazenia = $obciazenia;
+        $this->odliczenia = $odliczenia;
     }
 
     public function toDom(): DOMDocument
