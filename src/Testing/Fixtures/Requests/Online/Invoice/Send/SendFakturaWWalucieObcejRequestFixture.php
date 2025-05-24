@@ -116,7 +116,7 @@ final class SendFakturaWWalucieObcejRequestFixture extends AbstractSendRequestFi
                     ],
                     'rachunekBankowyFaktora' => [
                         [
-                            'NrRBGroup' => [
+                            'nrRBGroup' => [
                                 'nrRB' => '73111111111111111111111111',
                             ],
                             'rachunekWlasnyBanku' => '2',
