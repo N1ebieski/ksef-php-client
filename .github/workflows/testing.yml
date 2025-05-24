@@ -1,0 +1,55 @@
+name: Testing
+ 
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - "README.md"      
+  pull_request:
+    types: [ready_for_review]
+    paths-ignore:
+      - "README.md"
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.4]
+
+    name: Continuous integration PHP${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run CS Fixer
+        run: PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --dry-run
+
+      - name: Run Rector
+        run: ./vendor/bin/rector process --dry-run
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --error-format=github 
+
+      - name: Run PHPUnit
+        run: ./vendor/bin/phpunit
