@@ -49,9 +49,9 @@ jobs:
           mkdir -p ./scripts
           mkdir -p ./config/certificates
           echo "${{ vars.SIGNATURE_NIP }}" > ./scripts/signature-nip.txt
-          openssl req -newkey rsa:2048 -nodes -keyout "../config/certificates/key.pem" -out "../config/certificates/certificate.csr" -config signature-nip.txt
-          openssl x509 -req -in "../config/certificates/certificate.csr" -signkey "../config/certificates/key.pem" -out "../config/certificates/certificate.crt"
-          openssl pkcs12 -export -out "../config/certificates/certificate.p12" -inkey "../config/certificates/key.pem" -in "../config/certificates/certificate.crt" -passout pass:password
+          openssl req -newkey rsa:2048 -nodes -keyout "./config/certificates/key.pem" -out "./config/certificates/certificate.csr" -config ./scripts/signature-nip.txt
+          openssl x509 -req -in "./config/certificates/certificate.csr" -signkey "./config/certificates/key.pem" -out "./config/certificates/certificate.crt"
+          openssl pkcs12 -export -out "./config/certificates/certificate.p12" -inkey "./config/certificates/key.pem" -in "./config/certificates/certificate.crt" -passout pass:password
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
