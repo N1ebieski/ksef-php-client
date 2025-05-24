@@ -46,8 +46,6 @@ final class SyncHandlerTest extends AbstractTestCase
 
         $request = SyncRequest::from($requestFixture->data);
 
-        $body = $request->toBody();
-
         $this->assertFixture($requestFixture->data, $request);
 
         $response = $clientStub->online()->query()->invoice()->sync($request)->object();

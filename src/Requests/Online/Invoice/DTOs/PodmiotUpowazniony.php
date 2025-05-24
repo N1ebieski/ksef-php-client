@@ -16,7 +16,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 final readonly class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface
 {
     /**
-     * @var Optional|array<int, DaneKontaktowe>
+     * @var Optional|array<int, PodmiotUpowaznionyDaneKontaktowe>
      */
     public Optional | array $daneKontaktowe;
 
