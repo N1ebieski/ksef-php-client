@@ -360,7 +360,7 @@ $response = $client->online()->query()->invoice()->async()->fetch(
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Support\Utility;
-use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendRequestFixture;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Online\Invoice\Send\SendFakturaSprzedazyTowaruRequestFixture;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 
 $client = new ClientBuilder()
@@ -380,7 +380,7 @@ Utility::retry(function () use ($client) {
 
 // Send an invoice
 $sendResponse = $client->online()->invoice()->send(
-    new SendRequestFixture()->withTodayDate()->data
+    new SendFakturaSprzedazyTowaruRequestFixture()->withTodayDate()->data
 )->object();
 
 // Check status of invoice generation
