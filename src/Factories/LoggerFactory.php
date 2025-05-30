@@ -12,7 +12,6 @@ use N1ebieski\KSEFClient\ValueObjects\LogPath;
 use Psr\Log\LoggerInterface;
 use PsrDiscovery\Discover;
 use PsrDiscovery\Entities\CandidateEntity;
-use RuntimeException;
 
 final readonly class LoggerFactory extends AbstractFactory
 {
@@ -20,7 +19,7 @@ final readonly class LoggerFactory extends AbstractFactory
      * @param null|string $level
      * @see \Psr\Log\LogLevel
      */
-    public static function make(?LogPath $logPath = null, string | int | null $level = null): LoggerInterface
+    public static function make(?LogPath $logPath = null, string | int | null $level = null): ?LoggerInterface
     {
         $logger = Discover::log();
 
@@ -29,7 +28,7 @@ final readonly class LoggerFactory extends AbstractFactory
         }
 
         if ( ! $logPath instanceof LogPath) {
-            throw new RuntimeException('Log path is required for manually initiated implementations');
+            return null;
         }
 
         $candidates = array_map(fn (CandidateEntity $candidate): string => $candidate->getPackage(), Discover::logs());
@@ -37,7 +36,7 @@ final readonly class LoggerFactory extends AbstractFactory
         if (in_array('monolog/monolog', $candidates)) {
             $handler = new StreamHandler(
                 $logPath->value,
-                $level !== null ? Level::from($level) : Level::Debug
+                $level !== null ? Level::fromName($level) : Level::Debug
             );
             $formatter = new LineFormatter(allowInlineLineBreaks: true);
             $handler->setFormatter($formatter);
@@ -45,6 +44,6 @@ final readonly class LoggerFactory extends AbstractFactory
             return new Logger('ksef-php-client', [$handler]);
         }
 
-        throw new RuntimeException('Cannot discover any logger implementation');
+        return null;
     }
 }

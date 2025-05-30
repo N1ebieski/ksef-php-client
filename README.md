@@ -70,14 +70,15 @@ use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 $client = new ClientBuilder()
     ->withMode(Mode::Production) // Choice between: Test, Demo, Production
     ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
-    ->withHttpClient(new \GuzzleHttp\Client([])) // Optional, default is set by Psr18ClientDiscovery::find()
+    ->withHttpClient(new \GuzzleHttp\Client([])) // Optional PSR-18 implementation, default is set by Psr18ClientDiscovery::find()
+    ->withLogger(new \Monolog\Logger(...)) // Optional PSR-3 implementation, default is set by PsrDiscovery\Discover::log()
+    ->withLogPath($_ENV['PATH_TO_LOG_FILE'], $_ENV['LOG_LEVEL']) // Optional, level: null disables logging
     ->withSessionToken($_ENV['SESSION_TOKEN']) // Optional, if present, auto authorization is skipped
     ->withApiToken($_ENV['KSEF_KEY']) // Required for API Token authorization
     ->withKSEFPublicKeyPath($_ENV['PATH_TO_KSEF_PUBLIC_KEY']) // Required (including for API Token authorization and encryption), you can find it on https://ksef.mf.gov.pl
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE']) // Required .p12 file for Certificate authorization
     ->withEncryptionKey(EncryptionKeyFactory::makeRandom()) // Optional for online resources, required for batch resources. Remember to save this value!
     ->withNIP('NIP_NUMBER') // Required for Mode::Production and Mode::Demo if you want to use auto authorization, optional for Mode::Test
-    ->withLogXmlPath('PATH_TO_SAVE_XML_FILES') // Some endpoints generate xml files, useful for debug
     ->build();
 ```
 

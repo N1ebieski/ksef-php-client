@@ -62,6 +62,7 @@ final class ClientBuilder
     public function __construct()
     {
         $this->httpClient = Psr18ClientDiscovery::find();
+        $this->logger = LoggerFactory::make();
         $this->apiUrl = $this->mode->getApiUrl();
     }
 
@@ -195,13 +196,17 @@ final class ClientBuilder
     /**
      * @see \Psr\Log\LogLevel
      */
-    public function withLogPath(LogPath | string $logPath, ?string $level = null): self
+    public function withLogPath(LogPath | string | null $logPath, ?string $level = null): self
     {
-        if ($logPath instanceof LogPath === false) {
+        if (is_string($logPath)) {
             $logPath = LogPath::from($logPath);
         }
 
-        $this->logger = LoggerFactory::make($logPath, $level);
+        $this->logger = null;
+
+        if ($level !== null) {
+            $this->logger = LoggerFactory::make($logPath, $level);
+        }
 
         return $this;
     }
