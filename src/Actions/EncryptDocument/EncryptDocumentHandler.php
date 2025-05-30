@@ -13,7 +13,6 @@ final readonly class EncryptDocumentHandler extends AbstractHandler
     public function __construct(
         private ?LoggerInterface $logger = null
     ) {
-
     }
 
     public function handle(EncryptDocumentAction $action): string

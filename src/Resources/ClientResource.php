@@ -35,7 +35,7 @@ final readonly class ClientResource extends AbstractResource implements ClientRe
             $sessionToken = SessionToken::from($sessionToken);
         }
 
-        return new self($this->client->withSessionToken($sessionToken), $this->config);
+        return new self($this->client->withSessionToken($sessionToken), $this->config, $this->logger);
     }
 
     public function online(): OnlineResourceInterface
