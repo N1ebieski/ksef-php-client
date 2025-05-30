@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use Http\Discovery\Psr18ClientDiscovery;
 use InvalidArgumentException;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Factories\LoggerFactory;
 use N1ebieski\KSEFClient\HttpClient\DTOs\Config as HttpClientConfig;
 use N1ebieski\KSEFClient\HttpClient\HttpClient;
 use N1ebieski\KSEFClient\HttpClient\ValueObjects\BaseUri;
@@ -30,14 +31,17 @@ use N1ebieski\KSEFClient\ValueObjects\ApiUrl;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KSEFPublicKeyPath;
-use N1ebieski\KSEFClient\ValueObjects\LogXmlPath;
+use N1ebieski\KSEFClient\ValueObjects\LogPath;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class ClientBuilder
 {
     private ClientInterface $httpClient;
+
+    private ?LoggerInterface $logger = null;
 
     private Mode $mode = Mode::Production;
 
@@ -52,8 +56,6 @@ final class ClientBuilder
     private NIP $nip;
 
     private ?KSEFPublicKeyPath $ksefPublicKeyPath = null;
-
-    private ?LogXmlPath $logXmlPath = null;
 
     private ?EncryptionKey $encryptionKey = null;
 
@@ -161,6 +163,13 @@ final class ClientBuilder
         return $this;
     }
 
+    public function withLogger(LoggerInterface $logger): self
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
     public function withNIP(NIP | string $nip): self
     {
         if ($nip instanceof NIP === false) {
@@ -183,13 +192,16 @@ final class ClientBuilder
         return $this;
     }
 
-    public function withLogXmlPath(LogXmlPath | string $logXmlPath): self
+    /**
+     * @see \Psr\Log\LogLevel
+     */
+    public function withLogPath(LogPath | string $logPath, ?string $level = null): self
     {
-        if ($logXmlPath instanceof LogXmlPath === false) {
-            $logXmlPath = LogXmlPath::from($logXmlPath);
+        if ($logPath instanceof LogPath === false) {
+            $logPath = LogPath::from($logPath);
         }
 
-        $this->logXmlPath = $logXmlPath;
+        $this->logger = LoggerFactory::make($logPath, $level);
 
         return $this;
     }
@@ -201,7 +213,6 @@ final class ClientBuilder
         }
 
         $config = new Config(
-            logXmlPath: $this->logXmlPath,
             encryptionKey: $this->encryptionKey,
             ksefPublicKeyPath: $this->ksefPublicKeyPath,
         );
@@ -212,10 +223,11 @@ final class ClientBuilder
 
         $httpClient = new HttpClient(
             client: $this->httpClient,
-            config: $httpClientConfig
+            config: $httpClientConfig,
+            logger: $this->logger
         );
 
-        $client = new ClientResource($httpClient, $config);
+        $client = new ClientResource($httpClient, $config, $this->logger);
 
         if ($this->sessionToken instanceof SessionToken) {
             return $client->withSessionToken($this->sessionToken);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient;
 
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
+use N1ebieski\KSEFClient\Support\ValueObjects\KeyType;
 use Psr\Http\Message\ResponseInterface as MessageResponseInterface;
 
 final readonly class DecryptedResponse implements ResponseInterface
@@ -16,6 +17,11 @@ final readonly class DecryptedResponse implements ResponseInterface
         private string $decryptedBody
     ) {
         $this->baseResponse = $response->baseResponse;
+    }
+
+    public function status(): int
+    {
+        return $this->response->status();
     }
 
     public function json(): array
@@ -31,5 +37,10 @@ final readonly class DecryptedResponse implements ResponseInterface
     public function body(): string
     {
         return $this->decryptedBody;
+    }
+
+    public function toArray(KeyType $keyType = KeyType::Camel): array
+    {
+        return $this->response->toArray($keyType);
     }
 }

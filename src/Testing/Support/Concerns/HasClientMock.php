@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Testing\Support\Concerns;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\ClientResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Exception\ExceptionHandler;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Resources\ClientResource;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractResponseFixture;
@@ -30,7 +31,7 @@ trait HasClientMock
         $responseStub->method('getBody')->willReturn($streamStub);
 
         $httpClientStub = $this->createStub(HttpClientInterface::class);
-        $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub));
+        $httpClientStub->method('sendRequest')->willReturn(new Response($responseStub, new ExceptionHandler()));
 
         return new ClientResource($httpClientStub, new Config(
             ksefPublicKeyPath: KSEFPublicKeyPath::from(__DIR__ . '/../../../../config/keys/testPublicKey.pem'),

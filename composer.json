@@ -20,7 +20,8 @@
         "psr/http-message": "^1.1.0|^2.0.0",
         "cuyz/valinor": "^1.15",
         "symfony/uid": "^7.0",
-        "krowinski/bcmath-extended": "^6.0"
+        "krowinski/bcmath-extended": "^6.0",
+        "psr-discovery/log-implementations": "^1.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.75",
@@ -29,7 +30,8 @@
         "guzzlehttp/psr7": "^2.7.0",
         "phpstan/phpstan": "^2.1",
         "rector/rector": "^2.0",
-        "phpunit/phpunit": "^12.1"
+        "phpunit/phpunit": "^12.1",
+        "monolog/monolog": "^3.9"
     },
     "autoload": {
         "psr-4": {

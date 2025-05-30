@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Resources\Online\Invoice;
 
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
-use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Online\Invoice\InvoiceResourceInterface;
@@ -17,12 +16,14 @@ use N1ebieski\KSEFClient\Requests\Online\Invoice\Send\SendRequest;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusHandler;
 use N1ebieski\KSEFClient\Requests\Online\Invoice\Status\StatusRequest;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
+use Psr\Log\LoggerInterface;
 
 final readonly class InvoiceResource extends AbstractResource implements InvoiceResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,
-        private Config $config
+        private Config $config,
+        private ?LoggerInterface $logger = null
     ) {
     }
 
@@ -34,8 +35,7 @@ final readonly class InvoiceResource extends AbstractResource implements Invoice
 
         return new SendHandler(
             client: $this->client,
-            logXml: new LogXmlHandler($this->config),
-            encryptDocument: new EncryptDocumentHandler(),
+            encryptDocument: new EncryptDocumentHandler($this->logger),
             config: $this->config
         )->handle($request);
     }
