@@ -367,7 +367,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 $client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withApiToken($_ENV['KSEF_KEY'])
-    ->withLogXmlPath(__DIR__ . '/../var/xml/')
+    ->withLogPath(__DIR__ . '/../var/logs/monolog.log')
     ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
     ->build();
 
@@ -433,6 +433,7 @@ $client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withApiToken($_ENV['KSEF_KEY'])
     ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->withLogPath(__DIR__ . '/../var/logs/monolog.log')    
     ->withEncryptionKey($encryptionKey)
     ->build();
 
@@ -460,6 +461,7 @@ $client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withSessionToken($sessionToken)
     ->withKSEFPublicKeyPath(__DIR__ . '/../config/keys/publicKey.pem')
+    ->withLogPath(__DIR__ . '/../var/logs/monolog.log')    
     ->withEncryptionKey($encryptionKey)
     ->build();
 
