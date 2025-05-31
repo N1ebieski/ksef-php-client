@@ -6,11 +6,11 @@ namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\Directory\ExistsRule;
+use N1ebieski\KSEFClient\Validator\Rules\File\ExistsRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final readonly class LogXmlPath extends AbstractValueObject implements ValueAwareInterface, Stringable
+final readonly class LogPath extends AbstractValueObject implements ValueAwareInterface, Stringable
 {
     public string $value;
 

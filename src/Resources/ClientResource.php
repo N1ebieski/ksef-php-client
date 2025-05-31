@@ -13,12 +13,14 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\SessionToken;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
 use N1ebieski\KSEFClient\Resources\Common\CommonResource;
 use N1ebieski\KSEFClient\Resources\Online\OnlineResource;
+use Psr\Log\LoggerInterface;
 
 final readonly class ClientResource extends AbstractResource implements ClientResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,
-        private Config $config
+        private Config $config,
+        private ?LoggerInterface $logger = null
     ) {
     }
 
@@ -33,12 +35,12 @@ final readonly class ClientResource extends AbstractResource implements ClientRe
             $sessionToken = SessionToken::from($sessionToken);
         }
 
-        return new self($this->client->withSessionToken($sessionToken), $this->config);
+        return new self($this->client->withSessionToken($sessionToken), $this->config, $this->logger);
     }
 
     public function online(): OnlineResourceInterface
     {
-        return new OnlineResource($this->client, $this->config);
+        return new OnlineResource($this->client, $this->config, $this->logger);
     }
 
     public function common(): CommonResourceInterface

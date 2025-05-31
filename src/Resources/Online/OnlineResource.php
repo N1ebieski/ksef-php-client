@@ -14,12 +14,14 @@ use N1ebieski\KSEFClient\Resources\AbstractResource;
 use N1ebieski\KSEFClient\Resources\Online\Invoice\InvoiceResource;
 use N1ebieski\KSEFClient\Resources\Online\Query\QueryResource;
 use N1ebieski\KSEFClient\Resources\Online\Session\SessionResource;
+use Psr\Log\LoggerInterface;
 
 final readonly class OnlineResource extends AbstractResource implements OnlineResourceInterface
 {
     public function __construct(
         private HttpClientInterface $client,
-        private Config $config
+        private Config $config,
+        private ?LoggerInterface $logger = null
     ) {
     }
 
@@ -30,7 +32,7 @@ final readonly class OnlineResource extends AbstractResource implements OnlineRe
 
     public function invoice(): InvoiceResourceInterface
     {
-        return new InvoiceResource($this->client, $this->config);
+        return new InvoiceResource($this->client, $this->config, $this->logger);
     }
 
     public function query(): QueryResourceInterface

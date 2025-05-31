@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Resources\Online\Session;
 
-use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Actions\SignDocument\SignDocumentHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
@@ -47,7 +46,6 @@ final readonly class SessionResource extends AbstractResource implements Session
 
         return new InitTokenHandler(
             client: $this->client,
-            logXml: new LogXmlHandler($this->config),
             config: $this->config
         )->handle($request);
     }
@@ -61,7 +59,6 @@ final readonly class SessionResource extends AbstractResource implements Session
         return new InitSignedHandler(
             client: $this->client,
             signDocument: new SignDocumentHandler(),
-            logXml: new LogXmlHandler($this->config),
             config: $this->config
         )->handle($request);
     }

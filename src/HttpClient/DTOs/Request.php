@@ -13,6 +13,11 @@ use N1ebieski\KSEFClient\Support\Optional;
 final readonly class Request extends AbstractDTO
 {
     /**
+     * @var array<string, string|array<int, string>>
+     */
+    public array $headers;
+
+    /**
      * @param array<string, string|array<int, string>> $headers
      * @param array<string, mixed> $parameters
      * @param string|array<string, mixed>|null $body
@@ -20,10 +25,24 @@ final readonly class Request extends AbstractDTO
     public function __construct(
         public Method $method = Method::Get,
         public Uri $uri = new Uri('/'),
-        public array $headers = [],
+        array $headers = [],
         public array $parameters = [],
         public array | string | null $body = null
     ) {
+        $this->headers = array_merge([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ], $headers);
+    }
+
+    public function withUri(Uri $uri): self
+    {
+        return new self($this->method, $uri, $this->headers, $this->parameters, $this->body);
+    }
+
+    public function withHeader(string $name, string $value): self
+    {
+        return new self($this->method, $this->uri, array_merge($this->headers, [$name => $value]), $this->parameters, $this->body);
     }
 
     public function getParametersAsString(): string

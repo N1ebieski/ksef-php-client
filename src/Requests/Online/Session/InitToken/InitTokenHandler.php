@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Online\Session\InitToken;
 
-use N1ebieski\KSEFClient\Actions\LogXml\LogXmlAction;
-use N1ebieski\KSEFClient\Actions\LogXml\LogXmlHandler;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
@@ -17,13 +15,11 @@ use N1ebieski\KSEFClient\HttpClient\ValueObjects\Uri;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Requests\Online\Session\InitToken\InitTokenRequest;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
-use N1ebieski\KSEFClient\ValueObjects\LogXmlFilename;
 
 final readonly class InitTokenHandler extends AbstractHandler
 {
     public function __construct(
         private HttpClientInterface $client,
-        private LogXmlHandler $logXml,
         private Config $config
     ) {
     }
@@ -46,13 +42,6 @@ final readonly class InitTokenHandler extends AbstractHandler
         }
 
         $xml = $request->toXml($encryptedToken, $encryptedKey?->toDom());
-
-        $this->logXml->handle(
-            new LogXmlAction(
-                logXmlFilename: LogXmlFilename::from('init-token.xml'),
-                document: $xml
-            )
-        );
 
         return $this->client->sendRequest(new Request(
             method: Method::Post,
