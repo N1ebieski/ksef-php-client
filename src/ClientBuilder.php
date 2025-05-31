@@ -197,7 +197,7 @@ final class ClientBuilder
     /**
      * @param null|LogLevel::* $level
      */
-    public function withLogPath(LogPath | string | null $logPath, ?string $level = null): self
+    public function withLogPath(LogPath | string | null $logPath, ?string $level = LogLevel::DEBUG): self
     {
         if (is_string($logPath)) {
             $logPath = LogPath::from($logPath);
