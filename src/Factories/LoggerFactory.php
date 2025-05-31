@@ -10,16 +10,16 @@ use Monolog\Level;
 use Monolog\Logger;
 use N1ebieski\KSEFClient\ValueObjects\LogPath;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use PsrDiscovery\Discover;
 use PsrDiscovery\Entities\CandidateEntity;
 
 final readonly class LoggerFactory extends AbstractFactory
 {
     /**
-     * @param null|string $level
-     * @see \Psr\Log\LogLevel
+     * @param null|LogLevel::* $level
      */
-    public static function make(?LogPath $logPath = null, string | int | null $level = null): ?LoggerInterface
+    public static function make(?LogPath $logPath = null, string | null $level = null): ?LoggerInterface
     {
         $logger = Discover::log();
 

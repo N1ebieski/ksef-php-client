@@ -36,6 +36,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 final class ClientBuilder
 {
@@ -194,7 +195,7 @@ final class ClientBuilder
     }
 
     /**
-     * @see \Psr\Log\LogLevel
+     * @param null|LogLevel::* $level
      */
     public function withLogPath(LogPath | string | null $logPath, ?string $level = null): self
     {
