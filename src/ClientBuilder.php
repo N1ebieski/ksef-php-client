@@ -91,6 +91,7 @@ final class ClientBuilder
                 throw new InvalidArgumentException('IV is required when key is string.');
             }
 
+            // TODO: Move this to EncrypionKey construct
             Validator::validate([
                 'key' => $encryptionKey,
                 'iv' => $iv
