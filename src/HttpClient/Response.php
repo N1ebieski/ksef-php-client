@@ -18,7 +18,7 @@ final readonly class Response implements ResponseInterface
 
     public function __construct(
         public BaseResponseInterface $baseResponse,
-        public ExceptionHandlerInterface $exceptionHandler
+        private ExceptionHandlerInterface $exceptionHandler
     ) {
         $this->contents = $baseResponse->getBody()->getContents();
         $this->statusCode = $baseResponse->getStatusCode();
