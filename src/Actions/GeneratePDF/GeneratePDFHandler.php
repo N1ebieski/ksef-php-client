@@ -86,16 +86,19 @@ final class GeneratePDFHandler extends AbstractHandler
 
             unlink($xmlFile);
 
-            $pdfs[] = $pdfFile;
+            $pdfs[$key] = $pdfFile;
         }
 
-        $documents = array_map(file_get_contents(...), $pdfs);
-
-        foreach ($pdfs as $pdfFile) {
+        foreach ($pdfs as $key => $pdfFile) {
+            $documents[$key] = file_get_contents($pdfFile);
             unlink($pdfFile);
         }
 
-        /** @var array<int, string> $documents */
-        return new KsefPDFs(...$documents);
+        /** @var array<string, string|false> $documents */
+        return new KsefPDFs(
+            $documents['invoice'] ?? null,
+            $documents['upo'] ?? null,
+            $documents['confirmation'] ?? null
+        );
     }
 }
