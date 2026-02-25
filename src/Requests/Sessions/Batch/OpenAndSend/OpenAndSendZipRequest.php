@@ -16,7 +16,7 @@ final class OpenAndSendZipRequest extends AbstractRequest implements BodyInterfa
 
     public function __construct(
         public readonly FormCode $formCode,
-        public readonly string $faktury,
+        public readonly string | array $faktury,
         public readonly Optional | bool $offlineMode = new Optional(),
     ) {
     }
