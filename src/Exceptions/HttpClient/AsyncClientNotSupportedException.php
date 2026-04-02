@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Exceptions\HttpClient;
 
-final class AsyncClientNotSupportedException extends Exception
+use N1ebieski\KSEFClient\Exceptions\AbstractException;
+
+final class AsyncClientNotSupportedException extends AbstractException
 {
 }

@@ -17,29 +17,31 @@ use N1ebieski\KSEFClient\Support\Utility;
 final class ExceptionFactory extends AbstractFactory
 {
     /**
-     * @param null|object{exception?: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}, status?: object{code: int, description: string, details: array<int, string>}, message?: string, title?: string} $exceptionResponse
+     * @param array<string, array<int, string>> $headers
+     * @param null|object{exception?: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}, status?: object{code: int, description: string, details: array<int, string>}, message?: string, title?: string} $context
      */
     public static function make(
         int $statusCode,
-        ?object $exceptionResponse
+        array $headers,
+        ?object $context
     ): Exception {
         $message = match (true) {
-            isset($exceptionResponse->message) => $exceptionResponse->message,
-            isset($exceptionResponse->title) => $exceptionResponse->title,
+            isset($context->message) => $context->message,
+            isset($context->title) => $context->title,
             default => null
         };
 
         /** @var class-string<Exception> $exceptionNamespace */
         $exceptionNamespace = match (true) {
-            $statusCode === 400 => Utility::value(function () use ($exceptionResponse, &$message): string {
-                /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $exceptionResponse */
-                $message = self::getExceptionMessage($exceptionResponse);
+            $statusCode === 400 => Utility::value(function () use ($context, &$message): string {
+                /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $context */
+                $message = self::getExceptionMessage($context);
 
                 return BadRequestException::class;
             }),
-            $statusCode === 429 => Utility::value(function () use ($exceptionResponse, &$message): string {
-                /** @var object{status: object{code: int, description: string, details: array<int, string>}} $exceptionResponse */
-                $message = self::getStatusMessage($exceptionResponse);
+            $statusCode === 429 => Utility::value(function () use ($context, &$message): string {
+                /** @var object{status: object{code: int, description: string, details: array<int, string>}} $context */
+                $message = self::getStatusMessage($context);
 
                 return RateLimitException::class;
             }),
@@ -53,24 +55,25 @@ final class ExceptionFactory extends AbstractFactory
         return new $exceptionNamespace(
             message: $message ?? '',
             code: $statusCode,
-            context: $exceptionResponse
+            headers: $headers,
+            context: $context
         );
     }
 
     /**
-     * @param object{status: object{code: int, description: string, details: array<int, string>}} $exceptionResponse
+     * @param object{status: object{code: int, description: string, details: array<int, string>}} $context
      */
-    private static function getStatusMessage(object $exceptionResponse): string
+    private static function getStatusMessage(object $context): string
     {
-        return "{$exceptionResponse->status->code} {$exceptionResponse->status->description}";
+        return "{$context->status->code} {$context->status->description}";
     }
 
     /**
-     * @param object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $exceptionResponse
+     * @param object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} $context
      */
-    private static function getExceptionMessage(object $exceptionResponse): ?string
+    private static function getExceptionMessage(object $context): ?string
     {
-        $exceptions = $exceptionResponse->exception->exceptionDetailList;
+        $exceptions = $context->exception->exceptionDetailList;
 
         $firstException = $exceptions[0] ?? null;
 

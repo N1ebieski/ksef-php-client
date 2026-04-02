@@ -19,15 +19,15 @@ test('429 too many requests exception', function (): void {
     ]);
 
     /** @var object{status: object{code: int, description: string, details: array<int, string>}} */
-    $exceptionResponse = json_decode($json, flags: JSON_THROW_ON_ERROR);
+    $contents = json_decode($json, flags: JSON_THROW_ON_ERROR);
 
     /** @var RateLimitException $exception */
-    $exception = ExceptionFactory::make(429, $exceptionResponse);
+    $exception = ExceptionFactory::make(statusCode: 429, headers: [], context: $contents);
 
     expect($exception)->toBeInstanceOf(RateLimitException::class);
-    expect($exception->getMessage())->toContain($exceptionResponse->status->description);
+    expect($exception->getMessage())->toContain($contents->status->description);
     expect($exception)->toHaveProperty('context');
-    expect($exception->context)->toEqual($exceptionResponse);
+    expect($exception->context)->toEqual($contents);
 });
 
 test('400 bad request exception', function (): void {
@@ -52,13 +52,13 @@ test('400 bad request exception', function (): void {
     ]);
 
     /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}} */
-    $exceptionResponse = json_decode($json, flags: JSON_THROW_ON_ERROR);
+    $contents = json_decode($json, flags: JSON_THROW_ON_ERROR);
 
     /** @var BadRequestException $exception */
-    $exception = ExceptionFactory::make(400, $exceptionResponse);
+    $exception = ExceptionFactory::make(statusCode: 400, headers: [], context: $contents);
 
     expect($exception)->toBeInstanceOf(BadRequestException::class);
-    expect($exception->getMessage())->toContain($exceptionResponse->exception->exceptionDetailList[0]->exceptionDescription);
+    expect($exception->getMessage())->toContain($contents->exception->exceptionDetailList[0]->exceptionDescription);
     expect($exception)->toHaveProperty('context');
-    expect($exception->context)->toEqual($exceptionResponse);
+    expect($exception->context)->toEqual($contents);
 });
