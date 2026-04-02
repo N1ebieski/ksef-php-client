@@ -27,11 +27,13 @@ class Exception extends AbstractException
 
     public function header(string $name): ?string
     {
-        if ( ! isset($this->headers[$name])) {
-            return null;
+        foreach ($this->headers as $headerName => $headerValues) {
+            if (strcasecmp($headerName, $name) === 0) {
+                return $headerValues[0] ?? null;
+            }
         }
 
-        return $this->headers[$name][0] ?? null;
+        return null;
     }
 
     /**
