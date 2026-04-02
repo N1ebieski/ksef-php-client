@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\Requests\Permissions\Query\Personal\Grants;
 
 use N1ebieski\KSEFClient\Contracts\BodyInterface;
+use N1ebieski\KSEFClient\Contracts\ParametersInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Permissions\ContextIdentifierNipGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Permissions\TargetIdentifierInternalIdGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Permissions\TargetIdentifierNipGroup;
@@ -16,7 +17,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\PageSize;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\PermissionState;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\Personal\PersonalPermissionType;
 
-final class GrantsRequest extends AbstractRequest implements BodyInterface
+final class GrantsRequest extends AbstractRequest implements BodyInterface, ParametersInterface
 {
     /**
      * @param Optional|array<int, PersonalPermissionType> $permissionTypes
@@ -31,10 +32,16 @@ final class GrantsRequest extends AbstractRequest implements BodyInterface
     ) {
     }
 
+    public function toParameters(): array
+    {
+        /** @var array<string, mixed> */
+        return $this->toArray(only: ['pageSize', 'pageOffset']);
+    }
+
     public function toBody(): array
     {
         /** @var array<string, mixed> $data */
-        $data = $this->toArray();
+        $data = $this->toArray(only: ['permissionTypes', 'permissionState']);
 
         if ( ! $this->contextIdentifierGroup instanceof Optional) {
             $data['contextIdentifier'] = [

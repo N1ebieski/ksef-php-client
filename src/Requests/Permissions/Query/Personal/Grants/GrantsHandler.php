@@ -23,6 +23,7 @@ final class GrantsHandler extends AbstractHandler
         return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('permissions/query/personal/grants'),
+            parameters: $request->toParameters(),
             body: $request->toBody()
         ));
     }
