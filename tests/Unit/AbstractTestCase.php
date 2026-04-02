@@ -31,6 +31,7 @@ abstract class AbstractTestCase extends TestCase
         $responseStub = Mockery::mock(ResponseInterface::class);
         $responseStub->shouldReceive('getStatusCode')->andReturn($responseFixture->statusCode);
         $responseStub->shouldReceive('getBody')->andReturn($streamStub);
+        $responseStub->shouldReceive('getHeaders')->andReturn([]);
 
         /** @var MockInterface&ResponseInterface */
         return $responseStub;

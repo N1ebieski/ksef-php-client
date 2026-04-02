@@ -32,13 +32,17 @@ final class Response implements ResponseInterface
         }
 
         try {
-            $exceptionResponse = $this->contents === '' ? null : $this->object();
+            $context = $this->contents === '' ? null : $this->object();
         } catch (JsonException) {
-            $exceptionResponse = null;
+            $context = null;
         }
 
-        /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}}|null $exceptionResponse */
-        $exception = ExceptionFactory::make($this->statusCode, $exceptionResponse);
+        /** @var object{exception: object{exceptionDetailList: array<int, object{exceptionCode: int, exceptionDescription: string}>}}|null $context */
+        $exception = ExceptionFactory::make(
+            statusCode: $this->statusCode,
+            headers: $this->headers(),
+            context: $context
+        );
 
         throw $exception;
     }
