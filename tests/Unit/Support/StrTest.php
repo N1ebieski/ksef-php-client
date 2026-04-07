@@ -12,6 +12,12 @@ test('returns false for plain text', function (): void {
     expect(Str::isBinary($text))->toBeFalse();
 });
 
+test('returns true for utf8 string with control characters', function (): void {
+    $text = "Zażółć\x01 gęślą jaźń";
+
+    expect(Str::isBinary($text))->toBeTrue();
+});
+
 test('detects binary data in split zip parts', function (): void {
     $zipPath = tempnam(sys_get_temp_dir(), 'ksef-zip-');
 
@@ -47,4 +53,16 @@ test('detects binary data in split zip parts', function (): void {
             unlink($zipPath);
         }
     }
+});
+
+test('detects valid json', function (): void {
+    expect(Str::isJson('{"foo":"bar"}'))->toBeTrue();
+    expect(Str::isJson('[1,2,3]'))->toBeTrue();
+    expect(Str::isJson('null'))->toBeTrue();
+});
+
+test('returns false for invalid json', function (): void {
+    expect(Str::isJson('{"foo":"bar"'))->toBeFalse();
+    expect(Str::isJson('plain text'))->toBeFalse();
+    expect(Str::isJson(''))->toBeFalse();
 });

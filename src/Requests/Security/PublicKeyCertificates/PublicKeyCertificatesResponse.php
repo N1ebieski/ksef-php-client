@@ -80,6 +80,11 @@ final class PublicKeyCertificatesResponse implements PublicKeyCertificatesRespon
         return $this->response->body();
     }
 
+    public function data(): string | array
+    {
+        return $this->response->data();
+    }
+
     public function toArray(KeyType $keyType = KeyType::Camel, array $only = []): array
     {
         return $this->response->toArray($keyType, $only);

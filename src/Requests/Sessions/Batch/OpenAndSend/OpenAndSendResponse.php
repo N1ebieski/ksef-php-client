@@ -58,6 +58,11 @@ final class OpenAndSendResponse implements OpenAndSendResponseInterface
         return $this->openResponse->body();
     }
 
+    public function data(): string | array
+    {
+        return $this->openResponse->data();
+    }
+
     public function toArray(KeyType $keyType = KeyType::Camel, array $only = []): array
     {
         return $this->openResponse->toArray($keyType, $only);
