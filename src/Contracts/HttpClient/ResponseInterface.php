@@ -33,5 +33,10 @@ interface ResponseInterface extends ArrayableInterface
      */
     public function object(): object | array;
 
+    /**
+     * @return string|array<string, mixed>
+     */
+    public function data(): string | array;
+
     public function body(): string;
 }

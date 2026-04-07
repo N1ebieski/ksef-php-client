@@ -84,12 +84,25 @@ final class Response implements ResponseInterface
         return json_decode($this->contents, true, flags: JSON_THROW_ON_ERROR);
     }
 
+    public function data(): string | array
+    {
+        if (Str::isJson($this->contents)) {
+            return $this->json();
+        }
+
+        if (Str::isBinary($this->contents)) {
+            return '[binary data]';
+        }
+
+        return $this->contents;
+    }
+
     public function toArray(KeyType $keyType = KeyType::Camel, array $only = []): array
     {
         /** @var array<string, mixed> */
         return Arr::normalize([
             'statusCode' => $this->statusCode,
-            'contents' => Str::isBinary($this->contents) ? '[binary data]' : $this->contents,
+            'contents' => $this->data(),
         ], keyType: $keyType, only: $only);
     }
 }

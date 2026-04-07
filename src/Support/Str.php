@@ -12,7 +12,18 @@ final class Str
             return false;
         }
 
-        return mb_check_encoding($value, 'UTF-8') === false;
+        if (mb_check_encoding($value, 'UTF-8') === false) {
+            return true;
+        }
+
+        return (bool) preg_match('/[\x00-\x08\x0E-\x1F]/', $value);
+    }
+
+    public static function isJson(string $value): bool
+    {
+        json_decode($value);
+
+        return json_last_error() === JSON_ERROR_NONE;
     }
 
     public static function base64URLEncode(string $value): string
