@@ -104,7 +104,6 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
 
     $ksefNumber = KsefNumber::from($statusResponse->ksefNumber);
 
-    /** @var QRCodes $qrCodes */
     $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesAction(
         nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
         invoiceCreatedAt: $faktura->fa->p_1->value,
@@ -213,7 +212,6 @@ test('create an offline invoice and send it', function (PrivateKeyType $privateK
 
     $contextIdentifierGroup = ContextIdentifierGroup::fromIdentifier(NIP::from($_ENV['NIP_1']));
 
-    /** @var QRCodes $qrCodes */
     $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesAction(
         nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
         invoiceCreatedAt: $faktura->fa->p_1->value,

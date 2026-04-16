@@ -45,7 +45,6 @@ abstract class AbstractTestCase extends TestCase
         $httpClientStub->shouldReceive('withoutAccessToken')->andReturnSelf();
         $httpClientStub->shouldReceive('withEncryptedKey')->andReturnSelf();
 
-        /** @var MockInterface&ResponseInterface $responseStub */
         $responseStub = $this->createResponseStubWithFixture($responseFixture);
 
         $response = new Response($responseStub);
