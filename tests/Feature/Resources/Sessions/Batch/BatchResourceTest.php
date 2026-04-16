@@ -15,7 +15,6 @@ use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
 use N1ebieski\KSEFClient\DTOs\DN;
-use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
@@ -137,7 +136,6 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
     $allQrCodes = [];
 
     foreach ($faktury as $faktura) {
-        /** @var QRCodes $qrCodes */
         $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesAction(
             nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
             invoiceCreatedAt: $faktura->fa->p_1->value,

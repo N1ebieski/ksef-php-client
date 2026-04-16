@@ -47,7 +47,6 @@ test('generate qr codes by invoice hash', function (): void {
 
     $invoiceHash = hash('sha256', $faktura->toXml(), true);
 
-    /** @var QRCodes $qrCodes */
     $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesByInvoiceHashAction(
         nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
         invoiceCreatedAt: $faktura->fa->p_1->value,

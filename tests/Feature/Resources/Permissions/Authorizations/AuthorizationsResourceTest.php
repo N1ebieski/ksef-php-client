@@ -140,7 +140,6 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
 
     $ksefNumber = KsefNumber::from($statusResponse->ksefNumber);
 
-    /** @var QRCodes $qrCodes */
     $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesAction(
         nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
         invoiceCreatedAt: $faktura->fakturaRR->p_4B->value,
