@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWytworzeniaFa;
@@ -15,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SystemInfo;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Naglowek extends AbstractDTO implements DomSerializableInterface
+final class Naglowek extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Optional|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
@@ -59,5 +60,10 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        throw new \LogicException('Method not implemented yet.');
     }
 }

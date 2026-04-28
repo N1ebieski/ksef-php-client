@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Zalacznik extends AbstractDTO implements DomSerializableInterface
+final class Zalacznik extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, BlokDanych>
@@ -49,5 +50,10 @@ final class Zalacznik extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        throw new \LogicException('Method not implemented yet.');
     }
 }
