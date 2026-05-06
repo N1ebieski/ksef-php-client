@@ -35,6 +35,6 @@ final class EncryptedKeyFactory extends AbstractFactory
         /** @var string $encryptedIv */
         $encryptedIv = base64_encode($encryptionKey->iv);
 
-        return new EncryptedKey($encryptedKey, $encryptedIv);
+        return new EncryptedKey($encryptedKey, $encryptedIv, $ksefPublicKey->publicKeyId);
     }
 }

@@ -23,8 +23,17 @@ final class PublicKeyCertificatesResponse implements PublicKeyCertificatesRespon
 
     public function getFirstByPublicKeyCertificateUsage(PublicKeyCertificateUsage $type): ?string
     {
-        /** @var array<int, object{certificate: string, validFrom: string, validTo: string, usage: array<int, string>}> $certificates */
+        $certificate = $this->getFirstCertificateByUsage($type);
+
+        return $certificate?->certificate;
+    }
+
+    public function getFirstCertificateByUsage(PublicKeyCertificateUsage $type): ?object
+    {
+        /** @var array<int, object{certificate: string, publicKeyId?: string, validFrom: string, validTo: string, usage: array<int, string>}> */
         $certificates = $this->object();
+
+        usort($certificates, static fn (object $a, object $b): int => strcmp($b->validTo, $a->validTo));
 
         foreach ($certificates as $certificate) {
             if ( ! in_array($type->value, $certificate->usage)) {
@@ -39,7 +48,7 @@ final class PublicKeyCertificatesResponse implements PublicKeyCertificatesRespon
                 continue;
             }
 
-            return $certificate->certificate;
+            return $certificate;
         }
 
         return null;

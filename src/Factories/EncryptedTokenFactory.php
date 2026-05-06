@@ -43,6 +43,6 @@ final class EncryptedTokenFactory extends AbstractFactory
         /** @var string $encryptedToken */
         $encryptedToken = base64_encode((string) $encryptedToken); //@phpstan-ignore-line
 
-        return new EncryptedToken($encryptedToken);
+        return new EncryptedToken($encryptedToken, $ksefPublicKey->publicKeyId);
     }
 }

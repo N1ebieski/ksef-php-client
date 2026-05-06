@@ -7,6 +7,8 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
+use N1ebieski\KSEFClient\Support\Utility;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\LimitsRequestFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase as UnitAbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
@@ -24,6 +26,31 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 
 uses(UnitAbstractTestCase::class)->in('Unit');
 uses(FeatureAbstractTestCase::class)
+    ->beforeAll(function (): void {
+        /** @var array<string, string> $_ENV */
+        $client = (new ClientBuilder())
+            ->withMode(Mode::Test)
+            ->withIdentifier($_ENV['NIP_1'])
+            ->withCertificatePath(
+                Utility::basePath($_ENV['CERTIFICATE_PATH_1']),
+                $_ENV['CERTIFICATE_PASSPHRASE_1']
+            )
+            ->build();
+
+        $limitsFixture = new LimitsRequestFixture();
+
+        // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
+        $client->testdata()->rateLimits()->limits([
+            'rateLimits' => [
+                ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
+                'invoiceMetadata' => [
+                    'perSecond' => 1,
+                    'perMinute' => 1,
+                    'perHour' => 100,
+                ]
+            ]
+        ]);
+    })
     ->beforeEach(function (): void {
         $client = (new ClientBuilder())
             ->withMode(Mode::Test)
