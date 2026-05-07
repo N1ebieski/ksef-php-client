@@ -34,7 +34,7 @@
         "cuyz/valinor": "^1.15 || ^2.0",
         "krowinski/bcmath-extended": "^6.0",
         "psr-discovery/log-implementations": "^1.0",
-        "phpseclib/phpseclib": "^3.0.51",
+        "phpseclib/phpseclib": "^3.0.52",
         "endroid/qr-code": "^5.1",
         "symfony/polyfill-php82": "^1.33"
     },
