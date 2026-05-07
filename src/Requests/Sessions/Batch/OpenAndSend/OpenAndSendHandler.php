@@ -101,10 +101,7 @@ final class OpenAndSendHandler extends AbstractHandler
                         'fileHash' => base64_encode(hash('sha256', $encryptedPart, true)),
                     ], array_keys($encryptedParts), $encryptedParts),
                 ],
-                'encryption' => [
-                    'encryptedSymmetricKey' => $this->config->encryptedKey->key,
-                    'initializationVector' => $this->config->encryptedKey->iv
-                ]
+                'encryption' => $this->config->encryptedKey->toBody(),
             ]
         ));
 
