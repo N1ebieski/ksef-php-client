@@ -12,6 +12,9 @@ use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\Li
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase as UnitAbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use Pest\Expectation;
+
+/** @var Expectation<mixed> $this */
 
 /*
 |--------------------------------------------------------------------------
@@ -103,12 +106,21 @@ expect()->extend('toBeExceptionFixture', function (array $data): void {
     /** @var array{exception: array{exceptionCode: string, exceptionDescription: string, exceptionDetailList: array<array{exceptionCode: string, exceptionDescription: string}>}} $data */
     $firstException = $data['exception']['exceptionDetailList'][0];
 
-    //@phpstan-ignore-next-line
     expect($this->value)->toThrow(new BadRequestException(
         message: "{$firstException['exceptionCode']} {$firstException['exceptionDescription']}",
         code: 400,
         context: (object) $data
     ));
+});
+
+expect()->extend('toBeArrayWithoutObjectsRecursively', function (): void {
+    /** @var Expectation<mixed> $this */
+    expect($this->value)->toBeArray();
+
+    /** @var array<string, mixed> $value */
+    $value = $this->value;
+
+    toBeArrayWithoutObjectsRecursively($value);
 });
 
 /*
@@ -121,6 +133,25 @@ expect()->extend('toBeExceptionFixture', function (array $data): void {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+/**
+ * @param array<string, mixed> $values
+ */
+function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'): void
+{
+    foreach ($values as $key => $value) {
+        $currentPath = "{$path}.{$key}";
+
+        if (is_array($value)) {
+            /** @var array<string, mixed> $value */
+            toBeArrayWithoutObjectsRecursively($value, $currentPath);
+
+            continue;
+        }
+
+        expect($value)->not->toBeObject("Found object at {$currentPath}");
+    }
+}
 
 /**
  * @param array<string, mixed> $data

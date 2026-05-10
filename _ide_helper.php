@@ -10,6 +10,7 @@ namespace Pest {
     /**
      * @method void toBeFixture(array $data, ?object $object = null)
      * @method void toBeExceptionFixture(array $data)
+     * @method void toBeArrayWithoutObjectsRecursively()
      */
     class Expectation extends BaseExpectation
     {
