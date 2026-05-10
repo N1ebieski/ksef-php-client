@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\ValueObjects\Requests\Sessions;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
+use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use N1ebieski\KSEFClient\Validator\Rules\Date\TimezoneRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
-final class DataWytworzeniaFa extends AbstractValueObject implements ValueAwareInterface, Stringable
+final class DataWytworzeniaFa extends AbstractValueObject implements ValueAwareInterface, Stringable, OriginalInterface
 {
     public readonly DateTimeInterface $value;
 
@@ -33,6 +34,11 @@ final class DataWytworzeniaFa extends AbstractValueObject implements ValueAwareI
     public function __toString(): string
     {
         return $this->value->format('Y-m-d\TH:i:s\Z');
+    }
+
+    public function toOriginal(): string
+    {
+        return (string) $this;
     }
 
     public static function from(string $value): self
