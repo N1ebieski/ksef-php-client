@@ -33,10 +33,7 @@ final class OpenHandler extends AbstractHandler
             uri: Uri::from('sessions/online'),
             body: [
                 ...$request->toBody(),
-                'encryption' => [
-                    'encryptedSymmetricKey' => $this->config->encryptedKey->key,
-                    'initializationVector' => $this->config->encryptedKey->iv
-                ]
+                'encryption' => $this->config->encryptedKey->toBody()
             ]
         ));
     }
