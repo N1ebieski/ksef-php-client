@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_13_4;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_14_4;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_14_4W;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class P_13_4Group extends AbstractDTO implements DomSerializableInterface
+final class P_13_4Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_13_4 $p_13_4 Suma wartości sprzedaży netto objętej ryczałtem dla taksówek osobowych. W przypadku faktur zaliczkowych, kwota zaliczki netto. W przypadku faktur korygujących, kwota różnicy, o której mowa w art. 106j ust. 2 pkt 5 ustawy
@@ -53,5 +54,14 @@ final class P_13_4Group extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_13_4: new P_13_4($data['p_13_4']),
+            p_14_4: new P_14_4($data['p_14_4']),
+            p_14_4W: isset($data['p_14_4W']) ? new P_14_4W($data['p_14_4W']) : new Optional(),
+        );
     }
 }

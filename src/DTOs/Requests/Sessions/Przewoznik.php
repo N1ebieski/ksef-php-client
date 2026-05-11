@@ -7,9 +7,10 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class Przewoznik extends AbstractDTO implements DomSerializableInterface
+final class Przewoznik extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly PrzewoznikDaneIdentyfikacyjne $daneIdentyfikacyjne,
@@ -34,5 +35,13 @@ final class Przewoznik extends AbstractDTO implements DomSerializableInterface
         $przewoznik->appendChild($adresPrzewoznika);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            daneIdentyfikacyjne: PrzewoznikDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
+            adresPrzewoznika: AdresPrzewoznika::fromXmlArray($data['adresPrzewoznika']),
+        );
     }
 }

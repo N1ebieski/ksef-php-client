@@ -407,6 +407,80 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, FromXmlA
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        if (isset($data['p_6'])) {
+            $p_6Group = P_6Group::fromXmlArray($data);
+        } elseif (isset($data['okresFa'])) {
+            $p_6Group = OkresFaGroup::fromXmlArray($data);
+        } else {
+            $p_6Group = new Optional();
+        }
+
+        return new self(
+            kodWaluty: new KodWaluty($data['kodWaluty']),
+            p_1: new P_1($data['p_1']),
+            p_2: new P_2($data['p_2']),
+            p_15: new P_15($data['p_15']),
+            wz: isset($data['wZ'])
+                ? array_map(fn (string $v) => new WZ($v), self::ensureList($data['wZ']))
+                : new Optional(),
+            p_1M: isset($data['p_1M']) ? new P_1M($data['p_1M']) : new Optional(),
+            p_6Group: $p_6Group,
+            p_13_1Group: isset($data['p_13_1']) ? P_13_1Group::fromXmlArray($data) : new Optional(),
+            p_13_2Group: isset($data['p_13_2']) ? P_13_2Group::fromXmlArray($data) : new Optional(),
+            p_13_3Group: isset($data['p_13_3']) ? P_13_3Group::fromXmlArray($data) : new Optional(),
+            p_13_4Group: isset($data['p_13_4']) ? P_13_4Group::fromXmlArray($data) : new Optional(),
+            p_13_5Group: isset($data['p_13_5']) ? P_13_5Group::fromXmlArray($data) : new Optional(),
+            p_13_6_1: isset($data['p_13_6_1']) ? new P_13_6_1($data['p_13_6_1']) : new Optional(),
+            p_13_6_2: isset($data['p_13_6_2']) ? new P_13_6_2($data['p_13_6_2']) : new Optional(),
+            p_13_6_3: isset($data['p_13_6_3']) ? new P_13_6_3($data['p_13_6_3']) : new Optional(),
+            p_13_7: isset($data['p_13_7']) ? new P_13_7($data['p_13_7']) : new Optional(),
+            p_13_8: isset($data['p_13_8']) ? new P_13_8($data['p_13_8']) : new Optional(),
+            p_13_9: isset($data['p_13_9']) ? new P_13_9($data['p_13_9']) : new Optional(),
+            p_13_10: isset($data['p_13_10']) ? new P_13_10($data['p_13_10']) : new Optional(),
+            p_13_11: isset($data['p_13_11']) ? new P_13_11($data['p_13_11']) : new Optional(),
+            kursWalutyZ: isset($data['kursWalutyZ']) ? new KursWalutyZ($data['kursWalutyZ']) : new Optional(),
+            adnotacje: isset($data['adnotacje']) ? Adnotacje::fromXmlArray($data['adnotacje']) : new Adnotacje(),
+            rodzajFaktury: isset($data['rodzajFaktury'])
+                ? RodzajFaktury::from($data['rodzajFaktury'])
+                : RodzajFaktury::Vat,
+            korektaGroup: isset($data['daneFaKorygowanej'])
+                ? KorektaGroup::fromXmlArray($data)
+                : new Optional(),
+            zaliczkaCzesciowa: isset($data['zaliczkaCzesciowa'])
+                ? array_map(
+                    fn (array $item) => ZaliczkaCzesciowa::fromXmlArray($item),
+                    self::ensureList($data['zaliczkaCzesciowa'])
+                )
+                : new Optional(),
+            fp: isset($data['fP']) ? FP::from($data['fP']) : new Optional(),
+            tp: isset($data['tP']) ? TP::from($data['tP']) : new Optional(),
+            dodatkowyOpis: isset($data['dodatkowyOpis'])
+                ? array_map(
+                    fn (array $item) => DodatkowyOpis::fromXmlArray($item),
+                    self::ensureList($data['dodatkowyOpis'])
+                )
+                : new Optional(),
+            fakturaZaliczkowa: isset($data['fakturaZaliczkowa'])
+                ? array_map(
+                    fn (array $item) => FakturaZaliczkowa::fromXmlArray($item),
+                    self::ensureList($data['fakturaZaliczkowa'])
+                )
+                : new Optional(),
+            zwrotAkcyzy: isset($data['zwrotAkcyzy']) ? ZwrotAkcyzy::from($data['zwrotAkcyzy']) : new Optional(),
+            faWiersz: isset($data['faWiersz'])
+                ? array_map(
+                    fn (array $item) => FaWiersz::fromXmlArray($item),
+                    self::ensureList($data['faWiersz'])
+                )
+                : new Optional(),
+            rozliczenie: isset($data['rozliczenie'])
+                ? Rozliczenie::fromXmlArray($data['rozliczenie'])
+                : new Optional(),
+            platnosc: isset($data['platnosc']) ? Platnosc::fromXmlArray($data['platnosc']) : new Optional(),
+            warunkiTransakcji: isset($data['warunkiTransakcji'])
+                ? WarunkiTransakcji::fromXmlArray($data['warunkiTransakcji'])
+                : new Optional(),
+            zamowienie: isset($data['zamowienie']) ? Zamowienie::fromXmlArray($data['zamowienie']) : new Optional(),
+        );
     }
 }

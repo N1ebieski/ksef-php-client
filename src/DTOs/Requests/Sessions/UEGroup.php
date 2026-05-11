@@ -6,12 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodUE;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrVatUE;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class UEGroup extends AbstractDTO implements DomSerializableInterface
+final class UEGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param KodUE $kodUE Kod (prefiks) nabywcy VAT UE, o którym mowa w art. 106e ust. 1 pkt 24 ustawy oraz w przypadku, o którym mowa w art. 136 ust. 1 pkt 4 ustawy
@@ -42,5 +43,13 @@ final class UEGroup extends AbstractDTO implements DomSerializableInterface
         $ueGroup->appendChild($nrVatUE);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            kodUE: new KodUE($data['kodUE']),
+            nrVatUE: new NrVatUE($data['nrVatUE']),
+        );
     }
 }

@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisInnegoTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TransportInny;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class TransportInnyGroup extends AbstractDTO implements DomSerializableInterface
+final class TransportInnyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param TransportInny $transportInny Znacznik innego rodzaju transportu: 1 - inny rodzaj transportu
@@ -41,5 +42,13 @@ final class TransportInnyGroup extends AbstractDTO implements DomSerializableInt
         $transportInnyGroup->appendChild($opisInnegoTransportu);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            opisInnegoTransportu: new OpisInnegoTransportu($data['opisInnegoTransportu']),
+            transportInny: isset($data['transportInny']) ? TransportInny::from($data['transportInny']) : TransportInny::Default,
+        );
     }
 }

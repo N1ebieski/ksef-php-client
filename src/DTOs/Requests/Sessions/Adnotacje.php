@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_16;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_17;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_18;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_18A;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_23;
 
-final class Adnotacje extends AbstractDTO implements DomSerializableInterface
+final class Adnotacje extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_16 $p_16 W przypadku dostawy towarów lub świadczenia usług, w odniesieniu do których obowiązek podatkowy powstaje zgodnie z art. 19a ust. 5 pkt 1 lub art. 21 ust. 1 ustawy - wyrazy "metoda kasowa", należy podać wartość "1"; w przeciwnym przypadku - wartość "2"
@@ -81,5 +82,21 @@ final class Adnotacje extends AbstractDTO implements DomSerializableInterface
         $adnotacje->appendChild($pMarzy);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_16: isset($data['p_16']) ? P_16::from($data['p_16']) : P_16::Default,
+            p_17: isset($data['p_17']) ? P_17::from($data['p_17']) : P_17::Default,
+            p_18: isset($data['p_18']) ? P_18::from($data['p_18']) : P_18::Default,
+            p_18A: isset($data['p_18A']) ? P_18A::from($data['p_18A']) : P_18A::Default,
+            zwolnienie: isset($data['zwolnienie']) ? Zwolnienie::fromXmlArray($data['zwolnienie']) : new Zwolnienie(),
+            noweSrodkiTransportu: isset($data['noweSrodkiTransportu'])
+                ? NoweSrodkiTransportu::fromXmlArray($data['noweSrodkiTransportu'])
+                : new NoweSrodkiTransportu(),
+            p_23: isset($data['p_23']) ? P_23::from($data['p_23']) : P_23::Default,
+            pMarzy: isset($data['pMarzy']) ? PMarzy::fromXmlArray($data['pMarzy']) : new PMarzy(),
+        );
     }
 }

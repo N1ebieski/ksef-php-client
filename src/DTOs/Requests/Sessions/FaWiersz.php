@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\CN;
@@ -35,7 +36,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzed;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_ID;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FaWiersz extends AbstractDTO implements DomSerializableInterface
+final class FaWiersz extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param UU_ID|Optional $uu_id Uniwersalny unikalny numer wiersza faktury
@@ -276,5 +277,36 @@ final class FaWiersz extends AbstractDTO implements DomSerializableInterface
         $dom->appendChild($faWiersz);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            nrWierszaFa: new NrWierszaFa($data['nrWierszaFa']),
+            uu_id: isset($data['uU_ID']) ? new UU_ID($data['uU_ID']) : new Optional(),
+            p_6A: isset($data['p_6A']) ? new P_6A($data['p_6A']) : new Optional(),
+            p_7: isset($data['p_7']) ? new P_7($data['p_7']) : new Optional(),
+            indeks: isset($data['indeks']) ? new Indeks($data['indeks']) : new Optional(),
+            gtin: isset($data['gTIN']) ? new GTIN($data['gTIN']) : new Optional(),
+            pkwiu: isset($data['pKWiU']) ? new PKWiU($data['pKWiU']) : new Optional(),
+            cn: isset($data['cN']) ? new CN($data['cN']) : new Optional(),
+            pkob: isset($data['pKOB']) ? new PKOB($data['pKOB']) : new Optional(),
+            p_8A: isset($data['p_8A']) ? new P_8A($data['p_8A']) : new Optional(),
+            p_8B: isset($data['p_8B']) ? new P_8B($data['p_8B']) : new Optional(),
+            p_9A: isset($data['p_9A']) ? new P_9A($data['p_9A']) : new Optional(),
+            p_9B: isset($data['p_9B']) ? new P_9B($data['p_9B']) : new Optional(),
+            p_10: isset($data['p_10']) ? new P_10($data['p_10']) : new Optional(),
+            p_11: isset($data['p_11']) ? new P_11($data['p_11']) : new Optional(),
+            p_11A: isset($data['p_11A']) ? new P_11A($data['p_11A']) : new Optional(),
+            p_11Vat: isset($data['p_11Vat']) ? new P_11Vat($data['p_11Vat']) : new Optional(),
+            p_12: isset($data['p_12']) ? P_12::from($data['p_12']) : new Optional(),
+            p_12_XII: isset($data['p_12_XII']) ? new P_12_XII($data['p_12_XII']) : new Optional(),
+            p_12_Zal_15: isset($data['p_12_Zal_15']) ? P_12_Zal_15::from($data['p_12_Zal_15']) : new Optional(),
+            kwotaAkcyzy: isset($data['kwotaAkcyzy']) ? new KwotaAkcyzy($data['kwotaAkcyzy']) : new Optional(),
+            gtu: isset($data['gTU']) ? GTU::from($data['gTU']) : new Optional(),
+            procedura: isset($data['procedura']) ? Procedura::from($data['procedura']) : new Optional(),
+            kursWaluty: isset($data['kursWaluty']) ? new KursWaluty($data['kursWaluty']) : new Optional(),
+            stanPrzed: isset($data['stanPrzed']) ? StanPrzed::from($data['stanPrzed']) : new Optional(),
+        );
     }
 }

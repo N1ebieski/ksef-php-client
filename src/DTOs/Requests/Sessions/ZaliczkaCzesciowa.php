@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KursWalutyZW;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_15Z;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_6Z;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class ZaliczkaCzesciowa extends AbstractDTO implements DomSerializableInterface
+final class ZaliczkaCzesciowa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_6Z $p_6Z Data otrzymania płatności, o której mowa w art. 106b ust. 1 pkt 4 ustawy
@@ -53,5 +54,14 @@ final class ZaliczkaCzesciowa extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_6Z: new P_6Z($data['p_6Z']),
+            p_15Z: new P_15Z($data['p_15Z']),
+            kursWalutyZW: isset($data['kursWalutyZW']) ? new KursWalutyZW($data['kursWalutyZW']) : new Optional(),
+        );
     }
 }

@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22A;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BK;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BMD;
@@ -18,7 +19,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_NrWierszaNST;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface
+final class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_22A $p_22A Data dopuszczenia nowego środka transportu do użytku
@@ -102,5 +103,27 @@ final class NowySrodekTransportu extends AbstractDTO implements DomSerializableI
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['p_22B'])) {
+            $p_22BCDGroup = P_22BGroup::fromXmlArray($data);
+        } elseif (isset($data['p_22C'])) {
+            $p_22BCDGroup = P_22CGroup::fromXmlArray($data);
+        } else {
+            $p_22BCDGroup = P_22DGroup::fromXmlArray($data);
+        }
+
+        return new self(
+            p_22A: new P_22A($data['p_22A']),
+            p_nrWierszaNST: new P_NrWierszaNST($data['p_NrWierszaNST']),
+            p_22BCDGroup: $p_22BCDGroup,
+            p_22BMK: isset($data['p_22BMK']) ? new P_22BMK($data['p_22BMK']) : new Optional(),
+            p_22BMD: isset($data['p_22BMD']) ? new P_22BMD($data['p_22BMD']) : new Optional(),
+            p_22BK: isset($data['p_22BK']) ? new P_22BK($data['p_22BK']) : new Optional(),
+            p_22BNR: isset($data['p_22BNR']) ? new P_22BNR($data['p_22BNR']) : new Optional(),
+            p_22BRP: isset($data['p_22BRP']) ? new P_22BRP($data['p_22BRP']) : new Optional(),
+        );
     }
 }

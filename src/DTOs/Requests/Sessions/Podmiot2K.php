@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\IDNabywcy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class Podmiot2K extends AbstractDTO implements DomSerializableInterface
+final class Podmiot2K extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Podmiot2KDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące nabywcę
@@ -50,5 +51,14 @@ final class Podmiot2K extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            daneIdentyfikacyjne: Podmiot2KDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
+            adres: isset($data['adres']) ? Adres::fromXmlArray($data['adres']) : new Optional(),
+            idNabywcy: isset($data['iDNabywcy']) ? new IDNabywcy($data['iDNabywcy']) : new Optional(),
+        );
     }
 }

@@ -7,12 +7,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataUmowy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrUmowy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class Umowy extends AbstractDTO implements DomSerializableInterface
+final class Umowy extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly Optional | DataUmowy $dataUmowy = new Optional(),
@@ -43,5 +44,13 @@ final class Umowy extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            dataUmowy: isset($data['dataUmowy']) ? new DataUmowy($data['dataUmowy']) : new Optional(),
+            nrUmowy: isset($data['nrUmowy']) ? new NrUmowy($data['nrUmowy']) : new Optional(),
+        );
     }
 }

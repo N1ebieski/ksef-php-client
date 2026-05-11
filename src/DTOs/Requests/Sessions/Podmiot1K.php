@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrefiksPodatnika;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class Podmiot1K extends AbstractDTO implements DomSerializableInterface
+final class Podmiot1K extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Podmiot1KDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
@@ -48,5 +49,16 @@ final class Podmiot1K extends AbstractDTO implements DomSerializableInterface
         $podmiot1K->appendChild($adres);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            daneIdentyfikacyjne: Podmiot1KDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
+            adres: Adres::fromXmlArray($data['adres']),
+            prefiksPodatnika: isset($data['prefiksPodatnika'])
+                ? new PrefiksPodatnika($data['prefiksPodatnika'])
+                : new Optional(),
+        );
     }
 }

@@ -8,9 +8,10 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInterface
+final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly NrKSeFZNGroup | NrKSeFFaZaliczkowejGroup $nrKSeFZNGroup
@@ -33,5 +34,16 @@ final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['nrFaZaliczkowej'])) {
+            $nrKSeFZNGroup = NrKSeFZNGroup::fromXmlArray($data);
+        } else {
+            $nrKSeFZNGroup = NrKSeFFaZaliczkowejGroup::fromXmlArray($data);
+        }
+
+        return new self(nrKSeFZNGroup: $nrKSeFZNGroup);
     }
 }

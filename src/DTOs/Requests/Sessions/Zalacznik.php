@@ -54,6 +54,11 @@ final class Zalacznik extends AbstractDTO implements DomSerializableInterface, F
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        return new self(
+            blokDanych: array_map(
+                fn (array $item) => BlokDanych::fromXmlArray($item),
+                self::ensureList($data['blokDanych'])
+            ),
+        );
     }
 }

@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Kwota;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Powod;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class Obciazenia extends AbstractDTO implements DomSerializableInterface
+final class Obciazenia extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Kwota $kwota Kwota doliczona do kwoty wykazanej w polu P_15
@@ -42,5 +43,13 @@ final class Obciazenia extends AbstractDTO implements DomSerializableInterface
         $obciazenia->appendChild($powod);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            kwota: new Kwota($data['kwota']),
+            powod: new Powod($data['powod']),
+        );
     }
 }

@@ -6,12 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZKlucz;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZWartosc;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class MetaDane extends AbstractDTO implements DomSerializableInterface
+final class MetaDane extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly ZKlucz $zKlucz,
@@ -38,5 +39,13 @@ final class MetaDane extends AbstractDTO implements DomSerializableInterface
         $metaDane->appendChild($zWartosc);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            zKlucz: new ZKlucz($data['zKlucz']),
+            zWartosc: new ZWartosc($data['zWartosc']),
+        );
     }
 }

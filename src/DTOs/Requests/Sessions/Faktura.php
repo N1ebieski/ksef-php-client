@@ -126,7 +126,7 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Xml
         if (isset($data['podmiot3'])) {
             $data['podmiot3'] = array_map(
                 fn (array $item) => Podmiot3::fromXmlArray($item),
-                $data['podmiot3']
+                self::ensureList($data['podmiot3'])
             );
         }
 

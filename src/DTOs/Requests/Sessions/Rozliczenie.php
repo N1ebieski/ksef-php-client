@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -15,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SumaObciazen;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SumaOdliczen;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Rozliczenie extends AbstractDTO implements DomSerializableInterface
+final class Rozliczenie extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, Obciazenia>
@@ -98,5 +99,28 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            obciazenia: isset($data['obciazenia'])
+                ? array_map(
+                    fn (array $item) => Obciazenia::fromXmlArray($item),
+                    self::ensureList($data['obciazenia'])
+                )
+                : new Optional(),
+            sumaObciazen: isset($data['sumaObciazen']) ? new SumaObciazen($data['sumaObciazen']) : new Optional(),
+            odliczenia: isset($data['odliczenia'])
+                ? array_map(
+                    fn (array $item) => Odliczenia::fromXmlArray($item),
+                    self::ensureList($data['odliczenia'])
+                )
+                : new Optional(),
+            sumaOdliczen: isset($data['sumaOdliczen']) ? new SumaOdliczen($data['sumaOdliczen']) : new Optional(),
+            rozliczenieGroup: (isset($data['doZaplaty']) || isset($data['doRozliczenia']))
+                ? RozliczenieGroup::fromXmlArray($data)
+                : new Optional(),
+        );
     }
 }

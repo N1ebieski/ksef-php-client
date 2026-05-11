@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SKom;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final class Suma extends AbstractDTO implements DomSerializableInterface
+final class Suma extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, SKom>
@@ -51,5 +52,15 @@ final class Suma extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            sKom: array_map(
+                fn (string $value) => new SKom($value),
+                self::ensureList($data['sKom'])
+            ),
+        );
     }
 }

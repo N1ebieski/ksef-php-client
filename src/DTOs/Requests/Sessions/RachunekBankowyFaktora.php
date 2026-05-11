@@ -8,13 +8,14 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NazwaBanku;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisRachunku;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RachunekWlasnyBanku;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class RachunekBankowyFaktora extends AbstractDTO implements DomSerializableInterface
+final class RachunekBankowyFaktora extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly NrRBGroup $nrRBGroup,
@@ -61,5 +62,17 @@ final class RachunekBankowyFaktora extends AbstractDTO implements DomSerializabl
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            nrRBGroup: NrRBGroup::fromXmlArray($data),
+            rachunekWlasnyBanku: isset($data['rachunekWlasnyBanku'])
+                ? RachunekWlasnyBanku::from($data['rachunekWlasnyBanku'])
+                : new Optional(),
+            nazwaBanku: isset($data['nazwaBanku']) ? new NazwaBanku($data['nazwaBanku']) : new Optional(),
+            opisRachunku: isset($data['opisRachunku']) ? new OpisRachunku($data['opisRachunku']) : new Optional(),
+        );
     }
 }

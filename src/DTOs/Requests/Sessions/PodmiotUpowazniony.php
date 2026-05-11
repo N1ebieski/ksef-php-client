@@ -92,6 +92,18 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        return new self(
+            daneIdentyfikacyjne: PodmiotUpowaznionyDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
+            adres: Adres::fromXmlArray($data['adres']),
+            rolaPU: RolaPU::from($data['rolaPU']),
+            nrEORI: isset($data['nrEORI']) ? new NrEORI($data['nrEORI']) : new Optional(),
+            adresKoresp: isset($data['adresKoresp']) ? AdresKoresp::fromXmlArray($data['adresKoresp']) : new Optional(),
+            daneKontaktowe: isset($data['daneKontaktowe'])
+                ? array_map(
+                    fn (array $item) => PodmiotUpowaznionyDaneKontaktowe::fromXmlArray($item),
+                    self::ensureList($data['daneKontaktowe'])
+                )
+                : new Optional(),
+        );
     }
 }

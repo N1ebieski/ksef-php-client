@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WarunkiSkonta;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WysokoscSkonta;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class Skonto extends AbstractDTO implements DomSerializableInterface
+final class Skonto extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param WarunkiSkonta $warunkiSkonta Warunki, które nabywca powinien spełnić aby skorzystać ze skonta
@@ -41,5 +42,13 @@ final class Skonto extends AbstractDTO implements DomSerializableInterface
         $skonto->appendChild($wysokoscSkonta);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            warunkiSkonta: new WarunkiSkonta($data['warunkiSkonta']),
+            wysokoscSkonta: new WysokoscSkonta($data['wysokoscSkonta']),
+        );
     }
 }

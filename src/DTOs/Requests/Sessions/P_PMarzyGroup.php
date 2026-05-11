@@ -8,10 +8,11 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterface
+final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_PMarzy $p_PMarzy Znacznik wystąpienia procedur marży, o których mowa w art. 119 lub art. 120 ustawy
@@ -43,5 +44,23 @@ final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterfac
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['p_PMarzy_2'])) {
+            $p_PMarzy_2_3Group = P_PMarzy_2Group::fromXmlArray($data);
+        } elseif (isset($data['p_PMarzy_3_1'])) {
+            $p_PMarzy_2_3Group = P_PMarzy_3_1Group::fromXmlArray($data);
+        } elseif (isset($data['p_PMarzy_3_2'])) {
+            $p_PMarzy_2_3Group = P_PMarzy_3_2Group::fromXmlArray($data);
+        } else {
+            $p_PMarzy_2_3Group = P_PMarzy_3_3Group::fromXmlArray($data);
+        }
+
+        return new self(
+            p_PMarzy_2_3Group: $p_PMarzy_2_3Group,
+            p_PMarzy: isset($data['p_PMarzy']) ? P_PMarzy::from($data['p_PMarzy']) : P_PMarzy::Default,
+        );
     }
 }

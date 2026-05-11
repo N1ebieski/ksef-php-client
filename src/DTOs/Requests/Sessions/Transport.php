@@ -8,11 +8,12 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class Transport extends AbstractDTO implements DomSerializableInterface
+final class Transport extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly RodzajTransportuGroup | TransportInnyGroup $transportGroup,
@@ -68,5 +69,26 @@ final class Transport extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['rodzajTransportu'])) {
+            $transportGroup = RodzajTransportuGroup::fromXmlArray($data);
+        } else {
+            $transportGroup = TransportInnyGroup::fromXmlArray($data);
+        }
+
+        return new self(
+            transportGroup: $transportGroup,
+            ladunekGroup: LadunekGroup::fromXmlArray($data),
+            przewoznik: isset($data['przewoznik']) ? Przewoznik::fromXmlArray($data['przewoznik']) : new Optional(),
+            nrZleceniaTransportu: isset($data['nrZleceniaTransportu'])
+                ? new NrZleceniaTransportu($data['nrZleceniaTransportu'])
+                : new Optional(),
+            wysylkaGroup: isset($data['wysylkaGroup'])
+                ? WysylkaGroup::fromXmlArray($data['wysylkaGroup'])
+                : new Optional(),
+        );
     }
 }

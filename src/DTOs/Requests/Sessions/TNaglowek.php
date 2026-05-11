@@ -6,13 +6,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class TNaglowek extends AbstractDTO implements DomSerializableInterface
+final class TNaglowek extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, Kol>
@@ -49,5 +50,15 @@ final class TNaglowek extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            kol: array_map(
+                fn (array $item) => Kol::fromXmlArray($item),
+                self::ensureList($data['kol'])
+            ),
+        );
     }
 }

@@ -6,12 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NKom;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Typ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Kol extends AbstractDTO implements DomSerializableInterface
+final class Kol extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Typ $typ Typ danych w nagłówku tabeli
@@ -39,5 +40,13 @@ final class Kol extends AbstractDTO implements DomSerializableInterface
         $kol->appendChild($nKom);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            typ: Typ::from($data['@attributes']['typ']),
+            nKom: new NKom($data['nKom']),
+        );
     }
 }

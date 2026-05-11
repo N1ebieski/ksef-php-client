@@ -11,10 +11,11 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL2;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GLN;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodKraju;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class AdresKoresp extends AbstractDTO implements DomSerializableInterface
+final class AdresKoresp extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Optional|GLN $gln Globalny Numer Lokalizacyjny [Global Location Number]
@@ -58,5 +59,15 @@ final class AdresKoresp extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            kodKraju: new KodKraju($data['kodKraju']),
+            adresL1: new AdresL1($data['adresL1']),
+            adresL2: isset($data['adresL2']) ? new AdresL2($data['adresL2']) : new Optional(),
+            gln: isset($data['gln']) ? new GLN($data['gln']) : new Optional(),
+        );
     }
 }

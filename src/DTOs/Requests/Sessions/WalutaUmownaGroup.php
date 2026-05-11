@@ -7,15 +7,16 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KursUmowny;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WalutaUmowna;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInterface
+final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
-     * @param KursUmowny $kursUmowny Kurs umowny - w przypadkach, gdy na fakturze znajduje się informacja o kursie, po którym zostały przeliczone kwoty wykazane na fakturze w złotych. Nie dotyczy przypadków, o których mowa w Dziale VI ustawy
-     * @param WalutaUmowna $walutaUmowna Waluta umowna - trzyliterowy kod waluty (ISO-4217) w przypadkach, gdy na fakturze znajduje się informacja o kursie, po którym zostały przeliczone kwoty wykazane na fakturze w złotych. Nie dotyczy przypadków, o których mowa w Dziale VI ustawy
+     * @param KursUmowny $kursUmowny Kurs umowny
+     * @param WalutaUmowna $walutaUmowna Waluta umowna
      */
     public function __construct(
         public readonly KursUmowny $kursUmowny,
@@ -42,5 +43,13 @@ final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInte
         $walutaUmownaGroup->appendChild($walutaUmowna);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            kursUmowny: new KursUmowny($data['kursUmowny']),
+            walutaUmowna: new WalutaUmowna($data['walutaUmowna']),
+        );
     }
 }

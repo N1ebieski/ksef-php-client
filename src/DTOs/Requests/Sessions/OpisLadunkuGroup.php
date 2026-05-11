@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisLadunku;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class OpisLadunkuGroup extends AbstractDTO implements DomSerializableInterface
+final class OpisLadunkuGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param OpisLadunku $opisLadunku Rodzaj ładunku
@@ -34,5 +35,10 @@ final class OpisLadunkuGroup extends AbstractDTO implements DomSerializableInter
         $opisLadunkuGroup->appendChild($opisLadunku);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(opisLadunku: OpisLadunku::from($data['opisLadunku']));
     }
 }

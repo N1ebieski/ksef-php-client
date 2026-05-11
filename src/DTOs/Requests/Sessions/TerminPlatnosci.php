@@ -6,12 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Termin;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class TerminPlatnosci extends AbstractDTO implements DomSerializableInterface
+final class TerminPlatnosci extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param Optional|Termin $termin Termin płatności
@@ -45,5 +46,13 @@ final class TerminPlatnosci extends AbstractDTO implements DomSerializableInterf
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            termin: isset($data['termin']) ? new Termin($data['termin']) : new Optional(),
+            terminOpis: isset($data['terminOpis']) ? TerminOpis::fromXmlArray($data['terminOpis']) : new Optional(),
+        );
     }
 }

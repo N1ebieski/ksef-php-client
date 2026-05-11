@@ -121,6 +121,25 @@ final class Podmiot3 extends AbstractDTO implements DomSerializableInterface, Fr
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        $rolaGroup = isset($data['rola'])
+            ? RolaGroup::fromXmlArray($data)
+            : RolaInnaGroup::fromXmlArray($data);
+
+        return new self(
+            daneIdentyfikacyjne: Podmiot3DaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
+            rolaGroup: $rolaGroup,
+            adres: isset($data['adres']) ? Adres::fromXmlArray($data['adres']) : new Optional(),
+            idNabywcy: isset($data['iDNabywcy']) ? new IDNabywcy($data['iDNabywcy']) : new Optional(),
+            nrEORI: isset($data['nrEORI']) ? new NrEORI($data['nrEORI']) : new Optional(),
+            adresKoresp: isset($data['adresKoresp']) ? AdresKoresp::fromXmlArray($data['adresKoresp']) : new Optional(),
+            daneKontaktowe: isset($data['daneKontaktowe'])
+                ? array_map(
+                    fn (array $item) => DaneKontaktowe::fromXmlArray($item),
+                    self::ensureList($data['daneKontaktowe'])
+                )
+                : new Optional(),
+            udzial: isset($data['udzial']) ? new Udzial($data['udzial']) : new Optional(),
+            nrKlienta: isset($data['nrKlienta']) ? new NrKlienta($data['nrKlienta']) : new Optional(),
+        );
     }
 }

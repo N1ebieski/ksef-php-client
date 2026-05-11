@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZNaglowek;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class BlokDanych extends AbstractDTO implements DomSerializableInterface
+final class BlokDanych extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, MetaDane>
@@ -86,5 +87,23 @@ final class BlokDanych extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            metaDane: array_map(
+                fn (array $item) => MetaDane::fromXmlArray($item),
+                self::ensureList($data['metaDane'])
+            ),
+            zNaglowek: isset($data['zNaglowek']) ? new ZNaglowek($data['zNaglowek']) : new Optional(),
+            tekst: isset($data['tekst']) ? Tekst::fromXmlArray($data['tekst']) : new Optional(),
+            tabela: isset($data['tabela'])
+                ? array_map(
+                    fn (array $item) => Tabela::fromXmlArray($item),
+                    self::ensureList($data['tabela'])
+                )
+                : new Optional(),
+        );
     }
 }

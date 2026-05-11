@@ -8,9 +8,10 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableInterface
+final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly P_22Group | P_22NGroup $p_22Group = new P_22NGroup(),
@@ -35,5 +36,12 @@ final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableI
         $dom->appendChild($noweSrodkiTransportu);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        $p_22Group = isset($data['p_22']) ? P_22Group::fromXmlArray($data) : P_22NGroup::fromXmlArray($data);
+
+        return new self(p_22Group: $p_22Group);
     }
 }

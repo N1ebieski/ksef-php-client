@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Akapit;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final class Tekst extends AbstractDTO implements DomSerializableInterface
+final class Tekst extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, Akapit>
@@ -51,5 +52,15 @@ final class Tekst extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            akapit: array_map(
+                fn (string $value) => new Akapit($value),
+                self::ensureList($data['akapit'])
+            ),
+        );
     }
 }

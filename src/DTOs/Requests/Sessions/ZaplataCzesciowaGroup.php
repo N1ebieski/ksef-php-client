@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZnacznikZaplatyCzesciowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializableInterface
+final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, ZaplataCzesciowa>
@@ -22,8 +23,8 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
     public readonly Optional | array $zaplataCzesciowa;
 
     /**
-     * @param Optional|array<int, ZaplataCzesciowa> $zaplataCzesciowa Dane zapłat częściowych
-     * @param ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej Znacznik informujący, że należność wynikająca z faktury została zapłacona w części lub w całości: 1 - zapłacono w części; 2 - zapłacono w całości, jeśli należność wynikająca z faktury została zapłacona w dwóch lub więcej częściach, a ostatnia płatność jest płatnością końcową
+     * @param Optional|array<int, ZaplataCzesciowa> $zaplataCzesciowa
+     * @param ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej
      */
     public function __construct(
         Optional | array $zaplataCzesciowa = new Optional(),
@@ -60,5 +61,22 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        $zaplataCzesciowa = isset($data['zaplataCzesciowa'])
+            ? array_map(
+                fn (array $item) => ZaplataCzesciowa::fromXmlArray($item),
+                self::ensureList($data['zaplataCzesciowa'])
+            )
+            : new Optional();
+
+        return new self(
+            zaplataCzesciowa: $zaplataCzesciowa,
+            znacznikZaplatyCzesciowej: isset($data['znacznikZaplatyCzesciowej'])
+                ? ZnacznikZaplatyCzesciowej::from($data['znacznikZaplatyCzesciowej'])
+                : ZnacznikZaplatyCzesciowej::Default,
+        );
     }
 }

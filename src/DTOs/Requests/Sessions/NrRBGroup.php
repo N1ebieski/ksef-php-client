@@ -7,12 +7,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrRB;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SWIFT;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class NrRBGroup extends AbstractDTO implements DomSerializableInterface
+final class NrRBGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param NrRB $nrRB Pełny numer rachunku
@@ -45,5 +46,13 @@ final class NrRBGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            nrRB: new NrRB($data['nrRB']),
+            swift: isset($data['swift']) ? new SWIFT($data['swift']) : new Optional(),
+        );
     }
 }

@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class PMarzy extends AbstractDTO implements DomSerializableInterface
+final class PMarzy extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly P_PMarzyGroup | P_PMarzyNGroup $p_PMarzyGroup = new P_PMarzyNGroup(),
@@ -35,5 +36,14 @@ final class PMarzy extends AbstractDTO implements DomSerializableInterface
         $dom->appendChild($pMarzy);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        $p_PMarzyGroup = isset($data['p_PMarzy'])
+            ? P_PMarzyGroup::fromXmlArray($data)
+            : P_PMarzyNGroup::fromXmlArray($data);
+
+        return new self(p_PMarzyGroup: $p_PMarzyGroup);
     }
 }

@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_42_5;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final class P_22Group extends AbstractDTO implements DomSerializableInterface
+final class P_22Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, NowySrodekTransportu>
@@ -23,7 +24,7 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface
 
     /**
      * @param P_22 $p_22 Znacznik wewnątrzwspólnotowej dostawy nowych środków transportu
-     * @param P_42_5 $p_42_5 Jeśli występuje obowiązek, o którym mowa w art. 42 ust. 5 ustawy, należy podać wartość "1", w przeciwnym przypadku - wartość "2
+     * @param P_42_5 $p_42_5 Jeśli występuje obowiązek, o którym mowa w art. 42 ust. 5 ustawy
      * @param array<int, NowySrodekTransportu> $nowySrodekTransportu
      */
     public function __construct(
@@ -65,5 +66,17 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_42_5: new P_42_5($data['p_42_5']),
+            nowySrodekTransportu: array_map(
+                fn (array $item) => NowySrodekTransportu::fromXmlArray($item),
+                self::ensureList($data['nowySrodekTransportu'])
+            ),
+            p_22: isset($data['p_22']) ? P_22::from($data['p_22']) : P_22::Default,
+        );
     }
 }

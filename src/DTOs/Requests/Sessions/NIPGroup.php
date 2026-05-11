@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 
-final class NIPGroup extends AbstractDTO implements DomSerializableInterface
+final class NIPGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly NIP $nip,
@@ -31,5 +32,10 @@ final class NIPGroup extends AbstractDTO implements DomSerializableInterface
         $nipGroup->appendChild($nip);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(nip: new NIP($data['nip']));
     }
 }

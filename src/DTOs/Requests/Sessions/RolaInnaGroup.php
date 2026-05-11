@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisRoli;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RolaInna;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class RolaInnaGroup extends AbstractDTO implements DomSerializableInterface
+final class RolaInnaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param RolaInna $rolaInna Znacznik innego podmiotu: 1 - Inny podmiot
@@ -42,5 +43,13 @@ final class RolaInnaGroup extends AbstractDTO implements DomSerializableInterfac
         $rolaInnaGroup->appendChild($opisRoli);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            rolaInna: RolaInna::from($data['rolaInna']),
+            opisRoli: new OpisRoli($data['opisRoli']),
+        );
     }
 }

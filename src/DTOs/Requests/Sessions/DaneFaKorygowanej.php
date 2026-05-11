@@ -8,11 +8,12 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWystFaKorygowanej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowanej;
 
-final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInterface
+final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param DataWystFaKorygowanej $dataWystFaKorygowanej Data wystawienia faktury korygowanej
@@ -51,5 +52,20 @@ final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['nrKSeFFaKorygowanej'])) {
+            $nrKSeFGroup = NrKSeFGroup::fromXmlArray($data);
+        } else {
+            $nrKSeFGroup = NrKSeFNGroup::fromXmlArray($data);
+        }
+
+        return new self(
+            dataWystFaKorygowanej: new DataWystFaKorygowanej($data['dataWystFaKorygowanej']),
+            nrFaKorygowanej: new NrFaKorygowanej($data['nrFaKorygowanej']),
+            nrKSeFGroup: $nrKSeFGroup,
+        );
     }
 }

@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -16,7 +17,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PodmiotPosredniczacy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WarunkiDostawy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface
+final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, Umowy>
@@ -136,5 +137,44 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            umowy: isset($data['umowy'])
+                ? array_map(
+                    fn (array $item) => Umowy::fromXmlArray($item),
+                    self::ensureList($data['umowy'])
+                )
+                : new Optional(),
+            zamowienia: isset($data['zamowienia'])
+                ? array_map(
+                    fn (array $item) => Zamowienia::fromXmlArray($item),
+                    self::ensureList($data['zamowienia'])
+                )
+                : new Optional(),
+            nrPartiiTowaru: isset($data['nrPartiiTowaru'])
+                ? array_map(
+                    fn (string $value) => new NrPartiiTowaru($value),
+                    self::ensureList($data['nrPartiiTowaru'])
+                )
+                : new Optional(),
+            warunkiDostawy: isset($data['warunkiDostawy'])
+                ? new WarunkiDostawy($data['warunkiDostawy'])
+                : new Optional(),
+            walutaUmownaGroup: (isset($data['kursUmowny']) || isset($data['walutaUmowna']))
+                ? WalutaUmownaGroup::fromXmlArray($data)
+                : new Optional(),
+            transport: isset($data['transport'])
+                ? array_map(
+                    fn (array $item) => Transport::fromXmlArray($item),
+                    self::ensureList($data['transport'])
+                )
+                : new Optional(),
+            podmiotPosredniczacy: isset($data['podmiotPosredniczacy'])
+                ? PodmiotPosredniczacy::from($data['podmiotPosredniczacy'])
+                : new Optional(),
+        );
     }
 }

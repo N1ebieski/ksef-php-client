@@ -72,6 +72,19 @@ final class Stopka extends AbstractDTO implements DomSerializableInterface, From
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        return new self(
+            informacje: isset($data['informacje'])
+                ? array_map(
+                    fn (array $item) => Informacje::fromXmlArray($item),
+                    self::ensureList($data['informacje'])
+                )
+                : new Optional(),
+            rejestry: isset($data['rejestry'])
+                ? array_map(
+                    fn (array $item) => Rejestry::fromXmlArray($item),
+                    self::ensureList($data['rejestry'])
+                )
+                : new Optional(),
+        );
     }
 }

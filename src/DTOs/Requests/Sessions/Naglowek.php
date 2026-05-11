@@ -64,6 +64,10 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface, Fr
 
     public static function fromXmlArray(array $data): self
     {
-        throw new \LogicException('Method not implemented yet.');
+        return new self(
+            wariantFormularza: FormCode::from($data['kodFormularza']['@attributes']['kodSystemowy']),
+            dataWytworzeniaFa: new DataWytworzeniaFa($data['dataWytworzeniaFa']),
+            systemInfo: isset($data['systemInfo']) ? new SystemInfo($data['systemInfo']) : new Optional(),
+        );
     }
 }

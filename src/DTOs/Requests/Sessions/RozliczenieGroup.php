@@ -8,9 +8,10 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class RozliczenieGroup extends AbstractDTO implements DomSerializableInterface
+final class RozliczenieGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly DoZaplatyGroup|DoRozliczeniaGroup $doGroup
@@ -33,5 +34,16 @@ final class RozliczenieGroup extends AbstractDTO implements DomSerializableInter
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['doZaplaty'])) {
+            $doGroup = DoZaplatyGroup::fromXmlArray($data);
+        } else {
+            $doGroup = DoRozliczeniaGroup::fromXmlArray($data);
+        }
+
+        return new self(doGroup: $doGroup);
     }
 }

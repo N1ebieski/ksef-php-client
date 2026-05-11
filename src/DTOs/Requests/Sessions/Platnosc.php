@@ -7,13 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Platnosc extends AbstractDTO implements DomSerializableInterface
+final class Platnosc extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, TerminPlatnosci>
@@ -116,5 +117,48 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['zaplacono'])) {
+            $zaplataGroup = ZaplataGroup::fromXmlArray($data);
+        } elseif (isset($data['znacznikZaplatyCzesciowej'])) {
+            $zaplataGroup = ZaplataCzesciowaGroup::fromXmlArray($data);
+        } else {
+            $zaplataGroup = new Optional();
+        }
+
+        if (isset($data['formaPlatnosci'])) {
+            $platnoscGroup = FormaPlatnosciGroup::fromXmlArray($data);
+        } elseif (isset($data['platnoscInna'])) {
+            $platnoscGroup = PlatnoscInnaGroup::fromXmlArray($data);
+        } else {
+            $platnoscGroup = new Optional();
+        }
+
+        return new self(
+            zaplataGroup: $zaplataGroup,
+            terminPlatnosci: isset($data['terminPlatnosci'])
+                ? array_map(
+                    fn (array $item) => TerminPlatnosci::fromXmlArray($item),
+                    self::ensureList($data['terminPlatnosci'])
+                )
+                : new Optional(),
+            platnoscGroup: $platnoscGroup,
+            rachunekBankowy: isset($data['rachunekBankowy'])
+                ? array_map(
+                    fn (array $item) => RachunekBankowy::fromXmlArray($item),
+                    self::ensureList($data['rachunekBankowy'])
+                )
+                : new Optional(),
+            rachunekBankowyFaktora: isset($data['rachunekBankowyFaktora'])
+                ? array_map(
+                    fn (array $item) => RachunekBankowyFaktora::fromXmlArray($item),
+                    self::ensureList($data['rachunekBankowyFaktora'])
+                )
+                : new Optional(),
+            skonto: isset($data['skonto']) ? Skonto::fromXmlArray($data['skonto']) : new Optional(),
+        );
     }
 }

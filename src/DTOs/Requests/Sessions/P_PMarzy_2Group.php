@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy_2;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_PMarzy_2Group extends AbstractDTO implements DomSerializableInterface
+final class P_PMarzy_2Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_PMarzy_2 $p_PMarzy_2 Znacznik świadczenia usług turystyki, dla których podstawę opodatkowania stanowi marża, zgodnie z art. 119 ust. 1 ustawy, a faktura dokumentująca świadczenie zawiera wyrazy "procedura marży dla biur podróży"
@@ -34,5 +35,12 @@ final class P_PMarzy_2Group extends AbstractDTO implements DomSerializableInterf
         $p_PMarzy_2Group->appendChild($p_PMarzy_2);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_PMarzy_2: isset($data['p_PMarzy_2']) ? P_PMarzy_2::from($data['p_PMarzy_2']) : P_PMarzy_2::Default,
+        );
     }
 }

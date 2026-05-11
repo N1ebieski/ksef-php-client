@@ -8,11 +8,12 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\JednostkaOpakowania;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
+final class LadunekGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly OpisLadunkuGroup | LadunekInnyGroup $opisLadunkuGroup,
@@ -43,5 +44,21 @@ final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['ladunekInny'])) {
+            $opisLadunkuGroup = LadunekInnyGroup::fromXmlArray($data);
+        } else {
+            $opisLadunkuGroup = OpisLadunkuGroup::fromXmlArray($data);
+        }
+
+        return new self(
+            opisLadunkuGroup: $opisLadunkuGroup,
+            jednostkaOpakowania: isset($data['jednostkaOpakowania'])
+                ? new JednostkaOpakowania($data['jednostkaOpakowania'])
+                : new Optional(),
+        );
     }
 }

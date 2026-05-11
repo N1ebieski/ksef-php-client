@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19B;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_19BGroup extends AbstractDTO implements DomSerializableInterface
+final class P_19BGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_19B $p_19B Jeśli pole P_19 równa się "1" - należy wskazać przepis dyrektywy 2006/112/WE, który zwalnia od podatku taką dostawę towarów lub takie świadczenie usług
@@ -34,5 +35,10 @@ final class P_19BGroup extends AbstractDTO implements DomSerializableInterface
         $p_19BGroup->appendChild($p_19B);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(p_19B: new P_19B($data['p_19B']));
     }
 }

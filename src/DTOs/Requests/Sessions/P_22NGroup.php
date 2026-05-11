@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22N;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_22NGroup extends AbstractDTO implements DomSerializableInterface
+final class P_22NGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_22N $p_22N Znacznik braku wewnątrzwspólnotowej dostawy nowych środków transportu
@@ -34,5 +35,12 @@ final class P_22NGroup extends AbstractDTO implements DomSerializableInterface
         $p_22NGroup->appendChild($p_22N);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p_22N: isset($data['p_22N']) ? P_22N::from($data['p_22N']) : P_22N::Default,
+        );
     }
 }

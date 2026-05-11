@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19A;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_19AGroup extends AbstractDTO implements DomSerializableInterface
+final class P_19AGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_19A $p_19A Jeśli pole P_19 równa się "1" - należy wskazać przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie którego podatnik stosuje zwolnienie od podatku
@@ -34,5 +35,10 @@ final class P_19AGroup extends AbstractDTO implements DomSerializableInterface
         $p_19AGroup->appendChild($p_19A);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(p_19A: new P_19A($data['p_19A']));
     }
 }

@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TKlucz;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TWartosc;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class TMetaDane extends AbstractDTO implements DomSerializableInterface
+final class TMetaDane extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly TKlucz $tKlucz,
@@ -38,5 +39,13 @@ final class TMetaDane extends AbstractDTO implements DomSerializableInterface
         $tMetaDane->appendChild($tWartosc);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            tKlucz: new TKlucz($data['tKlucz']),
+            tWartosc: new TWartosc($data['tWartosc']),
+        );
     }
 }

@@ -7,9 +7,10 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class OkresFaGroup extends AbstractDTO implements DomSerializableInterface
+final class OkresFaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param OkresFa $okresFa Okres, którego dotyczy faktura w przypadkach, o których mowa w art. 19a ust. 3 zdanie pierwsze i ust. 4 oraz ust. 5 pkt 4 ustawy
@@ -32,5 +33,10 @@ final class OkresFaGroup extends AbstractDTO implements DomSerializableInterface
         $okresFaGroup->appendChild($okresFa);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(okresFa: OkresFa::fromXmlArray($data['okresFa']));
     }
 }

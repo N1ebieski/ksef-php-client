@@ -8,10 +8,11 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class P_19Group extends AbstractDTO implements DomSerializableInterface
+final class P_19Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_19 $p_19 Znacznik dostawy towarów lub świadczenia usług zwolnionych od podatku na podstawie art. 43 ust. 1, art. 113 ust. 1 i 9 albo przepisów wydanych na podstawie art. 82 ust. 3 ustawy lub na podstawie innych przepisów
@@ -43,5 +44,21 @@ final class P_19Group extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['p_19A'])) {
+            $p_19ABCGroup = P_19AGroup::fromXmlArray($data);
+        } elseif (isset($data['p_19B'])) {
+            $p_19ABCGroup = P_19BGroup::fromXmlArray($data);
+        } else {
+            $p_19ABCGroup = P_19CGroup::fromXmlArray($data);
+        }
+
+        return new self(
+            p_19ABCGroup: $p_19ABCGroup,
+            p_19: isset($data['p_19']) ? P_19::from($data['p_19']) : P_19::Default,
+        );
     }
 }

@@ -7,11 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKSeF;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKSeFFaKorygowanej;
 
-final class NrKSeFGroup extends AbstractDTO implements DomSerializableInterface
+final class NrKSeFGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param NrKSeFFaKorygowanej $nrKSeFFaKorygowanej Numer identyfikujący fakturę korygowaną w KSeF
@@ -42,5 +43,13 @@ final class NrKSeFGroup extends AbstractDTO implements DomSerializableInterface
         $nrKSeFGroup->appendChild($nrKSeFFaKorygowanej);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            nrKSeFFaKorygowanej: new NrKSeFFaKorygowanej($data['nrKSeFFaKorygowanej']),
+            nrKSeF: isset($data['nrKSeF']) ? NrKSeF::from($data['nrKSeF']) : NrKSeF::Default,
+        );
     }
 }

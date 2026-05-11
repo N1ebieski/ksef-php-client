@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowany;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OkresFaKorygowanej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
@@ -18,7 +19,7 @@ use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
+final class KorektaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var array<int, DaneFaKorygowanej>
@@ -126,5 +127,35 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            daneFaKorygowanej: array_map(
+                fn (array $item) => DaneFaKorygowanej::fromXmlArray($item),
+                self::ensureList($data['daneFaKorygowanej'])
+            ),
+            przyczynaKorekty: isset($data['przyczynaKorekty'])
+                ? new PrzyczynaKorekty($data['przyczynaKorekty'])
+                : new Optional(),
+            typKorekty: isset($data['typKorekty']) ? TypKorekty::from($data['typKorekty']) : new Optional(),
+            okresFaKorygowanej: isset($data['okresFaKorygowanej'])
+                ? new OkresFaKorygowanej($data['okresFaKorygowanej'])
+                : new Optional(),
+            nrFaKorygowany: isset($data['nrFaKorygowany'])
+                ? new NrFaKorygowany($data['nrFaKorygowany'])
+                : new Optional(),
+            podmiot1K: isset($data['podmiot1K'])
+                ? Podmiot1K::fromXmlArray($data['podmiot1K'])
+                : new Optional(),
+            podmiot2K: isset($data['podmiot2K'])
+                ? array_map(
+                    fn (array $item) => Podmiot2K::fromXmlArray($item),
+                    self::ensureList($data['podmiot2K'])
+                )
+                : new Optional(),
+            p15ZKGroup: isset($data['p_15ZK']) ? P_15ZKGroup::fromXmlArray($data) : new Optional(),
+        );
     }
 }

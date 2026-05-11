@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\BDO;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PelnaNazwa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\REGON;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Rejestry extends AbstractDTO implements DomSerializableInterface
+final class Rejestry extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param KRS|Optional $krs Numer Krajowego Rejestru Sądowego
@@ -61,5 +62,15 @@ final class Rejestry extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            pelnaNazwa: isset($data['pelnaNazwa']) ? new PelnaNazwa($data['pelnaNazwa']) : new Optional(),
+            krs: isset($data['krs']) ? new KRS($data['krs']) : new Optional(),
+            regon: isset($data['regon']) ? new REGON($data['regon']) : new Optional(),
+            bdo: isset($data['bdo']) ? new BDO($data['bdo']) : new Optional(),
+        );
     }
 }

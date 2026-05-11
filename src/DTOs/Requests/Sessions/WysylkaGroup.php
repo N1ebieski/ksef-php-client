@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 
-final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
+final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, WysylkaPrzez>
@@ -22,11 +23,7 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
     public readonly Optional | array $wysylkaPrzez;
 
     /**
-     * @param Optional|DataGodzRozpTransportu $dataGodzRozpTransportu Data i godzina rozpoczęcia transportu
-     * @param Optional|DataGodzZakTransportu $dataGodzZakTransportu Data i godzina zakonczenia transportu
-     * @param Optional|WysylkaZ $wysylkaZ Adres miejsca wysyłki
-     * @param Optional|array<int, WysylkaPrzez> $wysylkaPrzez Adres pośredni wysyłki
-     * @param Optional|WysylkaDo $wysylkaDo Adres miejsca docelowego, do którego został zlecony transport
+     * @param Optional|array<int, WysylkaPrzez> $wysylkaPrzez
      */
     public function __construct(
         public readonly Optional | DataGodzRozpTransportu $dataGodzRozpTransportu = new Optional(),
@@ -87,5 +84,27 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        $wysylkaPrzez = isset($data['wysylkaPrzez'])
+            ? array_map(
+                fn (array $item) => WysylkaPrzez::fromXmlArray($item),
+                self::ensureList($data['wysylkaPrzez'])
+            )
+            : new Optional();
+
+        return new self(
+            dataGodzRozpTransportu: isset($data['dataGodzRozpTransportu'])
+                ? new DataGodzRozpTransportu($data['dataGodzRozpTransportu'])
+                : new Optional(),
+            dataGodzZakTransportu: isset($data['dataGodzZakTransportu'])
+                ? new DataGodzZakTransportu($data['dataGodzZakTransportu'])
+                : new Optional(),
+            wysylkaZ: isset($data['wysylkaZ']) ? WysylkaZ::fromXmlArray($data['wysylkaZ']) : new Optional(),
+            wysylkaPrzez: $wysylkaPrzez,
+            wysylkaDo: isset($data['wysylkaDo']) ? WysylkaDo::fromXmlArray($data['wysylkaDo']) : new Optional(),
+        );
     }
 }

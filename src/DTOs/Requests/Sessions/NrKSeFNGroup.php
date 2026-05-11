@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKSeFN;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class NrKSeFNGroup extends AbstractDTO implements DomSerializableInterface
+final class NrKSeFNGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param NrKSeFN $nrKSeFN Znacznik faktury korygowanej wystawionej poza KSeF
@@ -34,5 +35,12 @@ final class NrKSeFNGroup extends AbstractDTO implements DomSerializableInterface
         $nrKSeFNGroup->appendChild($nrKSeFN);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            nrKSeFN: isset($data['nrKSeFN']) ? NrKSeFN::from($data['nrKSeFN']) : NrKSeFN::Default,
+        );
     }
 }

@@ -7,10 +7,11 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\BrakID;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class BrakIDGroup extends AbstractDTO implements DomSerializableInterface
+final class BrakIDGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param BrakID $brakID Podmiot nie posiada identyfikatora podatkowego lub identyfikator nie występuje na fakturze: 1- tak
@@ -34,5 +35,10 @@ final class BrakIDGroup extends AbstractDTO implements DomSerializableInterface
         $brakIDGroup->appendChild($brakID);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(brakID: BrakID::from($data['brakID']));
     }
 }

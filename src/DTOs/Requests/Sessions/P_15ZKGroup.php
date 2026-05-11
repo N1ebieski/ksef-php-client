@@ -7,12 +7,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KursWalutyZK;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_15ZK;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 
-final class P_15ZKGroup extends AbstractDTO implements DomSerializableInterface
+final class P_15ZKGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @param P_15ZK $p15ZK W przypadku korekt faktur zaliczkowych, kwota zapłaty przed korektą. W przypadku korekt faktur, o których mowa w art. 106f ust. 3 ustawy, kwota pozostała do zapłaty przed korektą
@@ -45,5 +46,13 @@ final class P_15ZKGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            p15ZK: new P_15ZK($data['p_15ZK']),
+            kursWalutyZK: isset($data['kursWalutyZK']) ? new KursWalutyZK($data['kursWalutyZK']) : new Optional(),
+        );
     }
 }

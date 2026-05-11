@@ -7,12 +7,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Ilosc;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Jednostka;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZdarzeniePoczatkowe;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 
-final class TerminOpis extends AbstractDTO implements DomSerializableInterface
+final class TerminOpis extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     public function __construct(
         public readonly Ilosc $ilosc,
@@ -45,5 +46,14 @@ final class TerminOpis extends AbstractDTO implements DomSerializableInterface
         $terminOpis->appendChild($zdarzeniePoczatkowe);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        return new self(
+            ilosc: new Ilosc($data['ilosc']),
+            jednostka: new Jednostka($data['jednostka']),
+            zdarzeniePoczatkowe: new ZdarzeniePoczatkowe($data['zdarzeniePoczatkowe']),
+        );
     }
 }
