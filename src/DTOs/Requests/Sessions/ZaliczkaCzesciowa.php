@@ -59,9 +59,9 @@ final class ZaliczkaCzesciowa extends AbstractDTO implements DomSerializableInte
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_6Z: new P_6Z($data['p_6Z']),
-            p_15Z: new P_15Z($data['p_15Z']),
-            kursWalutyZW: isset($data['kursWalutyZW']) ? new KursWalutyZW($data['kursWalutyZW']) : new Optional(),
+            p_6Z: new P_6Z($data['P_6Z']),
+            p_15Z: new P_15Z($data['P_15Z']),
+            kursWalutyZW: isset($data['KursWalutyZW']) ? new KursWalutyZW($data['KursWalutyZW']) : new Optional(),
         );
     }
 }

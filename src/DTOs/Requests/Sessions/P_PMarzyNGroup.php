@@ -40,7 +40,7 @@ final class P_PMarzyNGroup extends AbstractDTO implements DomSerializableInterfa
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_PMarzyN: isset($data['p_PMarzyN']) ? P_PMarzyN::from($data['p_PMarzyN']) : P_PMarzyN::Default,
+            p_PMarzyN: isset($data['P_PMarzyN']) ? P_PMarzyN::from($data['P_PMarzyN']) : P_PMarzyN::Default,
         );
     }
 }

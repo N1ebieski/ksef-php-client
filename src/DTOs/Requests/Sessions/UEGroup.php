@@ -48,8 +48,8 @@ final class UEGroup extends AbstractDTO implements DomSerializableInterface, Fro
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            kodUE: new KodUE($data['kodUE']),
-            nrVatUE: new NrVatUE($data['nrVatUE']),
+            kodUE: new KodUE($data['KodUE']),
+            nrVatUE: new NrVatUE($data['NrVatUE']),
         );
     }
 }

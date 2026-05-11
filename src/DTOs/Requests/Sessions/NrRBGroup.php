@@ -51,8 +51,8 @@ final class NrRBGroup extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nrRB: new NrRB($data['nrRB']),
-            swift: isset($data['swift']) ? new SWIFT($data['swift']) : new Optional(),
+            nrRB: new NrRB($data['NrRB']),
+            swift: isset($data['SWIFT']) ? new SWIFT($data['SWIFT']) : new Optional(),
         );
     }
 }

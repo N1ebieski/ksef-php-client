@@ -56,15 +56,15 @@ final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInte
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['nrKSeFFaKorygowanej'])) {
+        if (isset($data['NrKSeFFaKorygowanej'])) {
             $nrKSeFGroup = NrKSeFGroup::fromXmlArray($data);
         } else {
             $nrKSeFGroup = NrKSeFNGroup::fromXmlArray($data);
         }
 
         return new self(
-            dataWystFaKorygowanej: new DataWystFaKorygowanej($data['dataWystFaKorygowanej']),
-            nrFaKorygowanej: new NrFaKorygowanej($data['nrFaKorygowanej']),
+            dataWystFaKorygowanej: new DataWystFaKorygowanej($data['DataWystFaKorygowanej']),
+            nrFaKorygowanej: new NrFaKorygowanej($data['NrFaKorygowanej']),
             nrKSeFGroup: $nrKSeFGroup,
         );
     }

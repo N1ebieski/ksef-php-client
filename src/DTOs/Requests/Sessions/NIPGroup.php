@@ -36,6 +36,6 @@ final class NIPGroup extends AbstractDTO implements DomSerializableInterface, Fr
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(nip: new NIP($data['nip']));
+        return new self(nip: new NIP($data['NIP']));
     }
 }

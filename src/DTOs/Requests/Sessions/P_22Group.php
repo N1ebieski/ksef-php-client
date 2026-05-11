@@ -71,12 +71,12 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_42_5: new P_42_5($data['p_42_5']),
+            p_42_5: new P_42_5($data['P_42_5']),
             nowySrodekTransportu: array_map(
                 fn (array $item) => NowySrodekTransportu::fromXmlArray($item),
-                self::ensureList($data['nowySrodekTransportu'])
+                self::ensureList($data['NowySrodekTransportu'])
             ),
-            p_22: isset($data['p_22']) ? P_22::from($data['p_22']) : P_22::Default,
+            p_22: isset($data['P_22']) ? P_22::from($data['P_22']) : P_22::Default,
         );
     }
 }

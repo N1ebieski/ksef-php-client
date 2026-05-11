@@ -134,28 +134,28 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
         return new self(
             daneFaKorygowanej: array_map(
                 fn (array $item) => DaneFaKorygowanej::fromXmlArray($item),
-                self::ensureList($data['daneFaKorygowanej'])
+                self::ensureList($data['DaneFaKorygowanej'])
             ),
-            przyczynaKorekty: isset($data['przyczynaKorekty'])
-                ? new PrzyczynaKorekty($data['przyczynaKorekty'])
+            przyczynaKorekty: isset($data['PrzyczynaKorekty'])
+                ? new PrzyczynaKorekty($data['PrzyczynaKorekty'])
                 : new Optional(),
-            typKorekty: isset($data['typKorekty']) ? TypKorekty::from($data['typKorekty']) : new Optional(),
-            okresFaKorygowanej: isset($data['okresFaKorygowanej'])
-                ? new OkresFaKorygowanej($data['okresFaKorygowanej'])
+            typKorekty: isset($data['TypKorekty']) ? TypKorekty::from($data['TypKorekty']) : new Optional(),
+            okresFaKorygowanej: isset($data['OkresFaKorygowanej'])
+                ? new OkresFaKorygowanej($data['OkresFaKorygowanej'])
                 : new Optional(),
-            nrFaKorygowany: isset($data['nrFaKorygowany'])
-                ? new NrFaKorygowany($data['nrFaKorygowany'])
+            nrFaKorygowany: isset($data['NrFaKorygowany'])
+                ? new NrFaKorygowany($data['NrFaKorygowany'])
                 : new Optional(),
-            podmiot1K: isset($data['podmiot1K'])
-                ? Podmiot1K::fromXmlArray($data['podmiot1K'])
+            podmiot1K: isset($data['Podmiot1K'])
+                ? Podmiot1K::fromXmlArray($data['Podmiot1K'])
                 : new Optional(),
-            podmiot2K: isset($data['podmiot2K'])
+            podmiot2K: isset($data['Podmiot2K'])
                 ? array_map(
                     fn (array $item) => Podmiot2K::fromXmlArray($item),
-                    self::ensureList($data['podmiot2K'])
+                    self::ensureList($data['Podmiot2K'])
                 )
                 : new Optional(),
-            p15ZKGroup: isset($data['p_15ZK']) ? P_15ZKGroup::fromXmlArray($data) : new Optional(),
+            p15ZKGroup: isset($data['P_15ZK']) ? P_15ZKGroup::fromXmlArray($data) : new Optional(),
         );
     }
 }

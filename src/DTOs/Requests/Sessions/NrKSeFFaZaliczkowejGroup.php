@@ -39,6 +39,6 @@ final class NrKSeFFaZaliczkowejGroup extends AbstractDTO implements DomSerializa
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(nrKSeFFaZaliczkowej: new NrKSeFFaZaliczkowej($data['nrKSeFFaZaliczkowej']));
+        return new self(nrKSeFFaZaliczkowej: new NrKSeFFaZaliczkowej($data['NrKSeFFaZaliczkowej']));
     }
 }

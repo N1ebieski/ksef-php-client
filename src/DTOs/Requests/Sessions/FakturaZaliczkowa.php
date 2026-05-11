@@ -38,7 +38,7 @@ final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInte
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['nrFaZaliczkowej'])) {
+        if (isset($data['NrFaZaliczkowej'])) {
             $nrKSeFZNGroup = NrKSeFZNGroup::fromXmlArray($data);
         } else {
             $nrKSeFZNGroup = NrKSeFFaZaliczkowejGroup::fromXmlArray($data);

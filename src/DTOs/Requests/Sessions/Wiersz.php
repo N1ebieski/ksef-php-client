@@ -59,7 +59,7 @@ final class Wiersz extends AbstractDTO implements DomSerializableInterface, From
         return new self(
             wKom: array_map(
                 fn (string $value) => new WKom($value),
-                self::ensureList($data['wKom'])
+                self::ensureList($data['WKom'])
             ),
         );
     }

@@ -63,10 +63,10 @@ final class Zamowienie extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            wartoscZamowienia: new WartoscZamowienia($data['wartoscZamowienia']),
+            wartoscZamowienia: new WartoscZamowienia($data['WartoscZamowienia']),
             zamowienieWiersz: array_map(
                 fn (array $item) => ZamowienieWiersz::fromXmlArray($item),
-                self::ensureList($data['zamowienieWiersz'])
+                self::ensureList($data['ZamowienieWiersz'])
             ),
         );
     }

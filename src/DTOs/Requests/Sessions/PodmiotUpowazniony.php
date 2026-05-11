@@ -93,15 +93,15 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            daneIdentyfikacyjne: PodmiotUpowaznionyDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
-            adres: Adres::fromXmlArray($data['adres']),
-            rolaPU: RolaPU::from($data['rolaPU']),
-            nrEORI: isset($data['nrEORI']) ? new NrEORI($data['nrEORI']) : new Optional(),
-            adresKoresp: isset($data['adresKoresp']) ? AdresKoresp::fromXmlArray($data['adresKoresp']) : new Optional(),
-            daneKontaktowe: isset($data['daneKontaktowe'])
+            daneIdentyfikacyjne: PodmiotUpowaznionyDaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
+            adres: Adres::fromXmlArray($data['Adres']),
+            rolaPU: RolaPU::from($data['RolaPU']),
+            nrEORI: isset($data['NrEORI']) ? new NrEORI($data['NrEORI']) : new Optional(),
+            adresKoresp: isset($data['AdresKoresp']) ? AdresKoresp::fromXmlArray($data['AdresKoresp']) : new Optional(),
+            daneKontaktowe: isset($data['DaneKontaktowe'])
                 ? array_map(
                     fn (array $item) => PodmiotUpowaznionyDaneKontaktowe::fromXmlArray($item),
-                    self::ensureList($data['daneKontaktowe'])
+                    self::ensureList($data['DaneKontaktowe'])
                 )
                 : new Optional(),
         );

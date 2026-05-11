@@ -47,8 +47,8 @@ final class Skonto extends AbstractDTO implements DomSerializableInterface, From
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            warunkiSkonta: new WarunkiSkonta($data['warunkiSkonta']),
-            wysokoscSkonta: new WysokoscSkonta($data['wysokoscSkonta']),
+            warunkiSkonta: new WarunkiSkonta($data['WarunkiSkonta']),
+            wysokoscSkonta: new WysokoscSkonta($data['WysokoscSkonta']),
         );
     }
 }

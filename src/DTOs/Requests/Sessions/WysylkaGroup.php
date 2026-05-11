@@ -23,7 +23,11 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
     public readonly Optional | array $wysylkaPrzez;
 
     /**
-     * @param Optional|array<int, WysylkaPrzez> $wysylkaPrzez
+     * @param Optional|DataGodzRozpTransportu $dataGodzRozpTransportu Data i godzina rozpoczęcia transportu
+     * @param Optional|DataGodzZakTransportu $dataGodzZakTransportu Data i godzina zakonczenia transportu
+     * @param Optional|WysylkaZ $wysylkaZ Adres miejsca wysyłki
+     * @param Optional|array<int, WysylkaPrzez> $wysylkaPrzez Adres pośredni wysyłki
+     * @param Optional|WysylkaDo $wysylkaDo Adres miejsca docelowego, do którego został zlecony transport
      */
     public function __construct(
         public readonly Optional | DataGodzRozpTransportu $dataGodzRozpTransportu = new Optional(),
@@ -88,23 +92,23 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
 
     public static function fromXmlArray(array $data): self
     {
-        $wysylkaPrzez = isset($data['wysylkaPrzez'])
+        $wysylkaPrzez = isset($data['WysylkaPrzez'])
             ? array_map(
                 fn (array $item) => WysylkaPrzez::fromXmlArray($item),
-                self::ensureList($data['wysylkaPrzez'])
+                self::ensureList($data['WysylkaPrzez'])
             )
             : new Optional();
 
         return new self(
-            dataGodzRozpTransportu: isset($data['dataGodzRozpTransportu'])
-                ? new DataGodzRozpTransportu($data['dataGodzRozpTransportu'])
+            dataGodzRozpTransportu: isset($data['DataGodzRozpTransportu'])
+                ? new DataGodzRozpTransportu($data['DataGodzRozpTransportu'])
                 : new Optional(),
-            dataGodzZakTransportu: isset($data['dataGodzZakTransportu'])
-                ? new DataGodzZakTransportu($data['dataGodzZakTransportu'])
+            dataGodzZakTransportu: isset($data['DataGodzZakTransportu'])
+                ? new DataGodzZakTransportu($data['DataGodzZakTransportu'])
                 : new Optional(),
-            wysylkaZ: isset($data['wysylkaZ']) ? WysylkaZ::fromXmlArray($data['wysylkaZ']) : new Optional(),
+            wysylkaZ: isset($data['WysylkaZ']) ? WysylkaZ::fromXmlArray($data['WysylkaZ']) : new Optional(),
             wysylkaPrzez: $wysylkaPrzez,
-            wysylkaDo: isset($data['wysylkaDo']) ? WysylkaDo::fromXmlArray($data['wysylkaDo']) : new Optional(),
+            wysylkaDo: isset($data['WysylkaDo']) ? WysylkaDo::fromXmlArray($data['WysylkaDo']) : new Optional(),
         );
     }
 }

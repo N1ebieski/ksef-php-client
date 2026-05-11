@@ -64,10 +64,10 @@ final class AdresKoresp extends AbstractDTO implements DomSerializableInterface,
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            kodKraju: new KodKraju($data['kodKraju']),
-            adresL1: new AdresL1($data['adresL1']),
-            adresL2: isset($data['adresL2']) ? new AdresL2($data['adresL2']) : new Optional(),
-            gln: isset($data['gln']) ? new GLN($data['gln']) : new Optional(),
+            kodKraju: new KodKraju($data['KodKraju']),
+            adresL1: new AdresL1($data['AdresL1']),
+            adresL2: isset($data['AdresL2']) ? new AdresL2($data['AdresL2']) : new Optional(),
+            gln: isset($data['GLN']) ? new GLN($data['GLN']) : new Optional(),
         );
     }
 }

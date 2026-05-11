@@ -87,16 +87,16 @@ final class Adnotacje extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_16: isset($data['p_16']) ? P_16::from($data['p_16']) : P_16::Default,
-            p_17: isset($data['p_17']) ? P_17::from($data['p_17']) : P_17::Default,
-            p_18: isset($data['p_18']) ? P_18::from($data['p_18']) : P_18::Default,
-            p_18A: isset($data['p_18A']) ? P_18A::from($data['p_18A']) : P_18A::Default,
-            zwolnienie: isset($data['zwolnienie']) ? Zwolnienie::fromXmlArray($data['zwolnienie']) : new Zwolnienie(),
-            noweSrodkiTransportu: isset($data['noweSrodkiTransportu'])
-                ? NoweSrodkiTransportu::fromXmlArray($data['noweSrodkiTransportu'])
+            p_16: isset($data['P_16']) ? P_16::from($data['P_16']) : P_16::Default,
+            p_17: isset($data['P_17']) ? P_17::from($data['P_17']) : P_17::Default,
+            p_18: isset($data['P_18']) ? P_18::from($data['P_18']) : P_18::Default,
+            p_18A: isset($data['P_18A']) ? P_18A::from($data['P_18A']) : P_18A::Default,
+            zwolnienie: isset($data['Zwolnienie']) ? Zwolnienie::fromXmlArray($data['Zwolnienie']) : new Zwolnienie(),
+            noweSrodkiTransportu: isset($data['NoweSrodkiTransportu'])
+                ? NoweSrodkiTransportu::fromXmlArray($data['NoweSrodkiTransportu'])
                 : new NoweSrodkiTransportu(),
-            p_23: isset($data['p_23']) ? P_23::from($data['p_23']) : P_23::Default,
-            pMarzy: isset($data['pMarzy']) ? PMarzy::fromXmlArray($data['pMarzy']) : new PMarzy(),
+            p_23: isset($data['P_23']) ? P_23::from($data['P_23']) : P_23::Default,
+            pMarzy: isset($data['PMarzy']) ? PMarzy::fromXmlArray($data['PMarzy']) : new PMarzy(),
         );
     }
 }

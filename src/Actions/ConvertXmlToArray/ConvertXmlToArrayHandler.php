@@ -39,30 +39,11 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 throw new RuntimeException('Failed to decode JSON to array');
             }
 
-            return $this->normalizeKeys($decodedXml);
+            return $decodedXml;
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($useInternalErrors);
         }
-    }
-
-    /**
-     * @param  array<int|string, mixed>  $value
-     * @return array<int|string, mixed>
-     */
-    private function normalizeKeys(array $value): array
-    {
-        $normalized = [];
-
-        foreach ($value as $key => $item) {
-            $normalizedKey = is_string($key) ? mb_lcfirst($key) : $key;
-
-            $normalized[$normalizedKey] = is_array($item)
-                ? $this->normalizeKeys($item)
-                : $item;
-        }
-
-        return $normalized;
     }
 
 }

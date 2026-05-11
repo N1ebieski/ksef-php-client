@@ -36,6 +36,6 @@ final class RolaGroup extends AbstractDTO implements DomSerializableInterface, F
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(rola: Rola::from($data['rola']));
+        return new self(rola: Rola::from($data['Rola']));
     }
 }

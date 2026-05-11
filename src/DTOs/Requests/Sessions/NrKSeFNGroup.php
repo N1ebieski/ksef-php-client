@@ -40,7 +40,7 @@ final class NrKSeFNGroup extends AbstractDTO implements DomSerializableInterface
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nrKSeFN: isset($data['nrKSeFN']) ? NrKSeFN::from($data['nrKSeFN']) : NrKSeFN::Default,
+            nrKSeFN: isset($data['NrKSeFN']) ? NrKSeFN::from($data['NrKSeFN']) : NrKSeFN::Default,
         );
     }
 }

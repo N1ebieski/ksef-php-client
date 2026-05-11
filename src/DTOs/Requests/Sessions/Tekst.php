@@ -59,7 +59,7 @@ final class Tekst extends AbstractDTO implements DomSerializableInterface, FromX
         return new self(
             akapit: array_map(
                 fn (string $value) => new Akapit($value),
-                self::ensureList($data['akapit'])
+                self::ensureList($data['Akapit'])
             ),
         );
     }

@@ -51,9 +51,9 @@ final class TerminOpis extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            ilosc: new Ilosc($data['ilosc']),
-            jednostka: new Jednostka($data['jednostka']),
-            zdarzeniePoczatkowe: new ZdarzeniePoczatkowe($data['zdarzeniePoczatkowe']),
+            ilosc: new Ilosc($data['Ilosc']),
+            jednostka: new Jednostka($data['Jednostka']),
+            zdarzeniePoczatkowe: new ZdarzeniePoczatkowe($data['ZdarzeniePoczatkowe']),
         );
     }
 }

@@ -142,38 +142,38 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            umowy: isset($data['umowy'])
+            umowy: isset($data['Umowy'])
                 ? array_map(
                     fn (array $item) => Umowy::fromXmlArray($item),
-                    self::ensureList($data['umowy'])
+                    self::ensureList($data['Umowy'])
                 )
                 : new Optional(),
-            zamowienia: isset($data['zamowienia'])
+            zamowienia: isset($data['Zamowienia'])
                 ? array_map(
                     fn (array $item) => Zamowienia::fromXmlArray($item),
-                    self::ensureList($data['zamowienia'])
+                    self::ensureList($data['Zamowienia'])
                 )
                 : new Optional(),
-            nrPartiiTowaru: isset($data['nrPartiiTowaru'])
+            nrPartiiTowaru: isset($data['NrPartiiTowaru'])
                 ? array_map(
                     fn (string $value) => new NrPartiiTowaru($value),
-                    self::ensureList($data['nrPartiiTowaru'])
+                    self::ensureList($data['NrPartiiTowaru'])
                 )
                 : new Optional(),
-            warunkiDostawy: isset($data['warunkiDostawy'])
-                ? new WarunkiDostawy($data['warunkiDostawy'])
+            warunkiDostawy: isset($data['WarunkiDostawy'])
+                ? new WarunkiDostawy($data['WarunkiDostawy'])
                 : new Optional(),
-            walutaUmownaGroup: (isset($data['kursUmowny']) || isset($data['walutaUmowna']))
+            walutaUmownaGroup: (isset($data['KursUmowny']) || isset($data['WalutaUmowna']))
                 ? WalutaUmownaGroup::fromXmlArray($data)
                 : new Optional(),
-            transport: isset($data['transport'])
+            transport: isset($data['Transport'])
                 ? array_map(
                     fn (array $item) => Transport::fromXmlArray($item),
-                    self::ensureList($data['transport'])
+                    self::ensureList($data['Transport'])
                 )
                 : new Optional(),
-            podmiotPosredniczacy: isset($data['podmiotPosredniczacy'])
-                ? PodmiotPosredniczacy::from($data['podmiotPosredniczacy'])
+            podmiotPosredniczacy: isset($data['PodmiotPosredniczacy'])
+                ? PodmiotPosredniczacy::from($data['PodmiotPosredniczacy'])
                 : new Optional(),
         );
     }

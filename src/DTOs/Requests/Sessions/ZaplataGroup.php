@@ -48,8 +48,8 @@ final class ZaplataGroup extends AbstractDTO implements DomSerializableInterface
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            dataZaplaty: new DataZaplaty($data['dataZaplaty']),
-            zaplacono: isset($data['zaplacono']) ? Zaplacono::from($data['zaplacono']) : Zaplacono::Default,
+            dataZaplaty: new DataZaplaty($data['DataZaplaty']),
+            zaplacono: isset($data['Zaplacono']) ? Zaplacono::from($data['Zaplacono']) : Zaplacono::Default,
         );
     }
 }

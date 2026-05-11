@@ -39,6 +39,6 @@ final class DoRozliczeniaGroup extends AbstractDTO implements DomSerializableInt
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(doRozliczenia: new DoRozliczenia($data['doRozliczenia']));
+        return new self(doRozliczenia: new DoRozliczenia($data['DoRozliczenia']));
     }
 }

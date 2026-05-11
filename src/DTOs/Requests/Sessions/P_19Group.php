@@ -48,9 +48,9 @@ final class P_19Group extends AbstractDTO implements DomSerializableInterface, F
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['p_19A'])) {
+        if (isset($data['P_19A'])) {
             $p_19ABCGroup = P_19AGroup::fromXmlArray($data);
-        } elseif (isset($data['p_19B'])) {
+        } elseif (isset($data['P_19B'])) {
             $p_19ABCGroup = P_19BGroup::fromXmlArray($data);
         } else {
             $p_19ABCGroup = P_19CGroup::fromXmlArray($data);
@@ -58,7 +58,7 @@ final class P_19Group extends AbstractDTO implements DomSerializableInterface, F
 
         return new self(
             p_19ABCGroup: $p_19ABCGroup,
-            p_19: isset($data['p_19']) ? P_19::from($data['p_19']) : P_19::Default,
+            p_19: isset($data['P_19']) ? P_19::from($data['P_19']) : P_19::Default,
         );
     }
 }

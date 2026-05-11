@@ -73,7 +73,7 @@ final class Transport extends AbstractDTO implements DomSerializableInterface, F
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['rodzajTransportu'])) {
+        if (isset($data['RodzajTransportu'])) {
             $transportGroup = RodzajTransportuGroup::fromXmlArray($data);
         } else {
             $transportGroup = TransportInnyGroup::fromXmlArray($data);
@@ -82,12 +82,12 @@ final class Transport extends AbstractDTO implements DomSerializableInterface, F
         return new self(
             transportGroup: $transportGroup,
             ladunekGroup: LadunekGroup::fromXmlArray($data),
-            przewoznik: isset($data['przewoznik']) ? Przewoznik::fromXmlArray($data['przewoznik']) : new Optional(),
-            nrZleceniaTransportu: isset($data['nrZleceniaTransportu'])
-                ? new NrZleceniaTransportu($data['nrZleceniaTransportu'])
+            przewoznik: isset($data['Przewoznik']) ? Przewoznik::fromXmlArray($data['Przewoznik']) : new Optional(),
+            nrZleceniaTransportu: isset($data['NrZleceniaTransportu'])
+                ? new NrZleceniaTransportu($data['NrZleceniaTransportu'])
                 : new Optional(),
-            wysylkaGroup: isset($data['wysylkaGroup'])
-                ? WysylkaGroup::fromXmlArray($data['wysylkaGroup'])
+            wysylkaGroup: (isset($data['WysylkaPrzez']) || isset($data['WysylkaDo']) || isset($data['WysylkaZ']) || isset($data['DataGodzRozpTransportu']) || isset($data['DataGodzZakTransportu']))
+                ? WysylkaGroup::fromXmlArray($data)
                 : new Optional(),
         );
     }

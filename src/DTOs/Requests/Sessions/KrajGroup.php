@@ -50,8 +50,8 @@ final class KrajGroup extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nrID: new NrID($data['nrID']),
-            kodKraju: isset($data['kodKraju']) ? new KodKraju($data['kodKraju']) : new Optional(),
+            nrID: new NrID($data['NrID']),
+            kodKraju: isset($data['KodKraju']) ? new KodKraju($data['KodKraju']) : new Optional(),
         );
     }
 }

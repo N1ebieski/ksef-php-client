@@ -47,8 +47,8 @@ final class PodmiotUpowaznionyDaneKontaktowe extends AbstractDTO implements DomS
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            emailPU: isset($data['emailPU']) ? new EmailPU($data['emailPU']) : new Optional(),
-            telefonPU: isset($data['telefonPU']) ? new TelefonPU($data['telefonPU']) : new Optional(),
+            emailPU: isset($data['EmailPU']) ? new EmailPU($data['EmailPU']) : new Optional(),
+            telefonPU: isset($data['TelefonPU']) ? new TelefonPU($data['TelefonPU']) : new Optional(),
         );
     }
 }

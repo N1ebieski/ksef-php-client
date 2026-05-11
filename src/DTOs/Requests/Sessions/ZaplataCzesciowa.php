@@ -58,17 +58,17 @@ final class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInter
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['formaPlatnosci'])) {
+        if (isset($data['FormaPlatnosci'])) {
             $platnoscGroup = FormaPlatnosciGroup::fromXmlArray($data);
-        } elseif (isset($data['platnoscInna'])) {
+        } elseif (isset($data['PlatnoscInna'])) {
             $platnoscGroup = PlatnoscInnaGroup::fromXmlArray($data);
         } else {
             $platnoscGroup = new Optional();
         }
 
         return new self(
-            kwotaZaplatyCzesciowej: new KwotaZaplatyCzesciowej($data['kwotaZaplatyCzesciowej']),
-            dataZaplatyCzesciowej: new DataZaplatyCzesciowej($data['dataZaplatyCzesciowej']),
+            kwotaZaplatyCzesciowej: new KwotaZaplatyCzesciowej($data['KwotaZaplatyCzesciowej']),
+            dataZaplatyCzesciowej: new DataZaplatyCzesciowej($data['DataZaplatyCzesciowej']),
             platnoscGroup: $platnoscGroup,
         );
     }

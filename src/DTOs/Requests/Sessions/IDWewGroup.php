@@ -39,6 +39,6 @@ final class IDWewGroup extends AbstractDTO implements DomSerializableInterface, 
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(iDWew: new IDWew($data['iDWew']));
+        return new self(iDWew: new IDWew($data['IDWew']));
     }
 }

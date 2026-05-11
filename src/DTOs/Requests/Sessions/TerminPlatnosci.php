@@ -51,8 +51,8 @@ final class TerminPlatnosci extends AbstractDTO implements DomSerializableInterf
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            termin: isset($data['termin']) ? new Termin($data['termin']) : new Optional(),
-            terminOpis: isset($data['terminOpis']) ? TerminOpis::fromXmlArray($data['terminOpis']) : new Optional(),
+            termin: isset($data['Termin']) ? new Termin($data['Termin']) : new Optional(),
+            terminOpis: isset($data['TerminOpis']) ? TerminOpis::fromXmlArray($data['TerminOpis']) : new Optional(),
         );
     }
 }

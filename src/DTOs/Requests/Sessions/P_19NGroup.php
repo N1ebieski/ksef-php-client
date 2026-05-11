@@ -40,7 +40,7 @@ final class P_19NGroup extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_19N: isset($data['p_19N']) ? P_19N::from($data['p_19N']) : P_19N::Default,
+            p_19N: isset($data['P_19N']) ? P_19N::from($data['P_19N']) : P_19N::Default,
         );
     }
 }

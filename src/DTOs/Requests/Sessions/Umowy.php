@@ -49,8 +49,8 @@ final class Umowy extends AbstractDTO implements DomSerializableInterface, FromX
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            dataUmowy: isset($data['dataUmowy']) ? new DataUmowy($data['dataUmowy']) : new Optional(),
-            nrUmowy: isset($data['nrUmowy']) ? new NrUmowy($data['nrUmowy']) : new Optional(),
+            dataUmowy: isset($data['DataUmowy']) ? new DataUmowy($data['DataUmowy']) : new Optional(),
+            nrUmowy: isset($data['NrUmowy']) ? new NrUmowy($data['NrUmowy']) : new Optional(),
         );
     }
 }

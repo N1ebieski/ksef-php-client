@@ -67,10 +67,10 @@ final class Rejestry extends AbstractDTO implements DomSerializableInterface, Fr
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            pelnaNazwa: isset($data['pelnaNazwa']) ? new PelnaNazwa($data['pelnaNazwa']) : new Optional(),
-            krs: isset($data['krs']) ? new KRS($data['krs']) : new Optional(),
-            regon: isset($data['regon']) ? new REGON($data['regon']) : new Optional(),
-            bdo: isset($data['bdo']) ? new BDO($data['bdo']) : new Optional(),
+            pelnaNazwa: isset($data['PelnaNazwa']) ? new PelnaNazwa($data['PelnaNazwa']) : new Optional(),
+            krs: isset($data['KRS']) ? new KRS($data['KRS']) : new Optional(),
+            regon: isset($data['REGON']) ? new REGON($data['REGON']) : new Optional(),
+            bdo: isset($data['BDO']) ? new BDO($data['BDO']) : new Optional(),
         );
     }
 }

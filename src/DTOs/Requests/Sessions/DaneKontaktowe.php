@@ -47,8 +47,8 @@ final class DaneKontaktowe extends AbstractDTO implements DomSerializableInterfa
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            email: isset($data['email']) ? new Email($data['email']) : new Optional(),
-            telefon: isset($data['telefon']) ? new Telefon($data['telefon']) : new Optional(),
+            email: isset($data['Email']) ? new Email($data['Email']) : new Optional(),
+            telefon: isset($data['Telefon']) ? new Telefon($data['Telefon']) : new Optional(),
         );
     }
 }

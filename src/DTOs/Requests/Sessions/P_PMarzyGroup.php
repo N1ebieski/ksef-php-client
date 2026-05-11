@@ -48,11 +48,11 @@ final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterfac
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['p_PMarzy_2'])) {
+        if (isset($data['P_PMarzy_2'])) {
             $p_PMarzy_2_3Group = P_PMarzy_2Group::fromXmlArray($data);
-        } elseif (isset($data['p_PMarzy_3_1'])) {
+        } elseif (isset($data['P_PMarzy_3_1'])) {
             $p_PMarzy_2_3Group = P_PMarzy_3_1Group::fromXmlArray($data);
-        } elseif (isset($data['p_PMarzy_3_2'])) {
+        } elseif (isset($data['P_PMarzy_3_2'])) {
             $p_PMarzy_2_3Group = P_PMarzy_3_2Group::fromXmlArray($data);
         } else {
             $p_PMarzy_2_3Group = P_PMarzy_3_3Group::fromXmlArray($data);
@@ -60,7 +60,7 @@ final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterfac
 
         return new self(
             p_PMarzy_2_3Group: $p_PMarzy_2_3Group,
-            p_PMarzy: isset($data['p_PMarzy']) ? P_PMarzy::from($data['p_PMarzy']) : P_PMarzy::Default,
+            p_PMarzy: isset($data['P_PMarzy']) ? P_PMarzy::from($data['P_PMarzy']) : P_PMarzy::Default,
         );
     }
 }

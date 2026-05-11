@@ -44,8 +44,8 @@ final class Podmiot1KDaneIdentyfikacyjne extends AbstractDTO implements DomSeria
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nip: new NIP($data['nip']),
-            nazwa: new Nazwa($data['nazwa']),
+            nip: new NIP($data['NIP']),
+            nazwa: new Nazwa($data['Nazwa']),
         );
     }
 }

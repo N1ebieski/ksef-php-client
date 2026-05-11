@@ -45,8 +45,8 @@ final class Kol extends AbstractDTO implements DomSerializableInterface, FromXml
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            typ: Typ::from($data['@attributes']['typ']),
-            nKom: new NKom($data['nKom']),
+            typ: Typ::from($data['@attributes']['Typ']),
+            nKom: new NKom($data['NKom']),
         );
     }
 }

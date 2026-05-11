@@ -38,6 +38,6 @@ final class FormaPlatnosciGroup extends AbstractDTO implements DomSerializableIn
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(formaPlatnosci: FormaPlatnosci::from($data['formaPlatnosci']));
+        return new self(formaPlatnosci: FormaPlatnosci::from($data['FormaPlatnosci']));
     }
 }

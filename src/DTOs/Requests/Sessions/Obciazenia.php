@@ -48,8 +48,8 @@ final class Obciazenia extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            kwota: new Kwota($data['kwota']),
-            powod: new Powod($data['powod']),
+            kwota: new Kwota($data['Kwota']),
+            powod: new Powod($data['Powod']),
         );
     }
 }

@@ -40,7 +40,7 @@ final class Zwolnienie extends AbstractDTO implements DomSerializableInterface, 
 
     public static function fromXmlArray(array $data): self
     {
-        $p_19Group = isset($data['p_19']) ? P_19Group::fromXmlArray($data) : P_19NGroup::fromXmlArray($data);
+        $p_19Group = isset($data['P_19']) ? P_19Group::fromXmlArray($data) : P_19NGroup::fromXmlArray($data);
 
         return new self(p_19Group: $p_19Group);
     }

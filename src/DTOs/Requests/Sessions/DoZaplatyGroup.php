@@ -39,6 +39,6 @@ final class DoZaplatyGroup extends AbstractDTO implements DomSerializableInterfa
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(doZaplaty: new DoZaplaty($data['doZaplaty']));
+        return new self(doZaplaty: new DoZaplaty($data['DoZaplaty']));
     }
 }

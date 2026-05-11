@@ -39,7 +39,7 @@ final class Informacje extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            stopkaFaktury: isset($data['stopkaFaktury']) ? new StopkaFaktury($data['stopkaFaktury']) : new Optional(),
+            stopkaFaktury: isset($data['StopkaFaktury']) ? new StopkaFaktury($data['StopkaFaktury']) : new Optional(),
         );
     }
 }

@@ -48,8 +48,8 @@ final class NrKSeFGroup extends AbstractDTO implements DomSerializableInterface,
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nrKSeFFaKorygowanej: new NrKSeFFaKorygowanej($data['nrKSeFFaKorygowanej']),
-            nrKSeF: isset($data['nrKSeF']) ? NrKSeF::from($data['nrKSeF']) : NrKSeF::Default,
+            nrKSeFFaKorygowanej: new NrKSeFFaKorygowanej($data['NrKSeFFaKorygowanej']),
+            nrKSeF: isset($data['NrKSeF']) ? NrKSeF::from($data['NrKSeF']) : NrKSeF::Default,
         );
     }
 }

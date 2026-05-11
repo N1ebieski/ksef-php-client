@@ -50,8 +50,8 @@ final class OkresFa extends AbstractDTO implements DomSerializableInterface, Fro
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_6_Od: new P_6_Od($data['p_6_Od']),
-            p_6_Do: new P_6_Do($data['p_6_Do']),
+            p_6_Od: new P_6_Od($data['P_6_Od']),
+            p_6_Do: new P_6_Do($data['P_6_Do']),
         );
     }
 }

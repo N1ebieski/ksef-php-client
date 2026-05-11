@@ -48,8 +48,8 @@ final class NrKSeFZNGroup extends AbstractDTO implements DomSerializableInterfac
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            nrFaZaliczkowej: new NrFaZaliczkowej($data['nrFaZaliczkowej']),
-            nrKSeFZN: isset($data['nrKSeFZN']) ? NrKSeFZN::from($data['nrKSeFZN']) : NrKSeFZN::Default,
+            nrFaZaliczkowej: new NrFaZaliczkowej($data['NrFaZaliczkowej']),
+            nrKSeFZN: isset($data['NrKSeFZN']) ? NrKSeFZN::from($data['NrKSeFZN']) : NrKSeFZN::Default,
         );
     }
 }

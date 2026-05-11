@@ -57,7 +57,7 @@ final class Zalacznik extends AbstractDTO implements DomSerializableInterface, F
         return new self(
             blokDanych: array_map(
                 fn (array $item) => BlokDanych::fromXmlArray($item),
-                self::ensureList($data['blokDanych'])
+                self::ensureList($data['BlokDanych'])
             ),
         );
     }

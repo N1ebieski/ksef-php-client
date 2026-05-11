@@ -40,7 +40,7 @@ final class P_PMarzy_2Group extends AbstractDTO implements DomSerializableInterf
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_PMarzy_2: isset($data['p_PMarzy_2']) ? P_PMarzy_2::from($data['p_PMarzy_2']) : P_PMarzy_2::Default,
+            p_PMarzy_2: isset($data['P_PMarzy_2']) ? P_PMarzy_2::from($data['P_PMarzy_2']) : P_PMarzy_2::Default,
         );
     }
 }

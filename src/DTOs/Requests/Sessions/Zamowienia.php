@@ -51,8 +51,8 @@ final class Zamowienia extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            dataZamowienia: isset($data['dataZamowienia']) ? new DataZamowienia($data['dataZamowienia']) : new Optional(),
-            nrZamowienia: isset($data['nrZamowienia']) ? new NrZamowienia($data['nrZamowienia']) : new Optional(),
+            dataZamowienia: isset($data['DataZamowienia']) ? new DataZamowienia($data['DataZamowienia']) : new Optional(),
+            nrZamowienia: isset($data['NrZamowienia']) ? new NrZamowienia($data['NrZamowienia']) : new Optional(),
         );
     }
 }

@@ -56,9 +56,9 @@ final class Podmiot2K extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            daneIdentyfikacyjne: Podmiot2KDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
-            adres: isset($data['adres']) ? Adres::fromXmlArray($data['adres']) : new Optional(),
-            idNabywcy: isset($data['iDNabywcy']) ? new IDNabywcy($data['iDNabywcy']) : new Optional(),
+            daneIdentyfikacyjne: Podmiot2KDaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
+            adres: isset($data['Adres']) ? Adres::fromXmlArray($data['Adres']) : new Optional(),
+            idNabywcy: isset($data['IDNabywcy']) ? new IDNabywcy($data['IDNabywcy']) : new Optional(),
         );
     }
 }

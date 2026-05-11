@@ -96,19 +96,19 @@ final class Tabela extends AbstractDTO implements DomSerializableInterface, From
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            tNaglowek: TNaglowek::fromXmlArray($data['tNaglowek']),
+            tNaglowek: TNaglowek::fromXmlArray($data['TNaglowek']),
             wiersz: array_map(
                 fn (array $item) => Wiersz::fromXmlArray($item),
-                self::ensureList($data['wiersz'])
+                self::ensureList($data['Wiersz'])
             ),
-            tMetaDane: isset($data['tMetaDane'])
+            tMetaDane: isset($data['TMetaDane'])
                 ? array_map(
                     fn (array $item) => TMetaDane::fromXmlArray($item),
-                    self::ensureList($data['tMetaDane'])
+                    self::ensureList($data['TMetaDane'])
                 )
                 : new Optional(),
-            opis: isset($data['opis']) ? new Opis($data['opis']) : new Optional(),
-            suma: isset($data['suma']) ? Suma::fromXmlArray($data['suma']) : new Optional(),
+            opis: isset($data['Opis']) ? new Opis($data['Opis']) : new Optional(),
+            suma: isset($data['Suma']) ? Suma::fromXmlArray($data['Suma']) : new Optional(),
         );
     }
 }

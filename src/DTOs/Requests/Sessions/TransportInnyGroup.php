@@ -47,8 +47,8 @@ final class TransportInnyGroup extends AbstractDTO implements DomSerializableInt
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            opisInnegoTransportu: new OpisInnegoTransportu($data['opisInnegoTransportu']),
-            transportInny: isset($data['transportInny']) ? TransportInny::from($data['transportInny']) : TransportInny::Default,
+            opisInnegoTransportu: new OpisInnegoTransportu($data['OpisInnegoTransportu']),
+            transportInny: isset($data['TransportInny']) ? TransportInny::from($data['TransportInny']) : TransportInny::Default,
         );
     }
 }

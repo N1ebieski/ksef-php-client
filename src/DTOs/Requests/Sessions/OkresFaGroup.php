@@ -37,6 +37,6 @@ final class OkresFaGroup extends AbstractDTO implements DomSerializableInterface
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(okresFa: OkresFa::fromXmlArray($data['okresFa']));
+        return new self(okresFa: OkresFa::fromXmlArray($data['OkresFa']));
     }
 }

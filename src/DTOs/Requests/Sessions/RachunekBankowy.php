@@ -68,11 +68,11 @@ final class RachunekBankowy extends AbstractDTO implements DomSerializableInterf
     {
         return new self(
             nrRBGroup: NrRBGroup::fromXmlArray($data),
-            rachunekWlasnyBanku: isset($data['rachunekWlasnyBanku'])
-                ? RachunekWlasnyBanku::from($data['rachunekWlasnyBanku'])
+            rachunekWlasnyBanku: isset($data['RachunekWlasnyBanku'])
+                ? RachunekWlasnyBanku::from($data['RachunekWlasnyBanku'])
                 : new Optional(),
-            nazwaBanku: isset($data['nazwaBanku']) ? new NazwaBanku($data['nazwaBanku']) : new Optional(),
-            opisRachunku: isset($data['opisRachunku']) ? new OpisRachunku($data['opisRachunku']) : new Optional(),
+            nazwaBanku: isset($data['NazwaBanku']) ? new NazwaBanku($data['NazwaBanku']) : new Optional(),
+            opisRachunku: isset($data['OpisRachunku']) ? new OpisRachunku($data['OpisRachunku']) : new Optional(),
         );
     }
 }

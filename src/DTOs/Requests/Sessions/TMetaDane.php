@@ -44,8 +44,8 @@ final class TMetaDane extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            tKlucz: new TKlucz($data['tKlucz']),
-            tWartosc: new TWartosc($data['tWartosc']),
+            tKlucz: new TKlucz($data['TKlucz']),
+            tWartosc: new TWartosc($data['TWartosc']),
         );
     }
 }

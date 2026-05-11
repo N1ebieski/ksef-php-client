@@ -59,7 +59,7 @@ final class Suma extends AbstractDTO implements DomSerializableInterface, FromXm
         return new self(
             sKom: array_map(
                 fn (string $value) => new SKom($value),
-                self::ensureList($data['sKom'])
+                self::ensureList($data['SKom'])
             ),
         );
     }

@@ -38,7 +38,7 @@ final class RozliczenieGroup extends AbstractDTO implements DomSerializableInter
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['doZaplaty'])) {
+        if (isset($data['DoZaplaty'])) {
             $doGroup = DoZaplatyGroup::fromXmlArray($data);
         } else {
             $doGroup = DoRozliczeniaGroup::fromXmlArray($data);

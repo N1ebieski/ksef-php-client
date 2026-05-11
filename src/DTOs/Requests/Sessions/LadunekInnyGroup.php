@@ -48,8 +48,8 @@ final class LadunekInnyGroup extends AbstractDTO implements DomSerializableInter
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            opisInnegoLadunku: new OpisInnegoLadunku($data['opisInnegoLadunku']),
-            ladunekInny: isset($data['ladunekInny']) ? LadunekInny::from($data['ladunekInny']) : LadunekInny::Default,
+            opisInnegoLadunku: new OpisInnegoLadunku($data['OpisInnegoLadunku']),
+            ladunekInny: isset($data['LadunekInny']) ? LadunekInny::from($data['LadunekInny']) : LadunekInny::Default,
         );
     }
 }

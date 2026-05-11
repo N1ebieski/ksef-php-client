@@ -40,7 +40,7 @@ final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableI
 
     public static function fromXmlArray(array $data): self
     {
-        $p_22Group = isset($data['p_22']) ? P_22Group::fromXmlArray($data) : P_22NGroup::fromXmlArray($data);
+        $p_22Group = isset($data['P_22']) ? P_22Group::fromXmlArray($data) : P_22NGroup::fromXmlArray($data);
 
         return new self(p_22Group: $p_22Group);
     }

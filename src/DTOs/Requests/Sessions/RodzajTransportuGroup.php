@@ -39,6 +39,6 @@ final class RodzajTransportuGroup extends AbstractDTO implements DomSerializable
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(rodzajTransportu: RodzajTransportu::from($data['rodzajTransportu']));
+        return new self(rodzajTransportu: RodzajTransportu::from($data['RodzajTransportu']));
     }
 }

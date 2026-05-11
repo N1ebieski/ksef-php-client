@@ -39,6 +39,6 @@ final class P_19CGroup extends AbstractDTO implements DomSerializableInterface, 
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(p_19C: new P_19C($data['p_19C']));
+        return new self(p_19C: new P_19C($data['P_19C']));
     }
 }

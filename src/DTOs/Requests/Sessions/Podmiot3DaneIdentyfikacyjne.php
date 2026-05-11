@@ -48,13 +48,13 @@ final class Podmiot3DaneIdentyfikacyjne extends AbstractDTO implements DomSerial
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['nip'])) {
+        if (isset($data['NIP'])) {
             $idGroup = NIPGroup::fromXmlArray($data);
-        } elseif (isset($data['kodUE'])) {
+        } elseif (isset($data['KodUE'])) {
             $idGroup = UEGroup::fromXmlArray($data);
-        } elseif (isset($data['brakID'])) {
+        } elseif (isset($data['BrakID'])) {
             $idGroup = BrakIDGroup::fromXmlArray($data);
-        } elseif (isset($data['iDWew'])) {
+        } elseif (isset($data['IDWew'])) {
             $idGroup = IDWewGroup::fromXmlArray($data);
         } else {
             $idGroup = KrajGroup::fromXmlArray($data);
@@ -62,7 +62,7 @@ final class Podmiot3DaneIdentyfikacyjne extends AbstractDTO implements DomSerial
 
         return new self(
             idGroup: $idGroup,
-            nazwa: isset($data['nazwa']) ? new Nazwa($data['nazwa']) : new Optional(),
+            nazwa: isset($data['Nazwa']) ? new Nazwa($data['Nazwa']) : new Optional(),
         );
     }
 }

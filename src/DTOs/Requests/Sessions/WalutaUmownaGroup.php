@@ -15,8 +15,8 @@ use N1ebieski\KSEFClient\Support\AbstractDTO;
 final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
-     * @param KursUmowny $kursUmowny Kurs umowny
-     * @param WalutaUmowna $walutaUmowna Waluta umowna
+     * @param KursUmowny $kursUmowny Kurs umowny - w przypadkach, gdy na fakturze znajduje się informacja o kursie, po którym zostały przeliczone kwoty wykazane na fakturze w złotych. Nie dotyczy przypadków, o których mowa w Dziale VI ustawy
+     * @param WalutaUmowna $walutaUmowna Waluta umowna - trzyliterowy kod waluty (ISO-4217) w przypadkach, gdy na fakturze znajduje się informacja o kursie, po którym zostały przeliczone kwoty wykazane na fakturze w złotych. Nie dotyczy przypadków, o których mowa w Dziale VI ustawy
      */
     public function __construct(
         public readonly KursUmowny $kursUmowny,
@@ -48,8 +48,8 @@ final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInte
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            kursUmowny: new KursUmowny($data['kursUmowny']),
-            walutaUmowna: new WalutaUmowna($data['walutaUmowna']),
+            kursUmowny: new KursUmowny($data['KursUmowny']),
+            walutaUmowna: new WalutaUmowna($data['WalutaUmowna']),
         );
     }
 }

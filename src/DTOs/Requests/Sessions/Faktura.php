@@ -111,41 +111,50 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Xml
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['naglowek'])) {
-            $data['naglowek'] = Naglowek::fromXmlArray($data['naglowek']);
+        if (isset($data['Naglowek'])) {
+            $data['Naglowek'] = Naglowek::fromXmlArray($data['Naglowek']);
         }
 
-        if (isset($data['podmiot1'])) {
-            $data['podmiot1'] = Podmiot1::fromXmlArray($data['podmiot1']);
+        if (isset($data['Podmiot1'])) {
+            $data['Podmiot1'] = Podmiot1::fromXmlArray($data['Podmiot1']);
         }
 
-        if (isset($data['podmiot2'])) {
-            $data['podmiot2'] = Podmiot2::fromXmlArray($data['podmiot2']);
+        if (isset($data['Podmiot2'])) {
+            $data['Podmiot2'] = Podmiot2::fromXmlArray($data['Podmiot2']);
         }
 
-        if (isset($data['podmiot3'])) {
-            $data['podmiot3'] = array_map(
+        if (isset($data['Podmiot3'])) {
+            $data['Podmiot3'] = array_map(
                 fn (array $item) => Podmiot3::fromXmlArray($item),
-                self::ensureList($data['podmiot3'])
+                self::ensureList($data['Podmiot3'])
             );
         }
 
-        if (isset($data['podmiotUpowazniony'])) {
-            $data['podmiotUpowazniony'] = PodmiotUpowazniony::fromXmlArray($data['podmiotUpowazniony']);
+        if (isset($data['PodmiotUpowazniony'])) {
+            $data['PodmiotUpowazniony'] = PodmiotUpowazniony::fromXmlArray($data['PodmiotUpowazniony']);
         }
 
-        if (isset($data['fa'])) {
-            $data['fa'] = Fa::fromXmlArray($data['fa']);
+        if (isset($data['Fa'])) {
+            $data['Fa'] = Fa::fromXmlArray($data['Fa']);
         }
 
-        if (isset($data['stopka'])) {
-            $data['stopka'] = Stopka::fromXmlArray($data['stopka']);
+        if (isset($data['Stopka'])) {
+            $data['Stopka'] = Stopka::fromXmlArray($data['Stopka']);
         }
 
-        if (isset($data['zalacznik'])) {
-            $data['zalacznik'] = Zalacznik::fromXmlArray($data['zalacznik']);
+        if (isset($data['Zalacznik'])) {
+            $data['Zalacznik'] = Zalacznik::fromXmlArray($data['Zalacznik']);
         }
 
-        return new self(...$data);
+        return new self(
+            naglowek: $data['Naglowek'],
+            podmiot1: $data['Podmiot1'],
+            podmiot2: $data['Podmiot2'],
+            fa: $data['Fa'],
+            podmiot3: $data['Podmiot3'] ?? new Optional(),
+            podmiotUpowazniony: $data['PodmiotUpowazniony'] ?? new Optional(),
+            stopka: $data['Stopka'] ?? new Optional(),
+            zalacznik: $data['Zalacznik'] ?? new Optional(),
+        );
     }
 }

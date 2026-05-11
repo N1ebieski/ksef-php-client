@@ -39,6 +39,6 @@ final class OpisLadunkuGroup extends AbstractDTO implements DomSerializableInter
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(opisLadunku: OpisLadunku::from($data['opisLadunku']));
+        return new self(opisLadunku: OpisLadunku::from($data['OpisLadunku']));
     }
 }

@@ -51,8 +51,8 @@ final class P_13_5Group extends AbstractDTO implements DomSerializableInterface,
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_13_5: new P_13_5($data['p_13_5']),
-            p_14_5: isset($data['p_14_5']) ? new P_14_5($data['p_14_5']) : new Optional(),
+            p_13_5: new P_13_5($data['P_13_5']),
+            p_14_5: isset($data['P_14_5']) ? new P_14_5($data['P_14_5']) : new Optional(),
         );
     }
 }

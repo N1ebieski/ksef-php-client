@@ -100,21 +100,21 @@ final class Podmiot1 extends AbstractDTO implements DomSerializableInterface, Fr
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            daneIdentyfikacyjne: Podmiot1DaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
-            adres: Adres::fromXmlArray($data['adres']),
-            daneKontaktowe: isset($data['daneKontaktowe'])
+            daneIdentyfikacyjne: Podmiot1DaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
+            adres: Adres::fromXmlArray($data['Adres']),
+            daneKontaktowe: isset($data['DaneKontaktowe'])
                 ? array_map(
                     fn (array $item) => DaneKontaktowe::fromXmlArray($item),
-                    self::ensureList($data['daneKontaktowe'])
+                    self::ensureList($data['DaneKontaktowe'])
                 )
                 : new Optional(),
-            prefiksPodatnika: isset($data['prefiksPodatnika'])
-                ? new PrefiksPodatnika($data['prefiksPodatnika'])
+            prefiksPodatnika: isset($data['PrefiksPodatnika'])
+                ? new PrefiksPodatnika($data['PrefiksPodatnika'])
                 : new Optional(),
-            nrEORI: isset($data['nrEORI']) ? new NrEORI($data['nrEORI']) : new Optional(),
-            adresKoresp: isset($data['adresKoresp']) ? AdresKoresp::fromXmlArray($data['adresKoresp']) : new Optional(),
-            statusInfoPodatnika: isset($data['statusInfoPodatnika'])
-                ? StatusInfoPodatnika::from($data['statusInfoPodatnika'])
+            nrEORI: isset($data['NrEORI']) ? new NrEORI($data['NrEORI']) : new Optional(),
+            adresKoresp: isset($data['AdresKoresp']) ? AdresKoresp::fromXmlArray($data['AdresKoresp']) : new Optional(),
+            statusInfoPodatnika: isset($data['StatusInfoPodatnika'])
+                ? StatusInfoPodatnika::from($data['StatusInfoPodatnika'])
                 : new Optional(),
         );
     }

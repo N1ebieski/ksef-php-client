@@ -61,22 +61,22 @@ final class P_22BGroup extends AbstractDTO implements DomSerializableInterface, 
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['p_22B1'])) {
+        if (isset($data['P_22B1'])) {
             $p_22B1234Group = P_22B1Group::fromXmlArray($data);
-        } elseif (isset($data['p_22B2'])) {
+        } elseif (isset($data['P_22B2'])) {
             $p_22B1234Group = P_22B2Group::fromXmlArray($data);
-        } elseif (isset($data['p_22B3'])) {
+        } elseif (isset($data['P_22B3'])) {
             $p_22B1234Group = P_22B3Group::fromXmlArray($data);
-        } elseif (isset($data['p_22B4'])) {
+        } elseif (isset($data['P_22B4'])) {
             $p_22B1234Group = P_22B4Group::fromXmlArray($data);
         } else {
             $p_22B1234Group = new Optional();
         }
 
         return new self(
-            p_22B: new P_22B($data['p_22B']),
+            p_22B: new P_22B($data['P_22B']),
             p_22B1234Group: $p_22B1234Group,
-            p_22BT: isset($data['p_22BT']) ? new P_22BT($data['p_22BT']) : new Optional(),
+            p_22BT: isset($data['P_22BT']) ? new P_22BT($data['P_22BT']) : new Optional(),
         );
     }
 }

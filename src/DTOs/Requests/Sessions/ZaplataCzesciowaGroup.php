@@ -23,8 +23,8 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
     public readonly Optional | array $zaplataCzesciowa;
 
     /**
-     * @param Optional|array<int, ZaplataCzesciowa> $zaplataCzesciowa
-     * @param ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej
+     * @param Optional|array<int, ZaplataCzesciowa> $zaplataCzesciowa Dane zapłat częściowych
+     * @param ZnacznikZaplatyCzesciowej $znacznikZaplatyCzesciowej Znacznik informujący, że należność wynikająca z faktury została zapłacona w części lub w całości: 1 - zapłacono w części; 2 - zapłacono w całości, jeśli należność wynikająca z faktury została zapłacona w dwóch lub więcej częściach, a ostatnia płatność jest płatnością końcową
      */
     public function __construct(
         Optional | array $zaplataCzesciowa = new Optional(),
@@ -65,17 +65,17 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
 
     public static function fromXmlArray(array $data): self
     {
-        $zaplataCzesciowa = isset($data['zaplataCzesciowa'])
+        $zaplataCzesciowa = isset($data['ZaplataCzesciowa'])
             ? array_map(
                 fn (array $item) => ZaplataCzesciowa::fromXmlArray($item),
-                self::ensureList($data['zaplataCzesciowa'])
+                self::ensureList($data['ZaplataCzesciowa'])
             )
             : new Optional();
 
         return new self(
             zaplataCzesciowa: $zaplataCzesciowa,
-            znacznikZaplatyCzesciowej: isset($data['znacznikZaplatyCzesciowej'])
-                ? ZnacznikZaplatyCzesciowej::from($data['znacznikZaplatyCzesciowej'])
+            znacznikZaplatyCzesciowej: isset($data['ZnacznikZaplatyCzesciowej'])
+                ? ZnacznikZaplatyCzesciowej::from($data['ZnacznikZaplatyCzesciowej'])
                 : ZnacznikZaplatyCzesciowej::Default,
         );
     }

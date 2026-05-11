@@ -94,14 +94,14 @@ final class BlokDanych extends AbstractDTO implements DomSerializableInterface, 
         return new self(
             metaDane: array_map(
                 fn (array $item) => MetaDane::fromXmlArray($item),
-                self::ensureList($data['metaDane'])
+                self::ensureList($data['MetaDane'])
             ),
-            zNaglowek: isset($data['zNaglowek']) ? new ZNaglowek($data['zNaglowek']) : new Optional(),
-            tekst: isset($data['tekst']) ? Tekst::fromXmlArray($data['tekst']) : new Optional(),
-            tabela: isset($data['tabela'])
+            zNaglowek: isset($data['ZNaglowek']) ? new ZNaglowek($data['ZNaglowek']) : new Optional(),
+            tekst: isset($data['Tekst']) ? Tekst::fromXmlArray($data['Tekst']) : new Optional(),
+            tabela: isset($data['Tabela'])
                 ? array_map(
                     fn (array $item) => Tabela::fromXmlArray($item),
-                    self::ensureList($data['tabela'])
+                    self::ensureList($data['Tabela'])
                 )
                 : new Optional(),
         );

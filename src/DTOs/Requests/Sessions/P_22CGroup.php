@@ -51,8 +51,8 @@ final class P_22CGroup extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p_22C: new P_22C($data['p_22C']),
-            p_22C1: isset($data['p_22C1']) ? new P_22C1($data['p_22C1']) : new Optional(),
+            p_22C: new P_22C($data['P_22C']),
+            p_22C1: isset($data['P_22C1']) ? new P_22C1($data['P_22C1']) : new Optional(),
         );
     }
 }

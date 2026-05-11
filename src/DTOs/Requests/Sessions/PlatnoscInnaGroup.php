@@ -48,8 +48,8 @@ final class PlatnoscInnaGroup extends AbstractDTO implements DomSerializableInte
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            opisPlatnosci: new OpisPlatnosci($data['opisPlatnosci']),
-            platnoscInna: isset($data['platnoscInna']) ? PlatnoscInna::from($data['platnoscInna']) : PlatnoscInna::Default,
+            opisPlatnosci: new OpisPlatnosci($data['OpisPlatnosci']),
+            platnoscInna: isset($data['PlatnoscInna']) ? PlatnoscInna::from($data['PlatnoscInna']) : PlatnoscInna::Default,
         );
     }
 }

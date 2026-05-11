@@ -40,7 +40,7 @@ final class PMarzy extends AbstractDTO implements DomSerializableInterface, From
 
     public static function fromXmlArray(array $data): self
     {
-        $p_PMarzyGroup = isset($data['p_PMarzy'])
+        $p_PMarzyGroup = isset($data['P_PMarzy'])
             ? P_PMarzyGroup::fromXmlArray($data)
             : P_PMarzyNGroup::fromXmlArray($data);
 

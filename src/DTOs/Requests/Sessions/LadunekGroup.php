@@ -48,7 +48,7 @@ final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['ladunekInny'])) {
+        if (isset($data['LadunekInny'])) {
             $opisLadunkuGroup = LadunekInnyGroup::fromXmlArray($data);
         } else {
             $opisLadunkuGroup = OpisLadunkuGroup::fromXmlArray($data);
@@ -56,8 +56,8 @@ final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
 
         return new self(
             opisLadunkuGroup: $opisLadunkuGroup,
-            jednostkaOpakowania: isset($data['jednostkaOpakowania'])
-                ? new JednostkaOpakowania($data['jednostkaOpakowania'])
+            jednostkaOpakowania: isset($data['JednostkaOpakowania'])
+                ? new JednostkaOpakowania($data['JednostkaOpakowania'])
                 : new Optional(),
         );
     }

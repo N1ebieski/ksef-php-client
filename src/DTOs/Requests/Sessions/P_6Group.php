@@ -39,6 +39,6 @@ final class P_6Group extends AbstractDTO implements DomSerializableInterface, Fr
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(p_6: new P_6($data['p_6']));
+        return new self(p_6: new P_6($data['P_6']));
     }
 }

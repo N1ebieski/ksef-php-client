@@ -58,9 +58,9 @@ final class DodatkowyOpis extends AbstractDTO implements DomSerializableInterfac
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            klucz: new Klucz($data['klucz']),
-            wartosc: new Wartosc($data['wartosc']),
-            nrWiersza: isset($data['nrWiersza']) ? new NrWiersza($data['nrWiersza']) : new Optional(),
+            klucz: new Klucz($data['Klucz']),
+            wartosc: new Wartosc($data['Wartosc']),
+            nrWiersza: isset($data['NrWiersza']) ? new NrWiersza((int)$data['NrWiersza']) : new Optional(),
         );
     }
 }

@@ -39,6 +39,6 @@ final class BrakIDGroup extends AbstractDTO implements DomSerializableInterface,
 
     public static function fromXmlArray(array $data): self
     {
-        return new self(brakID: BrakID::from($data['brakID']));
+        return new self(brakID: BrakID::from($data['BrakID']));
     }
 }

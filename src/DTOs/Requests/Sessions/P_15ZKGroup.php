@@ -51,8 +51,8 @@ final class P_15ZKGroup extends AbstractDTO implements DomSerializableInterface,
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            p15ZK: new P_15ZK($data['p_15ZK']),
-            kursWalutyZK: isset($data['kursWalutyZK']) ? new KursWalutyZK($data['kursWalutyZK']) : new Optional(),
+            p15ZK: new P_15ZK($data['P_15ZK']),
+            kursWalutyZK: isset($data['KursWalutyZK']) ? new KursWalutyZK($data['KursWalutyZK']) : new Optional(),
         );
     }
 }

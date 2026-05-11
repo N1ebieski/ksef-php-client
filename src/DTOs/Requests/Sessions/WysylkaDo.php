@@ -64,10 +64,10 @@ final class WysylkaDo extends AbstractDTO implements DomSerializableInterface, F
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            adresL1: new AdresL1($data['adresL1']),
-            kodKraju: new KodKraju($data['kodKraju'] ?? 'PL'),
-            adresL2: isset($data['adresL2']) ? new AdresL2($data['adresL2']) : new Optional(),
-            gln: isset($data['gln']) ? new GLN($data['gln']) : new Optional(),
+            adresL1: new AdresL1($data['AdresL1']),
+            kodKraju: new KodKraju($data['KodKraju'] ?? 'PL'),
+            adresL2: isset($data['AdresL2']) ? new AdresL2($data['AdresL2']) : new Optional(),
+            gln: isset($data['GLN']) ? new GLN($data['GLN']) : new Optional(),
         );
     }
 }

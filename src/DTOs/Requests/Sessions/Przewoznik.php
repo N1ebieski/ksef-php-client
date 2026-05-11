@@ -40,8 +40,8 @@ final class Przewoznik extends AbstractDTO implements DomSerializableInterface, 
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            daneIdentyfikacyjne: PrzewoznikDaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
-            adresPrzewoznika: AdresPrzewoznika::fromXmlArray($data['adresPrzewoznika']),
+            daneIdentyfikacyjne: PrzewoznikDaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
+            adresPrzewoznika: AdresPrzewoznika::fromXmlArray($data['AdresPrzewoznika']),
         );
     }
 }

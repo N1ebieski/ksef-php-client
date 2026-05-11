@@ -107,23 +107,23 @@ final class NowySrodekTransportu extends AbstractDTO implements DomSerializableI
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['p_22B'])) {
+        if (isset($data['P_22B'])) {
             $p_22BCDGroup = P_22BGroup::fromXmlArray($data);
-        } elseif (isset($data['p_22C'])) {
+        } elseif (isset($data['P_22C'])) {
             $p_22BCDGroup = P_22CGroup::fromXmlArray($data);
         } else {
             $p_22BCDGroup = P_22DGroup::fromXmlArray($data);
         }
 
         return new self(
-            p_22A: new P_22A($data['p_22A']),
-            p_nrWierszaNST: new P_NrWierszaNST($data['p_NrWierszaNST']),
+            p_22A: new P_22A($data['P_22A']),
+            p_nrWierszaNST: new P_NrWierszaNST((int)$data['P_NrWierszaNST']),
             p_22BCDGroup: $p_22BCDGroup,
-            p_22BMK: isset($data['p_22BMK']) ? new P_22BMK($data['p_22BMK']) : new Optional(),
-            p_22BMD: isset($data['p_22BMD']) ? new P_22BMD($data['p_22BMD']) : new Optional(),
-            p_22BK: isset($data['p_22BK']) ? new P_22BK($data['p_22BK']) : new Optional(),
-            p_22BNR: isset($data['p_22BNR']) ? new P_22BNR($data['p_22BNR']) : new Optional(),
-            p_22BRP: isset($data['p_22BRP']) ? new P_22BRP($data['p_22BRP']) : new Optional(),
+            p_22BMK: isset($data['P_22BMK']) ? new P_22BMK($data['P_22BMK']) : new Optional(),
+            p_22BMD: isset($data['P_22BMD']) ? new P_22BMD($data['P_22BMD']) : new Optional(),
+            p_22BK: isset($data['P_22BK']) ? new P_22BK($data['P_22BK']) : new Optional(),
+            p_22BNR: isset($data['P_22BNR']) ? new P_22BNR($data['P_22BNR']) : new Optional(),
+            p_22BRP: isset($data['P_22BRP']) ? new P_22BRP($data['P_22BRP']) : new Optional(),
         );
     }
 }

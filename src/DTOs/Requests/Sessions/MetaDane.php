@@ -44,8 +44,8 @@ final class MetaDane extends AbstractDTO implements DomSerializableInterface, Fr
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            zKlucz: new ZKlucz($data['zKlucz']),
-            zWartosc: new ZWartosc($data['zWartosc']),
+            zKlucz: new ZKlucz($data['ZKlucz']),
+            zWartosc: new ZWartosc($data['ZWartosc']),
         );
     }
 }

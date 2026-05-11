@@ -121,17 +121,17 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Fr
 
     public static function fromXmlArray(array $data): self
     {
-        if (isset($data['zaplacono'])) {
+        if (isset($data['Zaplacono'])) {
             $zaplataGroup = ZaplataGroup::fromXmlArray($data);
-        } elseif (isset($data['znacznikZaplatyCzesciowej'])) {
+        } elseif (isset($data['ZnacznikZaplatyCzesciowej'])) {
             $zaplataGroup = ZaplataCzesciowaGroup::fromXmlArray($data);
         } else {
             $zaplataGroup = new Optional();
         }
 
-        if (isset($data['formaPlatnosci'])) {
+        if (isset($data['FormaPlatnosci'])) {
             $platnoscGroup = FormaPlatnosciGroup::fromXmlArray($data);
-        } elseif (isset($data['platnoscInna'])) {
+        } elseif (isset($data['PlatnoscInna'])) {
             $platnoscGroup = PlatnoscInnaGroup::fromXmlArray($data);
         } else {
             $platnoscGroup = new Optional();
@@ -139,26 +139,26 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Fr
 
         return new self(
             zaplataGroup: $zaplataGroup,
-            terminPlatnosci: isset($data['terminPlatnosci'])
+            terminPlatnosci: isset($data['TerminPlatnosci'])
                 ? array_map(
                     fn (array $item) => TerminPlatnosci::fromXmlArray($item),
-                    self::ensureList($data['terminPlatnosci'])
+                    self::ensureList($data['TerminPlatnosci'])
                 )
                 : new Optional(),
             platnoscGroup: $platnoscGroup,
-            rachunekBankowy: isset($data['rachunekBankowy'])
+            rachunekBankowy: isset($data['RachunekBankowy'])
                 ? array_map(
                     fn (array $item) => RachunekBankowy::fromXmlArray($item),
-                    self::ensureList($data['rachunekBankowy'])
+                    self::ensureList($data['RachunekBankowy'])
                 )
                 : new Optional(),
-            rachunekBankowyFaktora: isset($data['rachunekBankowyFaktora'])
+            rachunekBankowyFaktora: isset($data['RachunekBankowyFaktora'])
                 ? array_map(
                     fn (array $item) => RachunekBankowyFaktora::fromXmlArray($item),
-                    self::ensureList($data['rachunekBankowyFaktora'])
+                    self::ensureList($data['RachunekBankowyFaktora'])
                 )
                 : new Optional(),
-            skonto: isset($data['skonto']) ? Skonto::fromXmlArray($data['skonto']) : new Optional(),
+            skonto: isset($data['Skonto']) ? Skonto::fromXmlArray($data['Skonto']) : new Optional(),
         );
     }
 }

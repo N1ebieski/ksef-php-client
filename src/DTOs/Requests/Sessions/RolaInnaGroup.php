@@ -48,8 +48,8 @@ final class RolaInnaGroup extends AbstractDTO implements DomSerializableInterfac
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            rolaInna: RolaInna::from($data['rolaInna']),
-            opisRoli: new OpisRoli($data['opisRoli']),
+            rolaInna: RolaInna::from($data['RolaInna']),
+            opisRoli: new OpisRoli($data['OpisRoli']),
         );
     }
 }

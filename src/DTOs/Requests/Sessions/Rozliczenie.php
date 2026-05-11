@@ -104,21 +104,21 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface,
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            obciazenia: isset($data['obciazenia'])
+            obciazenia: isset($data['Obciazenia'])
                 ? array_map(
                     fn (array $item) => Obciazenia::fromXmlArray($item),
-                    self::ensureList($data['obciazenia'])
+                    self::ensureList($data['Obciazenia'])
                 )
                 : new Optional(),
-            sumaObciazen: isset($data['sumaObciazen']) ? new SumaObciazen($data['sumaObciazen']) : new Optional(),
-            odliczenia: isset($data['odliczenia'])
+            sumaObciazen: isset($data['SumaObciazen']) ? new SumaObciazen($data['SumaObciazen']) : new Optional(),
+            odliczenia: isset($data['Odliczenia'])
                 ? array_map(
                     fn (array $item) => Odliczenia::fromXmlArray($item),
-                    self::ensureList($data['odliczenia'])
+                    self::ensureList($data['Odliczenia'])
                 )
                 : new Optional(),
-            sumaOdliczen: isset($data['sumaOdliczen']) ? new SumaOdliczen($data['sumaOdliczen']) : new Optional(),
-            rozliczenieGroup: (isset($data['doZaplaty']) || isset($data['doRozliczenia']))
+            sumaOdliczen: isset($data['SumaOdliczen']) ? new SumaOdliczen($data['SumaOdliczen']) : new Optional(),
+            rozliczenieGroup: (isset($data['DoZaplaty']) || isset($data['DoRozliczenia']))
                 ? RozliczenieGroup::fromXmlArray($data)
                 : new Optional(),
         );

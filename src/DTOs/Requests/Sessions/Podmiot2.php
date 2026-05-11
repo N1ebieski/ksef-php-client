@@ -123,20 +123,20 @@ final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, Fr
     public static function fromXmlArray(array $data): self
     {
         return new self(
-            daneIdentyfikacyjne: Podmiot2DaneIdentyfikacyjne::fromXmlArray($data['daneIdentyfikacyjne']),
-            jst: isset($data['jST']) ? JST::from($data['jST']) : JST::No,
-            gv: isset($data['gV']) ? GV::from($data['gV']) : GV::No,
-            nrEORI: isset($data['nrEORI']) ? new NrEORI($data['nrEORI']) : new Optional(),
-            adres: isset($data['adres']) ? Adres::fromXmlArray($data['adres']) : new Optional(),
-            adresKoresp: isset($data['adresKoresp']) ? AdresKoresp::fromXmlArray($data['adresKoresp']) : new Optional(),
-            daneKontaktowe: isset($data['daneKontaktowe'])
+            daneIdentyfikacyjne: Podmiot2DaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
+            jst: isset($data['JST']) ? JST::from($data['JST']) : JST::No,
+            gv: isset($data['GV']) ? GV::from($data['GV']) : GV::No,
+            nrEORI: isset($data['NrEORI']) ? new NrEORI($data['NrEORI']) : new Optional(),
+            adres: isset($data['Adres']) ? Adres::fromXmlArray($data['Adres']) : new Optional(),
+            adresKoresp: isset($data['AdresKoresp']) ? AdresKoresp::fromXmlArray($data['AdresKoresp']) : new Optional(),
+            daneKontaktowe: isset($data['DaneKontaktowe'])
                 ? array_map(
                     fn (array $item) => DaneKontaktowe::fromXmlArray($item),
-                    self::ensureList($data['daneKontaktowe'])
+                    self::ensureList($data['DaneKontaktowe'])
                 )
                 : new Optional(),
-            nrKlienta: isset($data['nrKlienta']) ? new NrKlienta($data['nrKlienta']) : new Optional(),
-            idNabywcy: isset($data['iDNabywcy']) ? new IDNabywcy($data['iDNabywcy']) : new Optional(),
+            nrKlienta: isset($data['NrKlienta']) ? new NrKlienta($data['NrKlienta']) : new Optional(),
+            idNabywcy: isset($data['IDNabywcy']) ? new IDNabywcy($data['IDNabywcy']) : new Optional(),
         );
     }
 }

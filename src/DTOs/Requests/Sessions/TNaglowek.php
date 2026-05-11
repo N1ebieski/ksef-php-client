@@ -57,7 +57,7 @@ final class TNaglowek extends AbstractDTO implements DomSerializableInterface, F
         return new self(
             kol: array_map(
                 fn (array $item) => Kol::fromXmlArray($item),
-                self::ensureList($data['kol'])
+                self::ensureList($data['Kol'])
             ),
         );
     }
