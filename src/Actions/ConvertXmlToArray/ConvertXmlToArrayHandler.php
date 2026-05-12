@@ -1,0 +1,68 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Actions\ConvertXmlToArray;
+
+use LibXMLError;
+use N1ebieski\KSEFClient\Actions\AbstractHandler;
+use RuntimeException;
+use SimpleXMLElement;
+
+final class ConvertXmlToArrayHandler extends AbstractHandler
+{
+    public function handle(ConvertXmlToArrayAction $action): array
+    {
+        $useInternalErrors = libxml_use_internal_errors(true);
+
+        try {
+            $element = simplexml_load_string($action->xml, SimpleXMLElement::class, LIBXML_NOCDATA);
+
+            if ($element === false) {
+                $errors = array_map(
+                    static fn (LibXMLError $error): string => mb_trim($error->message),
+                    libxml_get_errors()
+                );
+
+                throw new RuntimeException(
+                    sprintf('Invalid XML provided: %s', implode('; ', $errors))
+                );
+            }
+
+            /** @var non-empty-string $encodedXml */
+            $encodedXml = json_encode($element, JSON_THROW_ON_ERROR);
+
+            /** @var array<string, mixed>|null $decodedXml */
+            $decodedXml = json_decode($encodedXml, true, flags: JSON_THROW_ON_ERROR);
+
+            if ( ! is_array($decodedXml)) {
+                throw new RuntimeException('Failed to decode JSON to array');
+            }
+
+            return $this->normalizeKeys($decodedXml);
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($useInternalErrors);
+        }
+    }
+
+    /**
+     * @param  array<int|string, mixed>  $value
+     * @return array<int|string, mixed>
+     */
+    private function normalizeKeys(array $value): array
+    {
+        $normalized = [];
+
+        foreach ($value as $key => $item) {
+            $normalizedKey = is_string($key) ? mb_lcfirst($key) : $key;
+
+            $normalized[$normalizedKey] = is_array($item)
+                ? $this->normalizeKeys($item)
+                : $item;
+        }
+
+        return $normalized;
+    }
+
+}

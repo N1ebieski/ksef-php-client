@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -14,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrEORI;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RolaPU;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface
+final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
     /**
      * @var Optional|array<int, PodmiotUpowaznionyDaneKontaktowe>
@@ -87,5 +88,10 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
         $podmiotUpowazniony->appendChild($rolaPU);
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        throw new \LogicException('Method not implemented yet.');
     }
 }

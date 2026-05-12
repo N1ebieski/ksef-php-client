@@ -6,6 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlDeserializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Fa;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Naglowek;
@@ -15,15 +16,17 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Podmiot3;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\PodmiotUpowazniony;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Stopka;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Concerns\HasFromXml;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Faktura extends AbstractDTO implements XmlSerializableInterface, DomSerializableInterface
+final class Faktura extends AbstractDTO implements XmlSerializableInterface, XmlDeserializableInterface, DomSerializableInterface
 {
     use HasToXml;
+    use HasFromXml;
 
     /**
      * @var Optional|array<int, Podmiot3>
@@ -104,5 +107,45 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Dom
         }
 
         return $dom;
+    }
+
+    public static function fromXmlArray(array $data): self
+    {
+        if (isset($data['naglowek'])) {
+            $data['naglowek'] = Naglowek::fromXmlArray($data['naglowek']);
+        }
+
+        if (isset($data['podmiot1'])) {
+            $data['podmiot1'] = Podmiot1::fromXmlArray($data['podmiot1']);
+        }
+
+        if (isset($data['podmiot2'])) {
+            $data['podmiot2'] = Podmiot2::fromXmlArray($data['podmiot2']);
+        }
+
+        if (isset($data['podmiot3'])) {
+            $data['podmiot3'] = array_map(
+                fn (array $item) => Podmiot3::fromXmlArray($item),
+                $data['podmiot3']
+            );
+        }
+
+        if (isset($data['podmiotUpowazniony'])) {
+            $data['podmiotUpowazniony'] = PodmiotUpowazniony::fromXmlArray($data['podmiotUpowazniony']);
+        }
+
+        if (isset($data['fa'])) {
+            $data['fa'] = Fa::fromXmlArray($data['fa']);
+        }
+
+        if (isset($data['stopka'])) {
+            $data['stopka'] = Stopka::fromXmlArray($data['stopka']);
+        }
+
+        if (isset($data['zalacznik'])) {
+            $data['zalacznik'] = Zalacznik::fromXmlArray($data['zalacznik']);
+        }
+
+        return new self(...$data);
     }
 }
