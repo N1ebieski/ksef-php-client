@@ -172,7 +172,7 @@ Main features:
     - [Batch async send multiple invoices and check for UPO](#batch-async-send-multiple-invoices-and-check-for-upo)
     - [Create an offline invoice and generate both QR codes](#create-an-offline-invoice-and-generate-both-qr-codes)
     - [Generate PDF for the offline invoice file with both QR codes](#generate-pdf-for-the-offline-invoice-file-with-both-qr-codes)
-    - [Download and decrypt invoices using the encryption key](#download-and-decrypt-invoices-using-the-encryption-key)
+    - [Download, decrypt invoices, and deserialize them into DTOs](#download-decrypt-invoices-and-deserialize-them-into-dtos)
 - [Testing](#testing)
 - [Roadmap](#roadmap)
 - [Special thanks](#special-thanks)
@@ -2207,7 +2207,7 @@ file_put_contents(Utility::basePath("var/pdf/{$faktura->fa->p_2->value}.pdf"), $
 
 <details>
     <summary>
-        <h3>Download and decrypt invoices using the encryption key</h3>
+        <h3>Download, decrypt invoices, and deserialize them into DTOs.</h3>
     </summary>
 
 ```php
