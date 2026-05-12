@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzyN;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzyN;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_PMarzyNGroup extends AbstractDTO implements DomSerializableInterface
+final class P_PMarzyNGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_PMarzyN $p_PMarzyN Znacznik braku wystąpienia procedur marży, o których mowa w art. 119 lub art. 120 ustawy
@@ -34,5 +36,10 @@ final class P_PMarzyNGroup extends AbstractDTO implements DomSerializableInterfa
         $p_PMarzyNGroup->appendChild($p_PMarzyN);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['P_PMarzyN']);
     }
 }

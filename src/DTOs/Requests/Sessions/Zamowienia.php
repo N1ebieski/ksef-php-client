@@ -6,13 +6,15 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataZamowienia;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZamowienia;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Zamowienia extends AbstractDTO implements DomSerializableInterface
+final class Zamowienia extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly Optional | DataZamowienia $dataZamowienia = new Optional(),
@@ -45,5 +47,10 @@ final class Zamowienia extends AbstractDTO implements DomSerializableInterface
         $dom->appendChild($zamowienia);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['DataZamowienia', 'NrZamowienia']);
     }
 }

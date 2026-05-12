@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL2;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GLN;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodKraju;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WysylkaZ extends AbstractDTO implements DomSerializableInterface
+final class WysylkaZ extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Optional|GLN $gln Globalny Numer Lokalizacyjny [Global Location Number]
@@ -58,5 +60,12 @@ final class WysylkaZ extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['gln'] = $data['GLN'] ?? new Optional();
+
+        return Arr::only($data, ['AdresL1', 'KodKraju', 'AdresL2', 'gln']);
     }
 }

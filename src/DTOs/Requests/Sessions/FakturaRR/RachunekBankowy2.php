@@ -7,14 +7,16 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\NrRBGroup;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NazwaBanku;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisRachunku;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class RachunekBankowy2 extends AbstractDTO implements DomSerializableInterface
+final class RachunekBankowy2 extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly NrRBGroup $nrRBGroup,
@@ -53,5 +55,12 @@ final class RachunekBankowy2 extends AbstractDTO implements DomSerializableInter
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrRBGroup'] = NrRBGroup::normalizeXmlArray($data);
+
+        return Arr::only($data, ['NrRBGroup', 'NazwaBanku', 'OpisRachunku']);
     }
 }

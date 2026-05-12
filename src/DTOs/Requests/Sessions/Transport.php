@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Transport extends AbstractDTO implements DomSerializableInterface
+final class Transport extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly RodzajTransportuGroup | TransportInnyGroup $transportGroup,
@@ -68,5 +70,27 @@ final class Transport extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['TransportGroup'] = match (true) {
+            isset($data['RodzajTransportu']) => RodzajTransportuGroup::normalizeXmlArray($data),
+            default => TransportInnyGroup::normalizeXmlArray($data),
+        };
+
+        $data['LadunekGroup'] = LadunekGroup::normalizeXmlArray($data);
+
+        $data['Przewoznik'] = match (true) {
+            isset($data['Przewoznik']) => Przewoznik::normalizeXmlArray($data['Przewoznik']),
+            default => new Optional(),
+        };
+
+        $data['WysylkaGroup'] = match (true) {
+            (isset($data['WysylkaPrzez']) || isset($data['WysylkaDo']) || isset($data['WysylkaZ']) || isset($data['DataGodzRozpTransportu']) || isset($data['DataGodzZakTransportu'])) => WysylkaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['TransportGroup', 'LadunekGroup', 'Przewoznik', 'NrZleceniaTransportu', 'WysylkaGroup']);
     }
 }

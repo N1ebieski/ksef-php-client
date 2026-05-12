@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\CNZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GTINZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GTUZ;
@@ -27,10 +30,9 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PKWiUZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ProceduraZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzedZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_IDZ;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInterface
+final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrWierszaZam $nrWierszaZam Kolejny numer wiersza zamówienia lub umowy
@@ -225,5 +227,18 @@ final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInter
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrWierszaZam'] = (int) $data['NrWierszaZam']; //@phpstan-ignore-line cast.int
+        $data['cnZ'] = $data['CNZ'] ?? new Optional();
+        $data['gtinZ'] = $data['GTINZ'] ?? new Optional();
+        $data['pkwiuZ'] = $data['PKWiUZ'] ?? new Optional();
+        $data['pkobZ'] = $data['PKOBZ'] ?? new Optional();
+        $data['uu_idZ'] = $data['UU_IDZ'] ?? new Optional();
+        $data['gtuZ'] = $data['GTUZ'] ?? new Optional();
+
+        return Arr::only($data, ['NrWierszaZam', 'uu_idZ', 'P_7Z', 'IndeksZ', 'gtinZ', 'pkwiuZ', 'cnZ', 'pkobZ', 'P_8AZ', 'P_8BZ', 'P_9AZ', 'P_11NettoZ', 'P_11VatZ', 'P_12Z', 'P_12Z_XII', 'P_12Z_Zal_15', 'gtuZ', 'ProceduraZ', 'KwotaAkcyzyZ', 'StanPrzedZ']);
     }
 }

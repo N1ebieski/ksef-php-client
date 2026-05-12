@@ -7,14 +7,16 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\NrKSeFGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\NrKSeFNGroup;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWystFaKorygowanej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowanej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInterface
+final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param DataWystFaKorygowanej $dataWystFaKorygowanej Data wystawienia faktury korygowanej
@@ -53,5 +55,15 @@ final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrKSeFGroup'] = match (true) {
+            isset($data['NrKSeF']) => NrKSeFGroup::normalizeXmlArray($data),
+            default => NrKSeFNGroup::normalizeXmlArray($data),
+        };
+
+        return Arr::only($data, ['DataWystFaKorygowanej', 'NrFaKorygowanej', 'NrKSeFGroup']);
     }
 }

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_42_5;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_42_5;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_22Group extends AbstractDTO implements DomSerializableInterface
+final class P_22Group extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var array<int, NowySrodekTransportu>
@@ -65,5 +67,15 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NowySrodekTransportu'] = array_map(
+            NowySrodekTransportu::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+            Arr::ensureList($data['NowySrodekTransportu'])
+        );
+
+        return Arr::only($data, ['P_22', 'P_42_5', 'NowySrodekTransportu']);
     }
 }

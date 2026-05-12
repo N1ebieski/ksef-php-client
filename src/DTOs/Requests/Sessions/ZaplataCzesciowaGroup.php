@@ -6,7 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
@@ -14,7 +16,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZnacznikZaplatyCzesciowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializableInterface
+final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, ZaplataCzesciowa>
@@ -60,5 +62,18 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['ZaplataCzesciowa'] = match (true) {
+            isset($data['ZaplataCzesciowa']) => array_map(
+                ZaplataCzesciowa::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['ZaplataCzesciowa'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['ZaplataCzesciowa', 'ZnacznikZaplatyCzesciowej']);
     }
 }

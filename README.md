@@ -30,6 +30,8 @@ Main features:
 - [Get Started](#get-started)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
+        - [Deserialization](#deserialization)
+        - [Valinor Cache](#valinor-cache)
 - [Authorization](#authorization)
     - [Auto authorization via KSEF Token](#auto-authorization-via-ksef-token)
     - [Auto authorization via certificate .p12](#auto-authorization-via-certificate-p12)
@@ -244,6 +246,20 @@ $authorisationStatusResponse = $client->auth()->status([
 ])->object();
 ```
 
+#### Deserialization
+
+DTOs that implement `N1ebieski\KSEFClient\Contracts\XmlSerializableInterface` can be deserialized directly from XML.
+
+Example:
+
+```php
+use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
+
+$faktura = Faktura::fromXml('<Faktura> ... </Faktura>');
+```
+
+#### Valinor Cache
+
 For best performance, it is recommended to use caching:
 
 ```php
@@ -259,7 +275,9 @@ or directly for a DTO:
 ```php
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 
-$faktura = Faktura::from([...], ValinorCacheFactory::make())
+$faktura = Faktura::from([...], ValinorCacheFactory::make());
+
+$deserialized = Faktura::fromXml($faktura->toXml(), ValinorCacheFactory::make());
 ```
 
 > [!IMPORTANT]

@@ -11,6 +11,9 @@ use SimpleXMLElement;
 
 final class ConvertXmlToArrayHandler extends AbstractHandler
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function handle(ConvertXmlToArrayAction $action): array
     {
         $useInternalErrors = libxml_use_internal_errors(true);
@@ -20,6 +23,7 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
 
             if ($element === false) {
                 $errors = array_map(
+                    //@phpstan-ignore-next-line return.type
                     static fn (LibXMLError $error): string => mb_trim($error->message),
                     libxml_get_errors()
                 );
@@ -39,30 +43,11 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 throw new RuntimeException('Failed to decode JSON to array');
             }
 
-            return $this->normalizeKeys($decodedXml);
+            return $decodedXml;
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($useInternalErrors);
         }
-    }
-
-    /**
-     * @param  array<int|string, mixed>  $value
-     * @return array<int|string, mixed>
-     */
-    private function normalizeKeys(array $value): array
-    {
-        $normalized = [];
-
-        foreach ($value as $key => $item) {
-            $normalizedKey = is_string($key) ? mb_lcfirst($key) : $key;
-
-            $normalized[$normalizedKey] = is_array($item)
-                ? $this->normalizeKeys($item)
-                : $item;
-        }
-
-        return $normalized;
     }
 
 }

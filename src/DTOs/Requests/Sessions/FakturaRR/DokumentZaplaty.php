@@ -6,13 +6,15 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\DataDokumentu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\NrDokumentu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class DokumentZaplaty extends AbstractDTO implements DomSerializableInterface
+final class DokumentZaplaty extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrDokumentu $nrDokumentu Dane identyfikacyjne dokumentu, o którym mowa w art. 116 ust. 6 pkt 3 ustawy lub dokumentu potwierdzającego dokonanie zapłaty zaliczki, o którym mowa w art. 116 ust. 9 pkt 1 i ust. 9b ustawy.
@@ -44,5 +46,10 @@ final class DokumentZaplaty extends AbstractDTO implements DomSerializableInterf
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['NrDokumentu', 'DataDokumentu']);
     }
 }

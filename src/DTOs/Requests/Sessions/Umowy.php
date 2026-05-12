@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataUmowy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrUmowy;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Umowy extends AbstractDTO implements DomSerializableInterface
+final class Umowy extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly Optional | DataUmowy $dataUmowy = new Optional(),
@@ -43,5 +45,10 @@ final class Umowy extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['DataUmowy', 'NrUmowy']);
     }
 }

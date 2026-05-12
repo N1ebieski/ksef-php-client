@@ -6,8 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -18,7 +19,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrEORI;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKlienta;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, DaneKontaktowe>
@@ -120,8 +121,32 @@ final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        throw new \LogicException('Method not implemented yet.');
+        $data['DaneIdentyfikacyjne'] = Podmiot2DaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = match (true) {
+            isset($data['Adres']) => Adres::normalizeXmlArray($data['Adres']),
+            default => new Optional(),
+        };
+
+        $data['AdresKoresp'] = match (true) {
+            isset($data['AdresKoresp']) => AdresKoresp::normalizeXmlArray($data['AdresKoresp']),
+            default => new Optional(),
+        };
+
+        $data['DaneKontaktowe'] = match (true) {
+            isset($data['DaneKontaktowe']) => array_map(
+                DaneKontaktowe::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DaneKontaktowe'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['jst'] = $data['JST'] ?? JST::No;
+        $data['gv'] = $data['GV'] ?? GV::No;
+        $data['idNabywcy'] = $data['IDNabywcy'] ?? new Optional();
+
+        return Arr::only($data, ['NrEORI', 'DaneIdentyfikacyjne', 'Adres', 'DaneKontaktowe', 'AdresKoresp', 'NrKlienta', 'idNabywcy', 'jst', 'gv']);
     }
 }

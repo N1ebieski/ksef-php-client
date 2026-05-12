@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\JednostkaOpakowania;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\JednostkaOpakowania;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
+final class LadunekGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly OpisLadunkuGroup | LadunekInnyGroup $opisLadunkuGroup,
@@ -43,5 +45,15 @@ final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['OpisLadunkuGroup'] = match (true) {
+            isset($data['LadunekInny']) => LadunekInnyGroup::normalizeXmlArray($data),
+            default => OpisLadunkuGroup::normalizeXmlArray($data),
+        };
+
+        return Arr::only($data, ['OpisLadunkuGroup', 'JednostkaOpakowania']);
     }
 }

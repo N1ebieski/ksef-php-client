@@ -7,10 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class RozliczenieGroup extends AbstractDTO implements DomSerializableInterface
+final class RozliczenieGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly DoZaplatyGroup|DoRozliczeniaGroup $doGroup
@@ -33,5 +35,15 @@ final class RozliczenieGroup extends AbstractDTO implements DomSerializableInter
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['DoGroup'] = match (true) {
+            isset($data['DoZaplaty']) => DoZaplatyGroup::normalizeXmlArray($data),
+            default => DoRozliczeniaGroup::normalizeXmlArray($data),
+        };
+
+        return Arr::only($data, ['DoGroup']);
     }
 }

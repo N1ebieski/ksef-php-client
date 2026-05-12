@@ -7,10 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Zwolnienie extends AbstractDTO implements DomSerializableInterface
+final class Zwolnienie extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly P_19Group | P_19NGroup $p_19Group = new P_19NGroup(),
@@ -35,5 +37,15 @@ final class Zwolnienie extends AbstractDTO implements DomSerializableInterface
         $dom->appendChild($zwolnienie);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['P_19Group'] = match (true) {
+            isset($data['P_19']) => P_19Group::normalizeXmlArray($data),
+            default => P_19NGroup::normalizeXmlArray($data),
+        };
+
+        return Arr::only($data, ['P_19Group']);
     }
 }

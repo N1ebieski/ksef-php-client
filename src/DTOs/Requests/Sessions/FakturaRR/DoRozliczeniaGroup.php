@@ -6,11 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DoRozliczenia;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class DoRozliczeniaGroup extends AbstractDTO implements DomSerializableInterface
+final class DoRozliczeniaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param DoRozliczenia $doRozliczenia Kwota nadpłacona do rozliczenia/zwrotu
@@ -34,5 +36,10 @@ final class DoRozliczeniaGroup extends AbstractDTO implements DomSerializableInt
         $doRozliczeniaGroup->appendChild($doRozliczenia);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['DoRozliczenia']);
     }
 }

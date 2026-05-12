@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Adres;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Podmiot1KDaneIdentyfikacyjne;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Podmiot1K extends AbstractDTO implements DomSerializableInterface
+final class Podmiot1K extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Podmiot1KDaneIdentyfikacyjne $daneIdentyfikacyjne Dane identyfikujące podatnika
@@ -40,5 +42,14 @@ final class Podmiot1K extends AbstractDTO implements DomSerializableInterface
         $podmiot1K->appendChild($adres);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['DaneIdentyfikacyjne'] = Podmiot1KDaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = Adres::normalizeXmlArray($data['Adres']);
+
+        return Arr::only($data, ['DaneIdentyfikacyjne', 'Adres']);
     }
 }

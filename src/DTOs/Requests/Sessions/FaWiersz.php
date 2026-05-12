@@ -6,7 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\CN;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GTIN;
@@ -35,7 +37,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzed;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_ID;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FaWiersz extends AbstractDTO implements DomSerializableInterface
+final class FaWiersz extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param UU_ID|Optional $uu_id Uniwersalny unikalny numer wiersza faktury
@@ -276,5 +278,18 @@ final class FaWiersz extends AbstractDTO implements DomSerializableInterface
         $dom->appendChild($faWiersz);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrWierszaFa'] = (int) $data['NrWierszaFa']; //@phpstan-ignore-line cast.int
+        $data['cn'] = $data['CN'] ?? new Optional();
+        $data['gtin'] = $data['GTIN'] ?? new Optional();
+        $data['pkwiu'] = $data['PKWiU'] ?? new Optional();
+        $data['pkob'] = $data['PKOB'] ?? new Optional();
+        $data['uu_id'] = $data['UU_ID'] ?? new Optional();
+        $data['gtu'] = $data['GTU'] ?? new Optional();
+
+        return Arr::only($data, ['NrWierszaFa', 'uu_id', 'P_6A', 'P_7', 'Indeks', 'gtin', 'pkwiu', 'cn', 'pkob', 'P_8A', 'P_8B', 'P_9A', 'P_9B', 'P_10', 'P_11', 'P_11A', 'P_11Vat', 'P_12', 'P_12_XII', 'P_12_Zal_15', 'KwotaAkcyzy', 'gtu', 'Procedura', 'KursWaluty', 'StanPrzed']);
     }
 }

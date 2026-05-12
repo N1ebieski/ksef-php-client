@@ -6,7 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
@@ -14,7 +16,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Opis;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Tabela extends AbstractDTO implements DomSerializableInterface
+final class Tabela extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, TMetaDane>
@@ -90,5 +92,29 @@ final class Tabela extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['TNaglowek'] = TNaglowek::normalizeXmlArray($data['TNaglowek']);
+
+        $data['Wiersz'] = array_map(
+            Wiersz::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+            Arr::ensureList($data['Wiersz'])
+        );
+
+        $data['TMetaDane'] = match (true) {
+            isset($data['TMetaDane']) => array_map(
+                TMetaDane::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['TMetaDane'])
+            ),
+            default => new Optional(),
+        };
+
+        if (isset($data['Suma'])) {
+            $data['Suma'] = Suma::normalizeXmlArray($data['Suma']);
+        }
+
+        return Arr::only($data, ['TNaglowek', 'Wiersz', 'TMetaDane', 'Opis', 'Suma']);
     }
 }

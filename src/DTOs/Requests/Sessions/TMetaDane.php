@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TKlucz;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TWartosc;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class TMetaDane extends AbstractDTO implements DomSerializableInterface
+final class TMetaDane extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly TKlucz $tKlucz,
@@ -38,5 +40,10 @@ final class TMetaDane extends AbstractDTO implements DomSerializableInterface
         $tMetaDane->appendChild($tWartosc);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['TKlucz', 'TWartosc']);
     }
 }

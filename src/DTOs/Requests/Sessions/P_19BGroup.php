@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19B;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19B;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_19BGroup extends AbstractDTO implements DomSerializableInterface
+final class P_19BGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_19B $p_19B Jeśli pole P_19 równa się "1" - należy wskazać przepis dyrektywy 2006/112/WE, który zwalnia od podatku taką dostawę towarów lub takie świadczenie usług
@@ -34,5 +36,10 @@ final class P_19BGroup extends AbstractDTO implements DomSerializableInterface
         $p_19BGroup->appendChild($p_19B);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['P_19B']);
     }
 }

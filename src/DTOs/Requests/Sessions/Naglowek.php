@@ -8,15 +8,16 @@ use DateTimeImmutable;
 use DateTimeZone;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWytworzeniaFa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SystemInfo;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Naglowek extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Naglowek extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Optional|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
@@ -62,8 +63,14 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        throw new \LogicException('Method not implemented yet.');
+        // json_encode(SimpleXMLElement) drops attributes when an element also has text content,
+        // so KodFormularza arrives as plain text (e.g. "FA"). The full FormCode value is
+        // reconstructed by combining that text with the WariantFormularza version number.
+        //@phpstan-ignore-next-line argument.type
+        $data['WariantFormularza'] = sprintf('%s (%s)', $data['KodFormularza'], $data['WariantFormularza']);
+
+        return Arr::only($data, ['WariantFormularza', 'DataWytworzeniaFa', 'SystemInfo']);
     }
 }

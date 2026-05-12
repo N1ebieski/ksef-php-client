@@ -7,13 +7,15 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataZaplatyCzesciowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KwotaZaplatyCzesciowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInterface
+final class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param DataZaplatyCzesciowej $dataZaplatyCzesciowej Data zapłaty częściowej, jeśli do wystawienia faktury płatność częściowa została dokonana
@@ -53,5 +55,16 @@ final class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInter
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['PlatnoscGroup'] = match (true) {
+            isset($data['FormaPlatnosci']) => FormaPlatnosciGroup::normalizeXmlArray($data),
+            isset($data['PlatnoscInna']) => PlatnoscInnaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['KwotaZaplatyCzesciowej', 'DataZaplatyCzesciowej', 'PlatnoscGroup']);
     }
 }

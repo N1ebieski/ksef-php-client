@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\IDWew;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\IDWew;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class IDWewGroup extends AbstractDTO implements DomSerializableInterface
+final class IDWewGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param IDWew $iDWew Identyfikator wewnętrzny z NIP
@@ -34,5 +36,10 @@ final class IDWewGroup extends AbstractDTO implements DomSerializableInterface
         $iDWewGroup->appendChild($iDWew);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['IDWew']);
     }
 }

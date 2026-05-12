@@ -6,8 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -15,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrEORI;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RolaPU;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, PodmiotUpowaznionyDaneKontaktowe>
@@ -90,8 +91,25 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        throw new \LogicException('Method not implemented yet.');
+        $data['DaneIdentyfikacyjne'] = PodmiotUpowaznionyDaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = Adres::normalizeXmlArray($data['Adres']);
+
+        $data['AdresKoresp'] = match (true) {
+            isset($data['AdresKoresp']) => AdresKoresp::normalizeXmlArray($data['AdresKoresp']),
+            default => new Optional(),
+        };
+
+        $data['DaneKontaktowe'] = match (true) {
+            isset($data['DaneKontaktowe']) => array_map(
+                PodmiotUpowaznionyDaneKontaktowe::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DaneKontaktowe'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['DaneIdentyfikacyjne', 'Adres', 'AdresKoresp', 'DaneKontaktowe', 'NrEORI', 'RolaPU']);
     }
 }
