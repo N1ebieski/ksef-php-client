@@ -45,7 +45,7 @@ final class Kol extends AbstractDTO implements DomSerializableInterface, XmlNorm
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['Typ'] = $data['@attributes']['Typ'];
+        $data['Typ'] = $data['@attributes']['Typ']; //@phpstan-ignore-line offsetAccess.nonOffsetAccessible
 
         return Arr::only($data, ['Typ', 'NKom']);
     }

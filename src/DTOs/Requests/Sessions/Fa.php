@@ -453,7 +453,7 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNorma
 
         $data['ZaliczkaCzesciowa'] = match (true) {
             isset($data['ZaliczkaCzesciowa']) => array_map(
-                ZaliczkaCzesciowa::normalizeXmlArray(...),
+                ZaliczkaCzesciowa::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['ZaliczkaCzesciowa'])
             ),
             default => new Optional()
@@ -461,7 +461,7 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNorma
 
         $data['DodatkowyOpis'] = match (true) {
             isset($data['DodatkowyOpis']) => array_map(
-                DodatkowyOpis::normalizeXmlArray(...),
+                DodatkowyOpis::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['DodatkowyOpis'])
             ),
             default => new Optional()
@@ -469,7 +469,7 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNorma
 
         $data['FakturaZaliczkowa'] = match (true) {
             isset($data['FakturaZaliczkowa']) => array_map(
-                FakturaZaliczkowa::normalizeXmlArray(...),
+                FakturaZaliczkowa::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['FakturaZaliczkowa'])
             ),
             default => new Optional()
@@ -477,7 +477,7 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNorma
 
         $data['FaWiersz'] = match (true) {
             isset($data['FaWiersz']) => array_map(
-                FaWiersz::normalizeXmlArray(...),
+                FaWiersz::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['FaWiersz'])
             ),
             default => new Optional()

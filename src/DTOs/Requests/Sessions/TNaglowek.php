@@ -56,7 +56,7 @@ final class TNaglowek extends AbstractDTO implements DomSerializableInterface, X
     public static function normalizeXmlArray(array $data): array
     {
         $data['Kol'] = array_map(
-            Kol::normalizeXmlArray(...),
+            Kol::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
             Arr::ensureList($data['Kol'])
         );
 

@@ -56,7 +56,6 @@ dataset('faktura fixtures', function (): array {
         }
     }
 
-    /** @var array<string, array{AbstractFakturaFixture, ?Cache}> */
     return $combinations;
 });
 

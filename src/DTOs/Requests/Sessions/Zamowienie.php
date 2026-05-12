@@ -64,7 +64,7 @@ final class Zamowienie extends AbstractDTO implements DomSerializableInterface, 
     public static function normalizeXmlArray(array $data): array
     {
         $data['ZamowienieWiersz'] = array_map(
-            ZamowienieWiersz::normalizeXmlArray(...),
+            ZamowienieWiersz::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
             Arr::ensureList($data['ZamowienieWiersz'])
         );
 

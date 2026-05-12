@@ -28,6 +28,8 @@ test('fromXml handles single FaWiersz element (not wrapped in array by SimpleXML
     expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
     expect($deserialized->fa->faWiersz)->toHaveCount(1);
     expect($deserialized->fa->faWiersz[0]->nrWierszaFa->value)->toBe(1);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->fa->faWiersz[0]->p_7)->toBe($fixture->data['fa']['faWiersz'][0]['p_7']);
 });
 
@@ -55,6 +57,8 @@ test('fromXml handles single Podmiot3 element', function (): void {
 
     expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot3)->toHaveCount(1);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot3[0]->daneIdentyfikacyjne->idGroup->nip->value)->toBe($fixture->data['podmiot3'][0]['daneIdentyfikacyjne']['idGroup']['nip']);
 });
 
@@ -62,6 +66,7 @@ test('fromXml handles multiple Podmiot3 elements', function (): void {
     $fixture = new FakturaZaliczkowaZDodatkowymNabywcaFixture();
     $fixture->data['podmiot3'] = [
         $fixture->data['podmiot3'][0],
+        //@phpstan-ignore-next-line argument.type
         array_merge($fixture->data['podmiot3'][0], [
             'daneIdentyfikacyjne' => [
                 'idGroup' => ['nip' => '4444444444'],
@@ -76,7 +81,11 @@ test('fromXml handles multiple Podmiot3 elements', function (): void {
 
     expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot3)->toHaveCount(2);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot3[0]->daneIdentyfikacyjne->idGroup->nip->value)->toBe($fixture->data['podmiot3'][0]['daneIdentyfikacyjne']['idGroup']['nip']);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot3[1]->daneIdentyfikacyjne->idGroup->nip->value)->toBe($fixture->data['podmiot3'][1]['daneIdentyfikacyjne']['idGroup']['nip']);
 });
 
@@ -92,6 +101,8 @@ test('fromXml handles single DaneKontaktowe element', function (): void {
 
     expect($deserialized->podmiot1->daneKontaktowe)->not->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot1->daneKontaktowe)->toHaveCount(1);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->podmiot1->daneKontaktowe[0]->email)->toBe($fixture->data['podmiot1']['daneKontaktowe'][0]['email']);
 });
 

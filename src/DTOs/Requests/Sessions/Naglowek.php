@@ -68,6 +68,7 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface, Xm
         // json_encode(SimpleXMLElement) drops attributes when an element also has text content,
         // so KodFormularza arrives as plain text (e.g. "FA"). The full FormCode value is
         // reconstructed by combining that text with the WariantFormularza version number.
+        //@phpstan-ignore-next-line argument.type
         $data['WariantFormularza'] = sprintf('%s (%s)', $data['KodFormularza'], $data['WariantFormularza']);
 
         return Arr::only($data, ['WariantFormularza', 'DataWytworzeniaFa', 'SystemInfo']);

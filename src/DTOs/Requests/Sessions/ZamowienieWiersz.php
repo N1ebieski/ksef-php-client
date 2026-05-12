@@ -231,7 +231,7 @@ final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInter
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['NrWierszaZam'] = (int) $data['NrWierszaZam'];
+        $data['NrWierszaZam'] = (int) $data['NrWierszaZam']; //@phpstan-ignore-line cast.int
         $data['cnZ'] = $data['CNZ'] ?? new Optional();
         $data['gtinZ'] = $data['GTINZ'] ?? new Optional();
         $data['pkwiuZ'] = $data['PKWiUZ'] ?? new Optional();

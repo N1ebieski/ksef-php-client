@@ -34,6 +34,8 @@ test('fromXml detects NIPGroup for Podmiot2', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup)->toBeInstanceOf(NIPGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup->nip->value)->toBe($fixture->data['podmiot2']['daneIdentyfikacyjne']['idGroup']['nip']);
 });
 
@@ -45,7 +47,11 @@ test('fromXml detects UEGroup for Podmiot2', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup)->toBeInstanceOf(UEGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup->kodUE->value)->toBe($fixture->data['podmiot2']['daneIdentyfikacyjne']['idGroup']['kodUE']);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup->nrVatUE->value)->toBe($fixture->data['podmiot2']['daneIdentyfikacyjne']['idGroup']['nrVatUE']);
 });
 
@@ -74,6 +80,8 @@ test('fromXml detects KrajGroup for Podmiot2', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup)->toBeInstanceOf(KrajGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot2->daneIdentyfikacyjne->idGroup->nrID->value)->toBe($fixture->data['podmiot2']['daneIdentyfikacyjne']['idGroup']['nrID']);
 });
 
@@ -88,6 +96,8 @@ test('fromXml detects IDWewGroup for Podmiot3', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->podmiot3[0]->daneIdentyfikacyjne->idGroup)->toBeInstanceOf(IDWewGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->podmiot3[0]->daneIdentyfikacyjne->idGroup->iDWew->value)->toBe($fixture->data['podmiot3'][0]['daneIdentyfikacyjne']['idGroup']['iDWew']);
 });
 
@@ -118,7 +128,10 @@ test('fromXml detects ZaplataGroup in Platnosc', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->platnosc->zaplataGroup)->toBeInstanceOf(ZaplataGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->platnosc->platnoscGroup)->toBeInstanceOf(FormaPlatnosciGroup::class);
 });
 
@@ -129,6 +142,7 @@ test('fromXml detects ZaplataCzesciowaGroup in Platnosc', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->platnosc->zaplataGroup)->toBeInstanceOf(ZaplataCzesciowaGroup::class);
 });
 
@@ -143,6 +157,7 @@ test('fromXml detects PlatnoscInnaGroup in Platnosc', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->platnosc->platnoscGroup)->toBeInstanceOf(PlatnoscInnaGroup::class);
 });
 
@@ -153,6 +168,7 @@ test('fromXml detects NrKSeFGroup in DaneFaKorygowanej', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->korektaGroup->daneFaKorygowanej[0]->nrKSeFGroup)
         ->toBeInstanceOf(NrKSeFNGroup::class);
 });
@@ -167,6 +183,7 @@ test('fromXml detects NrKSeFGroup when NrKSeF is provided', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
+    //@phpstan-ignore-next-line property.notFound
     expect($deserialized->fa->korektaGroup->daneFaKorygowanej[0]->nrKSeFGroup)
         ->toBeInstanceOf(NrKSeFGroup::class);
 });

@@ -282,7 +282,7 @@ final class FaWiersz extends AbstractDTO implements DomSerializableInterface, Xm
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['NrWierszaFa'] = (int) $data['NrWierszaFa'];
+        $data['NrWierszaFa'] = (int) $data['NrWierszaFa']; //@phpstan-ignore-line cast.int
         $data['cn'] = $data['CN'] ?? new Optional();
         $data['gtin'] = $data['GTIN'] ?? new Optional();
         $data['pkwiu'] = $data['PKWiU'] ?? new Optional();

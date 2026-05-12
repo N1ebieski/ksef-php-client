@@ -30,6 +30,8 @@ test('fromXml populates Naglowek fields correctly', function (): void {
 
     expect($deserialized->naglowek->wariantFormularza)->toBe(FormCode::Fa3);
     expect($deserialized->naglowek->systemInfo)->not->toBeInstanceOf(Optional::class);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->naglowek->systemInfo)->toBe($fixture->data['naglowek']['systemInfo']);
 });
 
@@ -58,6 +60,8 @@ test('fromXml populates Fa scalar fields correctly', function (): void {
     expect($deserialized->fa->p_15->value)->toBe($fixture->data['fa']['p_15']);
     expect($deserialized->fa->rodzajFaktury)->toBe(RodzajFaktury::Vat);
     expect($deserialized->fa->p_1M)->not->toBeInstanceOf(Optional::class);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->fa->p_1M)->toBe($fixture->data['fa']['p_1M']);
 });
 
@@ -69,13 +73,21 @@ test('fromXml populates FaWiersz array correctly', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
+
+    //@phpstan-ignore-next-line argument.type
     expect($deserialized->fa->faWiersz)->toHaveCount(count($fixture->data['fa']['faWiersz']));
 
     $wiersz = $deserialized->fa->faWiersz[0];
 
     expect($wiersz->nrWierszaFa->value)->toBe(1);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $wiersz->p_7)->toBe($fixture->data['fa']['faWiersz'][0]['p_7']);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $wiersz->p_8A)->toBe($fixture->data['fa']['faWiersz'][0]['p_8A']);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $wiersz->p_8B)->toBe((string) $fixture->data['fa']['faWiersz'][0]['p_8B']);
     expect($wiersz->p_12)->toBe(P_12::Tax23);
 });
@@ -95,6 +107,8 @@ test('fromXml populates Zwolnienie with P_19Group correctly', function (): void 
     $p_19Group = $zwolnienie->p_19Group;
 
     expect($p_19Group->p_19ABCGroup)->toBeInstanceOf(P_19AGroup::class);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $p_19Group->p_19ABCGroup->p_19A)
         ->toBe($fixture->data['fa']['adnotacje']['zwolnienie']['p_19Group']['p_19ABCGroup']['p_19A']);
 });
@@ -129,7 +143,11 @@ test('fromXml populates Podmiot3 with Rola and Udzial correctly', function (): v
     $podmiot3 = $deserialized->podmiot3[0];
 
     expect($podmiot3->rolaGroup)->toBeInstanceOf(RolaGroup::class);
+
+    //@phpstan-ignore-next-line property.notFound
     expect($podmiot3->rolaGroup->rola)->toBe(Rola::DodatkowyNabywca);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $podmiot3->udzial)->toBe($fixture->data['podmiot3'][0]['udzial']);
 });
 
@@ -145,8 +163,11 @@ test('fromXml populates KorektaGroup fields correctly', function (): void {
 
     expect($korektaGroup)->toBeInstanceOf(KorektaGroup::class);
     expect($korektaGroup->typKorekty)->toBe(TypKorekty::Inna);
+
+    //@phpstan-ignore-next-line cast.string
     expect((string) $korektaGroup->przyczynaKorekty)
         ->toContain($fixture->data['fa']['korektaGroup']['przyczynaKorekty']);
+
     expect($korektaGroup->daneFaKorygowanej)->toHaveCount(1);
     expect((string) $korektaGroup->daneFaKorygowanej[0]->nrFaKorygowanej)
         ->toBe($fixture->data['fa']['korektaGroup']['daneFaKorygowanej'][0]['nrFaKorygowanej']);

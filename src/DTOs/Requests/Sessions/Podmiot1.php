@@ -106,7 +106,7 @@ final class Podmiot1 extends AbstractDTO implements DomSerializableInterface, Xm
 
         $data['DaneKontaktowe'] = match (true) {
             isset($data['DaneKontaktowe']) => array_map(
-                DaneKontaktowe::normalizeXmlArray(...),
+                DaneKontaktowe::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['DaneKontaktowe'])
             ),
             default => new Optional(),

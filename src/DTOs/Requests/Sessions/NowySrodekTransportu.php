@@ -114,7 +114,7 @@ final class NowySrodekTransportu extends AbstractDTO implements DomSerializableI
             default => P_22DGroup::normalizeXmlArray($data),
         };
 
-        $data['P_nrWierszaNST'] = (int) $data['P_NrWierszaNST'];
+        $data['P_nrWierszaNST'] = (int) $data['P_NrWierszaNST']; //@phpstan-ignore-line cast.int
 
         return Arr::only($data, ['P_22A', 'P_nrWierszaNST', 'P_22BCDGroup', 'P_22BMK', 'P_22BMD', 'P_22BK', 'P_22BNR', 'P_22BRP']);
     }

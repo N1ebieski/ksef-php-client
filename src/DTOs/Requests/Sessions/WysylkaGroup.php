@@ -95,7 +95,7 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
     {
         $data['WysylkaPrzez'] = match (true) {
             isset($data['WysylkaPrzez']) => array_map(
-                WysylkaPrzez::normalizeXmlArray(...),
+                WysylkaPrzez::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
                 Arr::ensureList($data['WysylkaPrzez'])
             ),
             default => new Optional(),

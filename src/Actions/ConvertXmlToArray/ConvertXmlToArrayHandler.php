@@ -11,6 +11,9 @@ use SimpleXMLElement;
 
 final class ConvertXmlToArrayHandler extends AbstractHandler
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function handle(ConvertXmlToArrayAction $action): array
     {
         $useInternalErrors = libxml_use_internal_errors(true);
@@ -20,6 +23,7 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
 
             if ($element === false) {
                 $errors = array_map(
+                    //@phpstan-ignore-next-line return.type
                     static fn (LibXMLError $error): string => mb_trim($error->message),
                     libxml_get_errors()
                 );
