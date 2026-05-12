@@ -6,13 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy_3_1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_PMarzy_3_1Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class P_PMarzy_3_1Group extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_PMarzy_3_1 $p_PMarzy_3_1 Znacznik dostawy towarów używanych dla których podstawę opodatkowania stanowi marża, zgodnie z art. 120 ustawy, a faktura dokumentująca dostawę zawiera wyrazy "procedura marży - towary używane"
@@ -40,6 +40,6 @@ final class P_PMarzy_3_1Group extends AbstractDTO implements DomSerializableInte
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_PMarzy_3_1']);
     }
 }

@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WKom;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Wiersz extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Wiersz extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var array<int, WKom>
@@ -59,6 +59,6 @@ final class Wiersz extends AbstractDTO implements DomSerializableInterface, From
     {
         $data['WKom'] = Arr::ensureList($data['WKom']);
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['WKom']);
     }
 }

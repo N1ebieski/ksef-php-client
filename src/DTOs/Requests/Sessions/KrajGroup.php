@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -14,7 +14,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodKraju;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrID;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class KrajGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class KrajGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrID $nrID Dane identyfikujące nabywcę
@@ -50,6 +50,6 @@ final class KrajGroup extends AbstractDTO implements DomSerializableInterface, F
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['NrID', 'KodKraju']);
     }
 }

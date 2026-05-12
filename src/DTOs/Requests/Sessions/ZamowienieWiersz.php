@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -32,7 +32,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzedZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_IDZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrWierszaZam $nrWierszaZam Kolejny numer wiersza zamówienia lub umowy
@@ -231,7 +231,7 @@ final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInter
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['nrWierszaZam'] = (int) $data['NrWierszaZam'];
+        $data['NrWierszaZam'] = (int) $data['NrWierszaZam'];
         $data['cnZ'] = $data['CNZ'] ?? new Optional();
         $data['gtinZ'] = $data['GTINZ'] ?? new Optional();
         $data['pkwiuZ'] = $data['PKWiUZ'] ?? new Optional();
@@ -239,6 +239,6 @@ final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInter
         $data['uu_idZ'] = $data['UU_IDZ'] ?? new Optional();
         $data['gtuZ'] = $data['GTUZ'] ?? new Optional();
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['NrWierszaZam', 'uu_idZ', 'P_7Z', 'IndeksZ', 'gtinZ', 'pkwiuZ', 'cnZ', 'pkobZ', 'P_8AZ', 'P_8BZ', 'P_9AZ', 'P_11NettoZ', 'P_11VatZ', 'P_12Z', 'P_12Z_XII', 'P_12Z_Zal_15', 'gtuZ', 'ProceduraZ', 'KwotaAkcyzyZ', 'StanPrzedZ']);
     }
 }

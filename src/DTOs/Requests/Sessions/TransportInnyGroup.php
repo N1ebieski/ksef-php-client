@@ -6,14 +6,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisInnegoTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TransportInny;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class TransportInnyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class TransportInnyGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param TransportInny $transportInny Znacznik innego rodzaju transportu: 1 - inny rodzaj transportu
@@ -47,6 +47,6 @@ final class TransportInnyGroup extends AbstractDTO implements DomSerializableInt
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['TransportInny', 'OpisInnegoTransportu']);
     }
 }

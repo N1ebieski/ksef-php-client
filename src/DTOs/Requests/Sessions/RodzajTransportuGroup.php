@@ -6,13 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RodzajTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class RodzajTransportuGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class RodzajTransportuGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param RodzajTransportu $rodzajTransportu Rodzaj zastosowanego transportu w przypadku dokonanej dostawy towarów
@@ -40,6 +40,6 @@ final class RodzajTransportuGroup extends AbstractDTO implements DomSerializable
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['RodzajTransportu']);
     }
 }

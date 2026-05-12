@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22B;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BT;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_22BGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class P_22BGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_22B $p_22B Jeśli dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy - należy podać przebieg pojazdu
@@ -70,6 +70,6 @@ final class P_22BGroup extends AbstractDTO implements DomSerializableInterface, 
             default => new Optional(),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_22B', 'P_22B1234Group', 'P_22BT']);
     }
 }

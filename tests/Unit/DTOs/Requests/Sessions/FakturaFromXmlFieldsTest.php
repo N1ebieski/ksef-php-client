@@ -17,115 +17,137 @@ use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaZaliczko
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaZwolnienieVatFixture;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_12;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Rola;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RodzajFaktury;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Rola;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
 
 test('fromXml populates Naglowek fields correctly', function (): void {
     $fixture = new FakturaSprzedazyTowaruFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    expect($faktura->naglowek->wariantFormularza)->toBe(FormCode::Fa3);
-    expect($faktura->naglowek->systemInfo)->not->toBeInstanceOf(Optional::class);
-    expect((string) $faktura->naglowek->systemInfo)->toBe('KSEF-PHP-Client');
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    expect($deserialized->naglowek->wariantFormularza)->toBe(FormCode::Fa3);
+    expect($deserialized->naglowek->systemInfo)->not->toBeInstanceOf(Optional::class);
+    expect((string) $deserialized->naglowek->systemInfo)->toBe($fixture->data['naglowek']['systemInfo']);
 });
 
 test('fromXml populates Podmiot1 fields correctly', function (): void {
     $fixture = new FakturaSprzedazyTowaruFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    expect($faktura->podmiot1->daneIdentyfikacyjne->nip->value)->toBe('1111111111');
-    expect($faktura->podmiot1->daneIdentyfikacyjne->nazwa->value)->toBe('Testowa Firma');
-    expect($faktura->podmiot1->adres->kodKraju->value)->toBe('PL');
-    expect($faktura->podmiot1->adres->adresL1->value)->toBe('30-549 Kraków');
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    expect($deserialized->podmiot1->daneIdentyfikacyjne->nip->value)->toBe($fixture->data['podmiot1']['daneIdentyfikacyjne']['nip']);
+    expect($deserialized->podmiot1->daneIdentyfikacyjne->nazwa->value)->toBe($fixture->data['podmiot1']['daneIdentyfikacyjne']['nazwa']);
+    expect($deserialized->podmiot1->adres->kodKraju->value)->toBe($fixture->data['podmiot1']['adres']['kodKraju']);
+    expect($deserialized->podmiot1->adres->adresL1->value)->toBe($fixture->data['podmiot1']['adres']['adresL1']);
 });
 
 test('fromXml populates Fa scalar fields correctly', function (): void {
     $fixture = new FakturaSprzedazyTowaruFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    expect($faktura->fa->kodWaluty->value)->toBe('PLN');
-    expect($faktura->fa->p_2->value)->toBe('1/05/2025');
-    expect($faktura->fa->p_15->value)->toBe('2050.99');
-    expect($faktura->fa->rodzajFaktury)->toBe(RodzajFaktury::Vat);
-    expect($faktura->fa->p_1M)->not->toBeInstanceOf(Optional::class);
-    expect((string) $faktura->fa->p_1M)->toBe('Warszawa');
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    expect($deserialized->fa->kodWaluty->value)->toBe($fixture->data['fa']['kodWaluty']);
+    expect($deserialized->fa->p_2->value)->toBe($fixture->data['fa']['p_2']);
+    expect($deserialized->fa->p_15->value)->toBe($fixture->data['fa']['p_15']);
+    expect($deserialized->fa->rodzajFaktury)->toBe(RodzajFaktury::Vat);
+    expect($deserialized->fa->p_1M)->not->toBeInstanceOf(Optional::class);
+    expect((string) $deserialized->fa->p_1M)->toBe($fixture->data['fa']['p_1M']);
 });
 
 test('fromXml populates FaWiersz array correctly', function (): void {
     $fixture = new FakturaSprzedazyTowaruFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    expect($faktura->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
-    expect($faktura->fa->faWiersz)->toHaveCount(3);
+    $deserialized = Faktura::fromXml($faktura->toXml());
 
-    $wiersz = $faktura->fa->faWiersz[0];
+    expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->faWiersz)->toHaveCount(count($fixture->data['fa']['faWiersz']));
+
+    $wiersz = $deserialized->fa->faWiersz[0];
+
     expect($wiersz->nrWierszaFa->value)->toBe(1);
-    expect((string) $wiersz->p_7)->toBe('lodówka Zimnotech mk1');
-    expect((string) $wiersz->p_8A)->toBe('szt');
-    expect((string) $wiersz->p_8B)->toBe('1');
+    expect((string) $wiersz->p_7)->toBe($fixture->data['fa']['faWiersz'][0]['p_7']);
+    expect((string) $wiersz->p_8A)->toBe($fixture->data['fa']['faWiersz'][0]['p_8A']);
+    expect((string) $wiersz->p_8B)->toBe((string) $fixture->data['fa']['faWiersz'][0]['p_8B']);
     expect($wiersz->p_12)->toBe(P_12::Tax23);
 });
 
 test('fromXml populates Zwolnienie with P_19Group correctly', function (): void {
     $fixture = new FakturaZwolnienieVatFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    $zwolnienie = $faktura->fa->adnotacje->zwolnienie;
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    $zwolnienie = $deserialized->fa->adnotacje->zwolnienie;
+
     expect($zwolnienie->p_19Group)->toBeInstanceOf(P_19Group::class);
 
     /** @var P_19Group $p_19Group */
     $p_19Group = $zwolnienie->p_19Group;
+
     expect($p_19Group->p_19ABCGroup)->toBeInstanceOf(P_19AGroup::class);
     expect((string) $p_19Group->p_19ABCGroup->p_19A)
-        ->toBe('art. 43. ust. 1 pkt 29 lit. a Ustawa o VAT');
+        ->toBe($fixture->data['fa']['adnotacje']['zwolnienie']['p_19Group']['p_19ABCGroup']['p_19A']);
 });
 
 test('fromXml populates PMarzy with P_PMarzyGroup correctly', function (): void {
     $fixture = new FakturaVatMarzaFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    $pMarzy = $faktura->fa->adnotacje->pMarzy;
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    $pMarzy = $deserialized->fa->adnotacje->pMarzy;
+
     expect($pMarzy->p_PMarzyGroup)->toBeInstanceOf(P_PMarzyGroup::class);
 
     /** @var P_PMarzyGroup $p_PMarzyGroup */
     $p_PMarzyGroup = $pMarzy->p_PMarzyGroup;
+
     expect($p_PMarzyGroup->p_PMarzy_2_3Group)->toBeInstanceOf(P_PMarzy_2Group::class);
 });
 
 test('fromXml populates Podmiot3 with Rola and Udzial correctly', function (): void {
     $fixture = new FakturaZaliczkowaZDodatkowymNabywcaFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    expect($faktura->podmiot3)->not->toBeInstanceOf(Optional::class);
-    expect($faktura->podmiot3)->toHaveCount(1);
+    $deserialized = Faktura::fromXml($faktura->toXml());
 
-    $podmiot3 = $faktura->podmiot3[0];
+    expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->podmiot3)->toHaveCount(1);
+
+    $podmiot3 = $deserialized->podmiot3[0];
+
     expect($podmiot3->rolaGroup)->toBeInstanceOf(RolaGroup::class);
     expect($podmiot3->rolaGroup->rola)->toBe(Rola::DodatkowyNabywca);
-    expect((string) $podmiot3->udzial)->toBe('50');
+    expect((string) $podmiot3->udzial)->toBe($fixture->data['podmiot3'][0]['udzial']);
 });
 
 test('fromXml populates KorektaGroup fields correctly', function (): void {
     $fixture = new FakturaKorygujacaUniwersalnaFixture();
 
-    $faktura = Faktura::fromXml(Faktura::from($fixture->data)->toXml());
+    $faktura = Faktura::from($fixture->data);
 
-    $korektaGroup = $faktura->fa->korektaGroup;
-    expect($korektaGroup)->toBeInstanceOf(KorektaGroup::class);
+    $deserialized = Faktura::fromXml($faktura->toXml());
 
     /** @var KorektaGroup $korektaGroup */
+    $korektaGroup = $deserialized->fa->korektaGroup;
+
+    expect($korektaGroup)->toBeInstanceOf(KorektaGroup::class);
     expect($korektaGroup->typKorekty)->toBe(TypKorekty::Inna);
     expect((string) $korektaGroup->przyczynaKorekty)
-        ->toContain('obniżka ceny');
+        ->toContain($fixture->data['fa']['korektaGroup']['przyczynaKorekty']);
     expect($korektaGroup->daneFaKorygowanej)->toHaveCount(1);
     expect((string) $korektaGroup->daneFaKorygowanej[0]->nrFaKorygowanej)
-        ->toBe('FV2022/02/150');
+        ->toBe($fixture->data['fa']['korektaGroup']['daneFaKorygowanej'][0]['nrFaKorygowanej']);
 });

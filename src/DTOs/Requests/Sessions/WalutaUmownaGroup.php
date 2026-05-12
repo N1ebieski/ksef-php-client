@@ -6,14 +6,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KursUmowny;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WalutaUmowna;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param KursUmowny $kursUmowny Kurs umowny - w przypadkach, gdy na fakturze znajduje się informacja o kursie, po którym zostały przeliczone kwoty wykazane na fakturze w złotych. Nie dotyczy przypadków, o których mowa w Dziale VI ustawy
@@ -48,6 +48,6 @@ final class WalutaUmownaGroup extends AbstractDTO implements DomSerializableInte
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['KursUmowny', 'WalutaUmowna']);
     }
 }

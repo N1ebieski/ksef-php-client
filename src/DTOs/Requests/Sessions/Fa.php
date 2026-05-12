@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -34,7 +34,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZwrotAkcyzy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Fa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, WZ>
@@ -506,6 +506,6 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, FromXmlA
         $data['fp'] = $data['FP'] ?? new Optional();
         $data['tp'] = $data['TP'] ?? new Optional();
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['wz', 'KodWaluty', 'P_1', 'P_1M', 'P_2', 'P_6Group', 'P_13_1Group', 'P_13_2Group', 'P_13_3Group', 'P_13_4Group', 'P_13_5Group', 'P_13_6_1', 'P_13_6_2', 'P_13_6_3', 'P_13_7', 'P_13_8', 'P_13_9', 'P_13_10', 'P_13_11', 'KursWalutyZ', 'P_15', 'Adnotacje', 'RodzajFaktury', 'KorektaGroup', 'ZaliczkaCzesciowa', 'fp', 'tp', 'DodatkowyOpis', 'FakturaZaliczkowa', 'ZwrotAkcyzy', 'FaWiersz', 'Rozliczenie', 'Platnosc', 'WarunkiTransakcji', 'Zamowienie']);
     }
 }

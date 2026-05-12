@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_16;
@@ -16,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_18A;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_23;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Adnotacje extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Adnotacje extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_16 $p_16 W przypadku dostawy towarów lub świadczenia usług, w odniesieniu do których obowiązek podatkowy powstaje zgodnie z art. 19a ust. 5 pkt 1 lub art. 21 ust. 1 ustawy - wyrazy "metoda kasowa", należy podać wartość "1"; w przeciwnym przypadku - wartość "2"
@@ -93,6 +93,6 @@ final class Adnotacje extends AbstractDTO implements DomSerializableInterface, F
 
         $data['PMarzy'] = PMarzy::normalizeXmlArray($data['PMarzy']);
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_16', 'P_17', 'P_18', 'P_18A', 'Zwolnienie', 'NoweSrodkiTransportu', 'P_23', 'PMarzy']);
     }
 }

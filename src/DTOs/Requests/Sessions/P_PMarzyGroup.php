@@ -7,13 +7,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_PMarzy $p_PMarzy Znacznik wystąpienia procedur marży, o których mowa w art. 119 lub art. 120 ustawy
@@ -56,6 +56,6 @@ final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterfac
             default => P_PMarzy_3_3Group::normalizeXmlArray($data),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_PMarzy', 'P_PMarzy_2_3Group']);
     }
 }

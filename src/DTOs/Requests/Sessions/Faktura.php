@@ -143,6 +143,6 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Xml
             default => new Optional(),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['Naglowek', 'Podmiot1', 'Podmiot2', 'Podmiot3', 'Fa', 'PodmiotUpowazniony', 'Stopka', 'Zalacznik']);
     }
 }

@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -20,7 +20,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class KorektaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class KorektaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var array<int, DaneFaKorygowanej>
@@ -150,11 +150,11 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
             default => new Optional(),
         };
 
-        $data['P_15ZKGroup'] = match (true) {
+        $data['P15ZKGroup'] = match (true) {
             isset($data['P_15ZK']) => P_15ZKGroup::normalizeXmlArray($data),
             default => new Optional(),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['DaneFaKorygowanej', 'PrzyczynaKorekty', 'TypKorekty', 'OkresFaKorygowanej', 'NrFaKorygowany', 'Podmiot1K', 'Podmiot2K', 'P15ZKGroup']);
     }
 }

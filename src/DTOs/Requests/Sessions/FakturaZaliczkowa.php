@@ -7,12 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly NrKSeFZNGroup | NrKSeFFaZaliczkowejGroup $nrKSeFZNGroup
@@ -44,6 +44,6 @@ final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInte
             default => NrKSeFFaZaliczkowejGroup::normalizeXmlArray($data),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['NrKSeFZNGroup']);
     }
 }

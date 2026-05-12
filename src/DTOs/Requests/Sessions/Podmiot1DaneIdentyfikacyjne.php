@@ -6,14 +6,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Nazwa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly NIP $nip,
@@ -46,6 +46,6 @@ final class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerial
     {
         $data['nip'] = $data['NIP'];
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['nip', 'Nazwa']);
     }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayAction;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayHandler;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-$ns = 'http://crd.gov.pl/wzor/2025/06/25/13775/';
+$ns = XmlNamespace::Fa3->value;
 
 test('keys match exact XML element names (PascalCase)', function () use ($ns): void {
     $xml = <<<XML

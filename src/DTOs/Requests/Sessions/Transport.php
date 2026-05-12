@@ -7,14 +7,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Transport extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Transport extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly RodzajTransportuGroup | TransportInnyGroup $transportGroup,
@@ -91,6 +91,6 @@ final class Transport extends AbstractDTO implements DomSerializableInterface, F
             default => new Optional(),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['TransportGroup', 'LadunekGroup', 'Przewoznik', 'NrZleceniaTransportu', 'WysylkaGroup']);
     }
 }

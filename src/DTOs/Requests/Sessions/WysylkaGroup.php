@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -16,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, WysylkaPrzez>
@@ -111,6 +111,6 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
             default => new Optional(),
         };
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['DataGodzRozpTransportu', 'DataGodzZakTransportu', 'WysylkaPrzez', 'WysylkaZ', 'WysylkaDo']);
     }
 }

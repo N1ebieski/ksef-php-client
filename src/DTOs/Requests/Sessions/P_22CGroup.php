@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -14,7 +14,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22C1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22C;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_22CGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class P_22CGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_22C $p_22C Jeśli dostawa dotyczy jednostek pływających, o których mowa w art. 2 pkt 10 lit. b ustawy, należy podać liczbę godzin roboczych używania nowego środka transportu
@@ -51,6 +51,6 @@ final class P_22CGroup extends AbstractDTO implements DomSerializableInterface, 
 
     public static function normalizeXmlArray(array $data): array
     {
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_22C', 'P_22C1']);
     }
 }

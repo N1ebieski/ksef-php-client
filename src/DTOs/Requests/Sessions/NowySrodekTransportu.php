@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -20,7 +20,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BRP;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_NrWierszaNST;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_22A $p_22A Data dopuszczenia nowego środka transportu do użytku
@@ -116,6 +116,6 @@ final class NowySrodekTransportu extends AbstractDTO implements DomSerializableI
 
         $data['P_nrWierszaNST'] = (int) $data['P_NrWierszaNST'];
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['P_22A', 'P_nrWierszaNST', 'P_22BCDGroup', 'P_22BMK', 'P_22BMD', 'P_22BK', 'P_22BNR', 'P_22BRP']);
     }
 }

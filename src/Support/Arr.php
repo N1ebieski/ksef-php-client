@@ -58,7 +58,7 @@ final class Arr
         $newArray = [];
 
         if ($only !== []) {
-            $array = array_intersect_key($array, array_flip($only));
+            $array = self::only($array, $only);
         }
 
         foreach ($array as $key => $value) {
@@ -85,30 +85,14 @@ final class Arr
         return $newArray;
     }
 
-    public static function onlyClassParameters(array $array, string $className): array
+    /**
+     * @param array<string, mixed> $array
+     * @param array<int, string> $only
+     * @return array<string, mixed>
+     */
+    public static function only(array $array, array $only): array
     {
-        if ( ! class_exists($className)) {
-            throw new InvalidArgumentException("Class [{$className}] does not exist.");
-        }
-
-        $constructor = (new ReflectionClass($className))->getConstructor();
-
-        if ($constructor === null) {
-            return [];
-        }
-
-        $parameterNames = array_map(
-            static fn ($parameter): string => $parameter->getName(),
-            $constructor->getParameters()
-        );
-
-        $normalized = [];
-
-        foreach ($array as $key => $value) {
-            $normalized[is_string($key) ? lcfirst($key) : $key] = $value;
-        }
-
-        return array_intersect_key($normalized, array_flip($parameterNames));
+        return array_intersect_key($array, array_flip($only));
     }
 
     /**

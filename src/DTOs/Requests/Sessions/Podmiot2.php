@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -19,7 +19,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrEORI;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKlienta;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, DaneKontaktowe>
@@ -147,6 +147,6 @@ final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, Fr
         $data['gv'] = $data['GV'] ?? GV::No;
         $data['idNabywcy'] = $data['IDNabywcy'] ?? new Optional();
 
-        return Arr::onlyClassParameters($data, self::class);
+        return Arr::only($data, ['NrEORI', 'DaneIdentyfikacyjne', 'Adres', 'DaneKontaktowe', 'AdresKoresp', 'NrKlienta', 'idNabywcy', 'jst', 'gv']);
     }
 }
