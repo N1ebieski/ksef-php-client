@@ -106,7 +106,7 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface,
     {
         $data['Obciazenia'] = match (true) {
             isset($data['Obciazenia']) => array_map(
-                fn (array $item): array => Obciazenia::normalizeXmlArray($item),
+                Obciazenia::normalizeXmlArray(...),
                 Arr::ensureList($data['Obciazenia'])
             ),
             default => new Optional(),
@@ -114,7 +114,7 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface,
 
         $data['Odliczenia'] = match (true) {
             isset($data['Odliczenia']) => array_map(
-                fn (array $item): array => Odliczenia::normalizeXmlArray($item),
+                Odliczenia::normalizeXmlArray(...),
                 Arr::ensureList($data['Odliczenia'])
             ),
             default => new Optional(),

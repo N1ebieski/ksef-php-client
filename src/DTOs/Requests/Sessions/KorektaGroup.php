@@ -133,7 +133,7 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
     public static function normalizeXmlArray(array $data): array
     {
         $data['DaneFaKorygowanej'] = array_map(
-            fn (array $item): array => DaneFaKorygowanej::normalizeXmlArray($item),
+            DaneFaKorygowanej::normalizeXmlArray(...),
             Arr::ensureList($data['DaneFaKorygowanej'])
         );
 
@@ -144,7 +144,7 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
 
         $data['Podmiot2K'] = match (true) {
             isset($data['Podmiot2K']) => array_map(
-                fn (array $item): array => Podmiot2K::normalizeXmlArray($item),
+                Podmiot2K::normalizeXmlArray(...),
                 Arr::ensureList($data['Podmiot2K'])
             ),
             default => new Optional(),

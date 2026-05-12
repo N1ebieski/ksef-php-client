@@ -68,7 +68,7 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
     {
         $data['ZaplataCzesciowa'] = match (true) {
             isset($data['ZaplataCzesciowa']) => array_map(
-                fn (array $item): array => ZaplataCzesciowa::normalizeXmlArray($item),
+                ZaplataCzesciowa::normalizeXmlArray(...),
                 Arr::ensureList($data['ZaplataCzesciowa'])
             ),
             default => new Optional(),

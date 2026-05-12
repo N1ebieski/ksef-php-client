@@ -144,7 +144,7 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
     {
         $data['Umowy'] = match (true) {
             isset($data['Umowy']) => array_map(
-                fn (array $item): array => Umowy::normalizeXmlArray($item),
+                Umowy::normalizeXmlArray(...),
                 Arr::ensureList($data['Umowy'])
             ),
             default => new Optional(),
@@ -152,7 +152,7 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
 
         $data['Zamowienia'] = match (true) {
             isset($data['Zamowienia']) => array_map(
-                fn (array $item): array => Zamowienia::normalizeXmlArray($item),
+                Zamowienia::normalizeXmlArray(...),
                 Arr::ensureList($data['Zamowienia'])
             ),
             default => new Optional(),
@@ -170,7 +170,7 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
 
         $data['Transport'] = match (true) {
             isset($data['Transport']) => array_map(
-                fn (array $item): array => Transport::normalizeXmlArray($item),
+                Transport::normalizeXmlArray(...),
                 Arr::ensureList($data['Transport'])
             ),
             default => new Optional(),

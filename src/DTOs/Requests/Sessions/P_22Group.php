@@ -72,7 +72,7 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface, X
     public static function normalizeXmlArray(array $data): array
     {
         $data['NowySrodekTransportu'] = array_map(
-            fn (array $item): array => NowySrodekTransportu::normalizeXmlArray($item),
+            NowySrodekTransportu::normalizeXmlArray(...),
             Arr::ensureList($data['NowySrodekTransportu'])
         );
 

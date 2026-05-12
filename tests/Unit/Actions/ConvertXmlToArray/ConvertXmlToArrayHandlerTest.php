@@ -102,7 +102,7 @@ test('single element does not produce indexed array', function () use ($ns): voi
 });
 
 test('throws RuntimeException on invalid XML', function (): void {
-    expect(fn () => (new ConvertXmlToArrayHandler())->handle(
+    expect(fn (): array => (new ConvertXmlToArrayHandler())->handle(
         new ConvertXmlToArrayAction('<not valid xml')
     ))->toThrow(RuntimeException::class);
 });

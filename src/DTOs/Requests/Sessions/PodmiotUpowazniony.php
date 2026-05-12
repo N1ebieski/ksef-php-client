@@ -104,7 +104,7 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
 
         $data['DaneKontaktowe'] = match (true) {
             isset($data['DaneKontaktowe']) => array_map(
-                fn (array $item): array => PodmiotUpowaznionyDaneKontaktowe::normalizeXmlArray($item),
+                PodmiotUpowaznionyDaneKontaktowe::normalizeXmlArray(...),
                 Arr::ensureList($data['DaneKontaktowe'])
             ),
             default => new Optional(),

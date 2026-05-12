@@ -99,13 +99,13 @@ final class Tabela extends AbstractDTO implements DomSerializableInterface, XmlN
         $data['TNaglowek'] = TNaglowek::normalizeXmlArray($data['TNaglowek']);
 
         $data['Wiersz'] = array_map(
-            fn (array $item): array => Wiersz::normalizeXmlArray($item),
+            Wiersz::normalizeXmlArray(...),
             Arr::ensureList($data['Wiersz'])
         );
 
         $data['TMetaDane'] = match (true) {
             isset($data['TMetaDane']) => array_map(
-                fn (array $item): array => TMetaDane::normalizeXmlArray($item),
+                TMetaDane::normalizeXmlArray(...),
                 Arr::ensureList($data['TMetaDane'])
             ),
             default => new Optional(),

@@ -56,7 +56,7 @@ final class Zalacznik extends AbstractDTO implements DomSerializableInterface, X
     public static function normalizeXmlArray(array $data): array
     {
         $data['BlokDanych'] = array_map(
-            fn (array $item): array => BlokDanych::normalizeXmlArray($item),
+            BlokDanych::normalizeXmlArray(...),
             Arr::ensureList($data['BlokDanych'])
         );
 

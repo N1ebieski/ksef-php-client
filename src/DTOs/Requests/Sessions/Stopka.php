@@ -75,7 +75,7 @@ final class Stopka extends AbstractDTO implements DomSerializableInterface, XmlN
     {
         $data['Informacje'] = match (true) {
             isset($data['Informacje']) => array_map(
-                fn (array $item): array => Informacje::normalizeXmlArray($item),
+                Informacje::normalizeXmlArray(...),
                 Arr::ensureList($data['Informacje'])
             ),
             default => new Optional(),
@@ -83,7 +83,7 @@ final class Stopka extends AbstractDTO implements DomSerializableInterface, XmlN
 
         $data['Rejestry'] = match (true) {
             isset($data['Rejestry']) => array_map(
-                fn (array $item): array => Rejestry::normalizeXmlArray($item),
+                Rejestry::normalizeXmlArray(...),
                 Arr::ensureList($data['Rejestry'])
             ),
             default => new Optional(),

@@ -137,7 +137,7 @@ final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, Xm
 
         $data['DaneKontaktowe'] = match (true) {
             isset($data['DaneKontaktowe']) => array_map(
-                fn (array $item): array => DaneKontaktowe::normalizeXmlArray($item),
+                DaneKontaktowe::normalizeXmlArray(...),
                 Arr::ensureList($data['DaneKontaktowe'])
             ),
             default => new Optional(),

@@ -93,7 +93,7 @@ final class BlokDanych extends AbstractDTO implements DomSerializableInterface, 
     public static function normalizeXmlArray(array $data): array
     {
         $data['MetaDane'] = array_map(
-            fn (array $item): array => MetaDane::normalizeXmlArray($item),
+            MetaDane::normalizeXmlArray(...),
             Arr::ensureList($data['MetaDane'])
         );
 
@@ -104,7 +104,7 @@ final class BlokDanych extends AbstractDTO implements DomSerializableInterface, 
 
         $data['Tabela'] = match (true) {
             isset($data['Tabela']) => array_map(
-                fn (array $item): array => Tabela::normalizeXmlArray($item),
+                Tabela::normalizeXmlArray(...),
                 Arr::ensureList($data['Tabela'])
             ),
             default => new Optional(),

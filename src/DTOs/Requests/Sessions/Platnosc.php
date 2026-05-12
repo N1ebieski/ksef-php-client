@@ -130,7 +130,7 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Xm
 
         $data['TerminPlatnosci'] = match (true) {
             isset($data['TerminPlatnosci']) => array_map(
-                fn (array $item): array => TerminPlatnosci::normalizeXmlArray($item),
+                TerminPlatnosci::normalizeXmlArray(...),
                 Arr::ensureList($data['TerminPlatnosci'])
             ),
             default => new Optional(),
@@ -144,7 +144,7 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Xm
 
         $data['RachunekBankowy'] = match (true) {
             isset($data['RachunekBankowy']) => array_map(
-                fn (array $item): array => RachunekBankowy::normalizeXmlArray($item),
+                RachunekBankowy::normalizeXmlArray(...),
                 Arr::ensureList($data['RachunekBankowy'])
             ),
             default => new Optional(),
@@ -152,7 +152,7 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Xm
 
         $data['RachunekBankowyFaktora'] = match (true) {
             isset($data['RachunekBankowyFaktora']) => array_map(
-                fn (array $item): array => RachunekBankowyFaktora::normalizeXmlArray($item),
+                RachunekBankowyFaktora::normalizeXmlArray(...),
                 Arr::ensureList($data['RachunekBankowyFaktora'])
             ),
             default => new Optional(),
