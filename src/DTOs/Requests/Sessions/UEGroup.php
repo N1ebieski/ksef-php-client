@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodUE;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrVatUE;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
@@ -45,11 +46,8 @@ final class UEGroup extends AbstractDTO implements DomSerializableInterface, Fro
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            kodUE: new KodUE($data['KodUE']),
-            nrVatUE: new NrVatUE($data['NrVatUE']),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

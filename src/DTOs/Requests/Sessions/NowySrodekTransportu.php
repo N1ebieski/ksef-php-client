@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22A;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BK;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BMD;
@@ -16,8 +18,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BMK;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BNR;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BRP;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_NrWierszaNST;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class NowySrodekTransportu extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -105,25 +106,16 @@ final class NowySrodekTransportu extends AbstractDTO implements DomSerializableI
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['P_22B'])) {
-            $p_22BCDGroup = P_22BGroup::fromXmlArray($data);
-        } elseif (isset($data['P_22C'])) {
-            $p_22BCDGroup = P_22CGroup::fromXmlArray($data);
-        } else {
-            $p_22BCDGroup = P_22DGroup::fromXmlArray($data);
-        }
+        $data['P_22BCDGroup'] = match (true) {
+            isset($data['P_22B']) => P_22BGroup::normalizeXmlArray($data),
+            isset($data['P_22C']) => P_22CGroup::normalizeXmlArray($data),
+            default => P_22DGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            p_22A: new P_22A($data['P_22A']),
-            p_nrWierszaNST: new P_NrWierszaNST((int)$data['P_NrWierszaNST']),
-            p_22BCDGroup: $p_22BCDGroup,
-            p_22BMK: isset($data['P_22BMK']) ? new P_22BMK($data['P_22BMK']) : new Optional(),
-            p_22BMD: isset($data['P_22BMD']) ? new P_22BMD($data['P_22BMD']) : new Optional(),
-            p_22BK: isset($data['P_22BK']) ? new P_22BK($data['P_22BK']) : new Optional(),
-            p_22BNR: isset($data['P_22BNR']) ? new P_22BNR($data['P_22BNR']) : new Optional(),
-            p_22BRP: isset($data['P_22BRP']) ? new P_22BRP($data['P_22BRP']) : new Optional(),
-        );
+        $data['P_nrWierszaNST'] = (int) $data['P_NrWierszaNST'];
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

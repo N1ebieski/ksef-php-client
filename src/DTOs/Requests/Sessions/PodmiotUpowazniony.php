@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -90,20 +91,25 @@ final class PodmiotUpowazniony extends AbstractDTO implements DomSerializableInt
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            daneIdentyfikacyjne: PodmiotUpowaznionyDaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
-            adres: Adres::fromXmlArray($data['Adres']),
-            rolaPU: RolaPU::from($data['RolaPU']),
-            nrEORI: isset($data['NrEORI']) ? new NrEORI($data['NrEORI']) : new Optional(),
-            adresKoresp: isset($data['AdresKoresp']) ? AdresKoresp::fromXmlArray($data['AdresKoresp']) : new Optional(),
-            daneKontaktowe: isset($data['DaneKontaktowe'])
-                ? array_map(
-                    fn (array $item) => PodmiotUpowaznionyDaneKontaktowe::fromXmlArray($item),
-                    self::ensureList($data['DaneKontaktowe'])
-                )
-                : new Optional(),
-        );
+        $data['DaneIdentyfikacyjne'] = PodmiotUpowaznionyDaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = Adres::normalizeXmlArray($data['Adres']);
+
+        $data['AdresKoresp'] = match (true) {
+            isset($data['AdresKoresp']) => AdresKoresp::normalizeXmlArray($data['AdresKoresp']),
+            default => new Optional(),
+        };
+
+        $data['DaneKontaktowe'] = match (true) {
+            isset($data['DaneKontaktowe']) => array_map(
+                fn (array $item): array => PodmiotUpowaznionyDaneKontaktowe::normalizeXmlArray($item),
+                Arr::ensureList($data['DaneKontaktowe'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

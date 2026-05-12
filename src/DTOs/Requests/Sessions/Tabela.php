@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
@@ -93,22 +94,27 @@ final class Tabela extends AbstractDTO implements DomSerializableInterface, From
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            tNaglowek: TNaglowek::fromXmlArray($data['TNaglowek']),
-            wiersz: array_map(
-                fn (array $item) => Wiersz::fromXmlArray($item),
-                self::ensureList($data['Wiersz'])
-            ),
-            tMetaDane: isset($data['TMetaDane'])
-                ? array_map(
-                    fn (array $item) => TMetaDane::fromXmlArray($item),
-                    self::ensureList($data['TMetaDane'])
-                )
-                : new Optional(),
-            opis: isset($data['Opis']) ? new Opis($data['Opis']) : new Optional(),
-            suma: isset($data['Suma']) ? Suma::fromXmlArray($data['Suma']) : new Optional(),
+        $data['TNaglowek'] = TNaglowek::normalizeXmlArray($data['TNaglowek']);
+
+        $data['Wiersz'] = array_map(
+            fn (array $item): array => Wiersz::normalizeXmlArray($item),
+            Arr::ensureList($data['Wiersz'])
         );
+
+        $data['TMetaDane'] = match (true) {
+            isset($data['TMetaDane']) => array_map(
+                fn (array $item): array => TMetaDane::normalizeXmlArray($item),
+                Arr::ensureList($data['TMetaDane'])
+            ),
+            default => new Optional(),
+        };
+
+        if (isset($data['Suma'])) {
+            $data['Suma'] = Suma::normalizeXmlArray($data['Suma']);
+        }
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

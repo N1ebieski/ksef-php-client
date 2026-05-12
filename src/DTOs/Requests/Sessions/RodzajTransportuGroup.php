@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\RodzajTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
@@ -37,8 +38,8 @@ final class RodzajTransportuGroup extends AbstractDTO implements DomSerializable
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(rodzajTransportu: RodzajTransportu::from($data['RodzajTransportu']));
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

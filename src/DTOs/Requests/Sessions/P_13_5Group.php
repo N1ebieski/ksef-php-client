@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_13_5;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_14_5;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class P_13_5Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -48,11 +49,8 @@ final class P_13_5Group extends AbstractDTO implements DomSerializableInterface,
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            p_13_5: new P_13_5($data['P_13_5']),
-            p_14_5: isset($data['P_14_5']) ? new P_14_5($data['P_14_5']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

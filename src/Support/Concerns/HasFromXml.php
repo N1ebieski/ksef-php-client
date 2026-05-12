@@ -13,10 +13,14 @@ use N1ebieski\KSEFClient\Contracts\XmlDeserializableInterface;
  */
 trait HasFromXml
 {
+    use HasFromArray;
+
     public static function fromXml(string $xml): self
     {
         $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
 
-        return self::fromXmlArray($array);
+        $normalizedArray = self::normalizeXmlArray($array);
+
+        return self::from($normalizedArray);
     }
 }

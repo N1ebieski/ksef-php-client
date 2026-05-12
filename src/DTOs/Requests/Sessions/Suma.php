@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SKom;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SKom;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Suma extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -54,13 +55,10 @@ final class Suma extends AbstractDTO implements DomSerializableInterface, FromXm
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            sKom: array_map(
-                fn (string $value) => new SKom($value),
-                self::ensureList($data['SKom'])
-            ),
-        );
+        $data['SKom'] = Arr::ensureList($data['SKom']);
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

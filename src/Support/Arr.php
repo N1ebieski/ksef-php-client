@@ -6,10 +6,12 @@ namespace N1ebieski\KSEFClient\Support;
 
 use Closure;
 use DateTimeInterface;
+use InvalidArgumentException;
 use N1ebieski\KSEFClient\Contracts\ArrayableInterface;
 use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\ValueObjects\Support\KeyType;
+use ReflectionClass;
 
 final class Arr
 {
@@ -81,5 +83,45 @@ final class Arr
         }
 
         return $newArray;
+    }
+
+    public static function onlyClassParameters(array $array, string $className): array
+    {
+        if ( ! class_exists($className)) {
+            throw new InvalidArgumentException("Class [{$className}] does not exist.");
+        }
+
+        $constructor = (new ReflectionClass($className))->getConstructor();
+
+        if ($constructor === null) {
+            return [];
+        }
+
+        $parameterNames = array_map(
+            static fn ($parameter): string => $parameter->getName(),
+            $constructor->getParameters()
+        );
+
+        $normalized = [];
+
+        foreach ($array as $key => $value) {
+            $normalized[is_string($key) ? lcfirst($key) : $key] = $value;
+        }
+
+        return array_intersect_key($normalized, array_flip($parameterNames));
+    }
+
+    /**
+     * Wraps a single XML-parsed item (scalar or associative array) into a list.
+     * When SimpleXML parses a single repeated element, json_encode returns a scalar
+     * or associative array instead of an indexed array.
+     */
+    public static function ensureList(mixed $data): array
+    {
+        if ( ! is_array($data)) {
+            return [$data];
+        }
+
+        return array_is_list($data) ? $data : [$data];
     }
 }

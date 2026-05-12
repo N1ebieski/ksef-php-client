@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Nazwa;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Nazwa;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Podmiot2DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -46,21 +47,15 @@ final class Podmiot2DaneIdentyfikacyjne extends AbstractDTO implements DomSerial
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['NIP'])) {
-            $idGroup = NIPGroup::fromXmlArray($data);
-        } elseif (isset($data['KodUE'])) {
-            $idGroup = UEGroup::fromXmlArray($data);
-        } elseif (isset($data['BrakID'])) {
-            $idGroup = BrakIDGroup::fromXmlArray($data);
-        } else {
-            $idGroup = KrajGroup::fromXmlArray($data);
-        }
+        $data['IdGroup'] = match (true) {
+            isset($data['NIP']) => NIPGroup::normalizeXmlArray($data),
+            isset($data['KodUE']) => UEGroup::normalizeXmlArray($data),
+            isset($data['BrakID']) => BrakIDGroup::normalizeXmlArray($data),
+            default => KrajGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            idGroup: $idGroup,
-            nazwa: isset($data['Nazwa']) ? new Nazwa($data['Nazwa']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

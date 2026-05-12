@@ -9,6 +9,7 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22B;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22BT;
@@ -59,24 +60,16 @@ final class P_22BGroup extends AbstractDTO implements DomSerializableInterface, 
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['P_22B1'])) {
-            $p_22B1234Group = P_22B1Group::fromXmlArray($data);
-        } elseif (isset($data['P_22B2'])) {
-            $p_22B1234Group = P_22B2Group::fromXmlArray($data);
-        } elseif (isset($data['P_22B3'])) {
-            $p_22B1234Group = P_22B3Group::fromXmlArray($data);
-        } elseif (isset($data['P_22B4'])) {
-            $p_22B1234Group = P_22B4Group::fromXmlArray($data);
-        } else {
-            $p_22B1234Group = new Optional();
-        }
+        $data['P_22B1234Group'] = match (true) {
+            isset($data['P_22B1']) => P_22B1Group::normalizeXmlArray($data),
+            isset($data['P_22B2']) => P_22B2Group::normalizeXmlArray($data),
+            isset($data['P_22B3']) => P_22B3Group::normalizeXmlArray($data),
+            isset($data['P_22B4']) => P_22B4Group::normalizeXmlArray($data),
+            default => new Optional(),
+        };
 
-        return new self(
-            p_22B: new P_22B($data['P_22B']),
-            p_22B1234Group: $p_22B1234Group,
-            p_22BT: isset($data['P_22BT']) ? new P_22BT($data['P_22BT']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_42_5;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_42_5;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class P_22Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -68,15 +69,13 @@ final class P_22Group extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            p_42_5: new P_42_5($data['P_42_5']),
-            nowySrodekTransportu: array_map(
-                fn (array $item) => NowySrodekTransportu::fromXmlArray($item),
-                self::ensureList($data['NowySrodekTransportu'])
-            ),
-            p_22: isset($data['P_22']) ? P_22::from($data['P_22']) : P_22::Default,
+        $data['NowySrodekTransportu'] = array_map(
+            fn (array $item): array => NowySrodekTransportu::normalizeXmlArray($item),
+            Arr::ensureList($data['NowySrodekTransportu'])
         );
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

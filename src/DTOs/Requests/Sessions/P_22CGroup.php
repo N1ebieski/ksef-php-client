@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22C1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_22C;
@@ -48,11 +49,8 @@ final class P_22CGroup extends AbstractDTO implements DomSerializableInterface, 
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            p_22C: new P_22C($data['P_22C']),
-            p_22C1: isset($data['P_22C1']) ? new P_22C1($data['P_22C1']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZKlucz;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZWartosc;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
@@ -41,11 +42,8 @@ final class MetaDane extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            zKlucz: new ZKlucz($data['ZKlucz']),
-            zWartosc: new ZWartosc($data['ZWartosc']),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

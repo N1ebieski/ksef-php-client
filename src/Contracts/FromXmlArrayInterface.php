@@ -8,6 +8,7 @@ interface FromXmlArrayInterface
 {
     /**
      * @param array<string, mixed> $data
+     * @return array<string, mixed>
      */
-    public static function fromXmlArray(array $data): self;
+    public static function normalizeXmlArray(array $data): array;
 }

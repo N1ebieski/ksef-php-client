@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -90,25 +91,26 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        $wysylkaPrzez = isset($data['WysylkaPrzez'])
-            ? array_map(
-                fn (array $item) => WysylkaPrzez::fromXmlArray($item),
-                self::ensureList($data['WysylkaPrzez'])
-            )
-            : new Optional();
+        $data['WysylkaPrzez'] = match (true) {
+            isset($data['WysylkaPrzez']) => array_map(
+                fn (array $item): array => WysylkaPrzez::normalizeXmlArray($item),
+                Arr::ensureList($data['WysylkaPrzez'])
+            ),
+            default => new Optional(),
+        };
 
-        return new self(
-            dataGodzRozpTransportu: isset($data['DataGodzRozpTransportu'])
-                ? new DataGodzRozpTransportu($data['DataGodzRozpTransportu'])
-                : new Optional(),
-            dataGodzZakTransportu: isset($data['DataGodzZakTransportu'])
-                ? new DataGodzZakTransportu($data['DataGodzZakTransportu'])
-                : new Optional(),
-            wysylkaZ: isset($data['WysylkaZ']) ? WysylkaZ::fromXmlArray($data['WysylkaZ']) : new Optional(),
-            wysylkaPrzez: $wysylkaPrzez,
-            wysylkaDo: isset($data['WysylkaDo']) ? WysylkaDo::fromXmlArray($data['WysylkaDo']) : new Optional(),
-        );
+        $data['WysylkaZ'] = match (true) {
+            isset($data['WysylkaZ']) => WysylkaZ::normalizeXmlArray($data['WysylkaZ']),
+            default => new Optional(),
+        };
+
+        $data['WysylkaDo'] = match (true) {
+            isset($data['WysylkaDo']) => WysylkaDo::normalizeXmlArray($data['WysylkaDo']),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

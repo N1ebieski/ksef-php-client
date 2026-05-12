@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\LadunekInny;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OpisInnegoLadunku;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class LadunekInnyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -45,11 +46,8 @@ final class LadunekInnyGroup extends AbstractDTO implements DomSerializableInter
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            opisInnegoLadunku: new OpisInnegoLadunku($data['OpisInnegoLadunku']),
-            ladunekInny: isset($data['LadunekInny']) ? LadunekInny::from($data['LadunekInny']) : LadunekInny::Default,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

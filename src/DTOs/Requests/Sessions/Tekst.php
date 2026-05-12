@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Akapit;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Akapit;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Tekst extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -54,13 +55,10 @@ final class Tekst extends AbstractDTO implements DomSerializableInterface, FromX
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            akapit: array_map(
-                fn (string $value) => new Akapit($value),
-                self::ensureList($data['Akapit'])
-            ),
-        );
+        $data['Akapit'] = Arr::ensureList($data['Akapit']);
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWystFaKorygowanej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowanej;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -54,18 +55,13 @@ final class DaneFaKorygowanej extends AbstractDTO implements DomSerializableInte
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['NrKSeFFaKorygowanej'])) {
-            $nrKSeFGroup = NrKSeFGroup::fromXmlArray($data);
-        } else {
-            $nrKSeFGroup = NrKSeFNGroup::fromXmlArray($data);
-        }
+        $data['nrKSeFGroup'] = match (true) {
+            isset($data['NrKSeFFaKorygowanej']) => NrKSeFGroup::normalizeXmlArray($data),
+            default => NrKSeFNGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            dataWystFaKorygowanej: new DataWystFaKorygowanej($data['DataWystFaKorygowanej']),
-            nrFaKorygowanej: new NrFaKorygowanej($data['NrFaKorygowanej']),
-            nrKSeFGroup: $nrKSeFGroup,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

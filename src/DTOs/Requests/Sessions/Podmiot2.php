@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -120,23 +121,32 @@ final class Podmiot2 extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            daneIdentyfikacyjne: Podmiot2DaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
-            jst: isset($data['JST']) ? JST::from($data['JST']) : JST::No,
-            gv: isset($data['GV']) ? GV::from($data['GV']) : GV::No,
-            nrEORI: isset($data['NrEORI']) ? new NrEORI($data['NrEORI']) : new Optional(),
-            adres: isset($data['Adres']) ? Adres::fromXmlArray($data['Adres']) : new Optional(),
-            adresKoresp: isset($data['AdresKoresp']) ? AdresKoresp::fromXmlArray($data['AdresKoresp']) : new Optional(),
-            daneKontaktowe: isset($data['DaneKontaktowe'])
-                ? array_map(
-                    fn (array $item) => DaneKontaktowe::fromXmlArray($item),
-                    self::ensureList($data['DaneKontaktowe'])
-                )
-                : new Optional(),
-            nrKlienta: isset($data['NrKlienta']) ? new NrKlienta($data['NrKlienta']) : new Optional(),
-            idNabywcy: isset($data['IDNabywcy']) ? new IDNabywcy($data['IDNabywcy']) : new Optional(),
-        );
+        $data['DaneIdentyfikacyjne'] = Podmiot2DaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = match (true) {
+            isset($data['Adres']) => Adres::normalizeXmlArray($data['Adres']),
+            default => new Optional(),
+        };
+
+        $data['AdresKoresp'] = match (true) {
+            isset($data['AdresKoresp']) => AdresKoresp::normalizeXmlArray($data['AdresKoresp']),
+            default => new Optional(),
+        };
+
+        $data['DaneKontaktowe'] = match (true) {
+            isset($data['DaneKontaktowe']) => array_map(
+                fn (array $item): array => DaneKontaktowe::normalizeXmlArray($item),
+                Arr::ensureList($data['DaneKontaktowe'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['jst'] = $data['JST'] ?? JST::No;
+        $data['gv'] = $data['GV'] ?? GV::No;
+        $data['idNabywcy'] = $data['IDNabywcy'] ?? new Optional();
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

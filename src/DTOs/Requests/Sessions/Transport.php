@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZleceniaTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Transport extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -71,24 +72,25 @@ final class Transport extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['RodzajTransportu'])) {
-            $transportGroup = RodzajTransportuGroup::fromXmlArray($data);
-        } else {
-            $transportGroup = TransportInnyGroup::fromXmlArray($data);
-        }
+        $data['TransportGroup'] = match (true) {
+            isset($data['RodzajTransportu']) => RodzajTransportuGroup::normalizeXmlArray($data),
+            default => TransportInnyGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            transportGroup: $transportGroup,
-            ladunekGroup: LadunekGroup::fromXmlArray($data),
-            przewoznik: isset($data['Przewoznik']) ? Przewoznik::fromXmlArray($data['Przewoznik']) : new Optional(),
-            nrZleceniaTransportu: isset($data['NrZleceniaTransportu'])
-                ? new NrZleceniaTransportu($data['NrZleceniaTransportu'])
-                : new Optional(),
-            wysylkaGroup: (isset($data['WysylkaPrzez']) || isset($data['WysylkaDo']) || isset($data['WysylkaZ']) || isset($data['DataGodzRozpTransportu']) || isset($data['DataGodzZakTransportu']))
-                ? WysylkaGroup::fromXmlArray($data)
-                : new Optional(),
-        );
+        $data['LadunekGroup'] = LadunekGroup::normalizeXmlArray($data);
+
+        $data['Przewoznik'] = match (true) {
+            isset($data['Przewoznik']) => Przewoznik::normalizeXmlArray($data['Przewoznik']),
+            default => new Optional(),
+        };
+
+        $data['WysylkaGroup'] = match (true) {
+            (isset($data['WysylkaPrzez']) || isset($data['WysylkaDo']) || isset($data['WysylkaZ']) || isset($data['DataGodzRozpTransportu']) || isset($data['DataGodzZakTransportu'])) => WysylkaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

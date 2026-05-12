@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -52,13 +53,13 @@ final class TNaglowek extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            kol: array_map(
-                fn (array $item) => Kol::fromXmlArray($item),
-                self::ensureList($data['Kol'])
-            ),
+        $data['Kol'] = array_map(
+            fn (array $item): array => Kol::normalizeXmlArray($item),
+            Arr::ensureList($data['Kol'])
         );
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

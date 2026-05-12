@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
@@ -63,20 +64,16 @@ final class ZaplataCzesciowaGroup extends AbstractDTO implements DomSerializable
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        $zaplataCzesciowa = isset($data['ZaplataCzesciowa'])
-            ? array_map(
-                fn (array $item) => ZaplataCzesciowa::fromXmlArray($item),
-                self::ensureList($data['ZaplataCzesciowa'])
-            )
-            : new Optional();
+        $data['ZaplataCzesciowa'] = match (true) {
+            isset($data['ZaplataCzesciowa']) => array_map(
+                fn (array $item): array => ZaplataCzesciowa::normalizeXmlArray($item),
+                Arr::ensureList($data['ZaplataCzesciowa'])
+            ),
+            default => new Optional(),
+        };
 
-        return new self(
-            zaplataCzesciowa: $zaplataCzesciowa,
-            znacznikZaplatyCzesciowej: isset($data['ZnacznikZaplatyCzesciowej'])
-                ? ZnacznikZaplatyCzesciowej::from($data['ZnacznikZaplatyCzesciowej'])
-                : ZnacznikZaplatyCzesciowej::Default,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

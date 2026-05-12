@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Nazwa;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Nazwa;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -41,11 +42,10 @@ final class Podmiot1DaneIdentyfikacyjne extends AbstractDTO implements DomSerial
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            nip: new NIP($data['NIP']),
-            nazwa: new Nazwa($data['Nazwa']),
-        );
+        $data['nip'] = $data['NIP'];
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

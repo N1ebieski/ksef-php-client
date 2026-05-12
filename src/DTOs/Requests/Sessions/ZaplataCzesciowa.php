@@ -9,6 +9,7 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataZaplatyCzesciowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KwotaZaplatyCzesciowej;
@@ -56,20 +57,14 @@ final class ZaplataCzesciowa extends AbstractDTO implements DomSerializableInter
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['FormaPlatnosci'])) {
-            $platnoscGroup = FormaPlatnosciGroup::fromXmlArray($data);
-        } elseif (isset($data['PlatnoscInna'])) {
-            $platnoscGroup = PlatnoscInnaGroup::fromXmlArray($data);
-        } else {
-            $platnoscGroup = new Optional();
-        }
+        $data['FormaPlatnosci'] = match (true) {
+            isset($data['FormaPlatnosci']) => FormaPlatnosciGroup::normalizeXmlArray($data),
+            isset($data['PlatnoscInna']) => PlatnoscInnaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
 
-        return new self(
-            kwotaZaplatyCzesciowej: new KwotaZaplatyCzesciowej($data['KwotaZaplatyCzesciowej']),
-            dataZaplatyCzesciowej: new DataZaplatyCzesciowej($data['DataZaplatyCzesciowej']),
-            platnoscGroup: $platnoscGroup,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

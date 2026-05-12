@@ -9,6 +9,7 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -101,26 +102,29 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface,
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            obciazenia: isset($data['Obciazenia'])
-                ? array_map(
-                    fn (array $item) => Obciazenia::fromXmlArray($item),
-                    self::ensureList($data['Obciazenia'])
-                )
-                : new Optional(),
-            sumaObciazen: isset($data['SumaObciazen']) ? new SumaObciazen($data['SumaObciazen']) : new Optional(),
-            odliczenia: isset($data['Odliczenia'])
-                ? array_map(
-                    fn (array $item) => Odliczenia::fromXmlArray($item),
-                    self::ensureList($data['Odliczenia'])
-                )
-                : new Optional(),
-            sumaOdliczen: isset($data['SumaOdliczen']) ? new SumaOdliczen($data['SumaOdliczen']) : new Optional(),
-            rozliczenieGroup: (isset($data['DoZaplaty']) || isset($data['DoRozliczenia']))
-                ? RozliczenieGroup::fromXmlArray($data)
-                : new Optional(),
-        );
+        $data['Obciazenia'] = match (true) {
+            isset($data['Obciazenia']) => array_map(
+                fn (array $item): array => Obciazenia::normalizeXmlArray($item),
+                Arr::ensureList($data['Obciazenia'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Odliczenia'] = match (true) {
+            isset($data['Odliczenia']) => array_map(
+                fn (array $item): array => Odliczenia::normalizeXmlArray($item),
+                Arr::ensureList($data['Odliczenia'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['RozliczenieGroup'] = match (true) {
+            isset($data['DoZaplaty']) || isset($data['DoRozliczenia']) => RozliczenieGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

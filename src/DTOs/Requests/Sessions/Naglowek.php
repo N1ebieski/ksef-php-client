@@ -10,6 +10,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWytworzeniaFa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
@@ -62,17 +63,13 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
         // json_encode(SimpleXMLElement) drops attributes when an element also has text content,
         // so KodFormularza arrives as plain text (e.g. "FA"). The full FormCode value is
         // reconstructed by combining that text with the WariantFormularza version number.
-        $formCode = FormCode::from($data['KodFormularza'] . ' (' . $data['WariantFormularza'] . ')');
+        $data['WariantFormularza'] = FormCode::from($data['KodFormularza'] . ' (' . $data['WariantFormularza'] . ')');
 
-        return new self(
-            wariantFormularza: $formCode,
-            dataWytworzeniaFa: new DataWytworzeniaFa($data['DataWytworzeniaFa']),
-            systemInfo: isset($data['SystemInfo']) ? new SystemInfo($data['SystemInfo']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

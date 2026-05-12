@@ -16,17 +16,4 @@ abstract class AbstractDTO implements FromArrayInterface, ArrayableInterface, Wi
     use HasFromArray;
     use HasToArray;
     use HasWith;
-
-    /**
-     * Wraps a single XML-parsed item (scalar or associative array) into a list.
-     * When SimpleXML parses a single repeated element, json_encode returns a scalar
-     * or associative array instead of an indexed array.
-     */
-    protected static function ensureList(mixed $data): array
-    {
-        if (!is_array($data)) {
-            return [$data];
-        }
-        return array_is_list($data) ? $data : [$data];
-    }
 }

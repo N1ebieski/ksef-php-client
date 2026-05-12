@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -36,14 +37,13 @@ final class FakturaZaliczkowa extends AbstractDTO implements DomSerializableInte
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['NrFaZaliczkowej'])) {
-            $nrKSeFZNGroup = NrKSeFZNGroup::fromXmlArray($data);
-        } else {
-            $nrKSeFZNGroup = NrKSeFFaZaliczkowejGroup::fromXmlArray($data);
-        }
+        $data['NrKSeFZNGroup'] = match (true) {
+            isset($data['NrFaZaliczkowej']) => NrKSeFZNGroup::normalizeXmlArray($data),
+            default => NrKSeFFaZaliczkowejGroup::normalizeXmlArray($data),
+        };
 
-        return new self(nrKSeFZNGroup: $nrKSeFZNGroup);
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

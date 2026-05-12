@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -70,21 +71,24 @@ final class Stopka extends AbstractDTO implements DomSerializableInterface, From
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            informacje: isset($data['Informacje'])
-                ? array_map(
-                    fn (array $item) => Informacje::fromXmlArray($item),
-                    self::ensureList($data['Informacje'])
-                )
-                : new Optional(),
-            rejestry: isset($data['Rejestry'])
-                ? array_map(
-                    fn (array $item) => Rejestry::fromXmlArray($item),
-                    self::ensureList($data['Rejestry'])
-                )
-                : new Optional(),
-        );
+        $data['Informacje'] = match (true) {
+            isset($data['Informacje']) => array_map(
+                fn (array $item): array => Informacje::normalizeXmlArray($item),
+                Arr::ensureList($data['Informacje'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Rejestry'] = match (true) {
+            isset($data['Rejestry']) => array_map(
+                fn (array $item): array => Rejestry::normalizeXmlArray($item),
+                Arr::ensureList($data['Rejestry'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_16;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_17;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_18;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_18A;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_23;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Adnotacje extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -84,19 +85,14 @@ final class Adnotacje extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            p_16: isset($data['P_16']) ? P_16::from($data['P_16']) : P_16::Default,
-            p_17: isset($data['P_17']) ? P_17::from($data['P_17']) : P_17::Default,
-            p_18: isset($data['P_18']) ? P_18::from($data['P_18']) : P_18::Default,
-            p_18A: isset($data['P_18A']) ? P_18A::from($data['P_18A']) : P_18A::Default,
-            zwolnienie: isset($data['Zwolnienie']) ? Zwolnienie::fromXmlArray($data['Zwolnienie']) : new Zwolnienie(),
-            noweSrodkiTransportu: isset($data['NoweSrodkiTransportu'])
-                ? NoweSrodkiTransportu::fromXmlArray($data['NoweSrodkiTransportu'])
-                : new NoweSrodkiTransportu(),
-            p_23: isset($data['P_23']) ? P_23::from($data['P_23']) : P_23::Default,
-            pMarzy: isset($data['PMarzy']) ? PMarzy::fromXmlArray($data['PMarzy']) : new PMarzy(),
-        );
+        $data['Zwolnienie'] = Zwolnienie::normalizeXmlArray($data['Zwolnienie']);
+
+        $data['NoweSrodkiTransportu'] = NoweSrodkiTransportu::normalizeXmlArray($data['NoweSrodkiTransportu']);
+
+        $data['PMarzy'] = PMarzy::normalizeXmlArray($data['PMarzy']);
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

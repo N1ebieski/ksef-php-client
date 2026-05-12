@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WartoscZamowienia;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WartoscZamowienia;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Zamowienie extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -60,14 +61,13 @@ final class Zamowienie extends AbstractDTO implements DomSerializableInterface, 
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            wartoscZamowienia: new WartoscZamowienia($data['WartoscZamowienia']),
-            zamowienieWiersz: array_map(
-                fn (array $item) => ZamowienieWiersz::fromXmlArray($item),
-                self::ensureList($data['ZamowienieWiersz'])
-            ),
+        $data['ZamowienieWiersz'] = array_map(
+            fn (array $item): array => ZamowienieWiersz::normalizeXmlArray($item),
+            Arr::ensureList($data['ZamowienieWiersz'])
         );
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

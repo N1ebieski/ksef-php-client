@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_PMarzy;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -46,21 +47,15 @@ final class P_PMarzyGroup extends AbstractDTO implements DomSerializableInterfac
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['P_PMarzy_2'])) {
-            $p_PMarzy_2_3Group = P_PMarzy_2Group::fromXmlArray($data);
-        } elseif (isset($data['P_PMarzy_3_1'])) {
-            $p_PMarzy_2_3Group = P_PMarzy_3_1Group::fromXmlArray($data);
-        } elseif (isset($data['P_PMarzy_3_2'])) {
-            $p_PMarzy_2_3Group = P_PMarzy_3_2Group::fromXmlArray($data);
-        } else {
-            $p_PMarzy_2_3Group = P_PMarzy_3_3Group::fromXmlArray($data);
-        }
+        $data['P_PMarzy_2_3Group'] = match (true) {
+            isset($data['P_PMarzy_2']) => P_PMarzy_2Group::normalizeXmlArray($data),
+            isset($data['P_PMarzy_3_1']) => P_PMarzy_3_1Group::normalizeXmlArray($data),
+            isset($data['P_PMarzy_3_2']) => P_PMarzy_3_2Group::normalizeXmlArray($data),
+            default => P_PMarzy_3_3Group::normalizeXmlArray($data),
+        };
 
-        return new self(
-            p_PMarzy_2_3Group: $p_PMarzy_2_3Group,
-            p_PMarzy: isset($data['P_PMarzy']) ? P_PMarzy::from($data['P_PMarzy']) : P_PMarzy::Default,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -38,10 +39,13 @@ final class NoweSrodkiTransportu extends AbstractDTO implements DomSerializableI
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        $p_22Group = isset($data['P_22']) ? P_22Group::fromXmlArray($data) : P_22NGroup::fromXmlArray($data);
+        $data['P_22Group'] = match (true) {
+            isset($data['P_22']) => P_22Group::normalizeXmlArray($data),
+            default => P_22NGroup::normalizeXmlArray($data),
+        };
 
-        return new self(p_22Group: $p_22Group);
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

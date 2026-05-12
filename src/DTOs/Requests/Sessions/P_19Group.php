@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_19;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class P_19Group extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -46,19 +47,14 @@ final class P_19Group extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['P_19A'])) {
-            $p_19ABCGroup = P_19AGroup::fromXmlArray($data);
-        } elseif (isset($data['P_19B'])) {
-            $p_19ABCGroup = P_19BGroup::fromXmlArray($data);
-        } else {
-            $p_19ABCGroup = P_19CGroup::fromXmlArray($data);
-        }
+        $data['P_19ABCGroup'] = match (true) {
+            isset($data['P_19A']) => P_19AGroup::normalizeXmlArray($data),
+            isset($data['P_19B']) => P_19BGroup::normalizeXmlArray($data),
+            default => P_19CGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            p_19ABCGroup: $p_19ABCGroup,
-            p_19: isset($data['P_19']) ? P_19::from($data['P_19']) : P_19::Default,
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class RozliczenieGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -36,14 +37,13 @@ final class RozliczenieGroup extends AbstractDTO implements DomSerializableInter
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['DoZaplaty'])) {
-            $doGroup = DoZaplatyGroup::fromXmlArray($data);
-        } else {
-            $doGroup = DoRozliczeniaGroup::fromXmlArray($data);
-        }
+        $data['DoGroup'] = match (true) {
+            isset($data['DoZaplaty']) => DoZaplatyGroup::normalizeXmlArray($data),
+            default => DoRozliczeniaGroup::normalizeXmlArray($data),
+        };
 
-        return new self(doGroup: $doGroup);
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

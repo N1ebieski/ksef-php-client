@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_13_3;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\P_14_3;
@@ -56,12 +57,8 @@ final class P_13_3Group extends AbstractDTO implements DomSerializableInterface,
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            p_13_3: new P_13_3($data['P_13_3']),
-            p_14_3: new P_14_3($data['P_14_3']),
-            p_14_3W: isset($data['P_14_3W']) ? new P_14_3W($data['P_14_3W']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

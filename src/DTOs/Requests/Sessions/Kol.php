@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NKom;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Typ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
@@ -42,11 +43,10 @@ final class Kol extends AbstractDTO implements DomSerializableInterface, FromXml
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            typ: Typ::from($data['@attributes']['Typ']),
-            nKom: new NKom($data['NKom']),
-        );
+        $data['typ'] = $data['@attributes']['Typ'];
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

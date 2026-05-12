@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataZamowienia;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrZamowienia;
@@ -48,11 +49,8 @@ final class Zamowienia extends AbstractDTO implements DomSerializableInterface, 
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            dataZamowienia: isset($data['DataZamowienia']) ? new DataZamowienia($data['DataZamowienia']) : new Optional(),
-            nrZamowienia: isset($data['NrZamowienia']) ? new NrZamowienia($data['NrZamowienia']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

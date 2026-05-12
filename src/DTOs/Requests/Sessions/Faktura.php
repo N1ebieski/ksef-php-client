@@ -16,6 +16,7 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Podmiot3;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\PodmiotUpowazniony;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Stopka;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Concerns\HasFromXml;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\Support\Optional;
@@ -109,52 +110,39 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Xml
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['Naglowek'])) {
-            $data['Naglowek'] = Naglowek::fromXmlArray($data['Naglowek']);
-        }
+        $data['Naglowek'] = Naglowek::normalizeXmlArray($data['Naglowek']);
 
-        if (isset($data['Podmiot1'])) {
-            $data['Podmiot1'] = Podmiot1::fromXmlArray($data['Podmiot1']);
-        }
+        $data['Podmiot1'] = Podmiot1::normalizeXmlArray($data['Podmiot1']);
 
-        if (isset($data['Podmiot2'])) {
-            $data['Podmiot2'] = Podmiot2::fromXmlArray($data['Podmiot2']);
-        }
+        $data['Podmiot2'] = Podmiot2::normalizeXmlArray($data['Podmiot2']);
 
-        if (isset($data['Podmiot3'])) {
-            $data['Podmiot3'] = array_map(
-                fn (array $item) => Podmiot3::fromXmlArray($item),
-                self::ensureList($data['Podmiot3'])
-            );
-        }
+        $data['Podmiot3'] = match (true) {
+            isset($data['Podmiot3']) => array_map(
+                fn (array $item): array => Podmiot3::normalizeXmlArray($item),
+                Arr::ensureList($data['Podmiot3'])
+            ),
+            default => new Optional(),
+        };
 
-        if (isset($data['PodmiotUpowazniony'])) {
-            $data['PodmiotUpowazniony'] = PodmiotUpowazniony::fromXmlArray($data['PodmiotUpowazniony']);
-        }
+        $data['Fa'] = Fa::normalizeXmlArray($data['Fa']);
 
-        if (isset($data['Fa'])) {
-            $data['Fa'] = Fa::fromXmlArray($data['Fa']);
-        }
+        $data['PodmiotUpowazniony'] = match (true) {
+            isset($data['PodmiotUpowazniony']) => PodmiotUpowazniony::normalizeXmlArray($data['PodmiotUpowazniony']),
+            default => new Optional(),
+        };
 
-        if (isset($data['Stopka'])) {
-            $data['Stopka'] = Stopka::fromXmlArray($data['Stopka']);
-        }
+        $data['Stopka'] = match (true) {
+            isset($data['Stopka']) => Stopka::normalizeXmlArray($data['Stopka']),
+            default => new Optional(),
+        };
 
-        if (isset($data['Zalacznik'])) {
-            $data['Zalacznik'] = Zalacznik::fromXmlArray($data['Zalacznik']);
-        }
+        $data['Zalacznik'] = match (true) {
+            isset($data['Zalacznik']) => Zalacznik::normalizeXmlArray($data['Zalacznik']),
+            default => new Optional(),
+        };
 
-        return new self(
-            naglowek: $data['Naglowek'],
-            podmiot1: $data['Podmiot1'],
-            podmiot2: $data['Podmiot2'],
-            fa: $data['Fa'],
-            podmiot3: $data['Podmiot3'] ?? new Optional(),
-            podmiotUpowazniony: $data['PodmiotUpowazniony'] ?? new Optional(),
-            stopka: $data['Stopka'] ?? new Optional(),
-            zalacznik: $data['Zalacznik'] ?? new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

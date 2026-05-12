@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\CNZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GTINZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GTUZ;
@@ -28,8 +30,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PKWiUZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ProceduraZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzedZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_IDZ;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -228,29 +229,16 @@ final class ZamowienieWiersz extends AbstractDTO implements DomSerializableInter
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            nrWierszaZam: new NrWierszaZam((int)$data['NrWierszaZam']),
-            uu_idZ: isset($data['UU_IDZ']) ? new UU_IDZ($data['UU_IDZ']) : new Optional(),
-            p_7Z: isset($data['P_7Z']) ? new P_7Z($data['P_7Z']) : new Optional(),
-            indeksZ: isset($data['IndeksZ']) ? new IndeksZ($data['IndeksZ']) : new Optional(),
-            gtinZ: isset($data['GTINZ']) ? new GTINZ($data['GTINZ']) : new Optional(),
-            pkwiuZ: isset($data['PKWiUZ']) ? new PKWiUZ($data['PKWiUZ']) : new Optional(),
-            cnZ: isset($data['CNZ']) ? new CNZ($data['CNZ']) : new Optional(),
-            pkobZ: isset($data['PKOBZ']) ? new PKOBZ($data['PKOBZ']) : new Optional(),
-            p_8AZ: isset($data['P_8AZ']) ? new P_8AZ($data['P_8AZ']) : new Optional(),
-            p_8BZ: isset($data['P_8BZ']) ? new P_8BZ($data['P_8BZ']) : new Optional(),
-            p_9AZ: isset($data['P_9AZ']) ? new P_9AZ($data['P_9AZ']) : new Optional(),
-            p_11NettoZ: isset($data['P_11NettoZ']) ? new P_11NettoZ($data['P_11NettoZ']) : new Optional(),
-            p_11VatZ: isset($data['P_11VatZ']) ? new P_11VatZ($data['P_11VatZ']) : new Optional(),
-            p_12Z: isset($data['P_12Z']) ? P_12Z::from($data['P_12Z']) : new Optional(),
-            p_12Z_XII: isset($data['P_12Z_XII']) ? new P_12Z_XII($data['P_12Z_XII']) : new Optional(),
-            p_12Z_Zal_15: isset($data['P_12Z_Zal_15']) ? P_12Z_Zal_15::from($data['P_12Z_Zal_15']) : new Optional(),
-            gtuZ: isset($data['GTUZ']) ? GTUZ::from($data['GTUZ']) : new Optional(),
-            proceduraZ: isset($data['ProceduraZ']) ? ProceduraZ::from($data['ProceduraZ']) : new Optional(),
-            kwotaAkcyzyZ: isset($data['KwotaAkcyzyZ']) ? new KwotaAkcyzyZ($data['KwotaAkcyzyZ']) : new Optional(),
-            stanPrzedZ: isset($data['StanPrzedZ']) ? StanPrzedZ::from($data['StanPrzedZ']) : new Optional(),
-        );
+        $data['nrWierszaZam'] = (int) $data['NrWierszaZam'];
+        $data['cnZ'] = $data['CNZ'] ?? new Optional();
+        $data['gtinZ'] = $data['GTINZ'] ?? new Optional();
+        $data['pkwiuZ'] = $data['PKWiUZ'] ?? new Optional();
+        $data['pkobZ'] = $data['PKOBZ'] ?? new Optional();
+        $data['uu_idZ'] = $data['UU_IDZ'] ?? new Optional();
+        $data['gtuZ'] = $data['GTUZ'] ?? new Optional();
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

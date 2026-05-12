@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\BDO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KRS;
@@ -64,13 +65,12 @@ final class Rejestry extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            pelnaNazwa: isset($data['PelnaNazwa']) ? new PelnaNazwa($data['PelnaNazwa']) : new Optional(),
-            krs: isset($data['KRS']) ? new KRS($data['KRS']) : new Optional(),
-            regon: isset($data['REGON']) ? new REGON($data['REGON']) : new Optional(),
-            bdo: isset($data['BDO']) ? new BDO($data['BDO']) : new Optional(),
-        );
+        $data['krs'] = $data['KRS'] ?? new Optional();
+        $data['regon'] = $data['REGON'] ?? new Optional();
+        $data['bdo'] = $data['BDO'] ?? new Optional();
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

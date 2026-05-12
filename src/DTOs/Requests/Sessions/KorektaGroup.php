@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowany;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OkresFaKorygowanej;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowany;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OkresFaKorygowanej;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class KorektaGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -129,33 +130,31 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            daneFaKorygowanej: array_map(
-                fn (array $item) => DaneFaKorygowanej::fromXmlArray($item),
-                self::ensureList($data['DaneFaKorygowanej'])
-            ),
-            przyczynaKorekty: isset($data['PrzyczynaKorekty'])
-                ? new PrzyczynaKorekty($data['PrzyczynaKorekty'])
-                : new Optional(),
-            typKorekty: isset($data['TypKorekty']) ? TypKorekty::from($data['TypKorekty']) : new Optional(),
-            okresFaKorygowanej: isset($data['OkresFaKorygowanej'])
-                ? new OkresFaKorygowanej($data['OkresFaKorygowanej'])
-                : new Optional(),
-            nrFaKorygowany: isset($data['NrFaKorygowany'])
-                ? new NrFaKorygowany($data['NrFaKorygowany'])
-                : new Optional(),
-            podmiot1K: isset($data['Podmiot1K'])
-                ? Podmiot1K::fromXmlArray($data['Podmiot1K'])
-                : new Optional(),
-            podmiot2K: isset($data['Podmiot2K'])
-                ? array_map(
-                    fn (array $item) => Podmiot2K::fromXmlArray($item),
-                    self::ensureList($data['Podmiot2K'])
-                )
-                : new Optional(),
-            p15ZKGroup: isset($data['P_15ZK']) ? P_15ZKGroup::fromXmlArray($data) : new Optional(),
+        $data['DaneFaKorygowanej'] = array_map(
+            fn (array $item): array => DaneFaKorygowanej::normalizeXmlArray($item),
+            Arr::ensureList($data['DaneFaKorygowanej'])
         );
+
+        $data['Podmiot1K'] = match (true) {
+            isset($data['Podmiot1K']) => Podmiot1K::normalizeXmlArray($data['Podmiot1K']),
+            default => new Optional(),
+        };
+
+        $data['Podmiot2K'] = match (true) {
+            isset($data['Podmiot2K']) => array_map(
+                fn (array $item): array => Podmiot2K::normalizeXmlArray($item),
+                Arr::ensureList($data['Podmiot2K'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['P_15ZKGroup'] = match (true) {
+            isset($data['P_15ZK']) => P_15ZKGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

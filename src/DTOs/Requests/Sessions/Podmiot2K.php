@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\IDNabywcy;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\IDNabywcy;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class Podmiot2K extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -53,12 +54,17 @@ final class Podmiot2K extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            daneIdentyfikacyjne: Podmiot2KDaneIdentyfikacyjne::fromXmlArray($data['DaneIdentyfikacyjne']),
-            adres: isset($data['Adres']) ? Adres::fromXmlArray($data['Adres']) : new Optional(),
-            idNabywcy: isset($data['IDNabywcy']) ? new IDNabywcy($data['IDNabywcy']) : new Optional(),
-        );
+        $data['DaneIdentyfikacyjne'] = Podmiot2KDaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['Adres'] = match (true) {
+            isset($data['Adres']) => Adres::normalizeXmlArray($data['Adres']),
+            default => new Optional(),
+        };
+
+        $data['idNabywcy'] = $data['IDNabywcy'] ?? new Optional();
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

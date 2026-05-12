@@ -9,6 +9,7 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class PMarzy extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
@@ -38,12 +39,13 @@ final class PMarzy extends AbstractDTO implements DomSerializableInterface, From
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        $p_PMarzyGroup = isset($data['P_PMarzy'])
-            ? P_PMarzyGroup::fromXmlArray($data)
-            : P_PMarzyNGroup::fromXmlArray($data);
+        $data['P_PMarzyGroup'] = match (true) {
+            isset($data['P_PMarzy']) => P_PMarzyGroup::normalizeXmlArray($data),
+            default => P_PMarzyNGroup::normalizeXmlArray($data),
+        };
 
-        return new self(p_PMarzyGroup: $p_PMarzyGroup);
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

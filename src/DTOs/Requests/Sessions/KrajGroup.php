@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodKraju;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrID;
@@ -47,11 +48,8 @@ final class KrajGroup extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            nrID: new NrID($data['NrID']),
-            kodKraju: isset($data['KodKraju']) ? new KodKraju($data['KodKraju']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

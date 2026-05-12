@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Termin;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
@@ -48,11 +49,13 @@ final class TerminPlatnosci extends AbstractDTO implements DomSerializableInterf
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            termin: isset($data['Termin']) ? new Termin($data['Termin']) : new Optional(),
-            terminOpis: isset($data['TerminOpis']) ? TerminOpis::fromXmlArray($data['TerminOpis']) : new Optional(),
-        );
+        $data['TerminOpis'] = match (true) {
+            isset($data['TerminOpis']) => TerminOpis::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\JednostkaOpakowania;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\JednostkaOpakowania;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class LadunekGroup extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -46,19 +47,13 @@ final class LadunekGroup extends AbstractDTO implements DomSerializableInterface
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['LadunekInny'])) {
-            $opisLadunkuGroup = LadunekInnyGroup::fromXmlArray($data);
-        } else {
-            $opisLadunkuGroup = OpisLadunkuGroup::fromXmlArray($data);
-        }
+        $data['OpisLadunkuGroup'] = match (true) {
+            isset($data['LadunekInny']) => LadunekInnyGroup::normalizeXmlArray($data),
+            default => OpisLadunkuGroup::normalizeXmlArray($data),
+        };
 
-        return new self(
-            opisLadunkuGroup: $opisLadunkuGroup,
-            jednostkaOpakowania: isset($data['JednostkaOpakowania'])
-                ? new JednostkaOpakowania($data['JednostkaOpakowania'])
-                : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

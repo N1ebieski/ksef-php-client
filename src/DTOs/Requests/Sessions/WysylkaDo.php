@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\AdresL2;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\GLN;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodKraju;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class WysylkaDo extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -61,13 +62,8 @@ final class WysylkaDo extends AbstractDTO implements DomSerializableInterface, F
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            adresL1: new AdresL1($data['AdresL1']),
-            kodKraju: new KodKraju($data['KodKraju'] ?? 'PL'),
-            adresL2: isset($data['AdresL2']) ? new AdresL2($data['AdresL2']) : new Optional(),
-            gln: isset($data['GLN']) ? new GLN($data['GLN']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

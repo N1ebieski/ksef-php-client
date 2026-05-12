@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormaPlatnosci;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
@@ -36,8 +37,8 @@ final class FormaPlatnosciGroup extends AbstractDTO implements DomSerializableIn
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(formaPlatnosci: FormaPlatnosci::from($data['FormaPlatnosci']));
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

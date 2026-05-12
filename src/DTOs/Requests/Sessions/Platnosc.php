@@ -9,6 +9,7 @@ use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -119,46 +120,49 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface, Fr
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        if (isset($data['Zaplacono'])) {
-            $zaplataGroup = ZaplataGroup::fromXmlArray($data);
-        } elseif (isset($data['ZnacznikZaplatyCzesciowej'])) {
-            $zaplataGroup = ZaplataCzesciowaGroup::fromXmlArray($data);
-        } else {
-            $zaplataGroup = new Optional();
-        }
+        $data['ZaplataGroup'] = match (true) {
+            isset($data['Zaplacono']) => ZaplataGroup::normalizeXmlArray($data),
+            isset($data['ZnacznikZaplatyCzesciowej']) => ZaplataCzesciowaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
 
-        if (isset($data['FormaPlatnosci'])) {
-            $platnoscGroup = FormaPlatnosciGroup::fromXmlArray($data);
-        } elseif (isset($data['PlatnoscInna'])) {
-            $platnoscGroup = PlatnoscInnaGroup::fromXmlArray($data);
-        } else {
-            $platnoscGroup = new Optional();
-        }
+        $data['TerminPlatnosci'] = match (true) {
+            isset($data['TerminPlatnosci']) => array_map(
+                fn (array $item): array => TerminPlatnosci::normalizeXmlArray($item),
+                Arr::ensureList($data['TerminPlatnosci'])
+            ),
+            default => new Optional(),
+        };
 
-        return new self(
-            zaplataGroup: $zaplataGroup,
-            terminPlatnosci: isset($data['TerminPlatnosci'])
-                ? array_map(
-                    fn (array $item) => TerminPlatnosci::fromXmlArray($item),
-                    self::ensureList($data['TerminPlatnosci'])
-                )
-                : new Optional(),
-            platnoscGroup: $platnoscGroup,
-            rachunekBankowy: isset($data['RachunekBankowy'])
-                ? array_map(
-                    fn (array $item) => RachunekBankowy::fromXmlArray($item),
-                    self::ensureList($data['RachunekBankowy'])
-                )
-                : new Optional(),
-            rachunekBankowyFaktora: isset($data['RachunekBankowyFaktora'])
-                ? array_map(
-                    fn (array $item) => RachunekBankowyFaktora::fromXmlArray($item),
-                    self::ensureList($data['RachunekBankowyFaktora'])
-                )
-                : new Optional(),
-            skonto: isset($data['Skonto']) ? Skonto::fromXmlArray($data['Skonto']) : new Optional(),
-        );
+        $data['PlatnoscGroup'] = match (true) {
+            isset($data['FormaPlatnosci']) => FormaPlatnosciGroup::normalizeXmlArray($data),
+            isset($data['PlatnoscInna']) => PlatnoscInnaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowy'] = match (true) {
+            isset($data['RachunekBankowy']) => array_map(
+                fn (array $item): array => RachunekBankowy::normalizeXmlArray($item),
+                Arr::ensureList($data['RachunekBankowy'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowyFaktora'] = match (true) {
+            isset($data['RachunekBankowyFaktora']) => array_map(
+                fn (array $item): array => RachunekBankowyFaktora::normalizeXmlArray($item),
+                Arr::ensureList($data['RachunekBankowyFaktora'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Skonto'] = match (true) {
+            isset($data['Skonto']) => Skonto::normalizeXmlArray($data['Skonto']),
+            default => new Optional(),
+        };
+
+        return Arr::onlyClassParameters($data, self::class);
     }
 }

@@ -8,6 +8,7 @@ use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
@@ -89,21 +90,28 @@ final class BlokDanych extends AbstractDTO implements DomSerializableInterface, 
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            metaDane: array_map(
-                fn (array $item) => MetaDane::fromXmlArray($item),
-                self::ensureList($data['MetaDane'])
-            ),
-            zNaglowek: isset($data['ZNaglowek']) ? new ZNaglowek($data['ZNaglowek']) : new Optional(),
-            tekst: isset($data['Tekst']) ? Tekst::fromXmlArray($data['Tekst']) : new Optional(),
-            tabela: isset($data['Tabela'])
-                ? array_map(
-                    fn (array $item) => Tabela::fromXmlArray($item),
-                    self::ensureList($data['Tabela'])
-                )
-                : new Optional(),
+        $data['MetaDane'] = array_map(
+            fn (array $item): array => MetaDane::normalizeXmlArray($item),
+            Arr::ensureList($data['MetaDane'])
         );
+
+        $data['Tekst'] = match (true) {
+            isset($data['Tekst']) => Tekst::normalizeXmlArray($data['Tekst']),
+            default => new Optional(),
+        };
+
+        $data['Tabela'] = match (true) {
+            isset($data['Tabela']) => array_map(
+                fn (array $item): array => Tabela::normalizeXmlArray($item),
+                Arr::ensureList($data['Tabela'])
+            ),
+            default => new Optional(),
+        };
+
+        $blokDanych = Arr::onlyClassParameters($data, self::class);
+
+        return $blokDanych;
     }
 }

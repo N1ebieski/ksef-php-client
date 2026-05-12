@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
 use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Email;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Telefon;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
-use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 final class DaneKontaktowe extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
 {
@@ -44,11 +45,8 @@ final class DaneKontaktowe extends AbstractDTO implements DomSerializableInterfa
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        return new self(
-            email: isset($data['Email']) ? new Email($data['Email']) : new Optional(),
-            telefon: isset($data['Telefon']) ? new Telefon($data['Telefon']) : new Optional(),
-        );
+        return Arr::onlyClassParameters($data, self::class);
     }
 }
