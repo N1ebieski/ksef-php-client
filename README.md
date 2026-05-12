@@ -2207,7 +2207,7 @@ file_put_contents(Utility::basePath("var/pdf/{$faktura->fa->p_2->value}.pdf"), $
 
 <details>
     <summary>
-        <h3>Download, decrypt invoices, and deserialize them into DTOs.</h3>
+        <h3>Download, decrypt invoices, and deserialize them into DTOs</h3>
     </summary>
 
 ```php
