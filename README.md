@@ -248,7 +248,7 @@ $authorisationStatusResponse = $client->auth()->status([
 
 #### Deserialization
 
-DTOs that implement `N1ebieski\KSEFClient\Contracts\XmlSerializableInterface` can be deserialized directly from XML.
+DTOs that implement `N1ebieski\KSEFClient\Contracts\XmlDeserializableInterface` can be deserialized directly from XML.
 
 Example:
 
