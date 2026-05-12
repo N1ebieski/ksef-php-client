@@ -6,12 +6,14 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NKom;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Typ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Kol extends AbstractDTO implements DomSerializableInterface
+final class Kol extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Typ $typ Typ danych w nagłówku tabeli
@@ -39,5 +41,12 @@ final class Kol extends AbstractDTO implements DomSerializableInterface
         $kol->appendChild($nKom);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['Typ'] = $data['@attributes']['Typ']; //@phpstan-ignore-line offsetAccess.nonOffsetAccessible
+
+        return Arr::only($data, ['Typ', 'NKom']);
     }
 }

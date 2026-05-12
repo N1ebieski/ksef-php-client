@@ -9,5 +9,5 @@ interface WithInterface
     /**
      * @param array<string, mixed> $data
      */
-    public function with(array $data): self;
+    public function with(array $data): static;
 }

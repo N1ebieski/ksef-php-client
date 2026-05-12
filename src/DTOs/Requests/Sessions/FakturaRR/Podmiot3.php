@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Adres;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\AdresKoresp;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\DaneKontaktowe;
@@ -14,12 +15,13 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Podmiot3DaneIdentyfika
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\RolaGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\RolaInnaGroup;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Podmiot3 extends AbstractDTO implements DomSerializableInterface
+final class Podmiot3 extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, DaneKontaktowe>
@@ -86,5 +88,35 @@ final class Podmiot3 extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['DaneIdentyfikacyjne'] = Podmiot3DaneIdentyfikacyjne::normalizeXmlArray($data['DaneIdentyfikacyjne']);
+
+        $data['RolaGroup'] = match (true) {
+            isset($data['Rola']) => RolaGroup::normalizeXmlArray($data),
+            default => RolaInnaGroup::normalizeXmlArray($data),
+        };
+
+        $data['Adres'] = match (true) {
+            isset($data['Adres']) => Adres::normalizeXmlArray($data['Adres']),
+            default => new Optional(),
+        };
+
+        $data['AdresKoresp'] = match (true) {
+            isset($data['AdresKoresp']) => AdresKoresp::normalizeXmlArray($data['AdresKoresp']),
+            default => new Optional(),
+        };
+
+        $data['DaneKontaktowe'] = match (true) {
+            isset($data['DaneKontaktowe']) => array_map(
+                DaneKontaktowe::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DaneKontaktowe'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['DaneIdentyfikacyjne', 'Adres', 'AdresKoresp', 'DaneKontaktowe', 'RolaGroup']);
     }
 }

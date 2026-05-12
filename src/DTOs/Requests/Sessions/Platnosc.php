@@ -7,13 +7,15 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Platnosc extends AbstractDTO implements DomSerializableInterface
+final class Platnosc extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, TerminPlatnosci>
@@ -116,5 +118,51 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['ZaplataGroup'] = match (true) {
+            isset($data['Zaplacono']) => ZaplataGroup::normalizeXmlArray($data),
+            isset($data['ZnacznikZaplatyCzesciowej']) => ZaplataCzesciowaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['TerminPlatnosci'] = match (true) {
+            isset($data['TerminPlatnosci']) => array_map(
+                TerminPlatnosci::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['TerminPlatnosci'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['PlatnoscGroup'] = match (true) {
+            isset($data['FormaPlatnosci']) => FormaPlatnosciGroup::normalizeXmlArray($data),
+            isset($data['PlatnoscInna']) => PlatnoscInnaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowy'] = match (true) {
+            isset($data['RachunekBankowy']) => array_map(
+                RachunekBankowy::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['RachunekBankowy'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowyFaktora'] = match (true) {
+            isset($data['RachunekBankowyFaktora']) => array_map(
+                RachunekBankowyFaktora::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['RachunekBankowyFaktora'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Skonto'] = match (true) {
+            isset($data['Skonto']) => Skonto::normalizeXmlArray($data['Skonto']),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['ZaplataGroup', 'TerminPlatnosci', 'PlatnoscGroup', 'RachunekBankowy', 'RachunekBankowyFaktora', 'Skonto']);
     }
 }

@@ -7,8 +7,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\Contracts\FromXmlArrayInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -33,7 +34,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WZ;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\ZwrotAkcyzy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Fa extends AbstractDTO implements DomSerializableInterface, FromXmlArrayInterface
+final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, WZ>
@@ -405,8 +406,106 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, FromXmlA
         return $dom;
     }
 
-    public static function fromXmlArray(array $data): self
+    public static function normalizeXmlArray(array $data): array
     {
-        throw new \LogicException('Method not implemented yet.');
+        $data['P_6Group'] = match (true) {
+            isset($data['P_6']) => P_6Group::normalizeXmlArray($data),
+            isset($data['OkresFa']) => OkresFaGroup::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['wz'] = match (true) {
+            isset($data['WZ']) => Arr::ensureList($data['WZ']),
+            default => new Optional()
+        };
+
+        $data['P_13_1Group'] = match (true) {
+            isset($data['P_13_1']) => P_13_1Group::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['P_13_2Group'] = match (true) {
+            isset($data['P_13_2']) => P_13_2Group::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['P_13_3Group'] = match (true) {
+            isset($data['P_13_3']) => P_13_3Group::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['P_13_4Group'] = match (true) {
+            isset($data['P_13_4']) => P_13_4Group::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['P_13_5Group'] = match (true) {
+            isset($data['P_13_5']) => P_13_5Group::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['Adnotacje'] = Adnotacje::normalizeXmlArray($data['Adnotacje'] ?? []);
+
+        $data['KorektaGroup'] = match (true) {
+            isset($data['DaneFaKorygowanej']) => KorektaGroup::normalizeXmlArray($data),
+            default => new Optional()
+        };
+
+        $data['ZaliczkaCzesciowa'] = match (true) {
+            isset($data['ZaliczkaCzesciowa']) => array_map(
+                ZaliczkaCzesciowa::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['ZaliczkaCzesciowa'])
+            ),
+            default => new Optional()
+        };
+
+        $data['DodatkowyOpis'] = match (true) {
+            isset($data['DodatkowyOpis']) => array_map(
+                DodatkowyOpis::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DodatkowyOpis'])
+            ),
+            default => new Optional()
+        };
+
+        $data['FakturaZaliczkowa'] = match (true) {
+            isset($data['FakturaZaliczkowa']) => array_map(
+                FakturaZaliczkowa::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['FakturaZaliczkowa'])
+            ),
+            default => new Optional()
+        };
+
+        $data['FaWiersz'] = match (true) {
+            isset($data['FaWiersz']) => array_map(
+                FaWiersz::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['FaWiersz'])
+            ),
+            default => new Optional()
+        };
+
+        $data['Rozliczenie'] = match (true) {
+            isset($data['Rozliczenie']) => Rozliczenie::normalizeXmlArray($data['Rozliczenie']),
+            default => new Optional()
+        };
+
+        $data['Platnosc'] = match (true) {
+            isset($data['Platnosc']) => Platnosc::normalizeXmlArray($data['Platnosc']),
+            default => new Optional()
+        };
+
+        $data['WarunkiTransakcji'] = match (true) {
+            isset($data['WarunkiTransakcji']) => WarunkiTransakcji::normalizeXmlArray($data['WarunkiTransakcji']),
+            default => new Optional()
+        };
+
+        $data['Zamowienie'] = match (true) {
+            isset($data['Zamowienie']) => Zamowienie::normalizeXmlArray($data['Zamowienie']),
+            default => new Optional()
+        };
+
+        $data['fp'] = $data['FP'] ?? new Optional();
+        $data['tp'] = $data['TP'] ?? new Optional();
+
+        return Arr::only($data, ['wz', 'KodWaluty', 'P_1', 'P_1M', 'P_2', 'P_6Group', 'P_13_1Group', 'P_13_2Group', 'P_13_3Group', 'P_13_4Group', 'P_13_5Group', 'P_13_6_1', 'P_13_6_2', 'P_13_6_3', 'P_13_7', 'P_13_8', 'P_13_9', 'P_13_10', 'P_13_11', 'KursWalutyZ', 'P_15', 'Adnotacje', 'RodzajFaktury', 'KorektaGroup', 'ZaliczkaCzesciowa', 'fp', 'tp', 'DodatkowyOpis', 'FakturaZaliczkowa', 'ZwrotAkcyzy', 'FaWiersz', 'Rozliczenie', 'Platnosc', 'WarunkiTransakcji', 'Zamowienie']);
     }
 }

@@ -33,10 +33,7 @@ final class InitHandler extends AbstractHandler
             uri: Uri::from('invoices/exports'),
             body: [
                 ...$request->toBody(),
-                'encryption' => [
-                    'encryptedSymmetricKey' => $this->config->encryptedKey->key,
-                    'initializationVector' => $this->config->encryptedKey->iv
-                ],
+                'encryption' => $this->config->encryptedKey->toBody(),
             ],
         ));
     }

@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Kwota;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Powod;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Obciazenia extends AbstractDTO implements DomSerializableInterface
+final class Obciazenia extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Kwota $kwota Kwota doliczona do kwoty wykazanej w polu P_15
@@ -42,5 +44,10 @@ final class Obciazenia extends AbstractDTO implements DomSerializableInterface
         $obciazenia->appendChild($powod);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['Kwota', 'Powod']);
     }
 }

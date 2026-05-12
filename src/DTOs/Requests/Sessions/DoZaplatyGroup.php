@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DoZaplaty;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DoZaplaty;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class DoZaplatyGroup extends AbstractDTO implements DomSerializableInterface
+final class DoZaplatyGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param DoZaplaty $doZaplaty Kwota należności do zapłaty równa polu P_15 powiększonemu o Obciazenia i pomniejszonemu o Odliczenia
@@ -34,5 +36,10 @@ final class DoZaplatyGroup extends AbstractDTO implements DomSerializableInterfa
         $doZaplatyGroup->appendChild($doZaplaty);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['DoZaplaty']);
     }
 }

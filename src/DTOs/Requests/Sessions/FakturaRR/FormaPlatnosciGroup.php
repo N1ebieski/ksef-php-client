@@ -6,11 +6,13 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\FormaPlatnosci;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FormaPlatnosciGroup extends AbstractDTO implements DomSerializableInterface
+final class FormaPlatnosciGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     public function __construct(
         public readonly FormaPlatnosci $formaPlatnosci,
@@ -33,5 +35,10 @@ final class FormaPlatnosciGroup extends AbstractDTO implements DomSerializableIn
         $dom->appendChild($formaPlatnosciGroup);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['FormaPlatnosci']);
     }
 }

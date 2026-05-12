@@ -6,17 +6,21 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlDeserializableInterface;
 use N1ebieski\KSEFClient\Contracts\XmlSerializableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Stopka;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
+use N1ebieski\KSEFClient\Support\Concerns\HasFromXml;
 use N1ebieski\KSEFClient\Support\Concerns\HasToXml;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Faktura extends AbstractDTO implements XmlSerializableInterface, DomSerializableInterface
+final class Faktura extends AbstractDTO implements XmlSerializableInterface, XmlDeserializableInterface, DomSerializableInterface
 {
+    use HasFromXml;
     use HasToXml;
 
     /**
@@ -82,5 +86,31 @@ final class Faktura extends AbstractDTO implements XmlSerializableInterface, Dom
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['Naglowek'] = Naglowek::normalizeXmlArray($data['Naglowek']);
+
+        $data['Podmiot1'] = Podmiot1::normalizeXmlArray($data['Podmiot1']);
+
+        $data['Podmiot2'] = Podmiot2::normalizeXmlArray($data['Podmiot2']);
+
+        $data['Podmiot3'] = match (true) {
+            isset($data['Podmiot3']) => array_map(
+                Podmiot3::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Podmiot3'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['FakturaRR'] = FakturaRR::normalizeXmlArray($data['FakturaRR']);
+
+        $data['Stopka'] = match (true) {
+            isset($data['Stopka']) => Stopka::normalizeXmlArray($data['Stopka']),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['Naglowek', 'Podmiot1', 'Podmiot2', 'Podmiot3', 'FakturaRR', 'Stopka']);
     }
 }

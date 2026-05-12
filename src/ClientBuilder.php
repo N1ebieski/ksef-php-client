@@ -51,6 +51,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Auth\Challenge;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Auth\SubjectIdentifierType;
 use N1ebieski\KSEFClient\ValueObjects\Requests\ReferenceNumber;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Security\PublicKeyCertificates\PublicKeyCertificateUsage;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Security\PublicKeyCertificates\PublicKeyId;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
 use Psr\Http\Client\ClientInterface as BaseClientInterface;
 use Psr\Log\LoggerInterface;
@@ -448,20 +449,24 @@ final class ClientBuilder
         $securityResponse = $client->security()->publicKeyCertificates();
 
         $firstSymmetricKeyEncryptionCertificate = $securityResponse
-            ->getFirstByPublicKeyCertificateUsage(PublicKeyCertificateUsage::SymmetricKeyEncryption);
+            ->getFirstCertificateByUsage(PublicKeyCertificateUsage::SymmetricKeyEncryption);
 
         if ($firstSymmetricKeyEncryptionCertificate === null) {
             throw new RuntimeException('Symmetric key encryption certificate is not found');
         }
 
-        $symmetricKeyEncryptionCertificate = base64_decode($firstSymmetricKeyEncryptionCertificate);
+        $symmetricKeyEncryptionCertificate = base64_decode($firstSymmetricKeyEncryptionCertificate->certificate);
 
         $certificate = (new ConvertDerToPemHandler())->handle(new ConvertDerToPemAction(
             der: $symmetricKeyEncryptionCertificate,
             name: 'CERTIFICATE'
         ));
 
-        $ksefPublicKey = KsefPublicKey::from($certificate);
+        $publicKeyId = isset($firstSymmetricKeyEncryptionCertificate->publicKeyId)
+            ? PublicKeyId::from($firstSymmetricKeyEncryptionCertificate->publicKeyId)
+            : null;
+
+        $ksefPublicKey = KsefPublicKey::from($certificate, $publicKeyId);
 
         return EncryptedKeyFactory::make($this->encryptionKey, $ksefPublicKey);
     }
@@ -500,20 +505,24 @@ final class ClientBuilder
         $securityResponse = $client->security()->publicKeyCertificates();
 
         $firstKsefTokenEncryptionCertificate = $securityResponse
-            ->getFirstByPublicKeyCertificateUsage(PublicKeyCertificateUsage::KsefTokenEncryption);
+            ->getFirstCertificateByUsage(PublicKeyCertificateUsage::KsefTokenEncryption);
 
         if ($firstKsefTokenEncryptionCertificate === null) {
             throw new RuntimeException('KSEF token encryption certificate is not found');
         }
 
-        $ksefTokenEncryptionCertificate = base64_decode($firstKsefTokenEncryptionCertificate);
+        $ksefTokenEncryptionCertificate = base64_decode($firstKsefTokenEncryptionCertificate->certificate);
 
         $certificate = (new ConvertDerToPemHandler())->handle(new ConvertDerToPemAction(
             der: $ksefTokenEncryptionCertificate,
             name: 'CERTIFICATE'
         ));
 
-        $ksefPublicKey = KsefPublicKey::from($certificate);
+        $publicKeyId = isset($firstKsefTokenEncryptionCertificate->publicKeyId)
+            ? PublicKeyId::from($firstKsefTokenEncryptionCertificate->publicKeyId)
+            : null;
+
+        $ksefPublicKey = KsefPublicKey::from($certificate, $publicKeyId);
 
         $encryptedToken = EncryptedTokenFactory::make(
             ksefToken: $this->ksefToken,
@@ -525,7 +534,7 @@ final class ClientBuilder
             new KsefTokenRequest(
                 challenge: Challenge::from($challengeResponse->challenge),
                 contextIdentifierGroup: ContextIdentifierGroup::fromIdentifier($this->identifier),
-                encryptedToken: $encryptedToken
+                encryptedToken: $encryptedToken,
             )
         );
     }

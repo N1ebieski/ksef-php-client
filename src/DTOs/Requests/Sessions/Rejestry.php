@@ -6,7 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\BDO;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KRS;
@@ -14,7 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PelnaNazwa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\REGON;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Rejestry extends AbstractDTO implements DomSerializableInterface
+final class Rejestry extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param KRS|Optional $krs Numer Krajowego Rejestru Sądowego
@@ -61,5 +63,14 @@ final class Rejestry extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['krs'] = $data['KRS'] ?? new Optional();
+        $data['regon'] = $data['REGON'] ?? new Optional();
+        $data['bdo'] = $data['BDO'] ?? new Optional();
+
+        return Arr::only($data, ['PelnaNazwa', 'krs', 'regon', 'bdo']);
     }
 }

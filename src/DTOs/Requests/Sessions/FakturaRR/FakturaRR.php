@@ -7,10 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\DodatkowyOpis;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Platnosc;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Rozliczenie;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -22,7 +24,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\RodzajFaktury;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\KodWaluty;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FakturaRR extends AbstractDTO implements DomSerializableInterface
+final class FakturaRR extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, DokumentZaplaty>
@@ -176,5 +178,53 @@ final class FakturaRR extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['P_11_1Group'] = P_11_1Group::normalizeXmlArray($data);
+
+        $data['P_12_1Group'] = P_12_1Group::normalizeXmlArray($data);
+
+        $data['KorektaGroup'] = match (true) {
+            isset($data['DaneFaKorygowanej']) => KorektaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['DokumentZaplaty'] = match (true) {
+            isset($data['DokumentZaplaty']) => array_map(
+                DokumentZaplaty::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DokumentZaplaty'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['DodatkowyOpis'] = match (true) {
+            isset($data['DodatkowyOpis']) => array_map(
+                DodatkowyOpis::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['DodatkowyOpis'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['FakturaRRWiersz'] = match (true) {
+            isset($data['FakturaRRWiersz']) => array_map(
+                FakturaRRWiersz::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['FakturaRRWiersz'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Rozliczenie'] = match (true) {
+            isset($data['Rozliczenie']) => Rozliczenie::normalizeXmlArray($data['Rozliczenie']),
+            default => new Optional(),
+        };
+
+        $data['Platnosc'] = match (true) {
+            isset($data['Platnosc']) => Platnosc::normalizeXmlArray($data['Platnosc']),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['KodWaluty', 'P_4B', 'P_4C', 'P_11_1Group', 'P_12_1Group', 'RodzajFaktury', 'KorektaGroup', 'DokumentZaplaty', 'DodatkowyOpis', 'FakturaRRWiersz', 'P_1M', 'P_4A', 'Rozliczenie', 'Platnosc']);
     }
 }

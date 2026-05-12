@@ -7,9 +7,14 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
+use N1ebieski\KSEFClient\Support\Utility;
+use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\LimitsRequestFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase as UnitAbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use Pest\Expectation;
+
+/** @var Expectation<mixed> $this */
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +29,31 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 
 uses(UnitAbstractTestCase::class)->in('Unit');
 uses(FeatureAbstractTestCase::class)
+    ->beforeAll(function (): void {
+        /** @var array<string, string> $_ENV */
+        $client = (new ClientBuilder())
+            ->withMode(Mode::Test)
+            ->withIdentifier($_ENV['NIP_1'])
+            ->withCertificatePath(
+                Utility::basePath($_ENV['CERTIFICATE_PATH_1']),
+                $_ENV['CERTIFICATE_PASSPHRASE_1']
+            )
+            ->build();
+
+        $limitsFixture = new LimitsRequestFixture();
+
+        // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
+        $client->testdata()->rateLimits()->limits([
+            'rateLimits' => [
+                ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
+                'invoiceMetadata' => [
+                    'perSecond' => 1,
+                    'perMinute' => 1,
+                    'perHour' => 100,
+                ]
+            ]
+        ]);
+    })
     ->beforeEach(function (): void {
         $client = (new ClientBuilder())
             ->withMode(Mode::Test)
@@ -76,12 +106,21 @@ expect()->extend('toBeExceptionFixture', function (array $data): void {
     /** @var array{exception: array{exceptionCode: string, exceptionDescription: string, exceptionDetailList: array<array{exceptionCode: string, exceptionDescription: string}>}} $data */
     $firstException = $data['exception']['exceptionDetailList'][0];
 
-    //@phpstan-ignore-next-line
     expect($this->value)->toThrow(new BadRequestException(
         message: "{$firstException['exceptionCode']} {$firstException['exceptionDescription']}",
         code: 400,
         context: (object) $data
     ));
+});
+
+expect()->extend('toBeArrayWithoutObjectsRecursively', function (): void {
+    /** @var Expectation<mixed> $this */
+    expect($this->value)->toBeArray();
+
+    /** @var array<string, mixed> $value */
+    $value = $this->value;
+
+    toBeArrayWithoutObjectsRecursively($value);
 });
 
 /*
@@ -94,6 +133,25 @@ expect()->extend('toBeExceptionFixture', function (array $data): void {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+/**
+ * @param array<string, mixed> $values
+ */
+function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'): void
+{
+    foreach ($values as $key => $value) {
+        $currentPath = "{$path}.{$key}";
+
+        if (is_array($value)) {
+            /** @var array<string, mixed> $value */
+            toBeArrayWithoutObjectsRecursively($value, $currentPath);
+
+            continue;
+        }
+
+        expect($value)->not->toBeObject("Found object at {$currentPath}");
+    }
+}
 
 /**
  * @param array<string, mixed> $data

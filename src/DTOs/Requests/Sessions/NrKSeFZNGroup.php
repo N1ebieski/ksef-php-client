@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
+use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaZaliczkowej;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrKSeFZN;
-use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class NrKSeFZNGroup extends AbstractDTO implements DomSerializableInterface
+final class NrKSeFZNGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrFaZaliczkowej $nrFaZaliczkowej Numer faktury zaliczkowej wystawionej poza KSeF. Pole obowiązkowe dla faktury wystawianej po wydaniu towaru lub wykonaniu usługi, o której mowa w art. 106f ust. 3 ustawy i ostatniej z faktur, o której mowa w art. 106f ust. 4 ustawy
@@ -42,5 +44,10 @@ final class NrKSeFZNGroup extends AbstractDTO implements DomSerializableInterfac
         $nrKSeFZNGroup->appendChild($nrFaZaliczkowej);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['NrKSeFZN', 'NrFaZaliczkowej']);
     }
 }

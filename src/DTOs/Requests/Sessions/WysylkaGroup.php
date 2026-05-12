@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
+final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, WysylkaPrzez>
@@ -87,5 +89,28 @@ final class WysylkaGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['WysylkaPrzez'] = match (true) {
+            isset($data['WysylkaPrzez']) => array_map(
+                WysylkaPrzez::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['WysylkaPrzez'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['WysylkaZ'] = match (true) {
+            isset($data['WysylkaZ']) => WysylkaZ::normalizeXmlArray($data['WysylkaZ']),
+            default => new Optional(),
+        };
+
+        $data['WysylkaDo'] = match (true) {
+            isset($data['WysylkaDo']) => WysylkaDo::normalizeXmlArray($data['WysylkaDo']),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['DataGodzRozpTransportu', 'DataGodzZakTransportu', 'WysylkaPrzez', 'WysylkaZ', 'WysylkaDo']);
     }
 }

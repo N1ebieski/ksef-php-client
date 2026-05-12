@@ -6,14 +6,16 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Klucz;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrWiersza;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\Wartosc;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class DodatkowyOpis extends AbstractDTO implements DomSerializableInterface
+final class DodatkowyOpis extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param NrWiersza|Optional $nrWiersza Numer wiersza podany w polu NrWierszaFa lub NrWierszaZam, jeśli informacja odnosi się wyłącznie do danej pozycji faktury
@@ -52,5 +54,12 @@ final class DodatkowyOpis extends AbstractDTO implements DomSerializableInterfac
         $dom->appendChild($dodatkowyOpis);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrWiersza'] = (int) $data['NrWiersza']; //@phpstan-ignore-line cast.int
+
+        return Arr::only($data, ['Klucz', 'Wartosc', 'NrWiersza']);
     }
 }

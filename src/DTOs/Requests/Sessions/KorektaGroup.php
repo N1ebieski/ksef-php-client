@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowany;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OkresFaKorygowanej;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrFaKorygowany;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\OkresFaKorygowanej;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PrzyczynaKorekty;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\TypKorekty;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
+final class KorektaGroup extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var array<int, DaneFaKorygowanej>
@@ -126,5 +128,33 @@ final class KorektaGroup extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['DaneFaKorygowanej'] = array_map(
+            DaneFaKorygowanej::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+            Arr::ensureList($data['DaneFaKorygowanej'])
+        );
+
+        $data['Podmiot1K'] = match (true) {
+            isset($data['Podmiot1K']) => Podmiot1K::normalizeXmlArray($data['Podmiot1K']),
+            default => new Optional(),
+        };
+
+        $data['Podmiot2K'] = match (true) {
+            isset($data['Podmiot2K']) => array_map(
+                Podmiot2K::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Podmiot2K'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['P15ZKGroup'] = match (true) {
+            isset($data['P_15ZK']) => P_15ZKGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['DaneFaKorygowanej', 'PrzyczynaKorekty', 'TypKorekty', 'OkresFaKorygowanej', 'NrFaKorygowany', 'Podmiot1K', 'Podmiot2K', 'P15ZKGroup']);
     }
 }

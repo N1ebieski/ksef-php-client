@@ -55,8 +55,10 @@ final class Arr
     ): array {
         $newArray = [];
 
-        if ($only !== []) {
-            $array = array_intersect_key($array, array_flip($only));
+        if ($only !== [] && ! array_is_list($array)) {
+            /** @var array<string, mixed> $array */
+            //@phpstan-ignore-next-line argument.type
+            $array = self::only($array, $only);
         }
 
         foreach ($array as $key => $value) {
@@ -81,5 +83,31 @@ final class Arr
         }
 
         return $newArray;
+    }
+
+    /**
+     * @param array<string, mixed> $array
+     * @param array<int, string> $only
+     * @return array<string, mixed>
+     */
+    public static function only(array $array, array $only): array
+    {
+        return array_intersect_key($array, array_flip($only));
+    }
+
+    /**
+     * Wraps a single XML-parsed item (scalar or associative array) into a list.
+     * When SimpleXML parses a single repeated element, json_encode returns a scalar
+     * or associative array instead of an indexed array.
+     *
+     * @return array<int, mixed>
+     */
+    public static function ensureList(mixed $data): array
+    {
+        if ( ! is_array($data)) {
+            return [$data];
+        }
+
+        return array_is_list($data) ? $data : [$data];
     }
 }

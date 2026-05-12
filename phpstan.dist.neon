@@ -17,13 +17,21 @@ parameters:
 
 	ignoreErrors:
 		- '#^Parameter \#1 \$node of method DOMDocument::importNode\(\) expects DOMNode, DOMElement\|null given.$#'
+		- '#^Parameter \#1 \$data of static method ([a-zA-Z0-9\\]+)::normalizeXmlArray\(\) expects array<string, mixed>, mixed given\.$#'
 		- '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage::andReturn#'
 		- '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy::with\(\).$#'
 		- '#^Call to an undefined method Pest\\Expectation<([a-zA-Z0-9\\]+)\|null>::toBeFixture\(\).$#'
 		- '#^Call to an undefined method Pest\\Expectation<array<string, mixed>\|object\|null>::toBeFixture\(\).$#'
 		- '#^Call to an undefined method Pest\\Expectation<\(Closure\)\|null>::toBeExceptionFixture\(\).$#'
+		- '#^Call to an undefined method Pest\\Expectation<array<int\|string, mixed>\|null>::toBeArrayWithoutObjectsRecursively\(\)\.$#'
 		- '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy::throws\(\).$#'
 		- '#^Cannot call method (withHash|withMGFHash|withSaltLength|sign|encrypt)\(\) on mixed.$#'
+		-
+			message: '#^Cannot access offset ([a-zA-Z0-9@''_]+) on (mixed|array)#'
+			path: tests/Unit/Actions/ConvertXmlToArray/ConvertXmlToArrayHandlerTest.php
+		-
+			message: '#^Cannot access offset ([a-zA-Z0-9@''_]+) on (mixed|array)#'
+			path: tests/Unit/DTOs/Requests/Sessions/*
 		-
 			message: '#Parameter \#1 \$exception of method Pest\\Mixins\\Expectation<\(Closure\)\|null>::toThrow\(\) expects \(Closure\(Throwable\):\s+mixed\)\|string\|Throwable, Closure\([A-Za-z0-9_\\\\]+Exception\): true given#'
 			path: tests/*     
@@ -35,4 +43,4 @@ parameters:
 			path: tests/*
 		-
 			message: '#^Cannot call method (andReturn(Self)?|withArgs)\(\) on mixed\.$#'
-			path: tests/*                        
+			path: tests/*

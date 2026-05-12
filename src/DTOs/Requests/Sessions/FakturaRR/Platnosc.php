@@ -7,10 +7,12 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\FormaPlatnosciGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\PlatnoscInnaGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\RachunekBankowy1;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -18,7 +20,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\IPKSeF;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\LinkDoPlatnosci;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Platnosc extends AbstractDTO implements DomSerializableInterface
+final class Platnosc extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, RachunekBankowy1>
@@ -102,5 +104,34 @@ final class Platnosc extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['platnoscGroup'] = match (true) {
+            isset($data['FormaPlatnosci']) => FormaPlatnosciGroup::normalizeXmlArray($data),
+            isset($data['PlatnoscInna']) => PlatnoscInnaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowy1'] = match (true) {
+            isset($data['RachunekBankowy1']) => array_map(
+                RachunekBankowy1::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['RachunekBankowy1'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['RachunekBankowy2'] = match (true) {
+            isset($data['RachunekBankowy2']) => array_map(
+                RachunekBankowy2::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['RachunekBankowy2'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['ipksef'] = $data['IPKSeF'] ?? new Optional();
+
+        return Arr::only($data, ['platnoscGroup', 'RachunekBankowy1', 'RachunekBankowy2', 'ipksef', 'LinkDoPlatnosci']);
     }
 }

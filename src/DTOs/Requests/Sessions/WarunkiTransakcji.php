@@ -7,7 +7,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -16,7 +18,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\PodmiotPosredniczacy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\WarunkiDostawy;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface
+final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, Umowy>
@@ -136,5 +138,44 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['Umowy'] = match (true) {
+            isset($data['Umowy']) => array_map(
+                Umowy::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Umowy'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Zamowienia'] = match (true) {
+            isset($data['Zamowienia']) => array_map(
+                Zamowienia::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Zamowienia'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['NrPartiiTowaru'] = match (true) {
+            isset($data['NrPartiiTowaru']) => Arr::ensureList($data['NrPartiiTowaru']),
+            default => new Optional(),
+        };
+
+        $data['WalutaUmownaGroup'] = match (true) {
+            isset($data['KursUmowny']) || isset($data['WalutaUmowna']) => WalutaUmownaGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        $data['Transport'] = match (true) {
+            isset($data['Transport']) => array_map(
+                Transport::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Transport'])
+            ),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['Umowy', 'Zamowienia', 'NrPartiiTowaru', 'WarunkiDostawy', 'WalutaUmownaGroup', 'Transport', 'PodmiotPosredniczacy']);
     }
 }
