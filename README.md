@@ -2219,6 +2219,7 @@ use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 
 $encryptionKey = EncryptionKeyFactory::makeRandom();
 
@@ -2234,8 +2235,8 @@ $initResponse = $client->invoices()->exports()->init([
         'subjectType' => 'Subject1',
         'dateRange' => [
             'dateType' => 'Invoicing',
-            'from' => new DateTimeImmutable('-1 day'),
-            'to' => new DateTimeImmutable()
+            'from' => new DateTimeImmutable('-1 day', new DateTimeZone('UTC')),
+            'to' => new DateTimeImmutable('now', new DateTimeZone('UTC'))
         ],
     ]
 ])->object();
@@ -2275,7 +2276,25 @@ foreach ($statusResponse->package->parts as $part) {
 
 file_put_contents(Utility::basePath("var/zip/invoices.zip"), $zipContents);
 
-var_dump($statusResponse);
+// Invoices can be deserialize to Faktura DTO
+
+$faktury = [];
+
+$zip = new ZipArchive();
+
+$zip->open(Utility::basePath("var/zip/invoices.zip"));
+
+for ($i = 0; $i < $zip->numFiles; $i++) {
+    $filename = $zip->getNameIndex($i);
+
+    if (str_ends_with($filename, '.xml')) {
+        $content = $zip->getFromIndex($i);
+
+        $faktury[] = Faktura::fromXml($content);
+    }
+}
+
+$zip->close();
 ```
 </details>
 
