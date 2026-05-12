@@ -7,7 +7,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 use DOMDocument;
 use DOMElement;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -15,7 +17,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SumaObciazen;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SumaOdliczen;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Rozliczenie extends AbstractDTO implements DomSerializableInterface
+final class Rozliczenie extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @var Optional|array<int, Obciazenia>
@@ -98,5 +100,31 @@ final class Rozliczenie extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['Obciazenia'] = match (true) {
+            isset($data['Obciazenia']) => array_map(
+                Obciazenia::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Obciazenia'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['Odliczenia'] = match (true) {
+            isset($data['Odliczenia']) => array_map(
+                Odliczenia::normalizeXmlArray(...), //@phpstan-ignore-line argument.type
+                Arr::ensureList($data['Odliczenia'])
+            ),
+            default => new Optional(),
+        };
+
+        $data['RozliczenieGroup'] = match (true) {
+            isset($data['DoZaplaty']) || isset($data['DoRozliczenia']) => RozliczenieGroup::normalizeXmlArray($data),
+            default => new Optional(),
+        };
+
+        return Arr::only($data, ['Obciazenia', 'SumaObciazen', 'Odliczenia', 'SumaOdliczen', 'RozliczenieGroup']);
     }
 }

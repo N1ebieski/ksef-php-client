@@ -6,7 +6,9 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\CN;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_10;
@@ -27,7 +29,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\StanPrzed;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\UU_ID;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class FakturaRRWiersz extends AbstractDTO implements DomSerializableInterface
+final class FakturaRRWiersz extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_5 $p_5 Nazwa nabytego produktu rolnego lub nabytej usługi rolniczej.
@@ -167,5 +169,16 @@ final class FakturaRRWiersz extends AbstractDTO implements DomSerializableInterf
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        $data['NrWierszaFa'] = (int) $data['NrWierszaFa']; //@phpstan-ignore-line cast.int
+        $data['uu_id'] = $data['UU_ID'] ?? new Optional();
+        $data['gtin'] = $data['GTIN'] ?? new Optional();
+        $data['pkwiu'] = $data['PKWiU'] ?? new Optional();
+        $data['cn'] = $data['CN'] ?? new Optional();
+
+        return Arr::only($data, ['NrWierszaFa', 'P_5', 'P_6A', 'P_6B', 'P_6C', 'P_7', 'P_8', 'P_9', 'P_10', 'P_11', 'uu_id', 'P_4AA', 'gtin', 'pkwiu', 'cn', 'StanPrzed', 'KursWaluty']);
     }
 }

@@ -8,14 +8,16 @@ use DateTimeImmutable;
 use DateTimeZone;
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWytworzeniaFa;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\SystemInfo;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class Naglowek extends AbstractDTO implements DomSerializableInterface
+final class Naglowek extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param Optional|SystemInfo $systemInfo Nazwa systemu teleinformatycznego, z którego korzysta podatnik
@@ -59,5 +61,13 @@ final class Naglowek extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        //@phpstan-ignore-next-line argument.type
+        $data['WariantFormularza'] = sprintf('%s (%s)', $data['KodFormularza'], $data['WariantFormularza']);
+
+        return Arr::only($data, ['WariantFormularza', 'DataWytworzeniaFa', 'SystemInfo']);
     }
 }

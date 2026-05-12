@@ -6,14 +6,16 @@ namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_12_1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_12_1W;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_12_2;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_12_1Group extends AbstractDTO implements DomSerializableInterface
+final class P_12_1Group extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_12_1 $p_12_1 Kwota należności ogółem wraz z kwotą zryczałtowanego zwrotu podatku, wyrażona cyfrowo. W przypadku faktur korygujących - kwota różnicy kwoty należności ogółem z kwotą zryczałtowanego zwrotu podatku.
@@ -53,5 +55,10 @@ final class P_12_1Group extends AbstractDTO implements DomSerializableInterface
         $p_12_1Group->appendChild($p_12_2);
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['P_12_1', 'P_12_2', 'P_12_1W']);
     }
 }

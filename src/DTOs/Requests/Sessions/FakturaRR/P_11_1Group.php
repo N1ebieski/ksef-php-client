@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR;
 
 use DOMDocument;
-use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 use N1ebieski\KSEFClient\Contracts\DomSerializableInterface;
+use N1ebieski\KSEFClient\Contracts\XmlNormalizableInterface;
 use N1ebieski\KSEFClient\Support\AbstractDTO;
+use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_11_1;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_11_1W;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_11_2;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FakturaRR\P_11_2W;
+use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
-final class P_11_1Group extends AbstractDTO implements DomSerializableInterface
+final class P_11_1Group extends AbstractDTO implements DomSerializableInterface, XmlNormalizableInterface
 {
     /**
      * @param P_11_1 $p_11_1 Wartość nabytych produktów rolnych lub usług rolniczych bez kwoty zryczałtowanego zwrotu podatku. W przypadku faktur korygujących - kwota różnicy, o której mowa w art. 116 ust. 5e pkt 5 ustawy.
@@ -63,5 +65,10 @@ final class P_11_1Group extends AbstractDTO implements DomSerializableInterface
         }
 
         return $dom;
+    }
+
+    public static function normalizeXmlArray(array $data): array
+    {
+        return Arr::only($data, ['P_11_1', 'P_11_2', 'P_11_1W', 'P_11_2W']);
     }
 }
