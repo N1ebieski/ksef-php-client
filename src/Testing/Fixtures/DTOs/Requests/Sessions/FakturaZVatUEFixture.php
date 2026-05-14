@@ -28,7 +28,7 @@ final class FakturaZVatUEFixture extends AbstractFakturaFixture
             'daneIdentyfikacyjne' => [
                 'idGroup' => [
                     'kodUE' => 'DE',
-                    'nrVatUE' => 'DE730372668',
+                    'nrVatUE' => '730372668',
                 ],
                 'nazwa' => 'Fussbal A.G.',
             ],
