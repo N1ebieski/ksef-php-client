@@ -23,6 +23,7 @@ final class FakturaZVatUEFixture extends AbstractFakturaFixture
                 'kodKraju' => 'PL',
                 'adresL1' => '02-798 Warszawa',
             ],
+            'prefiksPodatnika' => 'PL',
         ],
         'podmiot2' => [
             'daneIdentyfikacyjne' => [
