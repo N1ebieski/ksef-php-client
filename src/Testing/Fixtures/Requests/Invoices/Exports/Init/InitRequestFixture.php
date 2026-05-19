@@ -42,7 +42,8 @@ final class InitRequestFixture extends AbstractRequestFixture
                 'Vat',
             ],
             'hasAttachment' => true,
-        ]
+        ],
+        'compressionType' => 'TarGz',
     ];
 
     public function withSubjectType(string $subjectType): self

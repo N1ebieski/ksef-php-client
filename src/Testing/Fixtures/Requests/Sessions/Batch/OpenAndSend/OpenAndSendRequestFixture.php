@@ -16,6 +16,7 @@ class OpenAndSendRequestFixture extends AbstractRequestFixture
         'formCode' => 'FA (3)',
         'faktury' => [],
         'offlineMode' => false,
+        'compressionType' => 'TarGz'
     ];
 
     /**
