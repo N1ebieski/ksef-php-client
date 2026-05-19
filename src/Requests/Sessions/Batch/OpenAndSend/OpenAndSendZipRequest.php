@@ -8,6 +8,7 @@ use N1ebieski\KSEFClient\Contracts\BodyInterface;
 use N1ebieski\KSEFClient\Requests\AbstractRequest;
 use N1ebieski\KSEFClient\Requests\Sessions\Batch\OpenAndSend\Concerns\HasToBody;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\CompressionType;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 
 final class OpenAndSendZipRequest extends AbstractRequest implements BodyInterface
@@ -18,6 +19,7 @@ final class OpenAndSendZipRequest extends AbstractRequest implements BodyInterfa
         public readonly FormCode $formCode,
         public readonly string $faktury,
         public readonly Optional | bool $offlineMode = new Optional(),
+        public readonly Optional | CompressionType $compressionType = new Optional()
     ) {
     }
 }

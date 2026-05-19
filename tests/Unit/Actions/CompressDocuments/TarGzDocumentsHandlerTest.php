@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use N1ebieski\KSEFClient\Actions\ZipDocuments\ZipDocumentsAction;
-use N1ebieski\KSEFClient\Actions\ZipDocuments\ZipDocumentsHandler;
+use N1ebieski\KSEFClient\Actions\CompressDocuments\CompressDocumentsAction;
+use N1ebieski\KSEFClient\Actions\CompressDocuments\TarGzDocumentsHandler;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
@@ -17,7 +17,7 @@ afterEach(function () use (&$tempFile): void {
     }
 });
 
-test('documents are ordered by numbered names after unzip', function () use (&$tempFile): void {
+test('documents are ordered by numbered names after untar gz', function () use (&$tempFile): void {
     $fixtures = array_map(
         fn (int $index) => (new FakturaSprzedazyTowaruFixture())
             ->withTodayDate()
@@ -36,37 +36,43 @@ test('documents are ordered by numbered names after unzip', function () use (&$t
         range(1, 100)
     );
 
-    $handler = new ZipDocumentsHandler();
-    $zipContent = $handler->handle(new ZipDocumentsAction($expectedFileContents));
+    $handler = new TarGzDocumentsHandler();
+    $tarGzContent = $handler->handle(new CompressDocumentsAction($expectedFileContents));
 
     $tempDir = sys_get_temp_dir();
-    $tempFile = tempnam($tempDir, 'zip_test_');
+    $tempFile = tempnam($tempDir, 'targz_test_');
 
     if ($tempFile === false) {
         throw new RuntimeException("Unable to create temp file in {$tempDir}.");
     }
 
-    if (file_put_contents($tempFile, $zipContent) === false) {
-        throw new RuntimeException('Unable to write zip content to temp file.');
+    $tempTarGzFile = "{$tempFile}.tar.gz";
+
+    if (rename($tempFile, $tempTarGzFile) === false) {
+        unlink($tempFile);
+
+        throw new RuntimeException('Unable to prepare tar.gz file.');
     }
 
-    $zip = new ZipArchive();
+    $tempFile = $tempTarGzFile;
 
-    expect($zip->open($tempFile))->toBeTrue();
+    if (file_put_contents($tempTarGzFile, $tarGzContent) === false) {
+        throw new RuntimeException('Unable to write tar.gz content to temp file.');
+    }
 
+    $archive = new PharData($tempTarGzFile);
     $filesByName = [];
 
-    foreach (range(0, $zip->numFiles - 1) as $index) {
-        $fileName = $zip->getNameIndex($index);
-        $fileContent = $zip->getFromIndex($index);
+    foreach ($archive as $file) {
+        /** @var PharFileInfo $file */
+        $fileName = $file->getFilename();
+        $fileContent = $file->getContent();
 
         expect($fileName)->toBeString();
         expect($fileContent)->toBeString();
 
         $filesByName[$fileName] = $fileContent;
     }
-
-    $zip->close();
 
     ksort($filesByName, SORT_STRING);
 

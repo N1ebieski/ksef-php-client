@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Sessions\Batch\OpenAndSend;
 
+use N1ebieski\KSEFClient\Actions\CompressDocuments\CompressDocumentsAction;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsAction;
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsHandler;
-use N1ebieski\KSEFClient\Actions\ZipDocuments\ZipDocumentsAction;
-use N1ebieski\KSEFClient\Actions\ZipDocuments\ZipDocumentsHandler;
 use N1ebieski\KSEFClient\Contracts\ConfigInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
 use N1ebieski\KSEFClient\DTOs\HttpClient\Request;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Faktura as FakturaRR;
+use N1ebieski\KSEFClient\Factories\CompressDocumentsHandlerFactory;
 use N1ebieski\KSEFClient\Requests\AbstractHandler;
 use N1ebieski\KSEFClient\Validator\Rules\Xml\SchemaRule;
 use N1ebieski\KSEFClient\Validator\Validator;
@@ -31,7 +31,6 @@ final class OpenAndSendHandler extends AbstractHandler
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly EncryptDocumentHandler $encryptDocument,
-        private readonly ZipDocumentsHandler $zipDocuments,
         private readonly SplitDocumentIntoPartsHandler $splitDocumentIntoParts,
         private readonly Config $config
     ) {
@@ -63,18 +62,23 @@ final class OpenAndSendHandler extends AbstractHandler
             }
         }
 
-        $zipDocument = is_array($documents)
-            ? $this->zipDocuments->handle(new ZipDocumentsAction($documents))
-            : $documents;
+        $compressedDocument = $documents;
 
-        $fileSize = strlen($zipDocument);
+        if (is_array($documents)) {
+            $compressDocumentsHandler = CompressDocumentsHandlerFactory::make($request->compressionType);
+
+            $compressedDocument = $compressDocumentsHandler->handle(new CompressDocumentsAction($documents));
+        }
+
+        /** @var string $compressedDocument */
+        $fileSize = strlen($compressedDocument);
 
         if ($fileSize > ConfigInterface::BATCH_MAX_FILE_SIZE) {
             throw new RuntimeException('File size is too big.');
         }
 
         $parts = $this->splitDocumentIntoParts->handle(new SplitDocumentIntoPartsAction(
-            document: $zipDocument,
+            document: $compressedDocument,
             partSize: ConfigInterface::BATCH_MAX_PART_SIZE
         ));
 
@@ -90,19 +94,21 @@ final class OpenAndSendHandler extends AbstractHandler
         $openResponse = $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('sessions/batch'),
-            body: [
-                ...$request->toBody(),
-                'batchFile' => [
-                    'fileSize' => $fileSize,
-                    'fileHash' => base64_encode(hash('sha256', $zipDocument, true)),
-                    'fileParts' => array_map(fn (int $index, string $encryptedPart): array => [
-                        'ordinalNumber' => $index + 1,
-                        'fileSize' => strlen($encryptedPart),
-                        'fileHash' => base64_encode(hash('sha256', $encryptedPart, true)),
-                    ], array_keys($encryptedParts), $encryptedParts),
-                ],
-                'encryption' => $this->config->encryptedKey->toBody(),
-            ]
+            body: array_replace_recursive( //@phpstan-ignore-line argument.type
+                $request->toBody(),
+                [
+                    'batchFile' => [
+                        'fileSize' => $fileSize,
+                        'fileHash' => base64_encode(hash('sha256', $compressedDocument, true)),
+                        'fileParts' => array_map(fn (int $index, string $encryptedPart): array => [
+                            'ordinalNumber' => $index + 1,
+                            'fileSize' => strlen($encryptedPart),
+                            'fileHash' => base64_encode(hash('sha256', $encryptedPart, true)),
+                        ], array_keys($encryptedParts), $encryptedParts),
+                    ],
+                    'encryption' => $this->config->encryptedKey->toBody(),
+                ]
+            )
         ));
 
         /** @var object{referenceNumber: string, partUploadRequests: array<int, object{ordinalNumber: int, method: string, url: string, headers: array<string, string>}>} */

@@ -30,6 +30,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
+use N1ebieski\KSEFClient\ValueObjects\Requests\CompressionType;
 
 /** @var AbstractTestCase $this */
 
@@ -39,6 +40,66 @@ use N1ebieski\KSEFClient\ValueObjects\QRCode;
 dataset('privateKeyTypeProvider', fn (): array => [
     'RSA' => [PrivateKeyType::RSA],
     'EC' => [PrivateKeyType::EC],
+]);
+
+test('send compressed invoices', function (CompressionType $compressionType): void {
+    /**
+     * @var AbstractTestCase $this
+     * @var array<string, string> $_ENV
+     */
+    $encryptionKey = EncryptionKeyFactory::makeRandom();
+
+    $client = $this->createClient(encryptionKey: $encryptionKey);
+
+    /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
+    $fakturyFixtures = array_map(
+        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+            ->withNip($_ENV['NIP_1'])
+            ->withTodayDate()
+            ->withRandomInvoiceNumber(),
+        range(1, 3)
+    );
+
+    /** @var array<int, Faktura> $faktury */
+    $faktury = array_map(fn (FakturaSprzedazyTowaruFixture $faktura): Faktura => Faktura::from($faktura->data), $fakturyFixtures);
+
+    $openAndSendResponse = $client->sessions()->batch()->openAndSend([
+        'formCode' => 'FA (3)',
+        'faktury' => $faktury,
+        'offlineMode' => true,
+        'compressionType' => $compressionType
+    ]);
+
+    /** @var object{referenceNumber: string} $openResponse */
+    $openResponse = $openAndSendResponse->object();
+
+    foreach ($openAndSendResponse->partUploadResponses as $partUploadResponse) {
+        expect($partUploadResponse?->status())->toBe(201);
+    }
+
+    $client->sessions()->batch()->close([
+        'referenceNumber' => $openResponse->referenceNumber
+    ]);
+
+    Utility::retry(function (int $attempts) use ($client, $openResponse) {
+        /** @var object{status: object{code: int}, referenceNumber: string, upoDownloadUrl: string} $statusResponse */
+        $statusResponse = $client->sessions()->status([
+            'referenceNumber' => $openResponse->referenceNumber,
+        ])->object();
+
+        try {
+            expect($statusResponse->status->code)->toBe(200);
+
+            return $statusResponse;
+        } catch (Throwable $exception) {
+            if ($attempts > 2) {
+                throw $exception;
+            }
+        }
+    });
+})->with([
+    CompressionType::Zip,
+    CompressionType::TarGz,
 ]);
 
 test('create offline invoices and send them', function (PrivateKeyType $privateKeyType): void {
@@ -230,4 +291,4 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
     expect($revokeCertificate)->toBe(204);
 
     $this->revokeCurrentSession($client);
-})->with('privateKeyTypeProvider');
+})->with('privateKeyTypeProvider')->depends('send compressed invoices');

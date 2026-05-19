@@ -7,7 +7,6 @@ namespace N1ebieski\KSEFClient\Resources\Sessions\Batch;
 use CuyZ\Valinor\Cache\Cache;
 use N1ebieski\KSEFClient\Actions\EncryptDocument\EncryptDocumentHandler;
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsHandler;
-use N1ebieski\KSEFClient\Actions\ZipDocuments\ZipDocumentsHandler;
 use N1ebieski\KSEFClient\Contracts\Exception\ExceptionHandlerInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
@@ -45,7 +44,6 @@ final class BatchResource extends AbstractResource implements BatchResourceInter
             return (new OpenAndSendHandler(
                 client: $this->client,
                 encryptDocument: new EncryptDocumentHandler($this->logger),
-                zipDocuments: new ZipDocumentsHandler(),
                 splitDocumentIntoParts: new SplitDocumentIntoPartsHandler(),
                 config: $this->config
             ))->handle($request);

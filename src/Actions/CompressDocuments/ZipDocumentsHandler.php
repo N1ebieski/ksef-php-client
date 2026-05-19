@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\Actions\ZipDocuments;
+namespace N1ebieski\KSEFClient\Actions\CompressDocuments;
 
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
+use N1ebieski\KSEFClient\Contracts\Actions\CompressDocuments\CompressDocumentsHandlerInterface;
 use RuntimeException;
 use ZipArchive;
 
-final class ZipDocumentsHandler extends AbstractHandler
+final class ZipDocumentsHandler extends AbstractHandler implements CompressDocumentsHandlerInterface
 {
-    public function handle(ZipDocumentsAction $action): string
+    public function handle(CompressDocumentsAction $action): string
     {
         $zip = new ZipArchive();
 

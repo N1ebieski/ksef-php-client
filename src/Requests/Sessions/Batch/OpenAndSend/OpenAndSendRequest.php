@@ -13,6 +13,7 @@ use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MaxRule;
 use N1ebieski\KSEFClient\Validator\Rules\Array\MinRule;
 use N1ebieski\KSEFClient\Validator\Validator;
+use N1ebieski\KSEFClient\ValueObjects\Requests\CompressionType;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 
 final class OpenAndSendRequest extends AbstractRequest implements BodyInterface
@@ -31,6 +32,7 @@ final class OpenAndSendRequest extends AbstractRequest implements BodyInterface
         public readonly FormCode $formCode,
         array $faktury,
         public readonly Optional | bool $offlineMode = new Optional(),
+        public readonly Optional | CompressionType $compressionType = new Optional()
     ) {
         Validator::validate([
             'faktury' => $faktury,
