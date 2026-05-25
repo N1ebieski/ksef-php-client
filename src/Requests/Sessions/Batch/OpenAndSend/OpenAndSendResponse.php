@@ -43,9 +43,9 @@ final class OpenAndSendResponse implements OpenAndSendResponseInterface
         return $this->openResponse->headers();
     }
 
-    public function json(): array
+    public function json(?string $key = null, mixed $default = null): mixed
     {
-        return $this->openResponse->json();
+        return $this->openResponse->json($key, $default);
     }
 
     public function object(): object | array

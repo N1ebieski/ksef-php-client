@@ -24,9 +24,9 @@ interface ResponseInterface extends ArrayableInterface
     public function headers(): array;
 
     /**
-     * @return array<string, mixed>
+     * @phpstan-return ($key is null ? array<string, mixed> : mixed)
      */
-    public function json(): array;
+    public function json(?string $key = null, mixed $default = null): mixed;
 
     /**
      * @return object|array<string, mixed>
