@@ -66,3 +66,20 @@ test('array with key type except', function (): void {
     expect($scan($result, ['p_', 'uu_id']))->toBeTrue();
     expect($scan($result, ['snake_case']))->toBeFalse();
 });
+
+test('gets value by dot notation', function (): void {
+    $array = [
+        'key-1' => [
+            'key-2' => [
+                'key-3' => 100,
+                'key-4' => null,
+            ],
+        ],
+    ];
+
+    expect(Arr::get($array, 'key-1.key-2.key-3'))->toBe(100)
+        ->and(Arr::get($array, 'key-1.key-2.key-4', 10))->toBeNull()
+        ->and(Arr::get($array, 'key-1.missing-key.key-3'))->toBeNull()
+        ->and(Arr::get($array, 'key-1.missing-key.key-3', 300))->toBe(300)
+        ->and(Arr::get($array, 'key-1.key-2.key-3.value', 300))->toBe(300);
+});

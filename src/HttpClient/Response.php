@@ -78,10 +78,16 @@ final class Response implements ResponseInterface
         return json_decode($this->contents, flags: JSON_THROW_ON_ERROR);
     }
 
-    public function json(): array
+    public function json(?string $key = null, mixed $default = null): mixed
     {
-        /** @var array<string, mixed> */
-        return json_decode($this->contents, true, flags: JSON_THROW_ON_ERROR);
+        $decoded = json_decode($this->contents, true, flags: JSON_THROW_ON_ERROR);
+
+        if ($key === null || ! is_array($decoded)) {
+            return $decoded;
+        }
+
+        /** @var array<string, mixed> $decoded */
+        return Arr::get($decoded, $key, $default);
     }
 
     public function data(): string | array

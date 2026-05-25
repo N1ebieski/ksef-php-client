@@ -74,9 +74,9 @@ final class PublicKeyCertificatesResponse implements PublicKeyCertificatesRespon
         return $this->response->headers();
     }
 
-    public function json(): array
+    public function json(?string $key = null, mixed $default = null): mixed
     {
-        return $this->response->json();
+        return $this->response->json($key, $default);
     }
 
     public function object(): object | array

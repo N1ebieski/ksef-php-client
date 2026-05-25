@@ -96,6 +96,24 @@ final class Arr
     }
 
     /**
+     * @param array<string|int, mixed> $array
+     */
+    public static function get(array $array, string $key, mixed $default = null): mixed
+    {
+        $current = $array;
+
+        foreach (explode('.', $key) as $segment) {
+            if ( ! is_array($current) || ! array_key_exists($segment, $current)) {
+                return $default;
+            }
+
+            $current = $current[$segment];
+        }
+
+        return $current;
+    }
+
+    /**
      * Wraps a single XML-parsed item (scalar or associative array) into a list.
      * When SimpleXML parses a single repeated element, json_encode returns a scalar
      * or associative array instead of an indexed array.
