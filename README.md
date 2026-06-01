@@ -1976,7 +1976,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 // and then...
 
-$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-fe-invoice-converter/dist/cli/index.js'));
+$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
 $pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
@@ -2013,7 +2013,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 // and then...
 
-$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-fe-invoice-converter/dist/cli/index.js'));
+$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
 $pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
@@ -2190,7 +2190,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 // and then...
 
-$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-fe-invoice-converter/dist/cli/index.js'));
+$ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
 $pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    

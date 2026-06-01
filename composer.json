@@ -52,6 +52,9 @@
         "friendsofphp/php-cs-fixer": "^3.88",
         "symfony/cache": "^6.4"
     },
+    "suggest": {
+        "n1ebieski/ksef-pdf-generator": "Fork the official MF KSeF PDF Generator with CLI generation support and offline invoices/transaction confirmations"
+    },
     "autoload": {
         "psr-4": {
             "N1ebieski\\KSEFClient\\": "src/"
@@ -87,7 +90,7 @@
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/rector process"
         ],
-        "rector-dry": [
+        "rector:dry": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/rector process --dry-run > var/logs/rector.log"
         ],
