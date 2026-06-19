@@ -109,6 +109,7 @@ final class Response implements ResponseInterface
         return Arr::normalize([
             'statusCode' => $this->statusCode,
             'contents' => $this->data(),
+            'headers' => $this->headers(),
         ], keyType: $keyType, only: $only);
     }
 }
