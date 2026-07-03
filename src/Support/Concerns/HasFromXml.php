@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Support\Concerns;
 use CuyZ\Valinor\Cache\Cache;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayAction;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayHandler;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
 use N1ebieski\KSEFClient\Contracts\XmlDeserializableInterface;
 
 /**
@@ -18,7 +19,11 @@ trait HasFromXml
 
     public static function fromXml(string $xml, ?Cache $cache = null): self
     {
-        $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+        $convertXmlToArrayHandler = new ConvertXmlToArrayHandler(
+            new RemoveNamespaceFromXmlHandler()
+        );
+
+        $array = $convertXmlToArrayHandler->handle(new ConvertXmlToArrayAction($xml));
 
         $normalizedArray = self::normalizeXmlArray($array);
 
