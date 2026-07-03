@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use CuyZ\Valinor\Cache\Cache;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\AddNamespaceToXml\AddNamespaceToXmlAction;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\AddNamespaceToXml\AddNamespaceToXmlHandler;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\AbstractFakturaFixture;
@@ -63,6 +65,24 @@ test('fromXml round-trip produces identical XML', function (AbstractFakturaFixtu
     $original = Faktura::from($fixture->data, $valinorCache);
 
     $deserialized = Faktura::fromXml($original->toXml(), $valinorCache);
+
+    expect($deserialized->toXml())->toBe($original->toXml());
+})->with('faktura fixtures');
+
+test('fromXml round-trip produces identical XML when using prefix namespaces', function (AbstractFakturaFixture $fixture, ?Cache $valinorCache): void {
+    $original = Faktura::from($fixture->data, $valinorCache);
+
+    $addNamespaceToXmlHandler = new AddNamespaceToXmlHandler();
+
+    $xmlWithNamespace = $addNamespaceToXmlHandler->handle(
+        new AddNamespaceToXmlAction(
+            xml: $original->toXml(),
+            prefix: 'ns0',
+            namespaceUri: 'http://crd.gov.pl/wzor/2025/06/25/13775/'
+        )
+    );
+
+    $deserialized = Faktura::fromXml($xmlWithNamespace, $valinorCache);
 
     expect($deserialized->toXml())->toBe($original->toXml());
 })->with('faktura fixtures');

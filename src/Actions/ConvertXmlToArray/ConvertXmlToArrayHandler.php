@@ -6,11 +6,18 @@ namespace N1ebieski\KSEFClient\Actions\ConvertXmlToArray;
 
 use LibXMLError;
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlAction;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
 use RuntimeException;
 use SimpleXMLElement;
 
 final class ConvertXmlToArrayHandler extends AbstractHandler
 {
+    public function __construct(
+        private readonly RemoveNamespaceFromXmlHandler $removeNamespaceFromXmlHandler
+    ) {
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -19,7 +26,11 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
         $useInternalErrors = libxml_use_internal_errors(true);
 
         try {
-            $element = simplexml_load_string($action->xml, SimpleXMLElement::class, LIBXML_NOCDATA);
+            $normalizedXml = $this->removeNamespaceFromXmlHandler->handle(
+                new RemoveNamespaceFromXmlAction($action->xml)
+            );
+
+            $element = simplexml_load_string($normalizedXml, SimpleXMLElement::class, LIBXML_NOCDATA);
 
             if ($element === false) {
                 $errors = array_map(

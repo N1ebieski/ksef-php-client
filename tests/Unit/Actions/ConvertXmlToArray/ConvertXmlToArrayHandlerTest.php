@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayAction;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayHandler;
+use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
 
 $ns = XmlNamespace::Fa3->value;
@@ -21,7 +22,7 @@ test('keys match exact XML element names (PascalCase)', function () use ($ns): v
     </Faktura>
     XML;
 
-    $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
     expect($array)->toHaveKey('Podmiot1');
     expect($array['Podmiot1'])->toHaveKey('DaneIdentyfikacyjne');
@@ -42,7 +43,7 @@ test('all-caps element names are not lowercased', function () use ($ns): void {
     </Root>
     XML;
 
-    $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
     expect($array)->toHaveKey('NIP')->not->toHaveKey('nip')->not->toHaveKey('nIP');
     expect($array)->toHaveKey('GLN')->not->toHaveKey('gln')->not->toHaveKey('gLN');
@@ -60,7 +61,7 @@ test('XML attributes are available under @attributes key with original case', fu
     </Root>
     XML;
 
-    $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
     expect($array['Kol'])->toHaveKey('@attributes');
     expect($array['Kol']['@attributes'])->toHaveKey('Typ');
@@ -78,7 +79,7 @@ test('multiple same-name elements produce indexed array', function () use ($ns):
     </Root>
     XML;
 
-    $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
     expect($array['FaWiersz'])->toBeArray()->toHaveCount(3);
     expect($array['FaWiersz'][0]['NrWierszaFa'])->toBe('1');
@@ -94,7 +95,7 @@ test('single element does not produce indexed array', function () use ($ns): voi
     </Root>
     XML;
 
-    $array = (new ConvertXmlToArrayHandler())->handle(new ConvertXmlToArrayAction($xml));
+    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
     expect($array['FaWiersz'])->toBeArray();
     expect($array['FaWiersz'])->toHaveKey('NrWierszaFa');
@@ -102,7 +103,14 @@ test('single element does not produce indexed array', function () use ($ns): voi
 });
 
 test('throws RuntimeException on invalid XML', function (): void {
-    expect(fn (): array => (new ConvertXmlToArrayHandler())->handle(
+    expect(fn (): array => getConvertXmlToArrayHandler()->handle(
         new ConvertXmlToArrayAction('<not valid xml')
     ))->toThrow(RuntimeException::class);
 });
+
+function getConvertXmlToArrayHandler(): ConvertXmlToArrayHandler
+{
+    return new ConvertXmlToArrayHandler(
+        new RemoveNamespaceFromXmlHandler()
+    );
+}
