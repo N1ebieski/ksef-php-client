@@ -106,7 +106,7 @@ test('preserves XML comments', function (): void {
 });
 
 test('handles complex real-world KSEF invoice structure', function (): void {
-    $xml = <<<XML_WRAP
+    $xml = <<<XML
     <?xml version="1.0" encoding="UTF-8"?>
     <tns:Faktura xmlns:tns="http://ksef.mf.gov.pl/schema/gtw/svc/online/types/2021/10/01/0001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <tns:Podmiot1>
@@ -125,7 +125,7 @@ test('handles complex real-world KSEF invoice structure', function (): void {
             </tns:FaWiersz>
         </tns:Fa>
     </tns:Faktura>
-    XML_WRAP;
+    XML;
 
     $result = getRemoveNamespaceFromXmlHandler()->handle(
         new RemoveNamespaceFromXmlAction($xml)
