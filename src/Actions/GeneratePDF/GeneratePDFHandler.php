@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Actions\GeneratePDF;
 
+use DateTimeInterface;
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
 use N1ebieski\KSEFClient\DTOs\KsefPDFs;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
@@ -41,21 +42,7 @@ final class GeneratePDFHandler extends AbstractHandler
 
             file_put_contents($xmlFile, $document);
 
-            $command = "{$action->nodePath} {$action->ksefFeInvoiceConverterPath->value} {$key} {$xmlFile} {$pdfFile}";
-
-            if (in_array($key, ['invoice', 'confirmation'], true)) {
-                if ($key === 'invoice' && $action->ksefNumber instanceof KsefNumber) {
-                    $command .= " --nr-ksef {$action->ksefNumber->value}";
-                }
-
-                if ($action->qrCodes?->code1 instanceof QRCode) {
-                    $command .= " --qr-code {$action->qrCodes->code1->url}";
-                }
-
-                if ($action->qrCodes?->code2 instanceof QRCode) {
-                    $command .= " --qr-code2 {$action->qrCodes->code2->url}";
-                }
-            }
+            $command = $this->getCommand($action, $key, $xmlFile, $pdfFile);
 
             $process = proc_open(
                 $command,
@@ -100,5 +87,40 @@ final class GeneratePDFHandler extends AbstractHandler
 
         /** @var array<string, non-empty-string> $pdfs */
         return new KsefPDFs(...$pdfs);
+    }
+
+    private function getCommand(GeneratePDFAction $action, string $key, string $xmlFile, string $pdfFile): string
+    {
+        $command = "{$action->nodePath} {$action->ksefFeInvoiceConverterPath->value} {$key} {$xmlFile} {$pdfFile}";
+
+        if ( ! in_array($key, ['invoice', 'confirmation'], true)) {
+            return $command;
+        }
+
+        if ($action->qrCodes?->code1 instanceof QRCode) {
+            $command .= " --qr-code {$action->qrCodes->code1->url}";
+        }
+
+        if ($action->qrCodes?->code2 instanceof QRCode) {
+            $command .= " --qr-code2 {$action->qrCodes->code2->url}";
+        }
+
+        if ($action->watermark !== null) {
+            $command .= " --watermark \"{$action->watermark}\"";
+        }
+
+        if ($key !== 'invoice') {
+            return $command;
+        }
+
+        if ($action->ksefNumber instanceof KsefNumber) {
+            $command .= " --nr-ksef {$action->ksefNumber->value}";
+        }
+
+        if ($action->acquisitionDate instanceof DateTimeInterface) {
+            $command .= " --ac-date {$action->acquisitionDate->format('d.m.Y')}";
+        }
+
+        return $command;
     }
 }
