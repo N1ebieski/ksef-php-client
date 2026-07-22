@@ -68,6 +68,11 @@ final class LimitsRequestFixture extends AbstractRequestFixture
                 'perMinute' => 100,
                 'perHour' => 100,
             ],
+            'collectiveIdentifier' => [
+                'perSecond' => 10,
+                'perMinute' => 60,
+                'perHour' => 100,
+            ],
             'other' => [
                 'perSecond' => 100,
                 'perMinute' => 100,
