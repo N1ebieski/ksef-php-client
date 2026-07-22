@@ -88,6 +88,16 @@ jobs:
         if: matrix.php != '8.1'
         run: composer update --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Debug tmp
+        run: |
+          whoami
+          id
+          php -r 'echo sys_get_temp_dir(), PHP_EOL;'
+          ls -ld /tmp
+          mkdir -pv /tmp/valinor-cache
+          ls -ld /tmp/valinor-cache
+          touch /tmp/valinor-cache/test
+
       - name: Run CS Fixer
         if: matrix.php == '8.1'
         run: ./vendor/bin/php-cs-fixer fix --dry-run --allow-unsupported-php-version=yes
