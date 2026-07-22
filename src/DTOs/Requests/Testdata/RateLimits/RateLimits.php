@@ -20,6 +20,7 @@ final class RateLimits extends AbstractDTO
         public readonly Limits $invoiceExport,
         public readonly Limits $invoiceExportStatus,
         public readonly Limits $invoiceDownload,
+        public readonly Limits $collectiveIdentifier,
         public readonly Limits $other
     ) {
     }

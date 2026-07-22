@@ -23,4 +23,6 @@ enum PersonalPermissionType: string implements EnumInterface
     case EnforcementOperations = 'EnforcementOperations';
 
     case VatUeManage = 'VatUeManage';
+
+    case CollectiveIdentifierManage = 'CollectiveIdentifierManage';
 }

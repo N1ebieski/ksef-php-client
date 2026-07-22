@@ -24,4 +24,6 @@ enum TokenPermissionType: string implements EnumInterface
     case EnforcementOperations = 'EnforcementOperations';
 
     case Introspection = 'Introspection';
+
+    case CollectiveIdentifierManage = 'CollectiveIdentifierManage';
 }

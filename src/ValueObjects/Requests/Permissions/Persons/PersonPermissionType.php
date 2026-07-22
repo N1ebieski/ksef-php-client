@@ -21,4 +21,6 @@ enum PersonPermissionType: string implements EnumInterface
     case SubunitManage = 'SubunitManage';
 
     case EnforcementOperations = 'EnforcementOperations';
+
+    case CollectiveIdentifierManage = 'CollectiveIdentifierManage';
 }
