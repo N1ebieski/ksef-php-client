@@ -24,6 +24,7 @@ final class DataGodzRozpTransportu extends AbstractValueObject implements ValueA
     {
         if ($value instanceof DateTimeInterface === false) {
             $value = new DateTimeImmutable($value, new DateTimeZone('UTC'));
+            $value = $value->setTimezone(new DateTimeZone('UTC'));
         }
 
         Validator::validate($value, [

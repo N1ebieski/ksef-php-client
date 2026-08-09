@@ -22,6 +22,7 @@ final class DateRangeFrom extends AbstractValueObject implements ValueAwareInter
     {
         if ($value instanceof DateTimeInterface === false) {
             $value = new DateTimeImmutable($value, new DateTimeZone('UTC'));
+            $value = $value->setTimezone(new DateTimeZone('UTC'));
         }
 
         Validator::validate($value, [
