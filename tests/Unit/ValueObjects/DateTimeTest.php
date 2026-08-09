@@ -44,3 +44,13 @@ test('ensure that class throws timezone exception for datetime which is not in U
 
     new $classname($datetime);
 })->with('classnameProvider')->throws(RuleValidationException::class, 'Date must be in timezone: UTC, Z.');
+
+test('ensure that class normalizes an explicitly offset string to UTC', function (string $classname): void {
+    /** @var ValueAwareInterface $class */
+    $class = new $classname('2026-08-07T16:43:45.9754372+02:00');
+
+    /** @var DateTimeInterface $classDatetime */
+    $classDatetime = $class->value;
+    expect($classDatetime->getTimezone()->getName())->toBe('UTC');
+    expect($classDatetime->format('Y-m-d\\TH:i:s.u\\Z'))->toBe('2026-08-07T14:43:45.975437Z');
+})->with('classnameProvider');
