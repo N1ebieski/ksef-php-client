@@ -6,6 +6,7 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaZaliczkowaZDodatkowymNabywcaFixture;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\NrWiersza;
 
 test('fromXml handles single FaWiersz element (not wrapped in array by SimpleXML)', function (): void {
     $fixture = new FakturaSprzedazyTowaruFixture();
@@ -115,4 +116,84 @@ test('fromXml handles absent optional array fields as Optional', function (): vo
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->podmiot3)->toBeInstanceOf(Optional::class);
+});
+
+test('fromXml handles single DodatkowyOpis element with NrWiersza', function (): void {
+    $fixture = new FakturaSprzedazyTowaruFixture();
+    $fixture->data['fa']['dodatkowyOpis'] = [[
+        'nrWiersza' => 1,
+        'klucz' => 'Pierwszy klucz',
+        'wartosc' => 'Pierwsza wartość',
+    ]];
+
+    $faktura = Faktura::from($fixture->data);
+
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    $dodatkowyOpis = $deserialized->fa->dodatkowyOpis;
+    expect($dodatkowyOpis)->not->toBeInstanceOf(Optional::class);
+    expect($dodatkowyOpis)->toHaveCount(1);
+
+    $nrWiersza = $dodatkowyOpis[0]->nrWiersza;
+    expect($nrWiersza)->toBeInstanceOf(NrWiersza::class);
+    if ($nrWiersza instanceof NrWiersza) {
+        expect($nrWiersza->value)->toBe(1);
+    }
+
+    //@phpstan-ignore-next-line cast.string
+    expect((string) $dodatkowyOpis[0]->klucz)->toBe($fixture->data['fa']['dodatkowyOpis'][0]['klucz']);
+    //@phpstan-ignore-next-line cast.string
+    expect((string) $dodatkowyOpis[0]->wartosc)->toBe($fixture->data['fa']['dodatkowyOpis'][0]['wartosc']);
+});
+
+test('fromXml handles multiple DodatkowyOpis elements with NrWiersza', function (): void {
+    $fixture = new FakturaSprzedazyTowaruFixture();
+    $fixture->data['fa']['dodatkowyOpis'] = [
+        [
+            'nrWiersza' => 1,
+            'klucz' => 'Pierwszy klucz',
+            'wartosc' => 'Pierwsza wartość',
+        ],
+        [
+            'nrWiersza' => 2,
+            'klucz' => 'Drugi klucz',
+            'wartosc' => 'Druga wartość',
+        ],
+    ];
+
+    $faktura = Faktura::from($fixture->data);
+
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    $dodatkowyOpis = $deserialized->fa->dodatkowyOpis;
+    expect($dodatkowyOpis)->not->toBeInstanceOf(Optional::class);
+    expect($dodatkowyOpis)->toHaveCount(2);
+
+    $nrWiersza = $dodatkowyOpis[0]->nrWiersza;
+    expect($nrWiersza)->toBeInstanceOf(NrWiersza::class);
+    if ($nrWiersza instanceof NrWiersza) {
+        expect($nrWiersza->value)->toBe(1);
+    }
+
+    $nrWiersza1 = $dodatkowyOpis[1]->nrWiersza;
+    expect($nrWiersza1)->toBeInstanceOf(NrWiersza::class);
+    if ($nrWiersza1 instanceof NrWiersza) {
+        expect($nrWiersza1->value)->toBe(2);
+    }
+});
+
+test('fromXml preserves an absent DodatkowyOpis NrWiersza as Optional', function (): void {
+    $fixture = new FakturaSprzedazyTowaruFixture();
+    $fixture->data['fa']['dodatkowyOpis'] = [[
+        'klucz' => 'Klucz bez numeru wiersza',
+        'wartosc' => 'Wartość bez numeru wiersza',
+    ]];
+
+    $faktura = Faktura::from($fixture->data);
+
+    $deserialized = Faktura::fromXml($faktura->toXml());
+
+    expect($deserialized->fa->dodatkowyOpis)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->dodatkowyOpis)->toHaveCount(1);
+    expect($deserialized->fa->dodatkowyOpis[0]->nrWiersza)->toBeInstanceOf(Optional::class);
 });

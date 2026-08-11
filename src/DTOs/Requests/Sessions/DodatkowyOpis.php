@@ -58,6 +58,10 @@ final class DodatkowyOpis extends AbstractDTO implements DomSerializableInterfac
 
     public static function normalizeXmlArray(array $data): array
     {
+        if (isset($data['NrWiersza'])) {
+            $data['NrWiersza'] = (int) $data['NrWiersza']; //@phpstan-ignore-line cast.int
+        }
+
         return Arr::only($data, ['Klucz', 'Wartosc', 'NrWiersza']);
     }
 }
