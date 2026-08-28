@@ -58,7 +58,7 @@ dataset('rules', [
     'maxRangeRule' => [
         'maxRangeRule',
         new DateTimeImmutable('2024-01-01 00:00:00'),
-        [new MaxRangeRule(new DateTimeImmutable('2024-03-02 00:00:00'), 2)]
+        [new MaxRangeRule(new DateTimeImmutable('2024-03-12 00:00:00'), 2)]
     ],
     'timezoneRule' => [
         'timezoneRule',

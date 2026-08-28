@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Requests\Certificates\Enrollments\Send;
 
-use DateTime;
+use DateTimeInterface;
 use N1ebieski\KSEFClient\Contracts\BodyInterface;
 use N1ebieski\KSEFClient\Requests\AbstractRequest;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Certificates\CertificateName;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Certificates\CertificateType;
 use N1ebieski\KSEFClient\Support\Concerns\HasToBody;
 use N1ebieski\KSEFClient\Support\Optional;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Certificates\CertificateName;
+use N1ebieski\KSEFClient\ValueObjects\Requests\Certificates\CertificateType;
 
 final class SendRequest extends AbstractRequest implements BodyInterface
 {
@@ -20,7 +20,7 @@ final class SendRequest extends AbstractRequest implements BodyInterface
         public readonly CertificateName $certificateName,
         public readonly CertificateType $certificateType,
         public readonly string $csr,
-        public readonly Optional | DateTime | null $validFrom = new Optional()
+        public readonly Optional | DateTimeInterface $validFrom = new Optional()
     ) {
     }
 }

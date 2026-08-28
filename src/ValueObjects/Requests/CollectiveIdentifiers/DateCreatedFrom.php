@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace N1ebieski\KSEFClient\ValueObjects\Requests\Invoices;
+namespace N1ebieski\KSEFClient\ValueObjects\Requests\CollectiveIdentifiers;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use N1ebieski\KSEFClient\Contracts\FromInterface;
 use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 use Stringable;
 
-final class DateRangeTo extends AbstractValueObject implements ValueAwareInterface, Stringable, OriginalInterface
+final class DateCreatedFrom extends AbstractValueObject implements FromInterface, OriginalInterface, ValueAwareInterface, Stringable
 {
     public readonly DateTimeInterface $value;
 

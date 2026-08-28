@@ -58,4 +58,11 @@ abstract class AbstractFakturaFixture extends BaseAbstractFixture
 
         return $this;
     }
+
+    public function withoutPayment(): self
+    {
+        unset($this->data['fa']['platnosc']);
+
+        return $this;
+    }
 }

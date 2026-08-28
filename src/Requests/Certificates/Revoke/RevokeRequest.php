@@ -14,7 +14,7 @@ final class RevokeRequest extends AbstractRequest implements BodyInterface
 {
     public function __construct(
         public readonly CertificateSerialNumber $certificateSerialNumber,
-        public readonly Optional | RevocationReason | null $revocationReason = new Optional()
+        public readonly Optional | RevocationReason $revocationReason = new Optional()
     ) {
     }
 

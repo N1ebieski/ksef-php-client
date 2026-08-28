@@ -8,6 +8,7 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Auth\AuthResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Certificates\CertificatesResourceInterface;
+use N1ebieski\KSEFClient\Contracts\Resources\CollectiveIdentifiers\CollectiveIdentifiersResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Invoices\InvoicesResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Latarnia\LatarniaResourceInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\Limits\LimitsResourceInterface;
@@ -47,6 +48,8 @@ interface ClientResourceInterface
     public function sessions(): SessionsResourceInterface;
 
     public function invoices(): InvoicesResourceInterface;
+
+    public function collectiveIdentifiers(): CollectiveIdentifiersResourceInterface;
 
     public function permissions(): PermissionsResourceInterface;
 

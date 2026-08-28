@@ -12,7 +12,7 @@ final class MaxRangeRule extends AbstractRule
 {
     public function __construct(
         private readonly DateTimeInterface $end,
-        private readonly int $months
+        private readonly int $days
     ) {
     }
 
@@ -28,13 +28,13 @@ final class MaxRangeRule extends AbstractRule
             );
         }
 
-        $limit = $start->modify(sprintf('+%d months', $this->months));
+        $limit = $start->modify(sprintf('+%d days', $this->days));
 
         if ($end >= $limit) {
             $this->throwRuleValidationException(
-                'Date range must be less than %d months.',
+                'Date range must not exceed %d days.',
                 $attribute,
-                $this->months
+                $this->days
             );
         }
     }

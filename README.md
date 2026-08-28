@@ -128,12 +128,19 @@ Main features:
         - [Tokens List](#tokens-list)
         - [Tokens Status](#tokens-status)
         - [Tokens Revoke](#tokens-revoke)
+    - [Collective Identifiers](#collective-identifiers)
+        - [Collective Identifiers Create](#collective-identifiers-create)
+        - [Collective Identifiers Invoices](#collective-identifiers-invoices)
+        - [Collective Identifiers List](#collective-identifiers-list)
+        - [Collective Identifiers Query](#collective-identifiers-query)
     - [Peppol](#peppol)
         - [Peppol Query](#peppol-query)
     - [Testdata](#testdata)
         - [Testdata Attachment](#testdata-attachment)
-          - [Testdata Attachment Approve](#testdata-attachment-approve)
-          - [TestData Attachment Revoke](#testdata-attachment-revoke)
+            - [Testdata Attachment Approve](#testdata-attachment-approve)
+            - [TestData Attachment Revoke](#testdata-attachment-revoke)
+        - [Testdata Certificates](#testdata-certificates)
+                - [Testdata Certificates Update](#testdata-certificates-update)
         - [Testdata Person](#testdata-person)
             - [Testdata Person Create](#testdata-person-create)
             - [Testdata Person Remove](#testdata-person-remove)
@@ -1426,6 +1433,72 @@ $response = $client->tokens()->revoke(
 ```
 </details>
 
+### Collective Identifiers
+
+<details>
+    <summary>
+        <h4>Collective Identifiers Create</h4>
+    </summary>
+
+https://api-test.ksef.mf.gov.pl/docs/v2/index.html#tag/Identyfikatory-zbiorcze/paths/~1collective-identifiers/post
+
+```php
+use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Create\CreateRequest;
+
+$response = $client->collectiveIdentifiers()->create(
+    new CreateRequest(...)
+)->object();
+```
+</details>
+
+<details>
+    <summary>
+        <h4>Collective Identifiers Invoices</h4>
+    </summary>
+
+https://api-test.ksef.mf.gov.pl/docs/v2/index.html#tag/Identyfikatory-zbiorcze/paths/~1collective-identifiers~1invoices/post
+
+```php
+use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Invoices\InvoicesRequest;
+
+$response = $client->collectiveIdentifiers()->invoices(
+    new InvoicesRequest(...)
+)->object();
+```
+</details>
+
+<details>
+    <summary>
+        <h4>Collective Identifiers List</h4>
+    </summary>
+
+https://api-test.ksef.mf.gov.pl/docs/v2/index.html#tag/Identyfikatory-zbiorcze/paths/~1collective-identifiers~1ksef~1%7BksefNumber%7D/get
+
+```php
+use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\List\ListRequest;
+
+$response = $client->collectiveIdentifiers()->list(
+    new ListRequest(...)
+)->object();
+```
+</details>
+
+<details>
+    <summary>
+        <h4>Collective Identifiers Query</h4>
+    </summary>
+
+https://api-test.ksef.mf.gov.pl/docs/v2/index.html#tag/Identyfikatory-zbiorcze/paths/~1collective-identifiers~1query/post
+
+```php
+use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Query\QueryRequest;
+
+$response = $client->collectiveIdentifiers()->query(
+    new QueryRequest(...)
+)->object();
+```
+</details>
+
 ### Peppol
 
 <details>
@@ -1462,9 +1535,7 @@ $response = $client->testdata()->attachment()->approve(
     new ApproveRequest(...)
 )->status();
 ```
-
 </details>
-
 
 <details>
     <summary>
@@ -1480,7 +1551,24 @@ $response = $client->testdata()->attachment()->revoke(
     new RevokeRequest(...)
 )->status();
 ```
+</details>
 
+#### Testdata Certificates
+
+<details>
+    <summary>
+        <h5>Testdata Certificates Update</h5>
+    </summary>
+
+https://api-test.ksef.mf.gov.pl/docs/v2/index.html#tag/Certyfikaty/paths/~1testdata~1certificates~1%7BserialNumber%7D/put
+
+```php
+use N1ebieski\KSEFClient\Requests\Testdata\Certificates\Update\UpdateRequest;
+
+$response = $client->testdata()->certificates()->update(
+    new UpdateRequest(...)
+)->status();
+```
 </details>
 
 #### Testdata Person
