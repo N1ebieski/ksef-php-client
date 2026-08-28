@@ -5,8 +5,6 @@ declare(strict_types=1);
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Exceptions\RuleValidationException;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Invoices\DateRangeFrom;
-use N1ebieski\KSEFClient\ValueObjects\Requests\Invoices\DateRangeTo;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzRozpTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataGodzZakTransportu;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\DataWytworzeniaFa;
@@ -20,8 +18,6 @@ dataset('classnameProvider', fn (): array => [
     [DataWytworzeniaFa::class],
     [DataGodzRozpTransportu::class],
     [DataGodzZakTransportu::class],
-    [DateRangeFrom::class],
-    [DateRangeTo::class],
 ]);
 
 test('ensure that class has a UTC timezone for string', function (string $classname): void {

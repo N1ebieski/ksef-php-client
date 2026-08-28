@@ -6,12 +6,9 @@ namespace N1ebieski\KSEFClient\ValueObjects\Requests\Invoices;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use DateTimeZone;
 use N1ebieski\KSEFClient\Contracts\OriginalInterface;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
-use N1ebieski\KSEFClient\Validator\Rules\Date\TimezoneRule;
-use N1ebieski\KSEFClient\Validator\Validator;
 use Stringable;
 
 final class DateRangeFrom extends AbstractValueObject implements ValueAwareInterface, Stringable, OriginalInterface
@@ -21,13 +18,8 @@ final class DateRangeFrom extends AbstractValueObject implements ValueAwareInter
     public function __construct(DateTimeInterface | string $value)
     {
         if ($value instanceof DateTimeInterface === false) {
-            $value = new DateTimeImmutable($value, new DateTimeZone('UTC'));
-            $value = $value->setTimezone(new DateTimeZone('UTC'));
+            $value = new DateTimeImmutable($value);
         }
-
-        Validator::validate($value, [
-            new TimezoneRule(['UTC', 'Z']),
-        ]);
 
         $this->value = $value;
     }

@@ -13,6 +13,7 @@ use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface;
 use N1ebieski\KSEFClient\Contracts\Resources\ClientResourceInterface;
 use N1ebieski\KSEFClient\DTOs\Config;
+use N1ebieski\KSEFClient\Resources\CollectiveIdentifiers\CollectiveIdentifiersResource;
 use N1ebieski\KSEFClient\Requests\Auth\Token\Refresh\RefreshHandler;
 use N1ebieski\KSEFClient\Requests\RateLimits\RateLimitsHandler;
 use N1ebieski\KSEFClient\Resources\AbstractResource;
@@ -181,6 +182,17 @@ final class ClientResource extends AbstractResource implements ClientResourceInt
             $this->refreshTokenIfExpired();
 
             return new InvoicesResource($this->client, $this->config, $this->exceptionHandler, $this->valinorCache);
+        } catch (Throwable $throwable) {
+            throw $this->exceptionHandler->handle($throwable);
+        }
+    }
+
+    public function collectiveIdentifiers(): CollectiveIdentifiersResource
+    {
+        try {
+            $this->refreshTokenIfExpired();
+
+            return new CollectiveIdentifiersResource($this->client, $this->exceptionHandler, $this->valinorCache);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

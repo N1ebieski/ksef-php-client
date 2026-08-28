@@ -34,7 +34,7 @@ final class DateRange extends AbstractDTO
                         'now',
                         $from->value->getTimezone()
                     ),
-                    3
+                    100
                 )
             ],
         ]);
