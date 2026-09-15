@@ -16,7 +16,10 @@ trait HasFromArray
      */
     public static function from(array $data, ?Cache $cache = null): static
     {
-        $mapper = new MapperBuilder();
+        $mapper = (new MapperBuilder())
+            ->allowSuperfluousKeys()
+            ->infer('string', static fn (mixed $v): string => is_array($v) && empty($v) ? '' : (string) $v)
+            ->infer('?string', static fn (mixed $v): ?string => is_array($v) && empty($v) ? null : (is_string($v) ? $v : null));
 
         if ($cache instanceof Cache) {
             $mapper = $mapper->withCache($cache);
