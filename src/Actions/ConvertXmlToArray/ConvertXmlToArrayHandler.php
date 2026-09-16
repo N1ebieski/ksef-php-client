@@ -55,9 +55,8 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 throw new RuntimeException('Failed to decode JSON to array');
             }
 
-            $mappedElement = Arr::mapRecursive($decodedXml, $this->mapEmptyXmlElements(...));
-
-            return $mappedElement;
+            /** @var array<string, mixed> */
+            return Arr::mapRecursive($decodedXml, $this->mapEmptyXmlElements(...));
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($useInternalErrors);
