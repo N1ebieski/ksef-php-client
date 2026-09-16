@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ba056772cd4cd56c4b266db484929af",
+    "content-hash": "fae0eb6fc3fc348db7b6a47673e6e947",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -339,24 +339,26 @@
         },
         {
             "name": "krowinski/bcmath-extended",
-            "version": "6.0.1",
+            "version": "7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/krowinski/bcmath-extended.git",
-                "reference": "140d71730689f7a80e1ba9270f20a3f7d9731680"
+                "reference": "e961cb1a7b15b02cf00bbf91ec1a13b48253cfaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/krowinski/bcmath-extended/zipball/140d71730689f7a80e1ba9270f20a3f7d9731680",
-                "reference": "140d71730689f7a80e1ba9270f20a3f7d9731680",
+                "url": "https://api.github.com/repos/krowinski/bcmath-extended/zipball/e961cb1a7b15b02cf00bbf91ec1a13b48253cfaf",
+                "reference": "e961cb1a7b15b02cf00bbf91ec1a13b48253cfaf",
                 "shasum": ""
             },
             "require": {
                 "ext-bcmath": "*",
-                "php": "^7.1|^8.0"
+                "php": "^7.4|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.5|^8.0|^9.0"
+                "phpstan/phpstan": "^1.9",
+                "phpunit/phpunit": "^9.0",
+                "symplify/easy-coding-standard": "^11.1"
             },
             "type": "library",
             "autoload": {
@@ -393,9 +395,9 @@
             ],
             "support": {
                 "issues": "https://github.com/krowinski/bcmath-extended/issues",
-                "source": "https://github.com/krowinski/bcmath-extended/tree/6.0.1"
+                "source": "https://github.com/krowinski/bcmath-extended/tree/7.0.0"
             },
-            "time": "2022-02-09T15:55:36+00:00"
+            "time": "2023-01-25T21:31:14+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

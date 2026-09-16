@@ -42,7 +42,7 @@ final class GenerateQRCodesHandler extends AbstractHandler
 
         $invoiceLink = implode('/', $code1Parts);
 
-        $raw1 = $this->qrCodeBuilder->data($invoiceLink);
+        $raw1 = (clone $this->qrCodeBuilder)->data($invoiceLink);
 
         if ($action->captions) {
             $raw1 = $raw1->labelText($action->ksefNumber->value ?? 'OFFLINE');
@@ -88,7 +88,7 @@ final class GenerateQRCodesHandler extends AbstractHandler
 
             $certificateLink .= "/{$signatureBase64}";
 
-            $raw2 = $this->qrCodeBuilder->data($certificateLink);
+            $raw2 = (clone $this->qrCodeBuilder)->data($certificateLink);
 
             if ($action->captions) {
                 $raw2 = $raw2->labelText('CERTYFIKAT');
