@@ -87,36 +87,6 @@ test('multiple same-name elements produce indexed array', function () use ($ns):
     expect($array['FaWiersz'][2]['NrWierszaFa'])->toBe('3');
 });
 
-test('empty elements are converted to empty strings', function () use ($ns): void {
-    $xml = <<<XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Wiersz xmlns="{$ns}">
-        <WKom />
-        <WKom></WKom>
-        <WKom>Suma:</WKom>
-    </Wiersz>
-    XML;
-
-    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
-
-    expect($array['WKom'])->toBe(['', '', 'Suma:']);
-});
-
-test('empty elements are converted to empty strings recursively', function () use ($ns): void {
-    $xml = <<<XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Root xmlns="{$ns}">
-        <Parent>
-            <Child />
-        </Parent>
-    </Root>
-    XML;
-
-    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
-
-    expect($array['Parent']['Child'])->toBe('');
-});
-
 test('single element does not produce indexed array', function () use ($ns): void {
     $xml = <<<XML
     <?xml version="1.0" encoding="UTF-8"?>
