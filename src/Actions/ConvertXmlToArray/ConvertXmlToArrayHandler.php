@@ -8,7 +8,6 @@ use LibXMLError;
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlAction;
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
-use N1ebieski\KSEFClient\Support\Arr;
 use RuntimeException;
 use SimpleXMLElement;
 
@@ -55,24 +54,11 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 throw new RuntimeException('Failed to decode JSON to array');
             }
 
-            /** @var array<string, mixed> */
-            return Arr::mapRecursive($decodedXml, $this->mapEmptyXmlElements(...));
+            return $decodedXml;
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($useInternalErrors);
         }
     }
 
-    private function mapEmptyXmlElements(mixed $value, string|int $key): mixed
-    {
-        if ( ! is_array($value)) {
-            return $value;
-        }
-
-        if (is_int($key) && $value === []) {
-            return '';
-        }
-
-        return $value;
-    }
 }

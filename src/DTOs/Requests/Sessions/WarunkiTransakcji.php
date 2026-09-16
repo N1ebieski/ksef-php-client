@@ -159,7 +159,7 @@ final class WarunkiTransakcji extends AbstractDTO implements DomSerializableInte
         };
 
         $data['NrPartiiTowaru'] = match (true) {
-            isset($data['NrPartiiTowaru']) => Arr::ensureList($data['NrPartiiTowaru']),
+            isset($data['NrPartiiTowaru']) => Arr::ensureListOfStrings($data['NrPartiiTowaru']),
             default => new Optional(),
         };
 
