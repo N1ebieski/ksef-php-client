@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "^8.1.0",
+        "php": "^8.4.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -38,7 +38,7 @@
         "symfony/polyfill-php82": "^1.33"
     },
     "require-dev": {
-        "endroid/qr-code": "^5.1",
+        "endroid/qr-code": "^6.1",
         "vlucas/phpdotenv": "^5.6",
         "guzzlehttp/guzzle": "^7.9.2",
         "guzzlehttp/psr7": "^2.7.0",
@@ -53,7 +53,7 @@
         "symfony/cache": "^6.4"
     },
     "suggest": {
-        "endroid/qr-code": "^5.1 - Enables QR code generation through EndroidV5QRCodeGenerator",
+        "endroid/qr-code": "^6.1 - Enables QR code generation through EndroidV6QRCodeGenerator",
         "n1ebieski/ksef-pdf-generator": "Fork the official MF KSeF PDF Generator with CLI generation support and offline invoices/transaction confirmations"
     },
     "autoload": {

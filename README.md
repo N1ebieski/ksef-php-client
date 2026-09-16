@@ -184,7 +184,7 @@ Main features:
 
 ## Get Started
 
-> **Requires [PHP 8.1+](https://www.php.net/releases/)**
+> **Requires [PHP 8.4+](https://www.php.net/releases/)**
 
 First, install `ksef-php-client` via the [Composer](https://getcomposer.org/) package manager:
 
@@ -198,22 +198,22 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
-QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `5.x` ships with the client:
+QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
 
 ```bash
-composer require endroid/qr-code:^5.1
+composer require endroid/qr-code:^6.1
 ```
 
 ```php
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV6QRCodeGenerator;
 
-$qrCodeGenerator = new EndroidV5QRCodeGenerator(new QrCodeBuilder());
+$qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());
 ```
 
 The builder is used exactly as you configured it, and the reported mime type follows the writer it holds, so an `SvgWriter` ends up as `image/svg+xml` in `QRCode::$mimeType` and in the data URI returned by `QRCode::__toString()`. Note that the default `PngWriter` of `endroid/qr-code` requires the `gd` extension.
 
-Any other library works too - `endroid/qr-code` `6.x`, which replaced the fluent builder with named arguments on `build()`, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
+Any other library works too - `endroid/qr-code` `5.x`, which used a fluent builder instead of named arguments, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
 
 ```php
 namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
@@ -1985,7 +1985,7 @@ use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -2054,7 +2054,7 @@ $upo = $client->sessions()->invoices()->upo([
 ])->body();
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
+    qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 
@@ -2231,7 +2231,7 @@ use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -2260,7 +2260,7 @@ $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
 $faktura = Faktura::from($fakturaFixture->data);
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
+    qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 

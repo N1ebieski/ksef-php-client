@@ -14,12 +14,8 @@ return \Rector\Config\RectorConfig::configure()
     ->withSkip([
         \Rector\Carbon\Rector\MethodCall\DateTimeMethodCallToCarbonRector::class,
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
-        \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
         \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
         \Rector\Carbon\Rector\New_\DateTimeInstanceToCarbonRector::class,
-        \Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector::class => [
-            __DIR__ . '/src/Actions/ConvertEcdsaDerToRaw/ConvertEcdsaDerToRawHandler.php'
-        ],
         \Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector::class => [
             __DIR__ . '/src/Validator/Rules/Number/NipRule.php'
         ],
@@ -47,5 +43,4 @@ return \Rector\Config\RectorConfig::configure()
         carbon: true,
         phpunitCodeQuality: true
     )
-    ->withDowngradeSets(php81: true)
     ->withPhpSets(php81: true);
