@@ -47,8 +47,8 @@
         "monolog/monolog": "^3.9",
         "dg/bypass-finals": "^1.9",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^2.36 || ^3.0 || ^4.0",
-        "pestphp/pest-plugin-drift": "^2.5 || ^3.0 || ^4.0",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-drift": "^5.0",
         "friendsofphp/php-cs-fixer": "^3.88",
         "symfony/cache": "^6.4"
     },

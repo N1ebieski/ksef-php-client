@@ -28,7 +28,7 @@ final class AddNamespaceToXmlHandler extends AbstractHandler
 
             if ($loaded === false) {
                 $errors = array_map(
-                    static fn (LibXMLError $error): string => mb_trim($error->message), //@phpstan-ignore-line return.type
+                    static fn (LibXMLError $error): string => mb_trim($error->message),
                     libxml_get_errors()
                 );
 
