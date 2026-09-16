@@ -26,7 +26,7 @@ final class Arr
                 $value = self::mapRecursive($value, $closure);
             }
 
-            $mapped[$key] = $closure($value, $key);
+            $mapped[$key] = $closure($value);
         }
 
         return $mapped;

@@ -45,8 +45,10 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 );
             }
 
+            $mappedElement = Arr::mapRecursive((array) $element, $this->mapEmptyXmlElements(...));
+
             /** @var non-empty-string $encodedXml */
-            $encodedXml = json_encode($element, JSON_THROW_ON_ERROR);
+            $encodedXml = json_encode($mappedElement, JSON_THROW_ON_ERROR);
 
             /** @var array<string, mixed>|null $decodedXml */
             $decodedXml = json_decode($encodedXml, true, flags: JSON_THROW_ON_ERROR);
@@ -55,24 +57,23 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
                 throw new RuntimeException('Failed to decode JSON to array');
             }
 
-            /** @var array<string, mixed> */
-            return Arr::mapRecursive($decodedXml, $this->mapEmptyXmlElements(...));
+            return $decodedXml;
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($useInternalErrors);
         }
     }
 
-    private function mapEmptyXmlElements(mixed $value, string|int $key): mixed
+    private function mapEmptyXmlElements(mixed $value): mixed
     {
-        if ( ! is_array($value)) {
+        if ( ! $value instanceof SimpleXMLElement) {
             return $value;
         }
 
-        if (is_int($key) && $value === []) {
+        if ($value->count() === 0 && (string) $value === '') {
             return '';
         }
 
-        return $value;
+        return Arr::mapRecursive((array) $value, $this->mapEmptyXmlElements(...));
     }
 }
