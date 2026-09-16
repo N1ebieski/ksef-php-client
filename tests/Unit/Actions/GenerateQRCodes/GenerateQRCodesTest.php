@@ -74,3 +74,31 @@ test('generate qr codes by invoice hash', function (): void {
 
     expect($qrCodes->code2?->raw)->toBeString();
 });
+
+test('ensure that handler does not leak the caption between subsequent calls', function (): void {
+    $generateQRCodesHandler = new GenerateQRCodesHandler(
+        qrCodeBuilder: (new QrCodeBuilder())->roundBlockSizeMode(RoundBlockSizeMode::Enlarge),
+        convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
+    );
+
+    $action = fn (bool $captions): GenerateQRCodesByInvoiceHashAction => new GenerateQRCodesByInvoiceHashAction(
+        nip: NIP::from('6669669234'),
+        invoiceCreatedAt: new DateTimeImmutable('2026-09-16'),
+        invoiceHash: hash('sha256', 'faktura', true),
+        mode: Mode::Test,
+        captions: $captions
+    );
+
+    $withCaptions = getimagesizefromstring($generateQRCodesHandler->handle($action(true))->code1->raw);
+    $withoutCaptions = getimagesizefromstring($generateQRCodesHandler->handle($action(false))->code1->raw);
+
+    if ($withCaptions === false || $withoutCaptions === false) {
+        throw new RuntimeException('Unable to read the image size');
+    }
+
+    // The caption is rendered below the code, so it makes the image higher than wider
+    expect($withCaptions[1])->toBeGreaterThan($withCaptions[0]);
+
+    // The same builder without captions must not reuse the caption from the previous call
+    expect($withoutCaptions[1])->toBe($withoutCaptions[0]);
+});
