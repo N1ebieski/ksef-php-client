@@ -128,4 +128,15 @@ final class Arr
 
         return array_is_list($data) ? $data : [$data];
     }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public static function ensureListOfStrings(mixed $data): array
+    {
+        return array_map(
+            fn (mixed $value): mixed => $value === [] ? '' : $value,
+            self::ensureList($data)
+        );
+    }
 }
