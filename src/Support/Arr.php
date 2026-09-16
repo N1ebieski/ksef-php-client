@@ -14,6 +14,25 @@ use N1ebieski\KSEFClient\ValueObjects\Support\KeyType;
 final class Arr
 {
     /**
+     * @param array<string|int, mixed> $array
+     * @return array<string|int, mixed>
+     */
+    public static function mapRecursive(array $array, Closure $closure): array
+    {
+        $mapped = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = self::mapRecursive($value, $closure);
+            }
+
+            $mapped[$key] = $closure($value);
+        }
+
+        return $mapped;
+    }
+
+    /**
      * @param array<string, mixed> $array
      * @return array<string, mixed> $array
      */
