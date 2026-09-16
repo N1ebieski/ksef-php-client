@@ -35,10 +35,10 @@
         "krowinski/bcmath-extended": "^6.0 || ^7.0 || ^8.0",
         "psr-discovery/log-implementations": "^1.0",
         "phpseclib/phpseclib": "^3.0.52",
-        "endroid/qr-code": "^5.1",
         "symfony/polyfill-php82": "^1.33"
     },
     "require-dev": {
+        "endroid/qr-code": "^5.1",
         "vlucas/phpdotenv": "^5.6",
         "guzzlehttp/guzzle": "^7.9.2",
         "guzzlehttp/psr7": "^2.7.0",
@@ -53,6 +53,7 @@
         "symfony/cache": "^6.4"
     },
     "suggest": {
+        "endroid/qr-code": "^5.1 - Enables QR code generation through EndroidV5QRCodeGenerator",
         "n1ebieski/ksef-pdf-generator": "Fork the official MF KSeF PDF Generator with CLI generation support and offline invoices/transaction confirmations"
     },
     "autoload": {

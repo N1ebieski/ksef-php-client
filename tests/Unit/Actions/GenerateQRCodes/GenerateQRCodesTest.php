@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesByInvoiceHashAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -37,9 +36,7 @@ test('generate qr codes by invoice hash', function (): void {
     $faktura = Faktura::from($fakturaFixture->data);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
@@ -77,7 +74,7 @@ test('generate qr codes by invoice hash', function (): void {
 
 test('ensure that handler does not leak the caption between subsequent calls', function (): void {
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())->roundBlockSizeMode(RoundBlockSizeMode::Enlarge),
+        qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 

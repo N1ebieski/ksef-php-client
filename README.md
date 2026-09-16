@@ -198,6 +198,42 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
+QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `5.x` ships with the client:
+
+```bash
+composer require endroid/qr-code:^5.1
+```
+
+```php
+use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
+
+$qrCodeGenerator = new EndroidV5QRCodeGenerator(new QrCodeBuilder());
+```
+
+The builder is used exactly as you configured it, and the reported mime type follows the writer it holds, so an `SvgWriter` ends up as `image/svg+xml` in `QRCode::$mimeType` and in the data URI returned by `QRCode::__toString()`. Note that the default `PngWriter` of `endroid/qr-code` requires the `gd` extension.
+
+Any other library works too - `endroid/qr-code` `6.x`, which replaced the fluent builder with named arguments on `build()`, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
+
+```php
+namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
+
+use N1ebieski\KSEFClient\ValueObjects\QRCodeImage;
+
+interface QRCodeGeneratorInterface
+{
+    public function generate(string $data, ?string $label = null): QRCodeImage;
+}
+```
+
+`QRCodeImage` takes the raw image contents and its mime type, which defaults to `image/png`:
+
+```php
+return new QRCodeImage($raw, 'image/svg+xml');
+```
+
+Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
+
 ### Client configuration
 
 ```php
@@ -1946,11 +1982,10 @@ file_put_contents(Utility::basePath('config/certificates/ksef-certificate.p12'),
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -2019,9 +2054,7 @@ $upo = $client->sessions()->invoices()->upo([
 ])->body();
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeBuilder: (new QrCodeBuilder())
-        ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-        ->labelFont(new OpenSans(size: 12)),
+    qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 
@@ -2195,11 +2228,10 @@ $upo = file_get_contents($statusResponse->upo->pages[0]->downloadUrl);
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -2228,9 +2260,7 @@ $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
 $faktura = Faktura::from($fakturaFixture->data);
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeBuilder: (new QrCodeBuilder())
-        ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-        ->labelFont(new OpenSans(size: 12)),
+    qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 

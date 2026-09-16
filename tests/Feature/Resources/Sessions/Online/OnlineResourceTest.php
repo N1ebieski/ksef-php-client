@@ -1,8 +1,6 @@
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Action;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Handler;
 use N1ebieski\KSEFClient\Actions\ConvertDerToPem\ConvertDerToPemAction;
@@ -12,6 +10,7 @@ use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerAction;
 use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\DN;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
@@ -96,9 +95,7 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
     expect($statusResponse->ksefNumber)->toBeString();
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
@@ -204,9 +201,7 @@ test('create an offline invoice and send it', function (PrivateKeyType $privateK
     $faktura = Faktura::from($fakturaFixture->data);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 

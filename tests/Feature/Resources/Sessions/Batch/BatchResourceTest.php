@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Action;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Handler;
 use N1ebieski\KSEFClient\Actions\ConvertDerToPem\ConvertDerToPemAction;
@@ -14,6 +12,7 @@ use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerAction;
 use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV5QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\DN;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -186,9 +185,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
     $faktury = array_map(fn (FakturaSprzedazyTowaruFixture $faktura): Faktura => Faktura::from($faktura->data), $fakturyFixtures);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV5QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
