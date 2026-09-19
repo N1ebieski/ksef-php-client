@@ -30,8 +30,8 @@ test('ensure that generator renders the label only when it is given', function (
 test('ensure that generator reports the mime type of the configured writer', function (): void {
     $link = 'ksef-test.mf.gov.pl/client-app/invoice/6669669234/16-09-2026/abcDEF123';
 
-    $png = (new EndroidV6QRCodeGenerator(new QrCodeBuilder()))->generate($link);
-    $svg = (new EndroidV6QRCodeGenerator(new QrCodeBuilder(writer: new SvgWriter())))->generate($link);
+    $png = new EndroidV6QRCodeGenerator(new QrCodeBuilder())->generate($link);
+    $svg = new EndroidV6QRCodeGenerator(new QrCodeBuilder(writer: new SvgWriter()))->generate($link);
 
     expect($png->mimeType)->toBe('image/png');
     expect($svg->mimeType)->toBe('image/svg+xml');

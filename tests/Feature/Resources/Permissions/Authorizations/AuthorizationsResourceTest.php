@@ -22,7 +22,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Authorizations\Author
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -87,7 +87,7 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
         'formCode' => 'FA_RR (1)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruRolniczegoFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruRolniczegoFixture()
         ->withForNip(Env::string('NIP_1'))
         ->withNip(Env::string('NIP_2'))
         ->withTodayDate()

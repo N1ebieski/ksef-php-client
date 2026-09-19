@@ -27,7 +27,7 @@ test('generate qr codes by invoice hash', function (): void {
         CertificatePath::from(Utility::basePath(Env::string('CERTIFICATE_PATH_1')), Env::string('CERTIFICATE_PASSPHRASE_1'))
     );
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
         ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();

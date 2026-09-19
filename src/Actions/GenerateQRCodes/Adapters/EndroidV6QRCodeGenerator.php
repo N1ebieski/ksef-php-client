@@ -14,9 +14,9 @@ use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
  * The 5.x releases used a fluent builder instead, so they need their own
  * implementation of QRCodeGeneratorInterface.
  */
-final class EndroidV6QRCodeGenerator implements QRCodeGeneratorInterface
+final readonly class EndroidV6QRCodeGenerator implements QRCodeGeneratorInterface
 {
-    public function __construct(private readonly QrCodeBuilderInterface $qrCodeBuilder)
+    public function __construct(private QrCodeBuilderInterface $qrCodeBuilder)
     {
     }
 

@@ -52,7 +52,7 @@ test('send compressed invoices', function (CompressionType $compressionType): vo
 
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withNip(Env::string('NIP_1'))
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
@@ -115,7 +115,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     $csr = CSRFactory::make($dn, $privateKeyType);
 
-    $csrToDer = (new ConvertPemToDerHandler())->handle(new ConvertPemToDerAction($csr->raw));
+    $csrToDer = new ConvertPemToDerHandler()->handle(new ConvertPemToDerAction($csr->raw));
 
     /** @var object{referenceNumber: string} */
     $sendResponse = $client->certificates()->enrollments()->send([
@@ -151,11 +151,11 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     $certificate = base64_decode((string) $retrieveResponse->certificates[0]->certificate);
 
-    $certificateToPem = (new ConvertDerToPemHandler())->handle(
+    $certificateToPem = new ConvertDerToPemHandler()->handle(
         new ConvertDerToPemAction($certificate, 'CERTIFICATE')
     );
 
-    $certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+    $certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
         new ConvertCertificateToPkcs12Action(
             certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
             passphrase: Env::string('KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1')
@@ -173,7 +173,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withNip(Env::string('NIP_1'))
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
