@@ -57,7 +57,7 @@ final class Wiersz extends AbstractDTO implements DomSerializableInterface, XmlN
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['WKom'] = Arr::ensureList($data['WKom']);
+        $data['WKom'] = Arr::ensureListOfStrings($data['WKom']);
 
         return Arr::only($data, ['WKom']);
     }

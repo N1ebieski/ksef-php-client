@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
@@ -20,16 +21,14 @@ use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
 
 test('generate qr codes by invoice hash', function (): void {
-    /** @var array<string, string> $_ENV */
-
     $certificateSerialNumber = CertificateSerialNumber::from('014651EA9FD2407C');
 
     $certificate = CertificateFactory::makeFromCertificatePath(
-        CertificatePath::from(Utility::basePath($_ENV['CERTIFICATE_PATH_1']), $_ENV['CERTIFICATE_PASSPHRASE_1'])
+        CertificatePath::from(Utility::basePath(Env::string('CERTIFICATE_PATH_1')), Env::string('CERTIFICATE_PASSPHRASE_1'))
     );
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
+        ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -40,7 +39,7 @@ test('generate qr codes by invoice hash', function (): void {
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
-    $contextIdentifierGroup = ContextIdentifierGroup::fromIdentifier(NIP::from($_ENV['NIP_1']));
+    $contextIdentifierGroup = ContextIdentifierGroup::fromIdentifier(NIP::from(Env::string('NIP_1')));
 
     $invoiceHash = hash('sha256', $faktura->toXml(), true);
 

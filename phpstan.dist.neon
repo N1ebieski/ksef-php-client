@@ -36,12 +36,3 @@ parameters:
 		-
 			message: '#Parameter \#1 \$exception of method Pest\\Mixins\\Expectation<\(Closure\)\|null>::toThrow\(\) expects \(Closure\(Throwable\):\s+mixed\)\|string\|Throwable, Closure\([A-Za-z0-9_\\]+Exception\): void given#'
 			path: tests/*   
-		-
-			message: '#^(Parameter (\#[0-9]+ )?\$[a-zA-Z]+ of .+ expects [^,]+, mixed given|Cannot call method [a-zA-Z]+\(\) on mixed|Cannot access property \$[a-zA-Z]+ on mixed)\.$#'
-			path: tests/*
-		-
-			message: '#^Access to an undefined property Pest\\Mixins\\Expectation<.+>::\$not\.$#'
-			path: tests/*
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall::[a-zA-Z]+\(\)\.$#'
-			path: tests/*

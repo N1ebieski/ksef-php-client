@@ -8,6 +8,7 @@ use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
@@ -23,7 +24,7 @@ beforeAll(function (): void {
 
     try {
         $client->testdata()->subject()->create([
-            'subjectNip' => $_ENV['NIP_2'],
+            'subjectNip' => Env::string('NIP_2'),
             'subjectType' => SubjectType::EnforcementAuthority,
             'description' => 'Subject who gives InvoiceWrite permission',
         ])->status();
@@ -40,7 +41,7 @@ afterAll(function (): void {
         ->build();
 
     $client->testdata()->subject()->remove([
-        'nip' => $_ENV['NIP_2'],
+        'subjectNip' => Env::string('NIP_2'),
     ]);
 });
 
@@ -58,8 +59,8 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
     ])->object();
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
-        ->withForNip($_ENV['NIP_2'])
+        ->withNip(Env::string('NIP_1'))
+        ->withForNip(Env::string('NIP_2'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -101,9 +102,9 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $client = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2'],
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2'),
         encryptionKey: $encryptionKey
     );
 
