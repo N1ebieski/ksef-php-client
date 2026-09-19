@@ -29,10 +29,7 @@ final class EncryptedKeyFactory extends AbstractFactory
             throw new RuntimeException('Unable to encrypt key');
         }
 
-        /** @var string $encryptedKey */
         $encryptedKey = base64_encode((string) $encryptedKey); //@phpstan-ignore-line
-
-        /** @var string $encryptedIv */
         $encryptedIv = base64_encode($encryptionKey->iv);
 
         return new EncryptedKey($encryptedKey, $encryptedIv, $ksefPublicKey->publicKeyId);
