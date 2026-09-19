@@ -18,10 +18,11 @@ Main features:
 - PDF invoice nad UPO generation
 - QR codes generation
 
-|  KSEF Version  |     Branch     | Release Version |
-|:--------------:|:--------------:|:---------------:|
-|       2.0      |      main      |      ^1.0       |
-|       1.0      |      0.2.x     |      0.2.*      |
+| Release Version | KSEF Version | Branch | PHP Version | Support Policy                      |
+|:---------------:|:------------:|:------:|:-----------:|:-----------------------------------:|
+|      ^2.0       |     2.0      |  main  |  PHP 8.4+   | Bug fixes and all enhancements      |
+|      ^1.0       |     2.0      |  1.x   |  PHP 8.1+   | Bug fixes and critical KSeF changes |
+|      0.2.*      |     1.0      |  0.2.x |      -      |                  -                  |
 
 ## Table of Contents
 
