@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Action;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Handler;
 use N1ebieski\KSEFClient\Actions\ConvertDerToPem\ConvertDerToPemAction;
@@ -14,6 +12,7 @@ use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerAction;
 use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\DN;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -53,7 +52,7 @@ test('send compressed invoices', function (CompressionType $compressionType): vo
 
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withNip(Env::string('NIP_1'))
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
@@ -116,7 +115,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     $csr = CSRFactory::make($dn, $privateKeyType);
 
-    $csrToDer = (new ConvertPemToDerHandler())->handle(new ConvertPemToDerAction($csr->raw));
+    $csrToDer = new ConvertPemToDerHandler()->handle(new ConvertPemToDerAction($csr->raw));
 
     /** @var object{referenceNumber: string} */
     $sendResponse = $client->certificates()->enrollments()->send([
@@ -152,11 +151,11 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     $certificate = base64_decode((string) $retrieveResponse->certificates[0]->certificate);
 
-    $certificateToPem = (new ConvertDerToPemHandler())->handle(
+    $certificateToPem = new ConvertDerToPemHandler()->handle(
         new ConvertDerToPemAction($certificate, 'CERTIFICATE')
     );
 
-    $certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+    $certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
         new ConvertCertificateToPkcs12Action(
             certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
             passphrase: Env::string('KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1')
@@ -174,7 +173,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
 
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withNip(Env::string('NIP_1'))
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
@@ -185,9 +184,7 @@ test('create offline invoices and send them', function (PrivateKeyType $privateK
     $faktury = array_map(fn (FakturaSprzedazyTowaruFixture $faktura): Faktura => Faktura::from($faktura->data), $fakturyFixtures);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 

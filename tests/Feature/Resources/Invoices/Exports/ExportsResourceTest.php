@@ -18,7 +18,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Testdata\Subject\SubjectType;
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -36,7 +36,7 @@ beforeAll(function (): void {
 });
 
 afterAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -58,7 +58,7 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
         ->withNip(Env::string('NIP_1'))
         ->withForNip(Env::string('NIP_2'))
         ->withTodayDate()
@@ -87,7 +87,7 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         try {
             expect($statusResponse->status->code)->toBe(200);
             expect($statusResponse)->toHaveProperty('permanentStorageDate');
-            expect($statusResponse->permanentStorageDate)->not->toBeNull();
+            expect($statusResponse->permanentStorageDate)->not()->toBeNull();
 
             return $statusResponse;
         } catch (Throwable $exception) {
@@ -138,7 +138,7 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         }
     });
 
-    expect($statusResponse->package->parts)->not->toBeEmpty();
+    expect($statusResponse->package->parts)->not()->toBeEmpty();
 
     $decryptDocumentHandler = new DecryptDocumentHandler();
 

@@ -1,11 +1,12 @@
 parameters:
 	level: 10
-	phpVersion: 80100
+	phpVersion: 80400
 	paths:
 		- src/
 		- bin/
 		- tests/
 	universalObjectCratesClasses:
+		- N1ebieski\KSEFClient\Contracts\ContextInterface
 		- N1ebieski\KSEFClient\Contracts\ValueAwareInterface
 		- N1ebieski\KSEFClient\Contracts\HttpClient\ResponseInterface
 		- N1ebieski\KSEFClient\Testing\Fixtures\AbstractFixture

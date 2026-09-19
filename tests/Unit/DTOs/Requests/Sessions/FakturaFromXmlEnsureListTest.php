@@ -26,7 +26,7 @@ test('fromXml handles single FaWiersz element (not wrapped in array by SimpleXML
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->faWiersz)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->fa->faWiersz)->toHaveCount(1);
     expect($deserialized->fa->faWiersz[0]->nrWierszaFa->value)->toBe(1);
 
@@ -41,7 +41,7 @@ test('fromXml handles multiple FaWiersz elements', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->faWiersz)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->fa->faWiersz)->toHaveCount(3);
     expect($deserialized->fa->faWiersz[0]->nrWierszaFa->value)->toBe(1);
     expect($deserialized->fa->faWiersz[1]->nrWierszaFa->value)->toBe(2);
@@ -56,7 +56,7 @@ test('fromXml handles single Podmiot3 element', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->podmiot3)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot3)->toHaveCount(1);
 
     //@phpstan-ignore-next-line property.notFound
@@ -80,7 +80,7 @@ test('fromXml handles multiple Podmiot3 elements', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->podmiot3)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot3)->toHaveCount(2);
 
     //@phpstan-ignore-next-line property.notFound
@@ -100,7 +100,7 @@ test('fromXml handles single DaneKontaktowe element', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->podmiot1->daneKontaktowe)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->podmiot1->daneKontaktowe)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot1->daneKontaktowe)->toHaveCount(1);
 
     //@phpstan-ignore-next-line cast.string

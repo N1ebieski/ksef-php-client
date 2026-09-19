@@ -1,9 +1,8 @@
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
 use N1ebieski\KSEFClient\ClientBuilder;
@@ -23,7 +22,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Authorizations\Author
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -88,7 +87,7 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
         'formCode' => 'FA_RR (1)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruRolniczegoFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruRolniczegoFixture()
         ->withForNip(Env::string('NIP_1'))
         ->withNip(Env::string('NIP_2'))
         ->withTodayDate()
@@ -133,9 +132,7 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
     expect($statusResponse->ksefNumber)->toBeString();
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
-        qrCodeBuilder: (new QrCodeBuilder())
-            ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-            ->labelFont(new OpenSans(size: 12)),
+        qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
@@ -169,14 +166,14 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
 
     expect($queryResponse)->toHaveProperty('authorizationGrants');
 
-    expect($queryResponse->authorizationGrants)->toBeArray()->not->toBeEmpty();
+    expect($queryResponse->authorizationGrants)->toBeArray()->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->authorizationGrants,
         fn (object $permission): bool => $permission->authorizationScope === AuthorizationPermissionType::RRInvoicing->value
     );
 
-    expect($permissions)->toBeArray()->not->toBeEmpty();
+    expect($permissions)->toBeArray()->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
 

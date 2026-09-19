@@ -22,12 +22,12 @@ test('send an invoice, check if it is in the list', function (): void {
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
         ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
-    $fixture = (new SendRequestFixture())->withFakturaFixture($fakturaFixture);
+    $fixture = new SendRequestFixture()->withFakturaFixture($fakturaFixture);
 
     /** @var object{referenceNumber: string} $sendResponse */
     $sendResponse = $client->sessions()->online()->send([
@@ -64,7 +64,7 @@ test('send an invoice, check if it is in the list', function (): void {
     ])->object();
 
     expect($listResponse)->toHaveProperty('invoices');
-    expect($listResponse->invoices)->toBeArray()->not->toBeEmpty();
+    expect($listResponse->invoices)->toBeArray()->not()->toBeEmpty();
 
     $matches = array_filter(
         $listResponse->invoices,
