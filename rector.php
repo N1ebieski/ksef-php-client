@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-;
 
 return \Rector\Config\RectorConfig::configure()
     ->withPaths([
@@ -14,12 +13,8 @@ return \Rector\Config\RectorConfig::configure()
     ->withSkip([
         \Rector\Carbon\Rector\MethodCall\DateTimeMethodCallToCarbonRector::class,
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
-        \Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector::class,
         \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
         \Rector\Carbon\Rector\New_\DateTimeInstanceToCarbonRector::class,
-        \Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector::class => [
-            __DIR__ . '/src/Actions/ConvertEcdsaDerToRaw/ConvertEcdsaDerToRawHandler.php'
-        ],
         \Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector::class => [
             __DIR__ . '/src/Validator/Rules/Number/NipRule.php'
         ],
@@ -32,7 +27,9 @@ return \Rector\Config\RectorConfig::configure()
             __DIR__ . '/src/Factories/EncryptedTokenFactory.php',
             __DIR__ . '/src/Actions/SignDocument/SignDocumentHandler.php',
             __DIR__ . '/src/Factories/EncryptedKeyFactory.php'
-        ]
+        ],
+        \Rector\DowngradePhp82\Rector\FunctionLike\DowngradeStandaloneNullTrueFalseReturnTypeRector::class,
+        \Rector\DowngradePhp84\Rector\ClassMethod\DowngradeDeprecatedAttributeRector::class
     ])
     ->withComposerBased(phpunit: true)
     ->withImportNames(removeUnusedImports: true)
@@ -42,8 +39,6 @@ return \Rector\Config\RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
         privatization: true,
-        instanceOf: true,
-        earlyReturn: true,
         carbon: true,
         phpunitCodeQuality: true
     )

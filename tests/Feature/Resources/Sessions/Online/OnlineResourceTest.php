@@ -19,6 +19,7 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\Factories\CSRFactory;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
@@ -42,8 +43,6 @@ dataset('privateKeyTypeProvider', fn (): array => [
 
 test('send an invoice, check for UPO and generate QR code', function (): void {
     /** @var AbstractTestCase $this */
-    /** @var array<string, string> $_ENV */
-
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $client = $this->createClient(encryptionKey: $encryptionKey);
@@ -54,7 +53,7 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
     ])->object();
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
+        ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -128,7 +127,6 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
 test('create an offline invoice and send it', function (PrivateKeyType $privateKeyType): void {
     /**
      * @var AbstractTestCase $this
-     * @var array<string, string> $_ENV
      */
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
@@ -183,21 +181,21 @@ test('create an offline invoice and send it', function (PrivateKeyType $privateK
     $certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
         new ConvertCertificateToPkcs12Action(
             certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
-            passphrase: $_ENV['KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1']
+            passphrase: Env::string('KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1')
         )
     );
 
-    file_put_contents(Utility::basePath($_ENV['KSEF_OFFLINE_CERTIFICATE_PATH_1']), $certificateToPkcs12);
+    file_put_contents(Utility::basePath(Env::string('KSEF_OFFLINE_CERTIFICATE_PATH_1')), $certificateToPkcs12);
 
     $certificate = CertificateFactory::makeFromCertificatePath(
         CertificatePath::from(
-            Utility::basePath($_ENV['KSEF_OFFLINE_CERTIFICATE_PATH_1']),
-            $_ENV['KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1']
+            Utility::basePath(Env::string('KSEF_OFFLINE_CERTIFICATE_PATH_1')),
+            Env::string('KSEF_OFFLINE_CERTIFICATE_PASSPHRASE_1')
         )
     );
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
+        ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -210,7 +208,7 @@ test('create an offline invoice and send it', function (PrivateKeyType $privateK
         convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
     );
 
-    $contextIdentifierGroup = ContextIdentifierGroup::fromIdentifier(NIP::from($_ENV['NIP_1']));
+    $contextIdentifierGroup = ContextIdentifierGroup::fromIdentifier(NIP::from(Env::string('NIP_1')));
 
     $qrCodes = $generateQRCodesHandler->handle(new GenerateQRCodesAction(
         nip: $faktura->podmiot1->daneIdentyfikacyjne->nip,
