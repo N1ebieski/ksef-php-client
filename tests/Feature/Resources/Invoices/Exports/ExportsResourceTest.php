@@ -41,7 +41,7 @@ afterAll(function (): void {
         ->build();
 
     $client->testdata()->subject()->remove([
-        'nip' => Env::string('NIP_2'),
+        'subjectNip' => Env::string('NIP_2'),
     ]);
 });
 
