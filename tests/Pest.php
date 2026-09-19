@@ -7,6 +7,7 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\LimitsRequestFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
@@ -30,13 +31,12 @@ use Pest\Expectation;
 uses(UnitAbstractTestCase::class)->in('Unit');
 uses(FeatureAbstractTestCase::class)
     ->beforeAll(function (): void {
-        /** @var array<string, string> $_ENV */
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
-            ->withIdentifier($_ENV['NIP_1'])
+            ->withIdentifier(Env::string('NIP_1'))
             ->withCertificatePath(
-                Utility::basePath($_ENV['CERTIFICATE_PATH_1']),
-                $_ENV['CERTIFICATE_PASSPHRASE_1']
+                Utility::basePath(Env::string('CERTIFICATE_PATH_1')),
+                Env::string('CERTIFICATE_PASSPHRASE_1')
             )
             ->build();
 
@@ -55,14 +55,14 @@ uses(FeatureAbstractTestCase::class)
         ]);
     })
     ->beforeEach(function (): void {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->build();
 
         try {
             $client->testdata()->person()->create([
-                'nip' => $_ENV['NIP_1'],
-                'pesel' => $_ENV['PESEL_1'],
+                'nip' => Env::string('NIP_1'),
+                'pesel' => Env::string('PESEL_1'),
                 'isBailiff' => false,
                 'description' => 'testing',
             ]);
@@ -73,13 +73,13 @@ uses(FeatureAbstractTestCase::class)
         }
     })
     ->afterAll(function (): void {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->build();
 
         foreach (['NIP_1', 'NIP_2', 'NIP_3'] as $nip) {
             $client->testdata()->subject()->remove([
-                'subjectNip' => $_ENV[$nip],
+                'subjectNip' => Env::string($nip),
             ]);
         }
     })
@@ -149,7 +149,7 @@ function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'
             continue;
         }
 
-        expect($value)->not->toBeObject("Found object at {$currentPath}");
+        expect($value)->not()->toBeObject("Found object at {$currentPath}");
     }
 }
 

@@ -180,7 +180,7 @@ test('test validation rules without attribute', function (string $attribute, mix
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
-        expect($exception->context['message'])->not->toBeEmpty();
+        expect($exception->context['message'])->not()->toBeEmpty();
         expect($exception->context['values'])->toBeArray();
 
         return true;
@@ -200,7 +200,7 @@ test('test validation rules with attribute', function (string $attribute, mixed 
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
-        expect($exception->context['message'])->not->toBeEmpty();
+        expect($exception->context['message'])->not()->toBeEmpty();
         expect($exception->context['values'])->toContain($attribute);
 
         return true;
