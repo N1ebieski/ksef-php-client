@@ -57,7 +57,7 @@ final class Suma extends AbstractDTO implements DomSerializableInterface, XmlNor
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['SKom'] = Arr::ensureList($data['SKom']);
+        $data['SKom'] = Arr::ensureListOfStrings($data['SKom']);
 
         return Arr::only($data, ['SKom']);
     }

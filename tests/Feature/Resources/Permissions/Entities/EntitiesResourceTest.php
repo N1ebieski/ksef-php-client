@@ -3,6 +3,7 @@
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Online\Send\SendRequestFixture;
@@ -21,7 +22,7 @@ beforeAll(function (): void {
     foreach (['NIP_2', 'NIP_3'] as $nip) {
         try {
             $client->testdata()->subject()->create([
-                'subjectNip' => $_ENV[$nip],
+                'subjectNip' => Env::string($nip),
                 'subjectType' => SubjectType::EnforcementAuthority,
                 'description' => 'Subject who gives InvoiceWrite permission',
             ])->status();
@@ -35,18 +36,16 @@ beforeAll(function (): void {
 
 test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (): void {
     /** @var AbstractTestCase $this */
-    /** @var array<string, string> $_ENV */
-
     $clientNip2 = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2']
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2')
     );
 
     /** @var object{referenceNumber: string} $grantsResponse */
     $grantsResponse = $clientNip2->permissions()->entities()->grants([
         'subjectIdentifierGroup' => [
-            'nip' => $_ENV['NIP_1']
+            'nip' => Env::string('NIP_1')
         ],
         'permissions' => [
             [
@@ -79,7 +78,7 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $clientNip1 = $this->createClient(
-        identifier: $_ENV['NIP_2'],
+        identifier: Env::string('NIP_2'),
         encryptionKey: $encryptionKey
     );
 
@@ -89,7 +88,7 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
     ])->object();
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_2'])
+        ->withNip(Env::string('NIP_2'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -126,7 +125,7 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
     /** @var object{permissions: array<int, object{id: string, permissionScope: string}>} $queryResponse */
     $queryResponse = $clientNip1->permissions()->query()->personal()->grants([
         'contextIdentifierGroup' => [
-            'nip' => $_ENV['NIP_2']
+            'nip' => Env::string('NIP_2')
         ],
     ])->object();
 
@@ -173,18 +172,16 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
 
 test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission', function (): void {
     /** @var AbstractTestCase $this */
-    /** @var array<string, string> $_ENV */
-
     $clientNip3 = $this->createClient(
-        identifier: $_ENV['NIP_3'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_3'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_3']
+        identifier: Env::string('NIP_3'),
+        certificatePath: Env::string('CERTIFICATE_PATH_3'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_3')
     );
 
     /** @var object{referenceNumber: string} $grantsResponse */
     $grantsResponse = $clientNip3->permissions()->entities()->grants([
         'subjectIdentifierGroup' => [
-            'nip' => $_ENV['NIP_2']
+            'nip' => Env::string('NIP_2')
         ],
         'permissions' => [
             [
@@ -216,18 +213,18 @@ test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission'
     });
 
     $clientNip2 = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2']
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2')
     );
 
     /** @var object{referenceNumber: string} $grantsResponse */
     $grantsResponse = $clientNip2->permissions()->indirect()->grants([
         'subjectIdentifierGroup' => [
-            'nip' => $_ENV['NIP_1']
+            'nip' => Env::string('NIP_1')
         ],
         'targetIdentifierGroup' => [
-            'nip' => $_ENV['NIP_3']
+            'nip' => Env::string('NIP_3')
         ],
         'permissions' => [
             'InvoiceWrite'
@@ -261,7 +258,7 @@ test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission'
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $clientNip1 = $this->createClient(
-        identifier: $_ENV['NIP_3'],
+        identifier: Env::string('NIP_3'),
         encryptionKey: $encryptionKey
     );
 
@@ -271,7 +268,7 @@ test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission'
     ])->object();
 
     $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_3'])
+        ->withNip(Env::string('NIP_3'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -308,7 +305,7 @@ test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission'
     /** @var object{permissions: array<int, object{id: string}>} $queryResponse */
     $queryResponse = $clientNip1->permissions()->query()->personal()->grants([
         'targetIdentifierGroup' => [
-            'nip' => $_ENV['NIP_3']
+            'nip' => Env::string('NIP_3')
         ],
     ])->object();
 

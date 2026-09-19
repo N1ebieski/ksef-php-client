@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-;
 
 return \Rector\Config\RectorConfig::configure()
     ->withPaths([
@@ -31,8 +30,7 @@ return \Rector\Config\RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
         privatization: true,
-        instanceOf: true,
-        earlyReturn: true,
+        carbon: true,
         phpunitCodeQuality: true
     )
     ->withPhpSets(php84: true);
