@@ -29,7 +29,7 @@ test('fromXml populates Naglowek fields correctly', function (): void {
     $deserialized = Faktura::fromXml($faktura->toXml());
 
     expect($deserialized->naglowek->wariantFormularza)->toBe(FormCode::Fa3);
-    expect($deserialized->naglowek->systemInfo)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->naglowek->systemInfo)->not()->toBeInstanceOf(Optional::class);
 
     //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->naglowek->systemInfo)->toBe($fixture->data['naglowek']['systemInfo']);
@@ -59,7 +59,7 @@ test('fromXml populates Fa scalar fields correctly', function (): void {
     expect($deserialized->fa->p_2->value)->toBe($fixture->data['fa']['p_2']);
     expect($deserialized->fa->p_15->value)->toBe($fixture->data['fa']['p_15']);
     expect($deserialized->fa->rodzajFaktury)->toBe(RodzajFaktury::Vat);
-    expect($deserialized->fa->p_1M)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->p_1M)->not()->toBeInstanceOf(Optional::class);
 
     //@phpstan-ignore-next-line cast.string
     expect((string) $deserialized->fa->p_1M)->toBe($fixture->data['fa']['p_1M']);
@@ -72,7 +72,7 @@ test('fromXml populates FaWiersz array correctly', function (): void {
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->fa->faWiersz)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->faWiersz)->not()->toBeInstanceOf(Optional::class);
 
     //@phpstan-ignore-next-line argument.type
     expect($deserialized->fa->faWiersz)->toHaveCount(count($fixture->data['fa']['faWiersz']));
@@ -137,7 +137,7 @@ test('fromXml populates Podmiot3 with Rola and Udzial correctly', function (): v
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->podmiot3)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->podmiot3)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->podmiot3)->toHaveCount(1);
 
     $podmiot3 = $deserialized->podmiot3[0];

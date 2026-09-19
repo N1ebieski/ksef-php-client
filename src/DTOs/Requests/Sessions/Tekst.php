@@ -57,7 +57,7 @@ final class Tekst extends AbstractDTO implements DomSerializableInterface, XmlNo
 
     public static function normalizeXmlArray(array $data): array
     {
-        $data['Akapit'] = Arr::ensureList($data['Akapit']);
+        $data['Akapit'] = Arr::ensureListOfStrings($data['Akapit']);
 
         return Arr::only($data, ['Akapit']);
     }

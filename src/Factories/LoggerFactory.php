@@ -8,11 +8,10 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use N1ebieski\KSEFClient\Overrides\PsrDiscovery\Discovery\Discover;
 use N1ebieski\KSEFClient\ValueObjects\LogPath;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use PsrDiscovery\Discover as BaseDiscover;
+use PsrDiscovery\Discover;
 use PsrDiscovery\Entities\CandidateEntity;
 
 final class LoggerFactory extends AbstractFactory
@@ -22,7 +21,7 @@ final class LoggerFactory extends AbstractFactory
      */
     public static function make(?LogPath $logPath = null, string | null $level = null): ?LoggerInterface
     {
-        $logger = BaseDiscover::log();
+        $logger = Discover::log();
 
         if ($logger !== null) {
             return $logger;

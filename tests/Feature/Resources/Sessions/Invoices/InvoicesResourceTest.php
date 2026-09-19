@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Online\Send\SendRequestFixture;
@@ -12,8 +13,6 @@ use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 
 test('send an invoice, check if it is in the list', function (): void {
     /** @var AbstractTestCase $this */
-    /** @var array<string, string> $_ENV */
-
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $client = $this->createClient(encryptionKey: $encryptionKey);
@@ -23,12 +22,12 @@ test('send an invoice, check if it is in the list', function (): void {
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
+        ->withNip(Env::string('NIP_1'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
-    $fixture = (new SendRequestFixture())->withFakturaFixture($fakturaFixture);
+    $fixture = new SendRequestFixture()->withFakturaFixture($fakturaFixture);
 
     /** @var object{referenceNumber: string} $sendResponse */
     $sendResponse = $client->sessions()->online()->send([
@@ -65,7 +64,7 @@ test('send an invoice, check if it is in the list', function (): void {
     ])->object();
 
     expect($listResponse)->toHaveProperty('invoices');
-    expect($listResponse->invoices)->toBeArray()->not->toBeEmpty();
+    expect($listResponse->invoices)->toBeArray()->not()->toBeEmpty();
 
     $matches = array_filter(
         $listResponse->invoices,

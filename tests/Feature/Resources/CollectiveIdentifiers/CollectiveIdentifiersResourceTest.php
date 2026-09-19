@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\AbstractFakturaFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
@@ -15,7 +16,6 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\CompressionType;
 test('create a collective identifier for invoices and list it as the buyer', function (): void {
     /**
      * @var AbstractTestCase $this
-     * @var array<string, string> $_ENV
      */
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
@@ -24,8 +24,8 @@ test('create a collective identifier for invoices and list it as the buyer', fun
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
         fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
-            ->withNip($_ENV['NIP_1'])
-            ->withForNip($_ENV['NIP_2'])
+            ->withNip(Env::string('NIP_1'))
+            ->withForNip(Env::string('NIP_2'))
             ->withTodayDate()
             ->withoutPayment()
             ->withRandomInvoiceNumber(),
@@ -82,9 +82,9 @@ test('create a collective identifier for invoices and list it as the buyer', fun
     }
 
     $clientNip2 = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2']
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2')
     );
 
     /** @var array<int, array{ksefNumber: string, payment: array{amount: float, currency: string}, description: string}> $payments */

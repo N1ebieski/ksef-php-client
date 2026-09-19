@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Actions\GenerateQRCodes;
 
-use Endroid\QrCode\Builder\BuilderInterface as QrCodeBuilderInterface;
 use N1ebieski\KSEFClient\Actions\AbstractHandler;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawAction;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
+use N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes\QRCodeGeneratorInterface;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\Support\Str;
@@ -24,7 +24,7 @@ use RuntimeException;
 final class GenerateQRCodesHandler extends AbstractHandler
 {
     public function __construct(
-        private readonly QrCodeBuilderInterface $qrCodeBuilder,
+        private readonly QRCodeGeneratorInterface $qrCodeGenerator,
         private readonly ConvertEcdsaDerToRawHandler $convertEcdsaDerToRawHandler
     ) {
     }
@@ -42,15 +42,12 @@ final class GenerateQRCodesHandler extends AbstractHandler
 
         $invoiceLink = implode('/', $code1Parts);
 
-        $raw1 = (clone $this->qrCodeBuilder)->data($invoiceLink);
+        $image1 = $this->qrCodeGenerator->generate(
+            $invoiceLink,
+            $action->captions ? ($action->ksefNumber->value ?? 'OFFLINE') : null
+        );
 
-        if ($action->captions) {
-            $raw1 = $raw1->labelText($action->ksefNumber->value ?? 'OFFLINE');
-        }
-
-        $raw1 = $raw1->build()->getString();
-
-        $code1 = QRCode::from($raw1, $invoiceLink);
+        $code1 = QRCode::from($image1->raw, $invoiceLink, $image1->mimeType);
 
         $code2 = null;
 
@@ -88,15 +85,12 @@ final class GenerateQRCodesHandler extends AbstractHandler
 
             $certificateLink .= "/{$signatureBase64}";
 
-            $raw2 = (clone $this->qrCodeBuilder)->data($certificateLink);
+            $image2 = $this->qrCodeGenerator->generate(
+                $certificateLink,
+                $action->captions ? 'CERTYFIKAT' : null
+            );
 
-            if ($action->captions) {
-                $raw2 = $raw2->labelText('CERTYFIKAT');
-            }
-
-            $raw2 = $raw2->build()->getString();
-
-            $code2 = QRCode::from($raw2, $certificateLink);
+            $code2 = QRCode::from($image2->raw, $certificateLink, $image2->mimeType);
         }
 
         return new QRCodes($code1, $code2);
