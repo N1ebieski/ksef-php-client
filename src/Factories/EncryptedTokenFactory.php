@@ -40,7 +40,6 @@ final class EncryptedTokenFactory extends AbstractFactory
             throw new RuntimeException('Unable to encrypt token');
         }
 
-        /** @var string $encryptedToken */
         $encryptedToken = base64_encode((string) $encryptedToken); //@phpstan-ignore-line
 
         return new EncryptedToken($encryptedToken, $ksefPublicKey->publicKeyId);
