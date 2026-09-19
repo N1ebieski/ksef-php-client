@@ -415,7 +415,7 @@ final class Fa extends AbstractDTO implements DomSerializableInterface, XmlNorma
         };
 
         $data['wz'] = match (true) {
-            isset($data['WZ']) => Arr::ensureList($data['WZ']),
+            isset($data['WZ']) => Arr::ensureListOfStrings($data['WZ']),
             default => new Optional()
         };
 

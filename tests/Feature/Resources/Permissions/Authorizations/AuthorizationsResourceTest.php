@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Faktura as FakturaRR;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaRR\FakturaSprzedazyTowaruRolniczegoFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
@@ -28,8 +29,8 @@ beforeAll(function (): void {
 
     try {
         $client->testdata()->person()->create([
-            'nip' => $_ENV['NIP_2'],
-            'pesel' => $_ENV['PESEL_2'],
+            'nip' => Env::string('NIP_2'),
+            'pesel' => Env::string('PESEL_2'),
             'description' => 'Subject who gives RRInvoicing permission',
         ])->status();
     } catch (BadRequestException $exception) {
@@ -44,15 +45,15 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
     /** @var array<string, string> $_ENV */
 
     $clientNip2 = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2']
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2')
     );
 
     /** @var object{referenceNumber: string} $grantsResponse */
     $grantsResponse = $clientNip2->permissions()->authorizations()->grants([
         'subjectIdentifierGroup' => [
-            'nip' => $_ENV['NIP_1']
+            'nip' => Env::string('NIP_1')
         ],
         'permission' => 'RRInvoicing',
         'description' => 'Give RRInvoicing permission to NIP_1',
@@ -88,8 +89,8 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
     ])->object();
 
     $fakturaFixture = (new FakturaSprzedazyTowaruRolniczegoFixture())
-        ->withForNip($_ENV['NIP_1'])
-        ->withNip($_ENV['NIP_2'])
+        ->withForNip(Env::string('NIP_1'))
+        ->withNip(Env::string('NIP_2'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -162,7 +163,7 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
     $queryResponse = $client->permissions()->query()->authorizations()->grants([
         'queryType' => 'Received',
         'authorizingIdentifierGroup' => [
-            'nip' => $_ENV['NIP_2']
+            'nip' => Env::string('NIP_2')
         ],
     ])->object();
 

@@ -80,7 +80,7 @@ final class RemoveNamespaceFromXmlHandler extends AbstractHandler
 
         $child = $source->firstChild;
 
-        while ($child !== null) {
+        while ($child instanceof DOMNode) {
             $node = $this->copyNode($child, $targetDocument);
 
             if ($node === false) {
