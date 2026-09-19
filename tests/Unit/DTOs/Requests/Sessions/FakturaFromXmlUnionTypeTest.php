@@ -200,7 +200,7 @@ test('fromXml detects NrKSeFFaZaliczkowejGroup in FakturaZaliczkowa', function (
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->fa->fakturaZaliczkowa)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->fakturaZaliczkowa)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->fa->fakturaZaliczkowa[0]->nrKSeFZNGroup)
         ->toBeInstanceOf(NrKSeFFaZaliczkowejGroup::class);
 });

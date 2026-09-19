@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Testdata\Subject\SubjectType;
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -87,12 +87,12 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
         ->withNip(Env::string('NIP_2'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
-    $fixture = (new SendRequestFixture())->withFakturaFixture($fakturaFixture);
+    $fixture = new SendRequestFixture()->withFakturaFixture($fakturaFixture);
 
     /** @var object{referenceNumber: string} $sendResponse */
     $sendResponse = $clientNip1->sessions()->online()->send([
@@ -131,14 +131,14 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
 
     expect($queryResponse)->toHaveProperty('permissions');
 
-    expect($queryResponse->permissions)->toBeArray()->not->toBeEmpty();
+    expect($queryResponse->permissions)->toBeArray()->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->permissions,
         fn (object $permission): bool => $permission->permissionScope === PersonalPermissionType::InvoiceWrite->value
     );
 
-    expect($permissions)->toBeArray()->not->toBeEmpty();
+    expect($permissions)->toBeArray()->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
 
@@ -267,12 +267,12 @@ test('send invoice as NIP_3 when NIP_3 gave canDelegate InvoiceWrite permission'
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
         ->withNip(Env::string('NIP_3'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
-    $fixture = (new SendRequestFixture())->withFakturaFixture($fakturaFixture);
+    $fixture = new SendRequestFixture()->withFakturaFixture($fakturaFixture);
 
     /** @var object{referenceNumber: string} $sendResponse */
     $sendResponse = $clientNip1->sessions()->online()->send([

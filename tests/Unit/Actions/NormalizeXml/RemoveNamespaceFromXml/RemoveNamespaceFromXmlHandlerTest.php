@@ -18,7 +18,7 @@ test('removes namespace from root element', function (): void {
     );
 
     expect($result)->toBeString();
-    expect($result)->not->toContain('xmlns=');
+    expect($result)->not()->toContain('xmlns=');
     expect($result)->toContain('<Faktura>');
     expect($result)->toContain('<NumerFaktury>123/2024</NumerFaktury>');
 });
@@ -39,10 +39,10 @@ test('removes namespaces from nested elements', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns:tns=');
-    expect($result)->not->toContain('xmlns:ns2=');
-    expect($result)->not->toContain('tns:');
-    expect($result)->not->toContain('ns2:');
+    expect($result)->not()->toContain('xmlns:tns=');
+    expect($result)->not()->toContain('xmlns:ns2=');
+    expect($result)->not()->toContain('tns:');
+    expect($result)->not()->toContain('ns2:');
     expect($result)->toContain('<Root>');
     expect($result)->toContain('<Child1>');
     expect($result)->toContain('<Child2>');
@@ -61,8 +61,8 @@ test('preserves XML attributes', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns:ns=');
-    expect($result)->not->toContain('ns:');
+    expect($result)->not()->toContain('xmlns:ns=');
+    expect($result)->not()->toContain('ns:');
     expect($result)->toContain('attr1="value1"');
     expect($result)->toContain('attr2="value2"');
     expect($result)->toContain('id="123"');
@@ -82,8 +82,8 @@ test('preserves CDATA sections', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns:ns=');
-    expect($result)->not->toContain('ns:');
+    expect($result)->not()->toContain('xmlns:ns=');
+    expect($result)->not()->toContain('ns:');
     expect($result)->toContain("<![CDATA[<script>alert('test');</script>]]>");
 });
 
@@ -100,8 +100,8 @@ test('preserves XML comments', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns:ns=');
-    expect($result)->not->toContain('ns:');
+    expect($result)->not()->toContain('xmlns:ns=');
+    expect($result)->not()->toContain('ns:');
     expect($result)->toContain('<!-- This is a comment -->');
 });
 
@@ -131,8 +131,8 @@ test('handles complex real-world KSEF invoice structure', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns');
-    expect($result)->not->toContain('tns:');
+    expect($result)->not()->toContain('xmlns');
+    expect($result)->not()->toContain('tns:');
     expect($result)->toContain('<Faktura>');
     expect($result)->toContain('<Podmiot1>');
     expect($result)->toContain('<DaneIdentyfikacyjne>');
@@ -155,10 +155,10 @@ test('handles multiple namespace declarations', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns');
-    expect($result)->not->toContain('a:');
-    expect($result)->not->toContain('b:');
-    expect($result)->not->toContain('c:');
+    expect($result)->not()->toContain('xmlns');
+    expect($result)->not()->toContain('a:');
+    expect($result)->not()->toContain('b:');
+    expect($result)->not()->toContain('c:');
     expect($result)->toContain('<root>');
     expect($result)->toContain('<element1>Value1</element1>');
     expect($result)->toContain('<element2');
@@ -189,7 +189,7 @@ test('preserves text node values with special characters', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->not->toContain('xmlns:ns=');
+    expect($result)->not()->toContain('xmlns:ns=');
     expect($result)->toContain('&amp;');
     expect($result)->toContain('&lt;');
     expect($result)->toContain('&gt;');

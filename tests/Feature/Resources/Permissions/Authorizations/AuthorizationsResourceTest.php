@@ -2,9 +2,9 @@
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Faktura as FakturaRR;
@@ -166,14 +166,14 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
 
     expect($queryResponse)->toHaveProperty('authorizationGrants');
 
-    expect($queryResponse->authorizationGrants)->toBeArray()->not->toBeEmpty();
+    expect($queryResponse->authorizationGrants)->toBeArray()->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->authorizationGrants,
         fn (object $permission): bool => $permission->authorizationScope === AuthorizationPermissionType::RRInvoicing->value
     );
 
-    expect($permissions)->toBeArray()->not->toBeEmpty();
+    expect($permissions)->toBeArray()->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
 

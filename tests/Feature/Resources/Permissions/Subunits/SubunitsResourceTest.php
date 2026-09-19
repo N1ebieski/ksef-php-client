@@ -15,7 +15,7 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\Personal\Person
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
@@ -99,14 +99,14 @@ test('create InternalId for person', function (): void {
 
     expect($queryResponse)->toHaveProperty('permissions');
 
-    expect($queryResponse->permissions)->toBeArray()->not->toBeEmpty();
+    expect($queryResponse->permissions)->toBeArray()->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->permissions,
         fn (object $permission): bool => $permission->permissionScope === PersonalPermissionType::CredentialsManage->value
     );
 
-    expect($permissions)->toBeArray()->not->toBeEmpty();
+    expect($permissions)->toBeArray()->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
 

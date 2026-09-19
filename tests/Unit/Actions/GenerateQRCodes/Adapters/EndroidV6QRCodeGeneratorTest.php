@@ -37,6 +37,6 @@ test('ensure that generator reports the mime type of the configured writer', fun
     expect($svg->mimeType)->toBe('image/svg+xml');
 
     // The contract is raw image contents, never a data URI
-    expect($png->raw)->not->toStartWith('data:');
-    expect($svg->raw)->not->toStartWith('data:');
+    expect($png->raw)->not()->toStartWith('data:');
+    expect($svg->raw)->not()->toStartWith('data:');
 });

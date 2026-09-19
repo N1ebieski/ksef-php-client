@@ -31,7 +31,7 @@ use Pest\Expectation;
 uses(UnitAbstractTestCase::class)->in('Unit');
 uses(FeatureAbstractTestCase::class)
     ->beforeAll(function (): void {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->withIdentifier(Env::string('NIP_1'))
             ->withCertificatePath(
@@ -55,7 +55,7 @@ uses(FeatureAbstractTestCase::class)
         ]);
     })
     ->beforeEach(function (): void {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->build();
 
@@ -73,7 +73,7 @@ uses(FeatureAbstractTestCase::class)
         }
     })
     ->afterAll(function (): void {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->build();
 
@@ -149,7 +149,7 @@ function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'
             continue;
         }
 
-        expect($value)->not->toBeObject("Found object at {$currentPath}");
+        expect($value)->not()->toBeObject("Found object at {$currentPath}");
     }
 }
 
