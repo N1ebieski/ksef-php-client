@@ -65,7 +65,7 @@ final class ClientBuilder
 {
     private ClientInterface $httpClient;
 
-    private ?LoggerInterface $logger = null;
+    private ?LoggerInterface $logger;
 
     private ExceptionHandlerInterface $exceptionHandler;
 

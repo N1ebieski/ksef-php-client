@@ -86,7 +86,7 @@ final class AddNamespaceToXmlHandler extends AbstractHandler
 
         $child = $source->firstChild;
 
-        while ($child !== null) {
+        while ($child instanceof DOMNode) {
             $node = $this->copyNode($child, $targetDocument, $prefix, $namespaceUri);
 
             if ($node === false) {

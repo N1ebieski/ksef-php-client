@@ -30,7 +30,7 @@ test('fromXml handles empty nodes in an invoice with an attachment', function ()
             throw new RuntimeException('Expected an XML element');
         }
 
-        while ($element->firstChild !== null) {
+        while ($element->firstChild instanceof DOMNode) {
             $element->removeChild($element->firstChild);
         }
     }
@@ -62,7 +62,7 @@ test('fromXml handles empty nodes in an invoice with an attachment', function ()
             throw new RuntimeException('Expected a WKom XML element');
         }
 
-        if ($element->firstChild !== null) {
+        if ($element->firstChild instanceof DOMNode) {
             $element->removeChild($element->firstChild);
         }
     }
