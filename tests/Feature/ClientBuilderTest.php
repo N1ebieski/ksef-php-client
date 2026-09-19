@@ -11,6 +11,7 @@ use N1ebieski\KSEFClient\DTOs\DN;
 use N1ebieski\KSEFClient\Exceptions\StatusException;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\Factories\CSRFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\AccessToken;
@@ -45,10 +46,7 @@ test('auto authorization via certificate path .p12', function (): void {
 });
 
 test('auto authorization via KSEF certificate path .p12', function (PrivateKeyType $privateKeyType): void {
-    /**
-     * @var AbstractTestCase $this
-     * @var array<string, string> $_ENV
-     */
+    /** @var AbstractTestCase $this */
     $client = $this->createClient();
 
     $dataResponse = $client->certificates()->enrollments()->data()->json();
@@ -98,18 +96,18 @@ test('auto authorization via KSEF certificate path .p12', function (PrivateKeyTy
     $certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
         new ConvertCertificateToPkcs12Action(
             certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
-            passphrase: $_ENV['KSEF_AUTH_CERTIFICATE_PASSPHRASE_1']
+            passphrase: Env::string('KSEF_AUTH_CERTIFICATE_PASSPHRASE_1')
         )
     );
 
-    file_put_contents(Utility::basePath($_ENV['KSEF_AUTH_CERTIFICATE_PATH_1']), $certificateToPkcs12);
+    file_put_contents(Utility::basePath(Env::string('KSEF_AUTH_CERTIFICATE_PATH_1')), $certificateToPkcs12);
 
     $this->revokeCurrentSession($client);
 
     $client = (new ClientBuilder())
         ->withMode(Mode::Test)
-        ->withIdentifier($_ENV['NIP_1'])
-        ->withCertificatePath(Utility::basePath($_ENV['KSEF_AUTH_CERTIFICATE_PATH_1']), $_ENV['KSEF_AUTH_CERTIFICATE_PASSPHRASE_1'])
+        ->withIdentifier(Env::string('NIP_1'))
+        ->withCertificatePath(Utility::basePath(Env::string('KSEF_AUTH_CERTIFICATE_PATH_1')), Env::string('KSEF_AUTH_CERTIFICATE_PASSPHRASE_1'))
         ->build();
 
     $accessToken = $client->getAccessToken();
@@ -131,15 +129,14 @@ test('auto authorization via KSEF certificate path .p12', function (PrivateKeyTy
 })->with('privateKeyTypeProvider');
 
 test('auto authorization via certificate .p12', function (): void {
-    /** @var array<string, string> $_ENV */
     /** @var string $pkcs12 */
-    $pkcs12 = file_get_contents(Utility::basePath($_ENV['CERTIFICATE_PATH_1']));
+    $pkcs12 = file_get_contents(Utility::basePath(Env::string('CERTIFICATE_PATH_1')));
 
-    $certificate = CertificateFactory::makeFromPkcs12($pkcs12, $_ENV['CERTIFICATE_PASSPHRASE_1']);
+    $certificate = CertificateFactory::makeFromPkcs12($pkcs12, Env::string('CERTIFICATE_PASSPHRASE_1'));
 
     $client = (new ClientBuilder())
         ->withMode(Mode::Test)
-        ->withIdentifier($_ENV['NIP_1'])
+        ->withIdentifier(Env::string('NIP_1'))
         ->withCertificate($certificate)
         ->build();
 
@@ -156,10 +153,7 @@ test('auto authorization via certificate .p12', function (): void {
 });
 
 test('auto authorization via KSEF Token', function (): void {
-    /**
-     * @var AbstractTestCase $this
-     * @var array<string, string> $_ENV
-     */
+    /** @var AbstractTestCase $this */
     $client = $this->createClient();
 
     /** @var object{token: string, referenceNumber: string} */
@@ -175,7 +169,7 @@ test('auto authorization via KSEF Token', function (): void {
 
     $client = (new ClientBuilder())
         ->withMode(Mode::Test)
-        ->withIdentifier($_ENV['NIP_1'])
+        ->withIdentifier(Env::string('NIP_1'))
         ->withKsefToken($response->token)
         ->build();
 
@@ -193,11 +187,8 @@ test('auto authorization via KSEF Token', function (): void {
 });
 
 test('test status exception', function (): void {
-    /**
-     * @var AbstractTestCase $this
-     * @var array<string, string> $_ENV
-     */
-    $invalidNip = (string)((int) $_ENV['NIP_1'] + 1);
+    /** @var AbstractTestCase $this */
+    $invalidNip = (string)((int) Env::string('NIP_1') + 1);
 
     expect(fn () => $this->createClient($invalidNip))->toThrow(function (StatusException $exception): void {
         expect($exception->context)

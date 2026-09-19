@@ -34,7 +34,6 @@ final class ConvertXmlToArrayHandler extends AbstractHandler
 
             if ($element === false) {
                 $errors = array_map(
-                    //@phpstan-ignore-next-line return.type
                     static fn (LibXMLError $error): string => mb_trim($error->message),
                     libxml_get_errors()
                 );

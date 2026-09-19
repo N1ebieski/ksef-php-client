@@ -18,7 +18,6 @@ parameters:
 	ignoreErrors:
 		- '#^Parameter \#1 \$node of method DOMDocument::importNode\(\) expects DOMNode, DOMElement\|null given.$#'
 		- '#^Parameter \#1 \$data of static method ([a-zA-Z0-9\\]+)::normalizeXmlArray\(\) expects array<string, mixed>, mixed given\.$#'
-		- '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage::andReturn#'
 		- '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy::with\(\).$#'
 		- '#^Call to an undefined method Pest\\Expectation<([a-zA-Z0-9\\]+)\|null>::toBeFixture\(\).$#'
 		- '#^Call to an undefined method Pest\\Expectation<array<string, mixed>\|object\|null>::toBeFixture\(\).$#'
@@ -38,9 +37,3 @@ parameters:
 		-
 			message: '#Parameter \#1 \$exception of method Pest\\Mixins\\Expectation<\(Closure\)\|null>::toThrow\(\) expects \(Closure\(Throwable\):\s+mixed\)\|string\|Throwable, Closure\([A-Za-z0-9_\\]+Exception\): void given#'
 			path: tests/*   
-		-
-			message: '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage::(never|once)\(\).$#'
-			path: tests/*
-		-
-			message: '#^Cannot call method (andReturn(Self)?|withArgs)\(\) on mixed\.$#'
-			path: tests/*
