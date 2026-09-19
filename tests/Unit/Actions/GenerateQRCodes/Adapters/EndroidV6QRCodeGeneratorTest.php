@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use Endroid\QrCode\Writer\SvgWriter;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV6QRCodeGenerator;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 
 test('ensure that generator renders the label only when it is given', function (): void {
     $qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());

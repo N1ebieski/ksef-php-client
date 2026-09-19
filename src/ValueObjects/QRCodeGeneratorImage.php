@@ -6,7 +6,7 @@ namespace N1ebieski\KSEFClient\ValueObjects;
 
 use N1ebieski\KSEFClient\Support\AbstractValueObject;
 
-final class QRCodeImage extends AbstractValueObject
+final class QRCodeGeneratorImage extends AbstractValueObject
 {
     /**
      * @param string $raw Raw contents of the image, not a data URI

@@ -26,6 +26,7 @@ Main features:
 ## Table of Contents
 
 - [Get Started](#get-started)
+    - [QR code generator](#qr-code-generator)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
         - [Deserialization](#deserialization)
@@ -198,6 +199,11 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
+<details>
+    <summary>
+        <h3>QR code generator</h3>
+    </summary>
+
 QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
 
 ```bash
@@ -218,21 +224,22 @@ Any other library works too - `endroid/qr-code` `5.x`, which used a fluent build
 ```php
 namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
 
-use N1ebieski\KSEFClient\ValueObjects\QRCodeImage;
+use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
 
 interface QRCodeGeneratorInterface
 {
-    public function generate(string $data, ?string $label = null): QRCodeImage;
+    public function generate(string $data, ?string $label = null): QRCodeGeneratorImage;
 }
 ```
 
-`QRCodeImage` takes the raw image contents and its mime type, which defaults to `image/png`:
+`QRCodeGeneratorImage` takes the raw image contents and its mime type, which defaults to `image/png`:
 
 ```php
-return new QRCodeImage($raw, 'image/svg+xml');
+return new QRCodeGeneratorImage($raw, 'image/svg+xml');
 ```
 
 Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
+</details>
 
 ### Client configuration
 
