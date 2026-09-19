@@ -8,10 +8,9 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\ValueObjects\KsefPublicKey;
 use N1ebieski\KSEFClient\ValueObjects\KsefToken;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Auth\EncryptedToken;
-use phpseclib3\Crypt\PublicKeyLoader;
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PublicKey as RSAPublicKey;
-use RuntimeException;
+use phpseclib4\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\RSA;
+use phpseclib4\Crypt\RSA\PublicKey as RSAPublicKey;
 
 final class EncryptedTokenFactory extends AbstractFactory
 {
@@ -36,11 +35,7 @@ final class EncryptedTokenFactory extends AbstractFactory
             ->withMGFHash('sha256')
             ->encrypt($data);
 
-        if ($encryptedToken === false) {
-            throw new RuntimeException('Unable to encrypt token');
-        }
-
-        $encryptedToken = base64_encode((string) $encryptedToken); //@phpstan-ignore-line
+        $encryptedToken = base64_encode($encryptedToken);
 
         return new EncryptedToken($encryptedToken, $ksefPublicKey->publicKeyId);
     }

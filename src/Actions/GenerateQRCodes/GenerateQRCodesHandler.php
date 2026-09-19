@@ -16,9 +16,9 @@ use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\KsefNumber;
 use OpenSSLAsymmetricKey;
-use phpseclib3\Crypt\PublicKeyLoader;
-use phpseclib3\Crypt\RSA;
-use phpseclib3\Crypt\RSA\PrivateKey;
+use phpseclib4\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\RSA;
+use phpseclib4\Crypt\RSA\PrivateKey;
 use RuntimeException;
 
 final class GenerateQRCodesHandler extends AbstractHandler
