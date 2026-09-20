@@ -5,14 +5,14 @@
 // phpcs:ignoreFile
 
 namespace Pest {
-    use Pest\Expectation as BaseExpectation;
-
     /**
-     * @method void toBeFixture(array $data, ?object $object = null)
-     * @method void toBeExceptionFixture(array $data)
+     * @template TValue
+     * @mixin Mixins\Expectation<TValue>
+     * @method void toBeFixture(array<string, mixed> $data, ?object $object = null)
+     * @method void toBeExceptionFixture(array<string, mixed> $data)
      * @method void toBeArrayWithoutObjectsRecursively()
      */
-    class Expectation extends BaseExpectation
+    final class Expectation
     {
     }
 }

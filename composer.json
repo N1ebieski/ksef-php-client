@@ -50,7 +50,8 @@
         "pestphp/pest": "^5.0",
         "pestphp/pest-plugin-drift": "^5.0",
         "friendsofphp/php-cs-fixer": "^3.95",
-        "symfony/cache": "^8.1"
+        "symfony/cache": "^8.1",
+        "pestphp/pest-plugin-phpstan": "^5.2"
     },
     "suggest": {
         "endroid/qr-code": "^6.1 - Enables QR code generation through EndroidV6QRCodeGenerator",
