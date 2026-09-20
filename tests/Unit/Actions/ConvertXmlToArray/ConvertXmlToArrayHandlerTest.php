@@ -45,12 +45,19 @@ test('all-caps element names are not lowercased', function () use ($ns): void {
 
     $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
-    expect($array)->toHaveKey('NIP')->not()->toHaveKey('nip')->not()->toHaveKey('nIP');
-    expect($array)->toHaveKey('GLN')->not()->toHaveKey('gln')->not()->toHaveKey('gLN');
-    expect($array)->toHaveKey('SWIFT')->not()->toHaveKey('swift')->not()->toHaveKey('sWIFT');
-    expect($array)->toHaveKey('KRS')->not()->toHaveKey('krs')->not()->toHaveKey('kRS');
-    expect($array)->toHaveKey('REGON')->not()->toHaveKey('regon')->not()->toHaveKey('rEGON');
-    expect($array)->toHaveKey('BDO')->not()->toHaveKey('bdo')->not()->toHaveKey('bDO');
+    expect($array)->toHaveKey('NIP')
+        ->not()->toHaveKey('nip')
+        ->not()->toHaveKeys(['nIP', 'GLN'])
+        ->not()->toHaveKey('gln')
+        ->not()->toHaveKeys(['gLN', 'SWIFT'])
+        ->not()->toHaveKey('swift')
+        ->not()->toHaveKeys(['sWIFT', 'KRS'])
+        ->not()->toHaveKey('krs')
+        ->not()->toHaveKeys(['kRS', 'REGON'])
+        ->not()->toHaveKey('regon')
+        ->not()->toHaveKeys(['rEGON', 'BDO'])
+        ->not()->toHaveKey('bdo')
+        ->not()->toHaveKey('bDO');
 });
 
 test('XML attributes are available under @attributes key with original case', function () use ($ns): void {
@@ -97,8 +104,7 @@ test('single element does not produce indexed array', function () use ($ns): voi
 
     $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
-    expect($array['FaWiersz'])->toBeArray();
-    expect($array['FaWiersz'])->toHaveKey('NrWierszaFa');
+    expect($array['FaWiersz'])->toBeArray()->toHaveKey('NrWierszaFa');
     expect($array['FaWiersz']['NrWierszaFa'])->toBe('1');
 });
 

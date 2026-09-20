@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesByInvoiceHashAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
-use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
@@ -53,9 +52,7 @@ test('generate qr codes by invoice hash', function (): void {
         contextIdentifierGroup: $contextIdentifierGroup
     ));
 
-    expect($qrCodes)
-        ->toHaveProperty('code1')
-        ->toHaveProperty('code2');
+    expect($qrCodes)->toHaveProperties(['code1', 'code2']);
 
     expect($qrCodes->code1)->toHaveProperty('raw');
 

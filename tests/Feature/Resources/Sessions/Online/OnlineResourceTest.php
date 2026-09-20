@@ -12,7 +12,6 @@ use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\DN;
-use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\CertificateFactory;
@@ -87,9 +86,7 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
         }
     });
 
-    expect($statusResponse)->toHaveProperty('upoDownloadUrl');
-
-    expect($statusResponse)->toHaveProperty('ksefNumber');
+    expect($statusResponse)->toHaveProperties(['upoDownloadUrl', 'ksefNumber']);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
         qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),

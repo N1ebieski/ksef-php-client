@@ -10,6 +10,9 @@ return \Rector\Config\RectorConfig::configure()
     ->withRules([
         \N1ebieski\KSEFClient\Overrides\Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
     ])
+    ->withConfiguredRule(\Pest\Rector\Rules\ChainExpectCallsRector::class, [
+        'merge_different_variables' => false,
+    ])
     ->withSkip([
         \Rector\Php82\Rector\Class_\ReadOnlyClassRector::class,
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
@@ -33,4 +36,7 @@ return \Rector\Config\RectorConfig::configure()
         privatization: true,
         phpunitCodeQuality: true
     )
+    ->withSets([
+        \Pest\Rector\Set\PestSetList::CODING_STYLE,
+    ])
     ->withPhpSets(php84: true);

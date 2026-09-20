@@ -83,9 +83,9 @@ test('fromXml handles empty nodes in an invoice with an attachment', function ()
         throw new RuntimeException('Expected Zalacznik DTO');
     }
 
-    expect($deserialized->stopka->toArray())->toBe([]);
+    expect($deserialized->stopka->toArray())->toBeEmpty();
     expect($deserialized->podmiot1->daneKontaktowe)->toHaveCount(2);
-    expect($deserialized->podmiot1->daneKontaktowe[0]->toArray())->toBe([]);
-    expect($deserialized->podmiot1->daneKontaktowe[1]->toArray())->toBe([]);
-    expect($deserialized->zalacznik->blokDanych[0]->tabela[2]->wiersz[1]->wKom[3]->value)->toBe('');
+    expect($deserialized->podmiot1->daneKontaktowe[0]->toArray())->toBeEmpty();
+    expect($deserialized->podmiot1->daneKontaktowe[1]->toArray())->toBeEmpty();
+    expect($deserialized->zalacznik->blokDanych[0]->tabela[2]->wiersz[1]->wKom[3]->value)->toBeEmpty();
 });

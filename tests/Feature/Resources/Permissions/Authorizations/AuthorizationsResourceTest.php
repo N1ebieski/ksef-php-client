@@ -6,7 +6,6 @@ use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerat
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
 use N1ebieski\KSEFClient\ClientBuilder;
-use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Faktura as FakturaRR;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
@@ -15,7 +14,6 @@ use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaRR\FakturaSprzedazyTowaruRolniczegoFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
-use N1ebieski\KSEFClient\ValueObjects\QRCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\KsefNumber;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Authorizations\AuthorizationPermissionType;
 
@@ -125,9 +123,7 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
         }
     });
 
-    expect($statusResponse)->toHaveProperty('upoDownloadUrl');
-
-    expect($statusResponse)->toHaveProperty('ksefNumber');
+    expect($statusResponse)->toHaveProperties(['upoDownloadUrl', 'ksefNumber']);
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
         qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),

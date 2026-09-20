@@ -137,8 +137,9 @@ test('fromXml populates Podmiot3 with Rola and Udzial correctly', function (): v
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->podmiot3)->not()->toBeInstanceOf(Optional::class);
-    expect($deserialized->podmiot3)->toHaveCount(1);
+    expect($deserialized->podmiot3)
+        ->not()->toBeInstanceOf(Optional::class)
+        ->toHaveCount(1);
 
     $podmiot3 = $deserialized->podmiot3[0];
 

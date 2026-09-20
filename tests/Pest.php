@@ -28,62 +28,58 @@ use Pest\Expectation;
 |
 */
 
-uses(UnitAbstractTestCase::class)->in('Unit');
-uses(FeatureAbstractTestCase::class)
-    ->beforeAll(function (): void {
-        $client = new ClientBuilder()
-            ->withMode(Mode::Test)
-            ->withIdentifier(Env::string('NIP_1'))
-            ->withCertificatePath(
-                Utility::basePath(Env::string('CERTIFICATE_PATH_1')),
-                Env::string('CERTIFICATE_PASSPHRASE_1')
-            )
-            ->build();
+pest()->extend(UnitAbstractTestCase::class)->in('Unit');
+pest()->extend(FeatureAbstractTestCase::class)->beforeAll(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->withIdentifier(Env::string('NIP_1'))
+        ->withCertificatePath(
+            Utility::basePath(Env::string('CERTIFICATE_PATH_1')),
+            Env::string('CERTIFICATE_PASSPHRASE_1')
+        )
+        ->build();
 
-        $limitsFixture = new LimitsRequestFixture();
+    $limitsFixture = new LimitsRequestFixture();
 
-        // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
-        $client->testdata()->rateLimits()->limits([
-            'rateLimits' => [
-                ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
-                'invoiceMetadata' => [
-                    'perSecond' => 1,
-                    'perMinute' => 1,
-                    'perHour' => 100,
-                ]
+    // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
+    $client->testdata()->rateLimits()->limits([
+        'rateLimits' => [
+            ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
+            'invoiceMetadata' => [
+                'perSecond' => 1,
+                'perMinute' => 1,
+                'perHour' => 100,
             ]
+        ]
+    ]);
+})->beforeEach(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->build();
+
+    try {
+        $client->testdata()->person()->create([
+            'nip' => Env::string('NIP_1'),
+            'pesel' => Env::string('PESEL_1'),
+            'isBailiff' => false,
+            'description' => 'testing',
         ]);
-    })
-    ->beforeEach(function (): void {
-        $client = new ClientBuilder()
-            ->withMode(Mode::Test)
-            ->build();
-
-        try {
-            $client->testdata()->person()->create([
-                'nip' => Env::string('NIP_1'),
-                'pesel' => Env::string('PESEL_1'),
-                'isBailiff' => false,
-                'description' => 'testing',
-            ]);
-        } catch (BadRequestException $exception) {
-            if (str_starts_with($exception->getMessage(), '30001')) {
-                // ignore
-            }
+    } catch (BadRequestException $exception) {
+        if (str_starts_with($exception->getMessage(), '30001')) {
+            // ignore
         }
-    })
-    ->afterAll(function (): void {
-        $client = new ClientBuilder()
-            ->withMode(Mode::Test)
-            ->build();
+    }
+})->afterAll(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->build();
 
-        foreach (['NIP_1', 'NIP_2', 'NIP_3'] as $nip) {
-            $client->testdata()->subject()->remove([
-                'subjectNip' => Env::string($nip),
-            ]);
-        }
-    })
-    ->in('Feature');
+    foreach (['NIP_1', 'NIP_2', 'NIP_3'] as $nip) {
+        $client->testdata()->subject()->remove([
+            'subjectNip' => Env::string($nip),
+        ]);
+    }
+})->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
