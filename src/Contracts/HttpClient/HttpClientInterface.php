@@ -17,7 +17,7 @@ interface HttpClientInterface
 
     /**
      * @param array<int, Request> $requests
-     * @return array<int, ResponseInterface|null>
+     * @return array<int|string, ResponseInterface|null>
      */
     public function sendAsyncRequest(array $requests): array;
 

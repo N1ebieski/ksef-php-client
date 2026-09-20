@@ -14,7 +14,7 @@ final class OpenAndSendResponse implements OpenAndSendResponseInterface
     public readonly BaseResponseInterface $baseOpenResponse;
 
     /**
-     * @param array<int, ResponseInterface|null> $partUploadResponses
+     * @param array<int|string, ResponseInterface|null> $partUploadResponses
      */
     public function __construct(
         private readonly ResponseInterface $openResponse,
