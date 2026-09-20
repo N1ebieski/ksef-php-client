@@ -11,6 +11,7 @@ return \Rector\Config\RectorConfig::configure()
         \N1ebieski\KSEFClient\Overrides\Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
     ])
     ->withSkip([
+        \Rector\Php82\Rector\Class_\ReadOnlyClassRector::class,
         \Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector::class,
         \Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector::class,
         \Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector::class => [
