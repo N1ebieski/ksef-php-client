@@ -108,6 +108,9 @@ jobs:
       - name: Run Pest Unit tests
         run: ./vendor/bin/pest tests/Unit --parallel --ci
 
+      - name: Run Pest Architecture tests
+        run: ./vendor/bin/pest tests/Arch.php --parallel --ci
+
       - name: Run Pest Feature tests
         if: matrix.php == '8.4'
         run: ./vendor/bin/pest tests/Feature --parallel --ci
