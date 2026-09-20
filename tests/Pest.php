@@ -20,6 +20,7 @@ use Pest\Arch\Expectations\Targeted;
 use Pest\Arch\Support\FileLineFinder;
 use Pest\Expectation;
 use PHPUnit\Architecture\Elements\ObjectDescription;
+use ReflectionProperty;
 
 /** @var Expectation<mixed> $this */
 
@@ -88,12 +89,13 @@ pest()->extend(FeatureAbstractTestCase::class)->beforeAll(function (): void {
 })->in('Feature');
 
 expect()->extend('toHaveReadonlyProperties', function (): ArchExpectation {
+    /** @var Expectation<array<int, string>|string> $this */
     return Targeted::make(
         $this,
         fn (ObjectDescription $object): bool => isset($object->reflectionClass)
             && array_filter(
                 $object->reflectionClass->getProperties(),
-                fn (\ReflectionProperty $property): bool => ! $property->isReadOnly()
+                fn (ReflectionProperty $property): bool => ! $property->isReadOnly()
             ) === [],
         'to have readonly properties',
         FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),

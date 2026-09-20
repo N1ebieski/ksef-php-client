@@ -52,8 +52,7 @@ test('generate qr codes by invoice hash', function (): void {
         invoiceHash: $invoiceHash,
         mode: Mode::Test,
         certificate: $certificate,
-        certificateSerialNumber: $certificateSerialNumber,
-        contextIdentifierGroup: $contextIdentifierGroup
+        contextIdentifierGroup: $contextIdentifierGroup,
     ));
 
     expect($qrCodes)->toHaveProperties(['code1', 'code2']);

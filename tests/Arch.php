@@ -74,7 +74,7 @@ arch()->expect('N1ebieski\KSEFClient\Actions')
 arch()->expect('N1ebieski\KSEFClient\Actions')
     ->toExtend(AbstractHandler::class)
     ->mergeExcludeCallbacks([
-        fn (ObjectDescription $object) => excludeSuffix($object, 'Handler'),
+        fn (ObjectDescription $object): bool => excludeSuffix($object, 'Handler'),
     ]);
 
 arch()->expect('N1ebieski\KSEFClient\Actions')
@@ -85,7 +85,7 @@ arch()->expect('N1ebieski\KSEFClient\Actions')
 arch()->expect('N1ebieski\KSEFClient\Actions')
     ->toExtend(AbstractAction::class)
     ->mergeExcludeCallbacks([
-        fn (ObjectDescription $object) => excludeSuffix($object, 'Action'),
+        fn (ObjectDescription $object): bool => excludeSuffix($object, 'Action'),
     ]);
 
 arch()->expect('N1ebieski\KSEFClient\Actions')
@@ -126,7 +126,7 @@ arch()->expect('N1ebieski\KSEFClient\Requests')
     ->classes()
     ->toExtend(RequestAbstractHandler::class)
     ->mergeExcludeCallbacks([
-        fn (ObjectDescription $object) => excludeSuffix($object, 'Handler'),
+        fn (ObjectDescription $object): bool => excludeSuffix($object, 'Handler'),
     ]);
 
 arch()->expect('N1ebieski\KSEFClient\Requests')
@@ -138,7 +138,7 @@ arch()->expect('N1ebieski\KSEFClient\Requests')
     ->classes()
     ->toExtend(AbstractRequest::class)
     ->mergeExcludeCallbacks([
-        fn (ObjectDescription $object) => excludeSuffix($object, 'Request'),
+        fn (ObjectDescription $object): bool => excludeSuffix($object, 'Request'),
     ]);
 
 arch()->expect('N1ebieski\KSEFClient\Requests')

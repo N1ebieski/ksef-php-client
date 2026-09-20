@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N1ebieski\KSEFClient\Factories;
 
-use Deprecated;
 use N1ebieski\KSEFClient\ValueObjects\Certificate;
 use N1ebieski\KSEFClient\ValueObjects\CertificatePath;
 use OpenSSLAsymmetricKey;
@@ -13,18 +12,6 @@ use SensitiveParameter;
 
 final class CertificateFactory extends AbstractFactory
 {
-    #[Deprecated('Use makeFromCertificatePath instead')]
-    public static function make(CertificatePath $certificatePath): Certificate
-    {
-        return self::makeFromCertificatePath($certificatePath);
-    }
-
-    #[Deprecated('Use makeFromPkcs8 instead')]
-    public static function makeFromString(string $certificate, #[SensitiveParameter] OpenSSLAsymmetricKey | string $privateKey, #[SensitiveParameter] ?string $passphrase = null): Certificate
-    {
-        return self::makeFromPkcs8($certificate, $privateKey, $passphrase);
-    }
-
     public static function makeFromCertificatePath(CertificatePath $certificatePath): Certificate
     {
         $pkcs12 = file_get_contents($certificatePath->path);
