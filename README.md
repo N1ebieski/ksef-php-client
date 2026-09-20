@@ -28,7 +28,6 @@ Main features:
 
 - [Get Started](#get-started)
     - [QR code generator](#qr-code-generator)
-    - [KSeF pdf generator](#ksef-pdf-generator)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
         - [Deserialization](#deserialization)
@@ -241,8 +240,6 @@ return new QRCodeGeneratorImage($raw, 'image/svg+xml');
 
 Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
 </details>
-
-### [KSeF pdf generator](https://github.com/N1ebieski/ksef-pdf-generator)
 
 ### Client configuration
 
