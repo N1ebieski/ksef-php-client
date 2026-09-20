@@ -32,7 +32,7 @@ abstract class AbstractTestCase extends TestCase
         ?string $certificatePassphrase = null,
         ?EncryptionKey $encryptionKey = null
     ): ClientResourceInterface {
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
             ->withIdentifier($identifier ?? Env::string('NIP_1'))
             ->withLogPath(Utility::basePath('var/logs/monolog.log'))

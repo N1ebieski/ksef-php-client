@@ -30,7 +30,7 @@ final class AdministrationResource extends AbstractResource implements Administr
                 $request = GrantsRequest::from($request, $this->valinorCache);
             }
 
-            return (new GrantsHandler($this->client))->handle($request);
+            return new GrantsHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

@@ -36,7 +36,7 @@ final class CollectiveIdentifiersResource extends AbstractResource implements Co
                 $request = CreateRequest::from($request, $this->valinorCache);
             }
 
-            return (new CreateHandler($this->client))->handle($request);
+            return new CreateHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -49,7 +49,7 @@ final class CollectiveIdentifiersResource extends AbstractResource implements Co
                 $request = InvoicesRequest::from($request, $this->valinorCache);
             }
 
-            return (new InvoicesHandler($this->client))->handle($request);
+            return new InvoicesHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -62,7 +62,7 @@ final class CollectiveIdentifiersResource extends AbstractResource implements Co
                 $request = ListRequest::from($request, $this->valinorCache);
             }
 
-            return (new ListHandler($this->client))->handle($request);
+            return new ListHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -75,7 +75,7 @@ final class CollectiveIdentifiersResource extends AbstractResource implements Co
                 $request = QueryRequest::from($request, $this->valinorCache);
             }
 
-            return (new QueryHandler($this->client))->handle($request);
+            return new QueryHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

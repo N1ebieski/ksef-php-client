@@ -32,7 +32,7 @@ final class ContextResource extends AbstractResource implements ContextResourceI
                 $request = BlockRequest::from($request, $this->valinorCache);
             }
 
-            return (new BlockHandler($this->client))->handle($request);
+            return new BlockHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -45,7 +45,7 @@ final class ContextResource extends AbstractResource implements ContextResourceI
                 $request = UnblockRequest::from($request, $this->valinorCache);
             }
 
-            return (new UnblockHandler($this->client))->handle($request);
+            return new UnblockHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

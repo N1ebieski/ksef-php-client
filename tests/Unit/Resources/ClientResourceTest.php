@@ -24,7 +24,7 @@ dataset('resourceProvider', fn (): array => [
 
 test('auto access token refresh', function (string $resource): void {
     /** @var AbstractTestCase $this */
-    $responseFixture = (new RefreshResponseFixture())->withValidUntil(new DateTimeImmutable('+15 minutes'));
+    $responseFixture = new RefreshResponseFixture()->withValidUntil(new DateTimeImmutable('+15 minutes'));
 
     $accessToken = new AccessToken('access-token', new DateTimeImmutable('-15 minutes'));
     $refreshToken = new RefreshToken('refresh-token', new DateTimeImmutable('+7 days'));

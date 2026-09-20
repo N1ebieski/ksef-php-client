@@ -33,10 +33,10 @@ test('If access token and refresh token with validity dates are passed to the bu
 
     $accessToken = 'access-token';
     $refreshToken = 'refresh-token';
-    $accessTokenValidUntil = (new DateTimeImmutable())->modify(sprintf('+%d days +%d minutes', random_int(1, 365), random_int(0, 1440)));
-    $refreshTokenValidUntil = (new DateTimeImmutable())->modify(sprintf('+%d days +%d minutes', random_int(366, 730), random_int(0, 1440)));
+    $accessTokenValidUntil = new DateTimeImmutable()->modify(sprintf('+%d days +%d minutes', random_int(1, 365), random_int(0, 1440)));
+    $refreshTokenValidUntil = new DateTimeImmutable()->modify(sprintf('+%d days +%d minutes', random_int(366, 730), random_int(0, 1440)));
 
-    $clientResource = (new ClientBuilder())
+    $clientResource = new ClientBuilder()
         ->withAccessToken($accessToken, $accessTokenValidUntil)
         ->withRefreshToken($refreshToken, $refreshTokenValidUntil)
         ->build();

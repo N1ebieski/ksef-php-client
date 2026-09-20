@@ -40,7 +40,7 @@ final class OnlineResource extends AbstractResource implements OnlineResourceInt
                 $request = OpenRequest::from($request, $this->valinorCache);
             }
 
-            return (new OpenHandler($this->client, $this->config))->handle($request);
+            return new OpenHandler($this->client, $this->config)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -53,7 +53,7 @@ final class OnlineResource extends AbstractResource implements OnlineResourceInt
                 $request = CloseRequest::from($request, $this->valinorCache);
             }
 
-            return (new CloseHandler($this->client))->handle($request);
+            return new CloseHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -66,11 +66,11 @@ final class OnlineResource extends AbstractResource implements OnlineResourceInt
                 $request = SendRequest::from($request, $this->valinorCache);
             }
 
-            return (new SendHandler(
+            return new SendHandler(
                 client: $this->client,
                 encryptDocument: new EncryptDocumentHandler($this->logger),
                 config: $this->config
-            ))->handle($request);
+            )->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

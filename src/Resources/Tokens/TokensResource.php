@@ -36,7 +36,7 @@ final class TokensResource extends AbstractResource implements TokensResourceInt
                 $request = CreateRequest::from($request, $this->valinorCache);
             }
 
-            return (new CreateHandler($this->client))->handle($request);
+            return new CreateHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -49,7 +49,7 @@ final class TokensResource extends AbstractResource implements TokensResourceInt
                 $request = ListRequest::from($request, $this->valinorCache);
             }
 
-            return (new ListHandler($this->client))->handle($request);
+            return new ListHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -62,7 +62,7 @@ final class TokensResource extends AbstractResource implements TokensResourceInt
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -75,7 +75,7 @@ final class TokensResource extends AbstractResource implements TokensResourceInt
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

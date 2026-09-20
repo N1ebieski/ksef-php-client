@@ -20,8 +20,8 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
  */
 dataset('validResponseProvider', function (): array {
     $requests = [
-        (new OpenAndSendRequestFixture())->withFakturaFixtures(array_map(
-            fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        new OpenAndSendRequestFixture()->withFakturaFixtures(array_map(
+            fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
                 ->withTodayDate()
                 ->withRandomInvoiceNumber(),
             range(1, 3)
@@ -65,8 +65,8 @@ test('valid response', function (OpenAndSendRequestFixture $requestFixture, Open
 
 test('invalid response without EncryptedKey', function (): void {
     /** @var AbstractTestCase $this */
-    $requestFixture = (new OpenAndSendRequestFixture())->withFakturaFixtures(array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+    $requestFixture = new OpenAndSendRequestFixture()->withFakturaFixtures(array_map(
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
         range(1, 3)

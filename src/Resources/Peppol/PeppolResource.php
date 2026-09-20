@@ -30,7 +30,7 @@ final class PeppolResource extends AbstractResource implements PeppolResourceInt
                 $request = QueryRequest::from($request, $this->valinorCache);
             }
 
-            return (new QueryHandler($this->client))->handle($request);
+            return new QueryHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

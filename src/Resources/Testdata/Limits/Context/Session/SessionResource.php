@@ -31,7 +31,7 @@ final class SessionResource extends AbstractResource implements SessionResourceI
                 $request = LimitsRequest::from($request, $this->valinorCache);
             }
 
-            return (new LimitsHandler($this->client))->handle($request);
+            return new LimitsHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -40,7 +40,7 @@ final class SessionResource extends AbstractResource implements SessionResourceI
     public function reset(): ResponseInterface
     {
         try {
-            return (new ResetHandler($this->client))->handle();
+            return new ResetHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

@@ -34,7 +34,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = DownloadRequest::from($request, $this->valinorCache);
             }
 
-            return (new DownloadHandler($this->client))->handle($request);
+            return new DownloadHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

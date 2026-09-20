@@ -23,7 +23,7 @@ final class AttachmentsResource extends AbstractResource implements AttachmentsR
     public function status(): ResponseInterface
     {
         try {
-            return (new StatusHandler($this->client))->handle();
+            return new StatusHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

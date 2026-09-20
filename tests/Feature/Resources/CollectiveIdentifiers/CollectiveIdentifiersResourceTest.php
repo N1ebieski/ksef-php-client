@@ -23,7 +23,7 @@ test('create a collective identifier for invoices and list it as the buyer', fun
 
     /** @var array<int, FakturaSprzedazyTowaruFixture> $fakturyFixtures */
     $fakturyFixtures = array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withNip(Env::string('NIP_1'))
             ->withForNip(Env::string('NIP_2'))
             ->withTodayDate()

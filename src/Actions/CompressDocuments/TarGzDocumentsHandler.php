@@ -21,7 +21,7 @@ final class TarGzDocumentsHandler extends AbstractHandler implements CompressDoc
         $tempTarGzFile = "{$tempFile}.gz";
 
         try {
-            $tar = new PharData($tempFile, FilesystemIterator::CURRENT_AS_FILEINFO, null, Phar::TAR);
+            $tar = new PharData($tempFile, FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS, null, Phar::TAR);
 
             foreach ($action->documents as $index => $document) {
                 $fileName = sprintf('%05d.xml', $index + 1);

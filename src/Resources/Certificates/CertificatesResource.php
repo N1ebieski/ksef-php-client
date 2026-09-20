@@ -32,7 +32,7 @@ final class CertificatesResource extends AbstractResource implements Certificate
     public function limits(): ResponseInterface
     {
         try {
-            return (new LimitsHandler($this->client))->handle();
+            return new LimitsHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -54,7 +54,7 @@ final class CertificatesResource extends AbstractResource implements Certificate
                 $request = QueryRequest::from($request, $this->valinorCache);
             }
 
-            return (new QueryHandler($this->client))->handle($request);
+            return new QueryHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -67,7 +67,7 @@ final class CertificatesResource extends AbstractResource implements Certificate
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -80,7 +80,7 @@ final class CertificatesResource extends AbstractResource implements Certificate
                 $request = RetrieveRequest::from($request, $this->valinorCache);
             }
 
-            return (new RetrieveHandler($this->client))->handle($request);
+            return new RetrieveHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

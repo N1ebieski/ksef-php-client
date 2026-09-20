@@ -19,7 +19,7 @@ afterEach(function () use (&$tempFile): void {
 
 test('documents are ordered by numbered names after unzip', function () use (&$tempFile): void {
     $fixtures = array_map(
-        fn (int $index) => (new FakturaSprzedazyTowaruFixture())
+        fn (int $index) => new FakturaSprzedazyTowaruFixture()
             ->withTodayDate()
             ->withInvoiceNumber(sprintf('INV-%05d', $index))
             ->data,

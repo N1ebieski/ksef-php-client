@@ -457,7 +457,7 @@ final class ClientBuilder
 
         $symmetricKeyEncryptionCertificate = base64_decode($firstSymmetricKeyEncryptionCertificate->certificate);
 
-        $certificate = (new ConvertDerToPemHandler())->handle(new ConvertDerToPemAction(
+        $certificate = new ConvertDerToPemHandler()->handle(new ConvertDerToPemAction(
             der: $symmetricKeyEncryptionCertificate,
             name: 'CERTIFICATE'
         ));
@@ -513,7 +513,7 @@ final class ClientBuilder
 
         $ksefTokenEncryptionCertificate = base64_decode($firstKsefTokenEncryptionCertificate->certificate);
 
-        $certificate = (new ConvertDerToPemHandler())->handle(new ConvertDerToPemAction(
+        $certificate = new ConvertDerToPemHandler()->handle(new ConvertDerToPemAction(
             der: $ksefTokenEncryptionCertificate,
             name: 'CERTIFICATE'
         ));

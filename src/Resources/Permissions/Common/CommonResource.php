@@ -30,7 +30,7 @@ final class CommonResource extends AbstractResource implements CommonResourceInt
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

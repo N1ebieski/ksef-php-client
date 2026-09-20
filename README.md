@@ -249,7 +249,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Production) // Choice between: Test, Demo, Production
     ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
     ->withLatarniaApiUrl($_ENV['KSEF_LATARNIA_API_URL']) // Optional, default is set by Mode selection
@@ -314,7 +314,7 @@ For best performance, it is recommended to use caching:
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withValinorCache(ValinorCacheFactory::make()) // Or other CuyZ\Valinor\Cache\Cache implementation
 ```
 
@@ -343,7 +343,7 @@ More information: https://valinor-php.dev/2.3/other/performance-and-caching/
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withKsefToken($_ENV['KSEF_KEY'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -360,7 +360,7 @@ $client = (new ClientBuilder())
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -373,7 +373,7 @@ or:
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withCertificate($_ENV['CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -393,7 +393,7 @@ use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Requests\Auth\DTOs\XadesSignature;
 use N1ebieski\KSEFClient\Requests\Auth\XadesSignature\XadesSignatureXmlRequest;
 
-$client = (new ClientBuilder())->build();
+$client = new ClientBuilder()->build();
 
 $nip = 'NIP_NUMBER';
 
@@ -1887,7 +1887,7 @@ $certificate = file_get_contents(Utility::basePath('config/certificates/certific
 
 $privateKey = file_get_contents(Utility::basePath('config/certificates/privateKey.key'));
 
-$certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+$certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
     new ConvertCertificateToPkcs12Action(
         certificate: CertificateFactory::makeFromPkcs8($certificate, $privateKey, 'password'),
         passphrase: 'password'
@@ -1920,7 +1920,7 @@ use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier('NIP_NUMBER')
     // To generate the KSEF certificate, you have to authorize the qualified certificate the first time
@@ -1934,7 +1934,7 @@ $dn = DN::from($dataResponse);
 // You can choose beetween EC or RSA private key type
 $csr = CSRFactory::make($dn, PrivateKeyType::EC);
 
-$csrToDer = (new ConvertPemToDerHandler())->handle(new ConvertPemToDerAction($csr->raw));
+$csrToDer = new ConvertPemToDerHandler()->handle(new ConvertPemToDerAction($csr->raw));
 
 $sendResponse = $client->certificates()->enrollments()->send([
     'certificateName' => 'My first certificate',
@@ -1965,11 +1965,11 @@ $retrieveResponse = $client->certificates()->retrieve([
 
 $certificate = base64_decode($retrieveResponse->certificates[0]->certificate);
 
-$certificateToPem = (new ConvertDerToPemHandler())->handle(
+$certificateToPem = new ConvertDerToPemHandler()->handle(
     new ConvertDerToPemAction($certificate, 'CERTIFICATE')
 );
 
-$certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+$certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
     new ConvertCertificateToPkcs12Action(
         certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
         passphrase: 'password'
@@ -2006,7 +2006,7 @@ $encryptionKey = EncryptionKeyFactory::makeRandom();
 
 $nip = 'NIP_NUMBER';
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($nip)
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
@@ -2017,7 +2017,7 @@ $openResponse = $client->sessions()->online()->open([
     'formCode' => 'FA (3)',
 ])->object();
 
-$fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+$fakturaFixture = new FakturaSprzedazyTowaruFixture()
     ->withRandomInvoiceNumber()
     ->withNip($nip)
     ->withTodayDate();
@@ -2106,7 +2106,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     invoiceDocument $faktura->toXml(),
     upoDocument: $upo,
@@ -2143,7 +2143,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     confirmationDocument: $faktura->toXml(),
     qrCodes: $qrCodes
@@ -2172,7 +2172,7 @@ $encryptionKey = EncryptionKeyFactory::makeRandom();
 
 $nip = 'NIP_NUMBER';
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($nip)
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
@@ -2180,7 +2180,7 @@ $client = (new ClientBuilder())
     ->build();
 
 $faktury = array_map(
-    fn () => (new FakturaSprzedazyTowaruFixture())
+    fn () => new FakturaSprzedazyTowaruFixture()
         ->withTodayDate()
         ->withNip($nip)
         ->withRandomInvoiceNumber()
@@ -2257,7 +2257,7 @@ $certificate = CertificateFactory::makeFromCertificatePath(
     CertificatePath::from($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
 );
 
-$fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+$fakturaFixture = new FakturaSprzedazyTowaruFixture()
     ->withTodayDate()
     ->withNip($nip)
     ->withRandomInvoiceNumber();
@@ -2317,7 +2317,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     invoiceDocument: $faktura->toXml(),
     qrCodes: $qrCodes
@@ -2346,7 +2346,7 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 
 $encryptionKey = EncryptionKeyFactory::makeRandom();
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($_ENV['NIP_NUMBER'])
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])

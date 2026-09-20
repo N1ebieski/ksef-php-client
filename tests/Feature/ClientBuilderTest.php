@@ -55,7 +55,7 @@ test('auto authorization via KSEF certificate path .p12', function (PrivateKeyTy
 
     $csr = CSRFactory::make($dn, $privateKeyType);
 
-    $csrToDer = (new ConvertPemToDerHandler())->handle(new ConvertPemToDerAction($csr->raw));
+    $csrToDer = new ConvertPemToDerHandler()->handle(new ConvertPemToDerAction($csr->raw));
 
     /** @var object{referenceNumber: string} */
     $sendResponse = $client->certificates()->enrollments()->send([
@@ -89,11 +89,11 @@ test('auto authorization via KSEF certificate path .p12', function (PrivateKeyTy
 
     $certificate = base64_decode((string) $retrieveResponse->certificates[0]->certificate);
 
-    $certificateToPem = (new ConvertDerToPemHandler())->handle(
+    $certificateToPem = new ConvertDerToPemHandler()->handle(
         new ConvertDerToPemAction($certificate, 'CERTIFICATE')
     );
 
-    $certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+    $certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
         new ConvertCertificateToPkcs12Action(
             certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
             passphrase: Env::string('KSEF_AUTH_CERTIFICATE_PASSPHRASE_1')
@@ -104,7 +104,7 @@ test('auto authorization via KSEF certificate path .p12', function (PrivateKeyTy
 
     $this->revokeCurrentSession($client);
 
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->withIdentifier(Env::string('NIP_1'))
         ->withCertificatePath(Utility::basePath(Env::string('KSEF_AUTH_CERTIFICATE_PATH_1')), Env::string('KSEF_AUTH_CERTIFICATE_PASSPHRASE_1'))
@@ -135,7 +135,7 @@ test('auto authorization via certificate .p12', function (): void {
 
     $certificate = CertificateFactory::makeFromPkcs12($pkcs12, Env::string('CERTIFICATE_PASSPHRASE_1'));
 
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->withIdentifier(Env::string('NIP_1'))
         ->withCertificate($certificate)
@@ -168,7 +168,7 @@ test('auto authorization via KSEF Token', function (): void {
 
     $this->revokeCurrentSession($client);
 
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->withIdentifier(Env::string('NIP_1'))
         ->withKsefToken($response->token)

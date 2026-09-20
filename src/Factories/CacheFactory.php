@@ -12,10 +12,7 @@ use Symfony\Component\Cache\Psr16Cache;
 
 final class CacheFactory extends AbstractFactory
 {
-    /**
-     * @var string
-     */
-    private const NAMESPACE = 'ksef-php-client';
+    private const string NAMESPACE = 'ksef-php-client';
 
     public static function make(?CachePath $path = null): ?CacheInterface
     {
