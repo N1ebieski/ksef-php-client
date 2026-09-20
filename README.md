@@ -27,9 +27,8 @@ Main features:
 ## Table of Contents
 
 - [Get Started](#get-started)
-    - [Suggestions](#suggestions)
-        - [QR code generator](#qr-code-generator)
-        - [KSeF pdf generator](#ksef-pdf-generator)
+    - [QR code generator](#qr-code-generator)
+    - [KSeF pdf generator](#ksef-pdf-generator)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
         - [Deserialization](#deserialization)
@@ -201,8 +200,6 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
-### Suggestions
-
 <details>
     <summary>
         <h4>QR code generator</h4>
@@ -245,7 +242,7 @@ return new QRCodeGeneratorImage($raw, 'image/svg+xml');
 Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
 </details>
 
-#### [KSeF pdf generator](https://github.com/N1ebieski/ksef-pdf-generator)
+### [KSeF pdf generator](https://github.com/N1ebieski/ksef-pdf-generator)
 
 ### Client configuration
 
