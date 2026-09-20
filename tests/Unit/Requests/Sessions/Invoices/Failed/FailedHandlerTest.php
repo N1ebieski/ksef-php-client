@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Sessions\Invoices\Failed;
+
 use N1ebieski\KSEFClient\Requests\Sessions\Invoices\Failed\FailedRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Invoices\Failed\FailedRequestFixture;

@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Permissions\Authorizations;
+
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
@@ -16,6 +20,7 @@ use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\KsefNumber;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Authorizations\AuthorizationPermissionType;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

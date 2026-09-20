@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Auth\KsefToken;
+
 use N1ebieski\KSEFClient\Requests\Auth\KsefToken\KsefTokenRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Auth\KsefToken\KsefTokenRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Auth\KsefToken\KsefTokenResponseFixture;

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Factories;
+
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\RateLimitException;
 use N1ebieski\KSEFClient\Factories\ExceptionFactory;

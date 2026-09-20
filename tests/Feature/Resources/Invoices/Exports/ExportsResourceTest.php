@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Invoices\Exports;
+
+use DateTimeImmutable;
+use DateTimeZone;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentHandler;
 use N1ebieski\KSEFClient\ClientBuilder;
@@ -14,6 +18,8 @@ use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedaz
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Testdata\Subject\SubjectType;
+use Throwable;
+use ZipArchive;
 
 /** @var AbstractTestCase $this */
 

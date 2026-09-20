@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Validator;
+
+use DateTimeImmutable;
+use DateTimeZone;
 use N1ebieski\KSEFClient\Exceptions\RuleValidationException;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;

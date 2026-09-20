@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Sessions\Invoices;
+
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Online\Send\SendRequestFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Peppol\Query;
+
 use N1ebieski\KSEFClient\Requests\Peppol\Query\QueryRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Peppol\Query\QueryRequestFixture;

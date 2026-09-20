@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\ValueObjects;
+
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
 
 test('ensure that class builds a data uri from the given mime type', function (): void {

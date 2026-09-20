@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Sessions\Upo;
+
 use N1ebieski\KSEFClient\Requests\Sessions\Upo\UpoRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Upo\UpoRequestFixture;

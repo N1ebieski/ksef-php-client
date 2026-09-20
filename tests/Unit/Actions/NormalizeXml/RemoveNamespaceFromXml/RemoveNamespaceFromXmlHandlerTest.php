@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\NormalizeXml\RemoveNamespaceFromXml;
+
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlAction;
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
+use RuntimeException;
 
 test('removes namespace from root element', function (): void {
     $xml = <<<XML

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support\Concerns;
+
 use N1ebieski\KSEFClient\Support\Concerns\HasFromArray;
 
 class ExampleDTO

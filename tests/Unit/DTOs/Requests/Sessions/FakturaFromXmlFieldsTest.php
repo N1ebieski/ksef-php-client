@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\DTOs\Requests\Sessions;
+
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\KorektaGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\P_19AGroup;

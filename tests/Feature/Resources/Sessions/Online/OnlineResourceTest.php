@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Sessions\Online;
+
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Action;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Handler;
@@ -8,9 +12,9 @@ use N1ebieski\KSEFClient\Actions\ConvertDerToPem\ConvertDerToPemHandler;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerAction;
 use N1ebieski\KSEFClient\Actions\ConvertPemToDer\ConvertPemToDerHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\DN;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -28,6 +32,7 @@ use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\KsefNumber;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

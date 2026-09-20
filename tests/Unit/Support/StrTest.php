@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support;
+
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsAction;
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsHandler;
 use N1ebieski\KSEFClient\Support\Str;
+use ZipArchive;
 
 test('returns false for plain text', function (): void {
     $text = 'Sample text without binary characters 1234!';

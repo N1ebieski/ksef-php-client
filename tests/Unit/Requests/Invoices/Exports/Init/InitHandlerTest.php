@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Invoices\Exports\Init;
+
 use N1ebieski\KSEFClient\Requests\Invoices\Exports\Init\InitRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Invoices\Exports\Init\InitRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Invoices\Exports\Init\InitResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
+use RuntimeException;
 
 /** @var AbstractTestCase $this */
 

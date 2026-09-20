@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Auth\Sessions\List;
+
 use N1ebieski\KSEFClient\Requests\Auth\Sessions\List\ListRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Auth\Sessions\List\ListRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Auth\Sessions\List\ListResponseFixture;

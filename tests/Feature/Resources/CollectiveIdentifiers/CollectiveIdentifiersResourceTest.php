@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\CollectiveIdentifiers;
+
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 use N1ebieski\KSEFClient\Support\Env;
@@ -10,6 +12,7 @@ use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\AbstractFaktura
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Requests\CompressionType;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Factories;
+
 use N1ebieski\KSEFClient\Factories\EncryptedKeyFactory;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\KsefPublicKey;

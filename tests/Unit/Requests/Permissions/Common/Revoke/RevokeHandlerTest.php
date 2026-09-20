@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Permissions\Common\Revoke;
+
 use N1ebieski\KSEFClient\Requests\Permissions\Common\Revoke\RevokeRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Permissions\Common\Revoke\RevokeRequestFixture;

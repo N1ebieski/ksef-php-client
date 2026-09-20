@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Sessions\Online\Open;
+
 use N1ebieski\KSEFClient\Requests\Sessions\Online\Open\OpenRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Online\Open\OpenRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Online\Open\OpenResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
+use RuntimeException;
 
 /** @var AbstractTestCase $this */
 

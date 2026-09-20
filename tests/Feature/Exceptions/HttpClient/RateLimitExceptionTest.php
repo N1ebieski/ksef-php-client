@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Exceptions\HttpClient;
+
+use DateTimeImmutable;
+use DateTimeZone;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\RateLimitException;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Testdata\RateLimits\Limits;
+
 use N1ebieski\KSEFClient\Requests\Testdata\RateLimits\Limits\LimitsRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\LimitsRequestFixture;

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\CollectiveIdentifiers\Create;
+
 use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Create\CreateRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Create\CreateRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Create\CreateResponseFixture;

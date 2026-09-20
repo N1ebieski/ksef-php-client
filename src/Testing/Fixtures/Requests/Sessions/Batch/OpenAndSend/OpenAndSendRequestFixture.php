@@ -7,7 +7,7 @@ namespace N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Batch\OpenAndS
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\AbstractFakturaFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 
-class OpenAndSendRequestFixture extends AbstractRequestFixture
+final class OpenAndSendRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>

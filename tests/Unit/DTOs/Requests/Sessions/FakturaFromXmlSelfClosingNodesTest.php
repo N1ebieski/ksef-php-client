@@ -2,11 +2,19 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\DTOs\Requests\Sessions;
+
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMXPath;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Stopka;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Zalacznik;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaZZalacznikiemFixture;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
+use RuntimeException;
 
 test('fromXml handles empty nodes in an invoice with an attachment', function (): void {
     $fixture = new FakturaZZalacznikiemFixture();

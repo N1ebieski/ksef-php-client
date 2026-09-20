@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Permissions\Attachments\Status;
+
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Permissions\Attachments\Status\StatusResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;

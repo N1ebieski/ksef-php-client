@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\GenerateQRCodes\Adapters;
+
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use Endroid\QrCode\Writer\SvgWriter;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
+use RuntimeException;
 
 test('ensure that generator renders the label only when it is given', function (): void {
     $qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());

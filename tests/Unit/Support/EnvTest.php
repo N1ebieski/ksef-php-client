@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support;
+
 use N1ebieski\KSEFClient\Support\Env;
+use RuntimeException;
 
 test('returns an environment variable as a string', function (): void {
     putenv('KSEF_TEST_ENV=value');

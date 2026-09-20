@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\CompressDocuments;
+
 use N1ebieski\KSEFClient\Actions\CompressDocuments\CompressDocumentsAction;
 use N1ebieski\KSEFClient\Actions\CompressDocuments\ZipDocumentsHandler;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
+use RuntimeException;
+use ZipArchive;
 
 /** @var string|false $tempFile */
 $tempFile = false;

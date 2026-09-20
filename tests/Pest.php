@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N1ebieski\KSEFClient\Tests;
 
 use DateTimeImmutable;
@@ -13,7 +15,11 @@ use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\Li
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase as UnitAbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use Pest\Arch\Contracts\ArchExpectation;
+use Pest\Arch\Expectations\Targeted;
+use Pest\Arch\Support\FileLineFinder;
 use Pest\Expectation;
+use PHPUnit\Architecture\Elements\ObjectDescription;
 
 /** @var Expectation<mixed> $this */
 
@@ -80,6 +86,19 @@ pest()->extend(FeatureAbstractTestCase::class)->beforeAll(function (): void {
         ]);
     }
 })->in('Feature');
+
+expect()->extend('toHaveReadonlyProperties', function (): ArchExpectation {
+    return Targeted::make(
+        $this,
+        fn (ObjectDescription $object): bool => isset($object->reflectionClass)
+            && array_filter(
+                $object->reflectionClass->getProperties(),
+                fn (\ReflectionProperty $property): bool => ! $property->isReadOnly()
+            ) === [],
+        'to have readonly properties',
+        FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -150,10 +169,12 @@ function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'
 }
 
 /**
+ * @template TValue of object|array<int, object>|null
+ *
  * @param array<string, mixed> $data
- * @param object|array<int, object>|null $fixtureData
+ * @param TValue $fixtureData
  */
-function toBeFixture(array $data, object|array|null $fixtureData = null): void
+function toBeFixture(array $data, $fixtureData = null): void
 {
     foreach ($data as $key => $value) {
         if (is_array($fixtureData)) {

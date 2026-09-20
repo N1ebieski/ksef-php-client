@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\GenerateQRCodes;
+
+use DateTimeImmutable;
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
@@ -18,6 +21,7 @@ use N1ebieski\KSEFClient\ValueObjects\CertificateSerialNumber;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\QRCode;
+use RuntimeException;
 
 test('generate qr codes by invoice hash', function (): void {
     $certificateSerialNumber = CertificateSerialNumber::from('014651EA9FD2407C');

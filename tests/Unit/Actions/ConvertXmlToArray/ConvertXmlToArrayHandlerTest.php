@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\ConvertXmlToArray;
+
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayAction;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayHandler;
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
+use RuntimeException;
 
 $ns = XmlNamespace::Fa3->value;
 

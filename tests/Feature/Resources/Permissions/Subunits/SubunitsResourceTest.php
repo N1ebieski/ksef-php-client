@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Permissions\Subunits;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\InternalIdFactory;
@@ -11,6 +16,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\RefreshToken;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\Personal\PersonalPermissionType;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

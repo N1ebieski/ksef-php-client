@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Sessions\Online\Send;
+
 use CuyZ\Valinor\Cache\Cache;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Requests\Sessions\Online\Send\SendRequest;

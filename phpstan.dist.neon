@@ -6,6 +6,7 @@ parameters:
 	phpVersion: 80400
 	stubFiles:
 		- vendor/pestphp/pest/src/Mixins/Expectation.php
+		- vendor/pestphp/pest/src/Expectations/OppositeExpectation.php
 		- _ide_helper.php
 	paths:
 		- src/

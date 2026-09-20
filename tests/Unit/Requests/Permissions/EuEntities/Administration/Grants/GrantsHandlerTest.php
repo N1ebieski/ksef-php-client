@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Permissions\EuEntities\Administration\Grants;
+
 use N1ebieski\KSEFClient\Requests\Permissions\EuEntities\Administration\Grants\GrantsRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Permissions\EuEntities\Administration\Grants\GrantsRequestFixture;

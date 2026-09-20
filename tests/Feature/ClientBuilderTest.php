@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Action;
 use N1ebieski\KSEFClient\Actions\ConvertCertificateToPkcs12\ConvertCertificateToPkcs12Handler;
 use N1ebieski\KSEFClient\Actions\ConvertDerToPem\ConvertDerToPemAction;
@@ -18,6 +23,7 @@ use N1ebieski\KSEFClient\ValueObjects\AccessToken;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 use N1ebieski\KSEFClient\ValueObjects\RefreshToken;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 

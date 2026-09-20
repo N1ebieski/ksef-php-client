@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\AccessToken;
 

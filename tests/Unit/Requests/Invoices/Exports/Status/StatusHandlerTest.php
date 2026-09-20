@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Invoices\Exports\Status;
+
 use N1ebieski\KSEFClient\Requests\Invoices\Exports\Status\StatusRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Invoices\Exports\Status\StatusRequestFixture;

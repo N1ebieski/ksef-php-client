@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support;
+
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Support\KeyType;

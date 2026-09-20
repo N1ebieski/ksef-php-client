@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Security\PublicKeyCertificates;
+
+use Mockery;
 use Mockery\MockInterface;
 use N1ebieski\KSEFClient\Contracts\ConfigInterface;
 use N1ebieski\KSEFClient\Contracts\HttpClient\HttpClientInterface;

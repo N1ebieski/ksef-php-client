@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Factories;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Factories\EncryptedTokenFactory;
 use N1ebieski\KSEFClient\ValueObjects\KsefPublicKey;
 use N1ebieski\KSEFClient\ValueObjects\KsefToken;

@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Permissions\Entities;
+
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
@@ -11,6 +15,7 @@ use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\Personal\PersonalPermissionType;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Testdata\Subject\SubjectType;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 
