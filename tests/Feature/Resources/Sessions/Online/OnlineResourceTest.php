@@ -205,7 +205,6 @@ test('create an offline invoice and send it', function (PrivateKeyType $privateK
         document: $faktura->toXml(),
         mode: Mode::Test,
         certificate: $certificate,
-        certificateSerialNumber: $certificateSerialNumber,
         contextIdentifierGroup: $contextIdentifierGroup
     ));
 

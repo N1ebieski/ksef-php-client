@@ -26,6 +26,7 @@ Main features:
 
 ## Table of Contents
 
+- [Upgrading from 1.x to 2.x](UPGRADE.md#upgrading-from-1.x-to-2.x)
 - [Get Started](#get-started)
     - [QR code generator](#qr-code-generator)
     - [Client configuration](#client-configuration)

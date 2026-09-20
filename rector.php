@@ -24,6 +24,9 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector::class,
         \Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector::class => [
             __DIR__ . '/src/Actions/SignDocument/SignDocumentHandler.php'
+        ],
+        \Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector::class => [
+            __DIR__ . '/tests/Arch.php'
         ]
     ])
     ->withComposerBased(phpunit: true)

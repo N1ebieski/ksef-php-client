@@ -21,8 +21,9 @@ namespace Pest {
 namespace Pest\Arch {
     /**
      * @template TValue
+     * @mixin \Pest\Expectation<TValue>
      * @method \Pest\Expectations\OppositeExpectation<TValue> not()
-     * @method \Pest\Arch\Contracts\ArchExpectation toHaveReadonlyProperties()
+     * @method PendingArchExpectation<TValue> toHaveReadonlyProperties()
      */
     final class PendingArchExpectation
     {

@@ -35,7 +35,7 @@ $generateQRCodesHandler = new GenerateQRCodesHandler(
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
 use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Generators\EndroidV6QRCodeGenerator;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
     qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder(
@@ -54,15 +54,15 @@ Any QR code library works. Implement the contract and pass your own generator:
 
 ```php
 use N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes\QRCodeGeneratorInterface;
-use N1ebieski\KSEFClient\ValueObjects\QRCodeImage;
+use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
 
 final class MyQRCodeGenerator implements QRCodeGeneratorInterface
 {
-    public function generate(string $data, ?string $label = null): QRCodeImage
+    public function generate(string $data, ?string $label = null): QRCodeGeneratorImage
     {
         // $label is the caption below the code, null when captions are disabled
 
-        return new QRCodeImage($raw, 'image/svg+xml');
+        return new QRCodeGeneratorImage($raw, 'image/svg+xml');
     }
 }
 ```
@@ -85,3 +85,10 @@ $qrCodes->code1->mimeType;  // new
 ## phpseclib 4
 
 The package now requires `phpseclib/phpseclib: ^4.0`. Since 3.x and 4.x use different namespaces they cannot be installed side by side, so if your application uses phpseclib directly, change `phpseclib3\` to `phpseclib4\`. Nothing in this package's public API exposes phpseclib types.
+
+## Removed deprecations
+
+* Properties `GenerateQRCodesAction::$certificateSerialNumber` and `GenerateQRCodesByInvoiceHashAction::$certificateSerialNumber` are no longer available. The certificate serial number is now obtained directly from the Certificate object.
+* Method `PublicKeyCertificatesResponseInterface::getFirstByPublicKeyCertificateUsage` is no longer available. Use `PublicKeyCertificatesResponseInterface::getFirstCertificateByUsage` instead and access the certificate property on the returned object.
+* Method `CertificateFactory::make` is no longer available. Use `CertificateFactory::makeFromCertificatePath` instead.
+* Method `CertificateFactory::makeFromString` is no longer available. Use `CertificateFactory::makeFromPkcs8` instead.
