@@ -202,7 +202,7 @@ composer require guzzlehttp/guzzle
 
 <details>
     <summary>
-        <h4>QR code generator</h4>
+        <h3>QR code generator</h3>
     </summary>
 
 QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
