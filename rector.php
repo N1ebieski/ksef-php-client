@@ -31,7 +31,6 @@ return \Rector\Config\RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
         privatization: true,
-        carbon: false,
         phpunitCodeQuality: true
     )
     ->withPhpSets(php84: true);
