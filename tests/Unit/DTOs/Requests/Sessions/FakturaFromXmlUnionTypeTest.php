@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\DTOs\Requests\Sessions;
+
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\BrakIDGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FormaPlatnosciGroup;
@@ -200,7 +202,7 @@ test('fromXml detects NrKSeFFaZaliczkowejGroup in FakturaZaliczkowa', function (
 
     $deserialized = Faktura::fromXml($faktura->toXml());
 
-    expect($deserialized->fa->fakturaZaliczkowa)->not->toBeInstanceOf(Optional::class);
+    expect($deserialized->fa->fakturaZaliczkowa)->not()->toBeInstanceOf(Optional::class);
     expect($deserialized->fa->fakturaZaliczkowa[0]->nrKSeFZNGroup)
         ->toBeInstanceOf(NrKSeFFaZaliczkowejGroup::class);
 });

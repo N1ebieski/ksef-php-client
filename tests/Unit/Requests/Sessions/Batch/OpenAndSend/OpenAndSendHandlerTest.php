@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Sessions\Batch\OpenAndSend;
+
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Requests\Sessions\Batch\OpenAndSend\OpenAndSendRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\AbstractFakturaFixture;
@@ -12,6 +14,7 @@ use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Batch\OpenAndSend\Op
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Sessions\Batch\OpenAndSend\SendResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
+use RuntimeException;
 
 /** @var AbstractTestCase $this */
 
@@ -20,8 +23,8 @@ use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\EncryptedKey;
  */
 dataset('validResponseProvider', function (): array {
     $requests = [
-        (new OpenAndSendRequestFixture())->withFakturaFixtures(array_map(
-            fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+        new OpenAndSendRequestFixture()->withFakturaFixtures(array_map(
+            fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
                 ->withTodayDate()
                 ->withRandomInvoiceNumber(),
             range(1, 3)
@@ -65,8 +68,8 @@ test('valid response', function (OpenAndSendRequestFixture $requestFixture, Open
 
 test('invalid response without EncryptedKey', function (): void {
     /** @var AbstractTestCase $this */
-    $requestFixture = (new OpenAndSendRequestFixture())->withFakturaFixtures(array_map(
-        fn (): AbstractFakturaFixture => (new FakturaSprzedazyTowaruFixture())
+    $requestFixture = new OpenAndSendRequestFixture()->withFakturaFixtures(array_map(
+        fn (): AbstractFakturaFixture => new FakturaSprzedazyTowaruFixture()
             ->withTodayDate()
             ->withRandomInvoiceNumber(),
         range(1, 3)

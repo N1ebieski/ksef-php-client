@@ -30,7 +30,7 @@ final class OperationsResource extends AbstractResource implements OperationsRes
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

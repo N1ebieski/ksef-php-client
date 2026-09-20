@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support\Concerns;
+
 use N1ebieski\KSEFClient\Support\Concerns\HasFromArray;
 
 class ExampleDTO
@@ -16,10 +18,8 @@ class ExampleDTO
 }
 
 test('maps DTO when array keys start with uppercase letter', function (): void {
-    $example = ExampleDTO::from([
+    ExampleDTO::from([
         'P_13_9' => 'Value',
         'Example' => 'Value',
     ]);
-
-    expect($example)->toBeInstanceOf(ExampleDTO::class);
-});
+})->throwsNoExceptions();

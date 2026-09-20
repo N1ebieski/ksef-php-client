@@ -2,27 +2,11 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support;
+
 use N1ebieski\KSEFClient\Support\Arr;
 use N1ebieski\KSEFClient\Support\Optional;
 use N1ebieski\KSEFClient\ValueObjects\Support\KeyType;
-
-test('map recursive', function (): void {
-    $array = [
-        'a' => 'b',
-        'c' => [
-            'd' => 'e',
-        ],
-    ];
-
-    $result = Arr::mapRecursive($array, fn (mixed $value): mixed => is_string($value) ? strtoupper($value) : $value);
-
-    expect($result)->toBe([
-        'a' => 'B',
-        'c' => [
-            'd' => 'E',
-        ],
-    ]);
-});
 
 test('filter recursive', function (): void {
     $array = [

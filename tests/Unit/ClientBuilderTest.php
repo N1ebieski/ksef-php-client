@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit;
+
+use DateTimeImmutable;
+use Mockery;
 use Mockery\MockInterface;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\Exception\ExceptionHandlerInterface;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\AccessToken;
 use N1ebieski\KSEFClient\ValueObjects\RefreshToken;
+use ReflectionClass;
 
 /** @var AbstractTestCase $this */
 
@@ -33,10 +38,10 @@ test('If access token and refresh token with validity dates are passed to the bu
 
     $accessToken = 'access-token';
     $refreshToken = 'refresh-token';
-    $accessTokenValidUntil = (new DateTimeImmutable())->modify(sprintf('+%d days +%d minutes', random_int(1, 365), random_int(0, 1440)));
-    $refreshTokenValidUntil = (new DateTimeImmutable())->modify(sprintf('+%d days +%d minutes', random_int(366, 730), random_int(0, 1440)));
+    $accessTokenValidUntil = new DateTimeImmutable()->modify(sprintf('+%d days +%d minutes', random_int(1, 365), random_int(0, 1440)));
+    $refreshTokenValidUntil = new DateTimeImmutable()->modify(sprintf('+%d days +%d minutes', random_int(366, 730), random_int(0, 1440)));
 
-    $clientResource = (new ClientBuilder())
+    $clientResource = new ClientBuilder()
         ->withAccessToken($accessToken, $accessTokenValidUntil)
         ->withRefreshToken($refreshToken, $refreshTokenValidUntil)
         ->build();

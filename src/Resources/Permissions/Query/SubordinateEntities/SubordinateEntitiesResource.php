@@ -30,7 +30,7 @@ final class SubordinateEntitiesResource extends AbstractResource implements Subo
                 $request = RolesRequest::from($request, $this->valinorCache);
             }
 
-            return (new RolesHandler($this->client))->handle($request);
+            return new RolesHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

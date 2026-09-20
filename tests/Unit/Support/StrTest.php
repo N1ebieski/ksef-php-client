@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Support;
+
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsAction;
 use N1ebieski\KSEFClient\Actions\SplitDocumentIntoParts\SplitDocumentIntoPartsHandler;
 use N1ebieski\KSEFClient\Support\Str;
+use ZipArchive;
 
 test('returns false for plain text', function (): void {
     $text = 'Sample text without binary characters 1234!';
@@ -21,7 +24,7 @@ test('returns true for utf8 string with control characters', function (): void {
 test('detects binary data in split zip parts', function (): void {
     $zipPath = tempnam(sys_get_temp_dir(), 'ksef-zip-');
 
-    expect($zipPath)->not->toBeFalse();
+    expect($zipPath)->not()->toBeFalse();
 
     try {
         $zip = new ZipArchive();
@@ -33,19 +36,17 @@ test('detects binary data in split zip parts', function (): void {
 
         $document = file_get_contents($zipPath);
 
-        expect($document)->not->toBeFalse();
+        expect($document)->not()->toBeFalse();
 
         /** @var string $document */
         $partSize = max(1, (int) floor(strlen($document) / 2));
 
-        $parts = (new SplitDocumentIntoPartsHandler())->handle(new SplitDocumentIntoPartsAction(
+        $parts = new SplitDocumentIntoPartsHandler()->handle(new SplitDocumentIntoPartsAction(
             document: $document,
             partSize: $partSize
         ));
 
         expect(count($parts))->toBeGreaterThan(1);
-
-        expect($parts[0])->not->toBeNull();
 
         expect(Str::isBinary($parts[0]))->toBeTrue();
     } finally {

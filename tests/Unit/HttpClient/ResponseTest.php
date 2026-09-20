@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\HttpClient;
+
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use N1ebieski\KSEFClient\HttpClient\Response;
 

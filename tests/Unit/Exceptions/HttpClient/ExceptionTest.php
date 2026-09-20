@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Exceptions\HttpClient;
+
 use N1ebieski\KSEFClient\Exceptions\HttpClient\Exception;
 
 test('returns header value by name in case-insensitive way', function (): void {

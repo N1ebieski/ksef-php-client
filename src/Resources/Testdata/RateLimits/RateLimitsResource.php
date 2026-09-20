@@ -32,7 +32,7 @@ final class RateLimitsResource extends AbstractResource implements RateLimitsRes
                 $request = LimitsRequest::from($request, $this->valinorCache);
             }
 
-            return (new LimitsHandler($this->client))->handle($request);
+            return new LimitsHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -41,7 +41,7 @@ final class RateLimitsResource extends AbstractResource implements RateLimitsRes
     public function reset(): ResponseInterface
     {
         try {
-            return (new ResetHandler($this->client))->handle();
+            return new ResetHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -50,7 +50,7 @@ final class RateLimitsResource extends AbstractResource implements RateLimitsRes
     public function production(): ResponseInterface
     {
         try {
-            return (new ProductionHandler($this->client))->handle();
+            return new ProductionHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

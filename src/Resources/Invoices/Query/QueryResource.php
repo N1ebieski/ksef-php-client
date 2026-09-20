@@ -30,7 +30,7 @@ final class QueryResource extends AbstractResource implements QueryResourceInter
                 $request = MetadataRequest::from($request, $this->valinorCache);
             }
 
-            return (new MetadataHandler($this->client))->handle($request);
+            return new MetadataHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

@@ -33,7 +33,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
                 $request = ListRequest::from($request, $this->valinorCache);
             }
 
-            return (new ListHandler($this->client))->handle($request);
+            return new ListHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -42,7 +42,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
     public function revokeCurrent(): ResponseInterface
     {
         try {
-            return (new RevokeCurrentHandler($this->client))->handle();
+            return new RevokeCurrentHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -55,7 +55,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

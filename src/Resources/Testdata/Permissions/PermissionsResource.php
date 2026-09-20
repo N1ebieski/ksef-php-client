@@ -32,7 +32,7 @@ final class PermissionsResource extends AbstractResource implements PermissionsR
                 $request = GrantsRequest::from($request, $this->valinorCache);
             }
 
-            return (new GrantsHandler($this->client))->handle($request);
+            return new GrantsHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -45,7 +45,7 @@ final class PermissionsResource extends AbstractResource implements PermissionsR
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

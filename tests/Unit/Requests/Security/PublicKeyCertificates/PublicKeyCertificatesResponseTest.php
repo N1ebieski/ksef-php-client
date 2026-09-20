@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Security\PublicKeyCertificates;
+
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use N1ebieski\KSEFClient\HttpClient\Response;
 use N1ebieski\KSEFClient\Requests\Security\PublicKeyCertificates\PublicKeyCertificatesResponse;
@@ -29,7 +31,7 @@ test('returns certificate with latest validTo after sorting by usage', function 
         PublicKeyCertificateUsage::KsefTokenEncryption
     );
 
-    expect($certificate)->not->toBeNull()
+    expect($certificate)->not()->toBeNull()
         ->and($certificate?->certificate)->toBe('certificate-newer-valid-to')
         ->and($certificate?->validTo)->toBe('2029-07-11T12:23:56.0154302+00:00');
 });

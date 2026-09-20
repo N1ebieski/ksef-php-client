@@ -30,7 +30,7 @@ final class CertificatesResource extends AbstractResource implements Certificate
                 $request = UpdateRequest::from($request, $this->valinorCache);
             }
 
-            return (new UpdateHandler($this->client))->handle($request);
+            return new UpdateHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

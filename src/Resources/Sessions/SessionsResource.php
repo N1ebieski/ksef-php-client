@@ -59,7 +59,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -72,7 +72,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
                 $request = ListRequest::from($request, $this->valinorCache);
             }
 
-            return (new ListHandler($this->client))->handle($request);
+            return new ListHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -94,7 +94,7 @@ final class SessionsResource extends AbstractResource implements SessionsResourc
                 $request = UpoRequest::from($request, $this->valinorCache);
             }
 
-            return (new UpoHandler($this->client))->handle($request);
+            return new UpoHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

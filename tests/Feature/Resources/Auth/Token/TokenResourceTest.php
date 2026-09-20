@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Auth\Token;
+
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 
 /** @var AbstractTestCase $this */

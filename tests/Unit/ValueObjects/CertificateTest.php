@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\ValueObjects;
+
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Certificate;
+use RuntimeException;
 
 /** @var AbstractTestCase $this */
 

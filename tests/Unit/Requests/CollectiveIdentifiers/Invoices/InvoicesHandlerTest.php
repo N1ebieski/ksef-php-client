@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\CollectiveIdentifiers\Invoices;
+
 use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Invoices\InvoicesRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Invoices\InvoicesRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Invoices\InvoicesResponseFixture;

@@ -28,7 +28,7 @@ final class SecurityResource extends AbstractResource implements SecurityResourc
     {
         try {
             /** @var PublicKeyCertificatesResponse */
-            return (new PublicKeyCertificatesHandler($this->client, $this->config, $this->cache))->handle();
+            return new PublicKeyCertificatesHandler($this->client, $this->config, $this->cache)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

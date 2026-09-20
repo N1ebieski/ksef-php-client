@@ -11,10 +11,7 @@ use N1ebieski\KSEFClient\ValueObjects\CachePath;
 
 final class ValinorCacheFactory extends AbstractFactory
 {
-    /**
-     * @var string
-     */
-    public const NAMESPACE = 'valinor-cache';
+    public const string NAMESPACE = 'valinor-cache';
 
     public static function make(?CachePath $path = null, bool $watcher = false): Cache
     {

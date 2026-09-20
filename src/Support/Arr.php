@@ -14,25 +14,6 @@ use N1ebieski\KSEFClient\ValueObjects\Support\KeyType;
 final class Arr
 {
     /**
-     * @param array<string|int, mixed> $array
-     * @return array<string|int, mixed>
-     */
-    public static function mapRecursive(array $array, Closure $closure): array
-    {
-        $mapped = [];
-
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $value = self::mapRecursive($value, $closure);
-            }
-
-            $mapped[$key] = $closure($value, $key);
-        }
-
-        return $mapped;
-    }
-
-    /**
      * @param array<string, mixed> $array
      * @return array<string, mixed> $array
      */
@@ -146,5 +127,16 @@ final class Arr
         }
 
         return array_is_list($data) ? $data : [$data];
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public static function ensureListOfStrings(mixed $data): array
+    {
+        return array_map(
+            fn (mixed $value): mixed => $value === [] ? '' : $value,
+            self::ensureList($data)
+        );
     }
 }

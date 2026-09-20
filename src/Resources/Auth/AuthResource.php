@@ -38,7 +38,7 @@ final class AuthResource extends AbstractResource implements AuthResourceInterfa
     public function challenge(): ResponseInterface
     {
         try {
-            return (new ChallengeHandler($this->client))->handle();
+            return new ChallengeHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -51,11 +51,11 @@ final class AuthResource extends AbstractResource implements AuthResourceInterfa
                 $request = XadesSignatureRequest::from($request, $this->valinorCache);
             }
 
-            return (new XadesSignatureHandler(
+            return new XadesSignatureHandler(
                 client: $this->client,
                 signDocument: new SignDocumentHandler(new ConvertEcdsaDerToRawHandler()),
                 config: $this->config
-            ))->handle($request);
+            )->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -68,7 +68,7 @@ final class AuthResource extends AbstractResource implements AuthResourceInterfa
                 $request = KsefTokenRequest::from($request, $this->valinorCache);
             }
 
-            return (new KsefTokenHandler($this->client))->handle($request);
+            return new KsefTokenHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -81,7 +81,7 @@ final class AuthResource extends AbstractResource implements AuthResourceInterfa
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

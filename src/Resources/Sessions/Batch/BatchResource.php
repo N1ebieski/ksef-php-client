@@ -41,12 +41,12 @@ final class BatchResource extends AbstractResource implements BatchResourceInter
                 $request = OpenAndSendRequest::from($request, $this->valinorCache);
             }
 
-            return (new OpenAndSendHandler(
+            return new OpenAndSendHandler(
                 client: $this->client,
                 encryptDocument: new EncryptDocumentHandler($this->logger),
                 splitDocumentIntoParts: new SplitDocumentIntoPartsHandler(),
                 config: $this->config
-            ))->handle($request);
+            )->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -59,7 +59,7 @@ final class BatchResource extends AbstractResource implements BatchResourceInter
                 $request = CloseRequest::from($request, $this->valinorCache);
             }
 
-            return (new CloseHandler($this->client))->handle($request);
+            return new CloseHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

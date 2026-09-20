@@ -11,7 +11,7 @@ final class CountryRule extends AbstractRule
     /**
      * @var mixed[]
      */
-    private const CODES = [
+    private const array CODES = [
         'AF', 'AX', 'AL', 'DZ', 'AD', 'AO', 'AI', 'AQ', 'AG', 'AN',
         'SA', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD',
         'BB', 'BE', 'BZ', 'BJ', 'BM', 'BT', 'BY', 'BO', 'BQ', 'BA',

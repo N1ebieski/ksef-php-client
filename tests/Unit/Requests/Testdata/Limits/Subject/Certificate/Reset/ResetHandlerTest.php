@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Testdata\Limits\Subject\Certificate\Reset;
+
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\Limits\Subject\Certificate\Reset\ResetResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;

@@ -32,7 +32,7 @@ final class AttachmentResource extends AbstractResource implements AttachmentRes
                 $request = ApproveRequest::from($request, $this->valinorCache);
             }
 
-            return (new ApproveHandler($this->client))->handle($request);
+            return new ApproveHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -45,7 +45,7 @@ final class AttachmentResource extends AbstractResource implements AttachmentRes
                 $request = RevokeRequest::from($request, $this->valinorCache);
             }
 
-            return (new RevokeHandler($this->client))->handle($request);
+            return new RevokeHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

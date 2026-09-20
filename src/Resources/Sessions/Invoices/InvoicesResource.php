@@ -38,7 +38,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -51,7 +51,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = ListRequest::from($request, $this->valinorCache);
             }
 
-            return (new ListHandler($this->client))->handle($request);
+            return new ListHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -64,7 +64,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = FailedRequest::from($request, $this->valinorCache);
             }
 
-            return (new FailedHandler($this->client))->handle($request);
+            return new FailedHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -77,7 +77,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = KsefUpoRequest::from($request, $this->valinorCache);
             }
 
-            return (new KsefUpoHandler($this->client))->handle($request);
+            return new KsefUpoHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -90,7 +90,7 @@ final class InvoicesResource extends AbstractResource implements InvoicesResourc
                 $request = UpoRequest::from($request, $this->valinorCache);
             }
 
-            return (new UpoHandler($this->client))->handle($request);
+            return new UpoHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

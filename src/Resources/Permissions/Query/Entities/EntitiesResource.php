@@ -32,7 +32,7 @@ final class EntitiesResource extends AbstractResource implements EntitiesResourc
                 $request = GrantsRequest::from($request, $this->valinorCache);
             }
 
-            return (new GrantsHandler($this->client))->handle($request);
+            return new GrantsHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -45,7 +45,7 @@ final class EntitiesResource extends AbstractResource implements EntitiesResourc
                 $request = RolesRequest::from($request, $this->valinorCache);
             }
 
-            return (new RolesHandler($this->client))->handle($request);
+            return new RolesHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

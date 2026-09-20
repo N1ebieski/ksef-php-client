@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace N1ebieski\KSEFClient\HttpClient\Adapters;
 
 use GuzzleHttp\ClientInterface as BaseClientInterface;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Pool;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -22,11 +22,13 @@ final class GuzzleHttpAdapter extends AbstractAdapter
 
         $pool = new Pool($this->client, $requests, [
             'concurrency' => $concurrency,
-            'fulfilled' => function (ResponseInterface $response, int $index) use (&$responses): void {
+            'fulfilled' => function (ResponseInterface $response, int|string $index) use (&$responses): void {
                 $responses[$index] = $response;
             },
-            'rejected' => function (RequestException $exception, int $index) use (&$responses): void {
-                $responses[$index] = $exception->getResponse();
+            'rejected' => function (mixed $reason, int|string $index) use (&$responses): void {
+                $responses[$index] = $reason instanceof ResponseException
+                    ? $reason->getResponse()
+                    : null;
             },
         ]);
 

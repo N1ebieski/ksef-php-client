@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\Testdata\Attachment\Approve;
+
 use N1ebieski\KSEFClient\Requests\Testdata\Attachment\Approve\ApproveRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Error\ErrorResponseFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\Attachment\Approve\ApproveRequestFixture;

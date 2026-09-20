@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Resources;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Auth\Token\Refresh\RefreshResponseFixture;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\AccessToken;
 use N1ebieski\KSEFClient\ValueObjects\RefreshToken;
+use RuntimeException;
 
 /** @var AbstractTestCase $this */
 
@@ -24,7 +28,7 @@ dataset('resourceProvider', fn (): array => [
 
 test('auto access token refresh', function (string $resource): void {
     /** @var AbstractTestCase $this */
-    $responseFixture = (new RefreshResponseFixture())->withValidUntil(new DateTimeImmutable('+15 minutes'));
+    $responseFixture = new RefreshResponseFixture()->withValidUntil(new DateTimeImmutable('+15 minutes'));
 
     $accessToken = new AccessToken('access-token', new DateTimeImmutable('-15 minutes'));
     $refreshToken = new RefreshToken('refresh-token', new DateTimeImmutable('+7 days'));

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N1ebieski\KSEFClient\Tests;
 
 use DateTimeImmutable;
@@ -7,12 +9,17 @@ use DateTimeInterface;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\ValueAwareInterface;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\Testdata\RateLimits\Limits\LimitsRequestFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase as FeatureAbstractTestCase;
 use N1ebieski\KSEFClient\Tests\Unit\AbstractTestCase as UnitAbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
+use Pest\Arch\Contracts\ArchExpectation;
+use Pest\Arch\Expectations\Targeted;
+use Pest\Arch\Support\FileLineFinder;
 use Pest\Expectation;
+use PHPUnit\Architecture\Elements\ObjectDescription;
 
 /** @var Expectation<mixed> $this */
 
@@ -27,63 +34,71 @@ use Pest\Expectation;
 |
 */
 
-uses(UnitAbstractTestCase::class)->in('Unit');
-uses(FeatureAbstractTestCase::class)
-    ->beforeAll(function (): void {
-        /** @var array<string, string> $_ENV */
-        $client = (new ClientBuilder())
-            ->withMode(Mode::Test)
-            ->withIdentifier($_ENV['NIP_1'])
-            ->withCertificatePath(
-                Utility::basePath($_ENV['CERTIFICATE_PATH_1']),
-                $_ENV['CERTIFICATE_PASSPHRASE_1']
-            )
-            ->build();
+pest()->extend(UnitAbstractTestCase::class)->in('Unit');
+pest()->extend(FeatureAbstractTestCase::class)->beforeAll(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->withIdentifier(Env::string('NIP_1'))
+        ->withCertificatePath(
+            Utility::basePath(Env::string('CERTIFICATE_PATH_1')),
+            Env::string('CERTIFICATE_PASSPHRASE_1')
+        )
+        ->build();
 
-        $limitsFixture = new LimitsRequestFixture();
+    $limitsFixture = new LimitsRequestFixture();
 
-        // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
-        $client->testdata()->rateLimits()->limits([
-            'rateLimits' => [
-                ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
-                'invoiceMetadata' => [
-                    'perSecond' => 1,
-                    'perMinute' => 1,
-                    'perHour' => 100,
-                ]
+    // Limit metadata for tests/Feature/Exceptions/HttpClient/RateLimitExceptionTest.php
+    $client->testdata()->rateLimits()->limits([
+        'rateLimits' => [
+            ...$limitsFixture->data['rateLimits'], //@phpstan-ignore-line
+            'invoiceMetadata' => [
+                'perSecond' => 1,
+                'perMinute' => 1,
+                'perHour' => 100,
             ]
+        ]
+    ]);
+})->beforeEach(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->build();
+
+    try {
+        $client->testdata()->person()->create([
+            'nip' => Env::string('NIP_1'),
+            'pesel' => Env::string('PESEL_1'),
+            'isBailiff' => false,
+            'description' => 'testing',
         ]);
-    })
-    ->beforeEach(function (): void {
-        $client = (new ClientBuilder())
-            ->withMode(Mode::Test)
-            ->build();
-
-        try {
-            $client->testdata()->person()->create([
-                'nip' => $_ENV['NIP_1'],
-                'pesel' => $_ENV['PESEL_1'],
-                'isBailiff' => false,
-                'description' => 'testing',
-            ]);
-        } catch (BadRequestException $exception) {
-            if (str_starts_with($exception->getMessage(), '30001')) {
-                // ignore
-            }
+    } catch (BadRequestException $exception) {
+        if (str_starts_with($exception->getMessage(), '30001')) {
+            // ignore
         }
-    })
-    ->afterAll(function (): void {
-        $client = (new ClientBuilder())
-            ->withMode(Mode::Test)
-            ->build();
+    }
+})->afterAll(function (): void {
+    $client = new ClientBuilder()
+        ->withMode(Mode::Test)
+        ->build();
 
-        foreach (['NIP_1', 'NIP_2', 'NIP_3'] as $nip) {
-            $client->testdata()->subject()->remove([
-                'subjectNip' => $_ENV[$nip],
-            ]);
-        }
-    })
-    ->in('Feature');
+    foreach (['NIP_1', 'NIP_2', 'NIP_3'] as $nip) {
+        $client->testdata()->subject()->remove([
+            'subjectNip' => Env::string($nip),
+        ]);
+    }
+})->in('Feature');
+
+expect()->extend('toHaveReadonlyProperties', function (): ArchExpectation {
+    return Targeted::make(
+        $this,
+        fn (ObjectDescription $object): bool => isset($object->reflectionClass)
+            && array_filter(
+                $object->reflectionClass->getProperties(),
+                fn (\ReflectionProperty $property): bool => ! $property->isReadOnly()
+            ) === [],
+        'to have readonly properties',
+        FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -149,15 +164,17 @@ function toBeArrayWithoutObjectsRecursively(array $values, string $path = 'root'
             continue;
         }
 
-        expect($value)->not->toBeObject("Found object at {$currentPath}");
+        expect($value)->not()->toBeObject("Found object at {$currentPath}");
     }
 }
 
 /**
+ * @template TValue of object|array<int, object>|null
+ *
  * @param array<string, mixed> $data
- * @param object|array<int, object>|null $fixtureData
+ * @param TValue $fixtureData
  */
-function toBeFixture(array $data, object|array|null $fixtureData = null): void
+function toBeFixture(array $data, $fixtureData = null): void
 {
     foreach ($data as $key => $value) {
         if (is_array($fixtureData)) {

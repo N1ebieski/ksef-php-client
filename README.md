@@ -18,14 +18,16 @@ Main features:
 - PDF invoice nad UPO generation
 - QR codes generation
 
-|  KSEF Version  |     Branch     | Release Version |
-|:--------------:|:--------------:|:---------------:|
-|       2.0      |      main      |      ^1.0       |
-|       1.0      |      0.2.x     |      0.2.*      |
+| Release Version | KSEF Version | Branch | PHP Version | Support Policy                      |
+|:---------------:|:------------:|:------:|:-----------:|:-----------------------------------:|
+|      ^2.0       |     2.0      |  main  |  PHP 8.4+   | Bug fixes and all enhancements      |
+|      ^1.0       |     2.0      |  1.x   |  PHP 8.1+   | Bug fixes and critical KSeF changes |
+|      0.2.*      |     1.0      |  0.2.x |      -      |                  -                  |
 
 ## Table of Contents
 
 - [Get Started](#get-started)
+    - [QR code generator](#qr-code-generator)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
         - [Deserialization](#deserialization)
@@ -179,12 +181,11 @@ Main features:
     - [Generate PDF for the offline invoice file with both QR codes](#generate-pdf-for-the-offline-invoice-file-with-both-qr-codes)
     - [Download, decrypt invoices, and deserialize them into DTOs](#download-decrypt-invoices-and-deserialize-them-into-dtos)
 - [Testing](#testing)
-- [Roadmap](#roadmap)
 - [Special thanks](#special-thanks)
 
 ## Get Started
 
-> **Requires [PHP 8.1+](https://www.php.net/releases/)**
+> **Requires [PHP 8.4+](https://www.php.net/releases/)**
 
 First, install `ksef-php-client` via the [Composer](https://getcomposer.org/) package manager:
 
@@ -198,6 +199,48 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
+<details>
+    <summary>
+        <h3>QR code generator</h3>
+    </summary>
+
+QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
+
+```bash
+composer require endroid/qr-code:^6.1
+```
+
+```php
+use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
+
+$qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());
+```
+
+The builder is used exactly as you configured it, and the reported mime type follows the writer it holds, so an `SvgWriter` ends up as `image/svg+xml` in `QRCode::$mimeType` and in the data URI returned by `QRCode::__toString()`. Note that the default `PngWriter` of `endroid/qr-code` requires the `gd` extension.
+
+Any other library works too - `endroid/qr-code` `5.x`, which used a fluent builder instead of named arguments, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
+
+```php
+namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
+
+use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
+
+interface QRCodeGeneratorInterface
+{
+    public function generate(string $data, ?string $label = null): QRCodeGeneratorImage;
+}
+```
+
+`QRCodeGeneratorImage` takes the raw image contents and its mime type, which defaults to `image/png`:
+
+```php
+return new QRCodeGeneratorImage($raw, 'image/svg+xml');
+```
+
+Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
+</details>
+
 ### Client configuration
 
 ```php
@@ -206,7 +249,7 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Production) // Choice between: Test, Demo, Production
     ->withApiUrl($_ENV['KSEF_API_URL']) // Optional, default is set by Mode selection
     ->withLatarniaApiUrl($_ENV['KSEF_LATARNIA_API_URL']) // Optional, default is set by Mode selection
@@ -271,7 +314,7 @@ For best performance, it is recommended to use caching:
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Factories\ValinorCacheFactory;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withValinorCache(ValinorCacheFactory::make()) // Or other CuyZ\Valinor\Cache\Cache implementation
 ```
 
@@ -300,7 +343,7 @@ More information: https://valinor-php.dev/2.3/other/performance-and-caching/
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withKsefToken($_ENV['KSEF_KEY'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -317,7 +360,7 @@ $client = (new ClientBuilder())
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -330,7 +373,7 @@ or:
 ```php
 use N1ebieski\KSEFClient\ClientBuilder;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withCertificate($_ENV['CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
     ->withIdentifier('NIP_NUMBER')
     ->build();
@@ -350,7 +393,7 @@ use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Requests\Auth\DTOs\XadesSignature;
 use N1ebieski\KSEFClient\Requests\Auth\XadesSignature\XadesSignatureXmlRequest;
 
-$client = (new ClientBuilder())->build();
+$client = new ClientBuilder()->build();
 
 $nip = 'NIP_NUMBER';
 
@@ -1844,7 +1887,7 @@ $certificate = file_get_contents(Utility::basePath('config/certificates/certific
 
 $privateKey = file_get_contents(Utility::basePath('config/certificates/privateKey.key'));
 
-$certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+$certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
     new ConvertCertificateToPkcs12Action(
         certificate: CertificateFactory::makeFromPkcs8($certificate, $privateKey, 'password'),
         passphrase: 'password'
@@ -1877,7 +1920,7 @@ use N1ebieski\KSEFClient\Factories\CertificateFactory;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\PrivateKeyType;
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier('NIP_NUMBER')
     // To generate the KSEF certificate, you have to authorize the qualified certificate the first time
@@ -1891,7 +1934,7 @@ $dn = DN::from($dataResponse);
 // You can choose beetween EC or RSA private key type
 $csr = CSRFactory::make($dn, PrivateKeyType::EC);
 
-$csrToDer = (new ConvertPemToDerHandler())->handle(new ConvertPemToDerAction($csr->raw));
+$csrToDer = new ConvertPemToDerHandler()->handle(new ConvertPemToDerAction($csr->raw));
 
 $sendResponse = $client->certificates()->enrollments()->send([
     'certificateName' => 'My first certificate',
@@ -1922,11 +1965,11 @@ $retrieveResponse = $client->certificates()->retrieve([
 
 $certificate = base64_decode($retrieveResponse->certificates[0]->certificate);
 
-$certificateToPem = (new ConvertDerToPemHandler())->handle(
+$certificateToPem = new ConvertDerToPemHandler()->handle(
     new ConvertDerToPemAction($certificate, 'CERTIFICATE')
 );
 
-$certificateToPkcs12 = (new ConvertCertificateToPkcs12Handler())->handle(
+$certificateToPkcs12 = new ConvertCertificateToPkcs12Handler()->handle(
     new ConvertCertificateToPkcs12Action(
         certificate: CertificateFactory::makeFromPkcs8($certificateToPem, $csr->privateKey),
         passphrase: 'password'
@@ -1946,11 +1989,10 @@ file_put_contents(Utility::basePath('config/certificates/ksef-certificate.p12'),
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -1964,7 +2006,7 @@ $encryptionKey = EncryptionKeyFactory::makeRandom();
 
 $nip = 'NIP_NUMBER';
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($nip)
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
@@ -1975,7 +2017,7 @@ $openResponse = $client->sessions()->online()->open([
     'formCode' => 'FA (3)',
 ])->object();
 
-$fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+$fakturaFixture = new FakturaSprzedazyTowaruFixture()
     ->withRandomInvoiceNumber()
     ->withNip($nip)
     ->withTodayDate();
@@ -2019,9 +2061,7 @@ $upo = $client->sessions()->invoices()->upo([
 ])->body();
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeBuilder: (new QrCodeBuilder())
-        ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-        ->labelFont(new OpenSans(size: 12)),
+    qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 
@@ -2066,7 +2106,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     invoiceDocument $faktura->toXml(),
     upoDocument: $upo,
@@ -2103,7 +2143,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     confirmationDocument: $faktura->toXml(),
     qrCodes: $qrCodes
@@ -2132,7 +2172,7 @@ $encryptionKey = EncryptionKeyFactory::makeRandom();
 
 $nip = 'NIP_NUMBER';
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($nip)
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
@@ -2140,7 +2180,7 @@ $client = (new ClientBuilder())
     ->build();
 
 $faktury = array_map(
-    fn () => (new FakturaSprzedazyTowaruFixture())
+    fn () => new FakturaSprzedazyTowaruFixture()
         ->withTodayDate()
         ->withNip($nip)
         ->withRandomInvoiceNumber()
@@ -2195,11 +2235,10 @@ $upo = file_get_contents($statusResponse->upo->pages[0]->downloadUrl);
 <?php
 
 use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use Endroid\QrCode\Label\Font\OpenSans;
-use Endroid\QrCode\RoundBlockSizeMode;
 use N1ebieski\KSEFClient\Actions\ConvertEcdsaDerToRaw\ConvertEcdsaDerToRawHandler;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesAction;
 use N1ebieski\KSEFClient\Actions\GenerateQRCodes\GenerateQRCodesHandler;
+use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 use N1ebieski\KSEFClient\DTOs\QRCodes;
 use N1ebieski\KSEFClient\DTOs\Requests\Auth\ContextIdentifierGroup;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
@@ -2218,7 +2257,7 @@ $certificate = CertificateFactory::makeFromCertificatePath(
     CertificatePath::from($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
 );
 
-$fakturaFixture = (new FakturaSprzedazyTowaruFixture())
+$fakturaFixture = new FakturaSprzedazyTowaruFixture()
     ->withTodayDate()
     ->withNip($nip)
     ->withRandomInvoiceNumber();
@@ -2228,9 +2267,7 @@ $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
 $faktura = Faktura::from($fakturaFixture->data);
 
 $generateQRCodesHandler = new GenerateQRCodesHandler(
-    qrCodeBuilder: (new QrCodeBuilder())
-        ->roundBlockSizeMode(RoundBlockSizeMode::Enlarge)
-        ->labelFont(new OpenSans(size: 12)),
+    qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
     convertEcdsaDerToRawHandler: new ConvertEcdsaDerToRawHandler()
 );
 
@@ -2280,7 +2317,7 @@ use N1ebieski\KSEFClient\ValueObjects\KsefFeInvoiceConverterPath;
 
 $ksefFeInvoiceConverterPath = KsefFeInvoiceConverterPath::from(Utility::basePath('../ksef-pdf-generator/dist/cli/index.js'));
 
-$pdfs = (new GeneratePDFHandler())->handle(new GeneratePDFAction(
+$pdfs = new GeneratePDFHandler()->handle(new GeneratePDFAction(
     ksefFeInvoiceConverterPath: $ksefFeInvoiceConverterPath,    
     invoiceDocument: $faktura->toXml(),
     qrCodes: $qrCodes
@@ -2309,7 +2346,7 @@ use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 
 $encryptionKey = EncryptionKeyFactory::makeRandom();
 
-$client = (new ClientBuilder())
+$client = new ClientBuilder()
     ->withMode(Mode::Test)
     ->withIdentifier($_ENV['NIP_NUMBER'])
     ->withCertificatePath($_ENV['PATH_TO_CERTIFICATE'], $_ENV['CERTIFICATE_PASSPHRASE'])
@@ -2401,12 +2438,6 @@ composer install
 ```bash
 vendor/bin/pest --parallel
 ```
-
-## Roadmap
-
-1. **23.03.2026** – Release of **v1.0.0-rc.\*** (from this point, avoid any breaking changes unless KSeF team forces us)
-2. **01.04.2026** – Release of **v1.0.0** (production ready)
-3. **End of 2026** – The release of the major version drops support for PHP 8.1–8.3 and upgrades the package to utilize features and dependencies of PHP 8.4.
 
 ## Special thanks
 

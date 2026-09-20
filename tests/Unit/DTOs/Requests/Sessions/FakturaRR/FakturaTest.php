@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\DTOs\Requests\Sessions\FakturaRR;
+
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\FakturaRR\Faktura;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaRR\FakturaSprzedazyTowaruRolniczegoFixture;
 

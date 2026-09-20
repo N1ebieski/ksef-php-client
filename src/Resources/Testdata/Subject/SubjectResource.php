@@ -32,7 +32,7 @@ final class SubjectResource extends AbstractResource implements SubjectResourceI
                 $request = CreateRequest::from($request, $this->valinorCache);
             }
 
-            return (new CreateHandler($this->client))->handle($request);
+            return new CreateHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -45,7 +45,7 @@ final class SubjectResource extends AbstractResource implements SubjectResourceI
                 $request = RemoveRequest::from($request, $this->valinorCache);
             }
 
-            return (new RemoveHandler($this->client))->handle($request);
+            return new RemoveHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

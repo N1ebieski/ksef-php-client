@@ -11,7 +11,7 @@ final class CountryUERule extends AbstractRule
     /**
      * @var mixed[]
      */
-    private const CODES = [
+    private const array CODES = [
         'AT', 'BE', 'BG', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE',
         'EL', 'HR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
         'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'XI'

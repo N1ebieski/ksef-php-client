@@ -15,7 +15,7 @@ interface ClientInterface extends BaseClientInterface
      *
      * @param array<int, RequestInterface> $requests
      *
-     * @return array<int, ResponseInterface|null>
+     * @return array<int|string, ResponseInterface|null>
      */
     public function sendAsyncRequest(array $requests, int $concurrency = 8): array;
 }

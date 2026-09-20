@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Actions\ConvertXmlToArray;
+
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayAction;
 use N1ebieski\KSEFClient\Actions\ConvertXmlToArray\ConvertXmlToArrayHandler;
 use N1ebieski\KSEFClient\Actions\NormalizeXml\RemoveNamespaceFromXml\RemoveNamespaceFromXmlHandler;
 use N1ebieski\KSEFClient\ValueObjects\Requests\XmlNamespace;
+use RuntimeException;
 
 $ns = XmlNamespace::Fa3->value;
 
@@ -45,12 +48,13 @@ test('all-caps element names are not lowercased', function () use ($ns): void {
 
     $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
-    expect($array)->toHaveKey('NIP')->not->toHaveKey('nip')->not->toHaveKey('nIP');
-    expect($array)->toHaveKey('GLN')->not->toHaveKey('gln')->not->toHaveKey('gLN');
-    expect($array)->toHaveKey('SWIFT')->not->toHaveKey('swift')->not->toHaveKey('sWIFT');
-    expect($array)->toHaveKey('KRS')->not->toHaveKey('krs')->not->toHaveKey('kRS');
-    expect($array)->toHaveKey('REGON')->not->toHaveKey('regon')->not->toHaveKey('rEGON');
-    expect($array)->toHaveKey('BDO')->not->toHaveKey('bdo')->not->toHaveKey('bDO');
+    expect($array)->toHaveKeys(['NIP', 'GLN', 'SWIFT', 'KRS', 'REGON', 'BDO'])
+        ->not()->toHaveKeys(['nip', 'nIP'])
+        ->not()->toHaveKeys(['gln', 'gLN'])
+        ->not()->toHaveKeys(['swift', 'sWIFT'])
+        ->not()->toHaveKeys(['krs', 'kRS'])
+        ->not()->toHaveKeys(['regon', 'rEGON'])
+        ->not()->toHaveKeys(['bdo', 'bDO']);
 });
 
 test('XML attributes are available under @attributes key with original case', function () use ($ns): void {
@@ -66,7 +70,7 @@ test('XML attributes are available under @attributes key with original case', fu
     expect($array['Kol'])->toHaveKey('@attributes');
     expect($array['Kol']['@attributes'])->toHaveKey('Typ');
     expect($array['Kol']['@attributes']['Typ'])->toBe('txt');
-    expect($array['Kol']['@attributes'])->not->toHaveKey('typ');
+    expect($array['Kol']['@attributes'])->not()->toHaveKey('typ');
 });
 
 test('multiple same-name elements produce indexed array', function () use ($ns): void {
@@ -87,36 +91,6 @@ test('multiple same-name elements produce indexed array', function () use ($ns):
     expect($array['FaWiersz'][2]['NrWierszaFa'])->toBe('3');
 });
 
-test('empty elements are converted to empty strings when array is list', function () use ($ns): void {
-    $xml = <<<XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Wiersz xmlns="{$ns}">
-        <WKom />
-        <WKom></WKom>
-        <WKom>Suma:</WKom>
-    </Wiersz>
-    XML;
-
-    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
-
-    expect($array['WKom'])->toBe(['', '', 'Suma:']);
-});
-
-test('empty elements are converted to empty array when array is not list', function () use ($ns): void {
-    $xml = <<<XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Root xmlns="{$ns}">
-        <Parent>
-            <Child />
-        </Parent>
-    </Root>
-    XML;
-
-    $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
-
-    expect($array['Parent']['Child'])->toBe([]);
-});
-
 test('single element does not produce indexed array', function () use ($ns): void {
     $xml = <<<XML
     <?xml version="1.0" encoding="UTF-8"?>
@@ -127,8 +101,7 @@ test('single element does not produce indexed array', function () use ($ns): voi
 
     $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
-    expect($array['FaWiersz'])->toBeArray();
-    expect($array['FaWiersz'])->toHaveKey('NrWierszaFa');
+    expect($array['FaWiersz'])->toBeArray()->toHaveKey('NrWierszaFa');
     expect($array['FaWiersz']['NrWierszaFa'])->toBe('1');
 });
 

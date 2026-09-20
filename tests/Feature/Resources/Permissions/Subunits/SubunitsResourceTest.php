@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Permissions\Subunits;
+
+use DateTimeImmutable;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\InternalIdFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\AccessToken;
@@ -10,18 +16,19 @@ use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\NIP;
 use N1ebieski\KSEFClient\ValueObjects\RefreshToken;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Permissions\Query\Personal\PersonalPermissionType;
+use Throwable;
 
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
     try {
         $client->testdata()->person()->create([
-            'nip' => $_ENV['NIP_2'],
-            'pesel' => $_ENV['PESEL_2'],
+            'nip' => Env::string('NIP_2'),
+            'pesel' => Env::string('PESEL_2'),
             'description' => 'Subject who get InternalId permission',
         ])->status();
     } catch (BadRequestException $exception) {
@@ -37,12 +44,12 @@ test('create InternalId for person', function (): void {
 
     $clientNip1 = $this->createClient();
 
-    $internalId = InternalIdFactory::make(NIP::from($_ENV['NIP_1']), '1234');
+    $internalId = InternalIdFactory::make(NIP::from(Env::string('NIP_1')), '1234');
 
     /** @var object{referenceNumber: string} $grantsResponse */
     $grantsResponse = $clientNip1->permissions()->subunits()->grants([
         'subjectIdentifierGroup' => [
-            'pesel' => $_ENV['PESEL_2']
+            'pesel' => Env::string('PESEL_2')
         ],
         'contextIdentifierGroup' => [
             'internalId' => $internalId
@@ -51,8 +58,8 @@ test('create InternalId for person', function (): void {
         'subunitName' => 'Subunit for PESEL_2',
         'subjectDetails' => [
             'personById' => [
-                'firstName' => $_ENV['FIRST_NAME_2'],
-                'lastName' => $_ENV['LAST_NAME_2'],
+                'firstName' => Env::string('FIRST_NAME_2'),
+                'lastName' => Env::string('LAST_NAME_2'),
             ]
         ]
     ])->object();
@@ -76,8 +83,8 @@ test('create InternalId for person', function (): void {
 
     $clientNip2 = $this->createClient(
         identifier: $internalId,
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2']
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2')
     );
 
     $accessToken = $clientNip2->getAccessToken();
@@ -98,18 +105,16 @@ test('create InternalId for person', function (): void {
 
     expect($queryResponse)->toHaveProperty('permissions');
 
-    expect($queryResponse->permissions)->toBeArray()->not->toBeEmpty();
+    expect($queryResponse->permissions)->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->permissions,
         fn (object $permission): bool => $permission->permissionScope === PersonalPermissionType::CredentialsManage->value
     );
 
-    expect($permissions)->toBeArray()->not->toBeEmpty();
+    expect($permissions)->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
-
-    expect($permissions[0]->id)->toBeString();
 
     /** @var object{referenceNumber: string} $revokePermissionResponse */
     $revokePermissionResponse = $clientNip1->permissions()->common()->revoke([

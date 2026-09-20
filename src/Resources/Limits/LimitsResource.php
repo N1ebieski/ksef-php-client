@@ -24,7 +24,7 @@ final class LimitsResource extends AbstractResource implements LimitsResourceInt
     public function context(): ResponseInterface
     {
         try {
-            return (new ContextHandler($this->client))->handle();
+            return new ContextHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -33,7 +33,7 @@ final class LimitsResource extends AbstractResource implements LimitsResourceInt
     public function subject(): ResponseInterface
     {
         try {
-            return (new SubjectHandler($this->client))->handle();
+            return new SubjectHandler($this->client)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

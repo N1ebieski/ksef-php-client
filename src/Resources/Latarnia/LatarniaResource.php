@@ -26,7 +26,7 @@ final class LatarniaResource extends AbstractResource implements LatarniaResourc
     public function status(): ResponseInterface
     {
         try {
-            return (new StatusHandler($this->client, $this->config))->handle();
+            return new StatusHandler($this->client, $this->config)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -35,7 +35,7 @@ final class LatarniaResource extends AbstractResource implements LatarniaResourc
     public function messages(): ResponseInterface
     {
         try {
-            return (new MessagesHandler($this->client, $this->config))->handle();
+            return new MessagesHandler($this->client, $this->config)->handle();
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

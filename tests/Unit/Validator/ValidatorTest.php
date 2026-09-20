@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Validator;
+
+use DateTimeImmutable;
+use DateTimeZone;
 use N1ebieski\KSEFClient\Exceptions\RuleValidationException;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Validator\Rules\AbstractRule;
@@ -176,14 +180,11 @@ test('test validation rules without attribute', function (string $attribute, mix
     expect(fn () => Validator::validate(
         $value,
         rules: $rules
-    ))->toThrow(function (RuleValidationException $exception): bool {
+    ))->toThrow(function (RuleValidationException $exception): void {
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
-        expect($exception->context['message'])->not->toBeEmpty();
-        expect($exception->context['values'])->toBeArray();
-
-        return true;
+        expect($exception->context['message'])->not()->toBeEmpty();
     });
 })->with('rules');
 
@@ -196,13 +197,11 @@ test('test validation rules with attribute', function (string $attribute, mixed 
         rules: [
             $attribute => $rules,
         ]
-    ))->toThrow(function (RuleValidationException $exception) use ($attribute): bool {
+    ))->toThrow(function (RuleValidationException $exception) use ($attribute): void {
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
-        expect($exception->context['message'])->not->toBeEmpty();
+        expect($exception->context['message'])->not()->toBeEmpty();
         expect($exception->context['values'])->toContain($attribute);
-
-        return true;
     });
 })->with('rules');

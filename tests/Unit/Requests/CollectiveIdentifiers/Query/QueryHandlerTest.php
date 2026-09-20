@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\CollectiveIdentifiers\Query;
+
 use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\Query\QueryRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Query\QueryRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\Query\QueryResponseFixture;

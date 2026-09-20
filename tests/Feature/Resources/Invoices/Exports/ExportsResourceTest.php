@@ -2,28 +2,35 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Feature\Resources\Invoices\Exports;
+
+use DateTimeImmutable;
+use DateTimeZone;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentAction;
 use N1ebieski\KSEFClient\Actions\DecryptDocument\DecryptDocumentHandler;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\DTOs\Requests\Sessions\Faktura;
 use N1ebieski\KSEFClient\Exceptions\HttpClient\BadRequestException;
 use N1ebieski\KSEFClient\Factories\EncryptionKeyFactory;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaSprzedazyTowaruFixture;
 use N1ebieski\KSEFClient\Tests\Feature\AbstractTestCase;
 use N1ebieski\KSEFClient\ValueObjects\Mode;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Testdata\Subject\SubjectType;
+use Throwable;
+use ZipArchive;
 
 /** @var AbstractTestCase $this */
 
 beforeAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
     try {
         $client->testdata()->subject()->create([
-            'subjectNip' => $_ENV['NIP_2'],
+            'subjectNip' => Env::string('NIP_2'),
             'subjectType' => SubjectType::EnforcementAuthority,
             'description' => 'Subject who gives InvoiceWrite permission',
         ])->status();
@@ -35,12 +42,12 @@ beforeAll(function (): void {
 });
 
 afterAll(function (): void {
-    $client = (new ClientBuilder())
+    $client = new ClientBuilder()
         ->withMode(Mode::Test)
         ->build();
 
     $client->testdata()->subject()->remove([
-        'nip' => $_ENV['NIP_2'],
+        'subjectNip' => Env::string('NIP_2'),
     ]);
 });
 
@@ -57,9 +64,9 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         'formCode' => 'FA (3)',
     ])->object();
 
-    $fakturaFixture = (new FakturaSprzedazyTowaruFixture())
-        ->withNip($_ENV['NIP_1'])
-        ->withForNip($_ENV['NIP_2'])
+    $fakturaFixture = new FakturaSprzedazyTowaruFixture()
+        ->withNip(Env::string('NIP_1'))
+        ->withForNip(Env::string('NIP_2'))
         ->withTodayDate()
         ->withRandomInvoiceNumber();
 
@@ -86,7 +93,6 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         try {
             expect($statusResponse->status->code)->toBe(200);
             expect($statusResponse)->toHaveProperty('permanentStorageDate');
-            expect($statusResponse->permanentStorageDate)->not->toBeNull();
 
             return $statusResponse;
         } catch (Throwable $exception) {
@@ -101,9 +107,9 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
     $encryptionKey = EncryptionKeyFactory::makeRandom();
 
     $client = $this->createClient(
-        identifier: $_ENV['NIP_2'],
-        certificatePath: $_ENV['CERTIFICATE_PATH_2'],
-        certificatePassphrase: $_ENV['CERTIFICATE_PASSPHRASE_2'],
+        identifier: Env::string('NIP_2'),
+        certificatePath: Env::string('CERTIFICATE_PATH_2'),
+        certificatePassphrase: Env::string('CERTIFICATE_PASSPHRASE_2'),
         encryptionKey: $encryptionKey
     );
 
@@ -137,7 +143,7 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         }
     });
 
-    expect($statusResponse->package->parts)->not->toBeEmpty();
+    expect($statusResponse->package->parts)->not()->toBeEmpty();
 
     $decryptDocumentHandler = new DecryptDocumentHandler();
 

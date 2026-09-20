@@ -9,7 +9,7 @@ use N1ebieski\KSEFClient\Testing\Fixtures\DTOs\Requests\Sessions\FakturaRR\Abstr
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\AbstractRequestFixture;
 use N1ebieski\KSEFClient\ValueObjects\Requests\Sessions\FormCode;
 
-class SendRequestFixture extends AbstractRequestFixture
+final class SendRequestFixture extends AbstractRequestFixture
 {
     /**
      * @var array<string, mixed>

@@ -34,7 +34,7 @@ final class ExportsResource extends AbstractResource implements ExportsResourceI
                 $request = InitRequest::from($request, $this->valinorCache);
             }
 
-            return (new InitHandler($this->client, $this->config))->handle($request);
+            return new InitHandler($this->client, $this->config)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }
@@ -47,7 +47,7 @@ final class ExportsResource extends AbstractResource implements ExportsResourceI
                 $request = StatusRequest::from($request, $this->valinorCache);
             }
 
-            return (new StatusHandler($this->client))->handle($request);
+            return new StatusHandler($this->client)->handle($request);
         } catch (Throwable $throwable) {
             throw $this->exceptionHandler->handle($throwable);
         }

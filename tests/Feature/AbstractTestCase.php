@@ -7,6 +7,7 @@ namespace N1ebieski\KSEFClient\Tests\Feature;
 use GuzzleHttp\Client;
 use N1ebieski\KSEFClient\ClientBuilder;
 use N1ebieski\KSEFClient\Contracts\Resources\ClientResourceInterface;
+use N1ebieski\KSEFClient\Support\Env;
 use N1ebieski\KSEFClient\Support\Utility;
 use N1ebieski\KSEFClient\ValueObjects\EncryptionKey;
 use N1ebieski\KSEFClient\ValueObjects\InternalId;
@@ -31,14 +32,13 @@ abstract class AbstractTestCase extends TestCase
         ?string $certificatePassphrase = null,
         ?EncryptionKey $encryptionKey = null
     ): ClientResourceInterface {
-        /** @var array<string, string> $_ENV */
-        $client = (new ClientBuilder())
+        $client = new ClientBuilder()
             ->withMode(Mode::Test)
-            ->withIdentifier($identifier ?? $_ENV['NIP_1'])
+            ->withIdentifier($identifier ?? Env::string('NIP_1'))
             ->withLogPath(Utility::basePath('var/logs/monolog.log'))
             ->withCertificatePath(
-                Utility::basePath($certificatePath ?? $_ENV['CERTIFICATE_PATH_1']),
-                $certificatePassphrase ?? $_ENV['CERTIFICATE_PASSPHRASE_1']
+                Utility::basePath($certificatePath ?? Env::string('CERTIFICATE_PATH_1')),
+                $certificatePassphrase ?? Env::string('CERTIFICATE_PASSPHRASE_1')
             );
 
         if ($encryptionKey instanceof EncryptionKey) {

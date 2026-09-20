@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace N1ebieski\KSEFClient\Tests\Unit\Requests\CollectiveIdentifiers\List;
+
 use N1ebieski\KSEFClient\Requests\CollectiveIdentifiers\List\ListRequest;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\List\ListRequestFixture;
 use N1ebieski\KSEFClient\Testing\Fixtures\Requests\CollectiveIdentifiers\List\ListResponseFixture;
