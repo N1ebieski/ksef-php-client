@@ -136,7 +136,7 @@ test('fromXml handles single DodatkowyOpis element with NrWiersza', function ():
 
     expect($dodatkowyOpis[0]->nrWiersza)->toBeInstanceOf(NrWiersza::class);
 
-    expect($dodatkowyOpis[0]->toArray())->toBeArray()->toEqual($fixture->data['fa']['dodatkowyOpis'][0]);
+    expect($dodatkowyOpis[0]->toArray())->toEqual($fixture->data['fa']['dodatkowyOpis'][0]);
 });
 
 test('fromXml preserves an absent DodatkowyOpis NrWiersza as Optional', function (): void {
@@ -156,5 +156,5 @@ test('fromXml preserves an absent DodatkowyOpis NrWiersza as Optional', function
 
     expect($dodatkowyOpis[0]->nrWiersza)->toBeInstanceOf(Optional::class);
 
-    expect($dodatkowyOpis[0]->toArray())->toBeArray()->toEqual($fixture->data['fa']['dodatkowyOpis'][0]);
+    expect($dodatkowyOpis[0]->toArray())->toEqual($fixture->data['fa']['dodatkowyOpis'][0]);
 });

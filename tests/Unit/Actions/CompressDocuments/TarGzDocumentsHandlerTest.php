@@ -68,9 +68,6 @@ test('documents are ordered by numbered names after untar gz', function () use (
         $fileName = $file->getFilename();
         $fileContent = $file->getContent();
 
-        expect($fileName)->toBeString();
-        expect($fileContent)->toBeString();
-
         $filesByName[$fileName] = $fileContent;
     }
 

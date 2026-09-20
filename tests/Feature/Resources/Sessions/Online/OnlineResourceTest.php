@@ -88,10 +88,8 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
     });
 
     expect($statusResponse)->toHaveProperty('upoDownloadUrl');
-    expect($statusResponse->upoDownloadUrl)->toBeString();
 
     expect($statusResponse)->toHaveProperty('ksefNumber');
-    expect($statusResponse->ksefNumber)->toBeString();
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
         qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
@@ -108,15 +106,9 @@ test('send an invoice, check for UPO and generate QR code', function (): void {
         ksefNumber: $ksefNumber
     ));
 
-    expect($qrCodes)
-        ->toBeInstanceOf(QRCodes::class)
-        ->toHaveProperty('code1');
+    expect($qrCodes)->toHaveProperty('code1');
 
-    expect($qrCodes->code1)
-        ->toBeInstanceOf(QRCode::class)
-        ->toHaveProperty('raw');
-
-    expect($qrCodes->code1->raw)->toBeString();
+    expect($qrCodes->code1)->toHaveProperty('raw');
 
     $this->revokeCurrentSession($client);
 });

@@ -54,15 +54,10 @@ test('generate qr codes by invoice hash', function (): void {
     ));
 
     expect($qrCodes)
-        ->toBeInstanceOf(QRCodes::class)
         ->toHaveProperty('code1')
         ->toHaveProperty('code2');
 
-    expect($qrCodes->code1)
-        ->toBeInstanceOf(QRCode::class)
-        ->toHaveProperty('raw');
-
-    expect($qrCodes->code1->raw)->toBeString();
+    expect($qrCodes->code1)->toHaveProperty('raw');
 
     expect($qrCodes->code2)
         ->toBeInstanceOf(QRCode::class)

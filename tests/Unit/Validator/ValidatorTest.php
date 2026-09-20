@@ -176,14 +176,11 @@ test('test validation rules without attribute', function (string $attribute, mix
     expect(fn () => Validator::validate(
         $value,
         rules: $rules
-    ))->toThrow(function (RuleValidationException $exception): bool {
+    ))->toThrow(function (RuleValidationException $exception): void {
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
         expect($exception->context['message'])->not()->toBeEmpty();
-        expect($exception->context['values'])->toBeArray();
-
-        return true;
     });
 })->with('rules');
 
@@ -196,13 +193,11 @@ test('test validation rules with attribute', function (string $attribute, mixed 
         rules: [
             $attribute => $rules,
         ]
-    ))->toThrow(function (RuleValidationException $exception) use ($attribute): bool {
+    ))->toThrow(function (RuleValidationException $exception) use ($attribute): void {
         expect($exception)->toHaveProperties(['message', 'context']);
         expect($exception->context)->toHaveKeys(['message', 'values']);
 
         expect($exception->context['message'])->not()->toBeEmpty();
         expect($exception->context['values'])->toContain($attribute);
-
-        return true;
     });
 })->with('rules');

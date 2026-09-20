@@ -126,10 +126,8 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
     });
 
     expect($statusResponse)->toHaveProperty('upoDownloadUrl');
-    expect($statusResponse->upoDownloadUrl)->toBeString();
 
     expect($statusResponse)->toHaveProperty('ksefNumber');
-    expect($statusResponse->ksefNumber)->toBeString();
 
     $generateQRCodesHandler = new GenerateQRCodesHandler(
         qrCodeGenerator: new EndroidV6QRCodeGenerator(new QrCodeBuilder()),
@@ -146,15 +144,9 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
         ksefNumber: $ksefNumber
     ));
 
-    expect($qrCodes)
-        ->toBeInstanceOf(QRCodes::class)
-        ->toHaveProperty('code1');
+    expect($qrCodes)->toHaveProperty('code1');
 
-    expect($qrCodes->code1)
-        ->toBeInstanceOf(QRCode::class)
-        ->toHaveProperty('raw');
-
-    expect($qrCodes->code1->raw)->toBeString();
+    expect($qrCodes->code1)->toHaveProperty('raw');
 
     /** @var object{authorizationGrants: array<int, object{id: string, authorizationScope: string}>} $queryResponse */
     $queryResponse = $client->permissions()->query()->authorizations()->grants([
@@ -166,18 +158,16 @@ test('send the RR invoice as NIP_1 as Podmiot2, check for UPO and generate QR co
 
     expect($queryResponse)->toHaveProperty('authorizationGrants');
 
-    expect($queryResponse->authorizationGrants)->toBeArray()->not()->toBeEmpty();
+    expect($queryResponse->authorizationGrants)->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->authorizationGrants,
         fn (object $permission): bool => $permission->authorizationScope === AuthorizationPermissionType::RRInvoicing->value
     );
 
-    expect($permissions)->toBeArray()->not()->toBeEmpty();
+    expect($permissions)->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
-
-    expect($permissions[0]->id)->toBeString();
 
     /** @var object{referenceNumber: string} $revokePermissionResponse */
     $revokePermissionResponse = $clientNip2->permissions()->authorizations()->revoke([

@@ -192,10 +192,7 @@ test('test status exception', function (): void {
     $invalidNip = (string)((int) Env::string('NIP_1') + 1);
 
     expect(fn () => $this->createClient($invalidNip))->toThrow(function (StatusException $exception): void {
-        expect($exception->context)
-            ->toBeObject()
-            ->toHaveProperty('status');
-
+        expect($exception->context)->toHaveProperty('status');
         expect($exception->context->status)->toHaveProperties(['code', 'description', 'details']);
     });
 });

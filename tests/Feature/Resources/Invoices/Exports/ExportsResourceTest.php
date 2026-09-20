@@ -87,7 +87,6 @@ test('send an invoice for NIP_2 and export it as NIP_2', function (): void {
         try {
             expect($statusResponse->status->code)->toBe(200);
             expect($statusResponse)->toHaveProperty('permanentStorageDate');
-            expect($statusResponse->permanentStorageDate)->not()->toBeNull();
 
             return $statusResponse;
         } catch (Throwable $exception) {

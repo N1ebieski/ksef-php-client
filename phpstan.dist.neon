@@ -25,6 +25,7 @@ parameters:
 	ignoreErrors:
 		- '#^Parameter \#1 \$node of method DOMDocument::importNode\(\) expects DOMNode, DOMElement\|null given.$#'
 		- '#^Parameter \#1 \$data of static method ([a-zA-Z0-9\\]+)::normalizeXmlArray\(\) expects array<string, mixed>, mixed given\.$#'
+		- '#^Parameter \#1 \$exception of method Pest\\Mixins\\Expectation<Closure>::toThrow\(\) expects \(Closure\(Throwable\): mixed\)\|string\|Throwable, Closure\([a-zA-Z0-9_\\\\]+\): void given\.$#'
 		-
 			message: '#^Cannot access offset ([a-zA-Z0-9@''_]+) on (mixed|array)#'
 			path: tests/Unit/Actions/ConvertXmlToArray/ConvertXmlToArrayHandlerTest.php

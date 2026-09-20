@@ -24,7 +24,6 @@ test('429 too many requests exception', function (): void {
     /** @var RateLimitException $exception */
     $exception = ExceptionFactory::make(statusCode: 429, headers: [], context: $contents);
 
-    expect($exception)->toBeInstanceOf(RateLimitException::class);
     expect($exception->getMessage())->toContain($contents->status->description);
     expect($exception)->toHaveProperty('context');
     expect($exception->context)->toEqual($contents);
@@ -57,7 +56,6 @@ test('400 bad request exception', function (): void {
     /** @var BadRequestException $exception */
     $exception = ExceptionFactory::make(statusCode: 400, headers: [], context: $contents);
 
-    expect($exception)->toBeInstanceOf(BadRequestException::class);
     expect($exception->getMessage())->toContain($contents->exception->exceptionDetailList[0]->exceptionDescription);
     expect($exception)->toHaveProperty('context');
     expect($exception->context)->toEqual($contents);

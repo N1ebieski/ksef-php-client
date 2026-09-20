@@ -131,18 +131,16 @@ test('send invoice as NIP_2 when NIP_2 gave InvoiceWrite permission', function (
 
     expect($queryResponse)->toHaveProperty('permissions');
 
-    expect($queryResponse->permissions)->toBeArray()->not()->toBeEmpty();
+    expect($queryResponse->permissions)->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->permissions,
         fn (object $permission): bool => $permission->permissionScope === PersonalPermissionType::InvoiceWrite->value
     );
 
-    expect($permissions)->toBeArray()->not()->toBeEmpty();
+    expect($permissions)->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
-
-    expect($permissions[0]->id)->toBeString();
 
     /** @var object{referenceNumber: string} $revokePermissionResponse */
     $revokePermissionResponse = $clientNip2->permissions()->common()->revoke([

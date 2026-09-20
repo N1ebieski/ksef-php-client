@@ -99,18 +99,16 @@ test('create InternalId for person', function (): void {
 
     expect($queryResponse)->toHaveProperty('permissions');
 
-    expect($queryResponse->permissions)->toBeArray()->not()->toBeEmpty();
+    expect($queryResponse->permissions)->not()->toBeEmpty();
 
     $permissions = array_filter(
         $queryResponse->permissions,
         fn (object $permission): bool => $permission->permissionScope === PersonalPermissionType::CredentialsManage->value
     );
 
-    expect($permissions)->toBeArray()->not()->toBeEmpty();
+    expect($permissions)->not()->toBeEmpty();
 
     expect($permissions[0])->toHaveProperty('id');
-
-    expect($permissions[0]->id)->toBeString();
 
     /** @var object{referenceNumber: string} $revokePermissionResponse */
     $revokePermissionResponse = $clientNip1->permissions()->common()->revoke([

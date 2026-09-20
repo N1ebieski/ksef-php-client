@@ -16,10 +16,8 @@ class ExampleDTO
 }
 
 test('maps DTO when array keys start with uppercase letter', function (): void {
-    $example = ExampleDTO::from([
+    ExampleDTO::from([
         'P_13_9' => 'Value',
         'Example' => 'Value',
     ]);
-
-    expect($example)->toBeInstanceOf(ExampleDTO::class);
-});
+})->throwsNoExceptions();

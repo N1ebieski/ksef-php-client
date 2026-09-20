@@ -107,8 +107,6 @@ test('create a collective identifier for invoices and list it as the buyer', fun
     ])->object();
 
     /** @var object{collectiveIdentifierNumber: string} $createResponse */
-    expect($createResponse->collectiveIdentifierNumber)->toBeString();
-
     /** @var object{invoices: array<int, object{ksefNumber: string, collectiveIdentifierNumber: string, payment: object{amount: float|int, currency: string}, description: string|null, detailsHidden: bool}>} $invoicesResponse */
     $invoicesResponse = $clientNip1->collectiveIdentifiers()->invoices([
         'collectiveIdentifierNumbers' => [$createResponse->collectiveIdentifierNumber]

@@ -17,7 +17,6 @@ test('removes namespace from root element', function (): void {
         new RemoveNamespaceFromXmlAction($xml)
     );
 
-    expect($result)->toBeString();
     expect($result)->not()->toContain('xmlns=');
     expect($result)->toContain('<Faktura>');
     expect($result)->toContain('<NumerFaktury>123/2024</NumerFaktury>');

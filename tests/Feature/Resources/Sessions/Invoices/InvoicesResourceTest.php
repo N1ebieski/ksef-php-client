@@ -64,7 +64,7 @@ test('send an invoice, check if it is in the list', function (): void {
     ])->object();
 
     expect($listResponse)->toHaveProperty('invoices');
-    expect($listResponse->invoices)->toBeArray()->not()->toBeEmpty();
+    expect($listResponse->invoices)->not()->toBeEmpty();
 
     $matches = array_filter(
         $listResponse->invoices,

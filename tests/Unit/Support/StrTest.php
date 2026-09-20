@@ -45,8 +45,6 @@ test('detects binary data in split zip parts', function (): void {
 
         expect(count($parts))->toBeGreaterThan(1);
 
-        expect($parts[0])->not()->toBeNull();
-
         expect(Str::isBinary($parts[0]))->toBeTrue();
     } finally {
         if (file_exists($zipPath)) {

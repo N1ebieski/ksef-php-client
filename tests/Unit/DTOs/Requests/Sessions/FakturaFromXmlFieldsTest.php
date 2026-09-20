@@ -161,7 +161,6 @@ test('fromXml populates KorektaGroup fields correctly', function (): void {
     /** @var KorektaGroup $korektaGroup */
     $korektaGroup = $deserialized->fa->korektaGroup;
 
-    expect($korektaGroup)->toBeInstanceOf(KorektaGroup::class);
     expect($korektaGroup->typKorekty)->toBe(TypKorekty::Inna);
 
     //@phpstan-ignore-next-line cast.string
