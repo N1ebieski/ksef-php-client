@@ -27,7 +27,9 @@ Main features:
 ## Table of Contents
 
 - [Get Started](#get-started)
-    - [QR code generator](#qr-code-generator)
+    - [Suggestions](#suggestions)
+        - [QR code generator](#qr-code-generator)
+        - [KSeF pdf generator](#ksef-pdf-generator)
     - [Client configuration](#client-configuration)
     - [Auto mapping](#auto-mapping)
         - [Deserialization](#deserialization)
@@ -181,7 +183,6 @@ Main features:
     - [Generate PDF for the offline invoice file with both QR codes](#generate-pdf-for-the-offline-invoice-file-with-both-qr-codes)
     - [Download, decrypt invoices, and deserialize them into DTOs](#download-decrypt-invoices-and-deserialize-them-into-dtos)
 - [Testing](#testing)
-- [Roadmap](#roadmap)
 - [Special thanks](#special-thanks)
 
 ## Get Started
@@ -200,47 +201,51 @@ Ensure that the `php-http/discovery` composer plugin is allowed to run or instal
 composer require guzzlehttp/guzzle
 ```
 
+### Suggestions
+
 <details>
     <summary>
-        <h3>QR code generator</h3>
+        <h4>QR code generator</h4>
     </summary>
 
-QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
+    QR code generation is optional and no QR code library is required by default. If you need it, install one and pass a `QRCodeGeneratorInterface` implementation to `GenerateQRCodesHandler`. An adapter for `endroid/qr-code` `6.1+` ships with the client:
 
-```bash
-composer require endroid/qr-code:^6.1
-```
+    ```bash
+    composer require endroid/qr-code:^6.1
+    ```
 
-```php
-use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
-use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
+    ```php
+    use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
+    use N1ebieski\KSEFClient\Actions\GenerateQRCodes\Adapters\EndroidV6QRCodeGenerator;
 
-$qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());
-```
+    $qrCodeGenerator = new EndroidV6QRCodeGenerator(new QrCodeBuilder());
+    ```
 
-The builder is used exactly as you configured it, and the reported mime type follows the writer it holds, so an `SvgWriter` ends up as `image/svg+xml` in `QRCode::$mimeType` and in the data URI returned by `QRCode::__toString()`. Note that the default `PngWriter` of `endroid/qr-code` requires the `gd` extension.
+    The builder is used exactly as you configured it, and the reported mime type follows the writer it holds, so an `SvgWriter` ends up as `image/svg+xml` in `QRCode::$mimeType` and in the data URI returned by `QRCode::__toString()`. Note that the default `PngWriter` of `endroid/qr-code` requires the `gd` extension.
 
-Any other library works too - `endroid/qr-code` `5.x`, which used a fluent builder instead of named arguments, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
+    Any other library works too - `endroid/qr-code` `5.x`, which used a fluent builder instead of named arguments, or something unrelated like `chillerlan/php-qrcode`. Nothing in the client depends on a particular one, so install whatever you want and implement the contract:
 
-```php
-namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
+    ```php
+    namespace N1ebieski\KSEFClient\Contracts\Actions\GenerateQRCodes;
 
-use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
+    use N1ebieski\KSEFClient\ValueObjects\QRCodeGeneratorImage;
 
-interface QRCodeGeneratorInterface
-{
-    public function generate(string $data, ?string $label = null): QRCodeGeneratorImage;
-}
-```
+    interface QRCodeGeneratorInterface
+    {
+        public function generate(string $data, ?string $label = null): QRCodeGeneratorImage;
+    }
+    ```
 
-`QRCodeGeneratorImage` takes the raw image contents and its mime type, which defaults to `image/png`:
+    `QRCodeGeneratorImage` takes the raw image contents and its mime type, which defaults to `image/png`:
 
-```php
-return new QRCodeGeneratorImage($raw, 'image/svg+xml');
-```
+    ```php
+    return new QRCodeGeneratorImage($raw, 'image/svg+xml');
+    ```
 
-Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
+    Watch out for libraries that encode their output by default - `chillerlan/php-qrcode` has `outputBase64` set to `true`, so `render()` returns a ready data URI rather than the image itself. The contract expects the raw contents, so such an option has to be turned off in your generator.
 </details>
+
+#### [KSeF pdf generator](https://github.com/N1ebieski/ksef-pdf-generator)
 
 ### Client configuration
 
@@ -2439,12 +2444,6 @@ composer install
 ```bash
 vendor/bin/pest --parallel
 ```
-
-## Roadmap
-
-1. **23.03.2026** – Release of **v1.0.0-rc.\*** (from this point, avoid any breaking changes unless KSeF team forces us)
-2. **01.04.2026** – Release of **v1.0.0** (production ready)
-3. **End of 2026** – The release of the major version drops support for PHP 8.1–8.3 and upgrades the package to utilize features and dependencies of PHP 8.4.
 
 ## Special thanks
 
