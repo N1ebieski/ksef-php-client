@@ -45,19 +45,13 @@ test('all-caps element names are not lowercased', function () use ($ns): void {
 
     $array = getConvertXmlToArrayHandler()->handle(new ConvertXmlToArrayAction($xml));
 
-    expect($array)->toHaveKey('NIP')
-        ->not()->toHaveKey('nip')
-        ->not()->toHaveKeys(['nIP', 'GLN'])
-        ->not()->toHaveKey('gln')
-        ->not()->toHaveKeys(['gLN', 'SWIFT'])
-        ->not()->toHaveKey('swift')
-        ->not()->toHaveKeys(['sWIFT', 'KRS'])
-        ->not()->toHaveKey('krs')
-        ->not()->toHaveKeys(['kRS', 'REGON'])
-        ->not()->toHaveKey('regon')
-        ->not()->toHaveKeys(['rEGON', 'BDO'])
-        ->not()->toHaveKey('bdo')
-        ->not()->toHaveKey('bDO');
+    expect($array)->toHaveKeys(['NIP', 'GLN', 'SWIFT', 'KRS', 'REGON', 'BDO'])
+        ->not()->toHaveKeys(['nip', 'nIP'])
+        ->not()->toHaveKeys(['gln', 'gLN'])
+        ->not()->toHaveKeys(['swift', 'sWIFT'])
+        ->not()->toHaveKeys(['krs', 'kRS'])
+        ->not()->toHaveKeys(['regon', 'rEGON'])
+        ->not()->toHaveKeys(['bdo', 'bDO']);
 });
 
 test('XML attributes are available under @attributes key with original case', function () use ($ns): void {

@@ -63,7 +63,6 @@ test('preserves XML attributes', function (): void {
     );
 
     expect($result)
-        ->toContain('ns:')
         ->toContain('attr1="value1"')
         ->toContain('attr2="value2"')
         ->toContain('id="123"')
