@@ -67,7 +67,7 @@ final class MyQRCodeGenerator implements QRCodeGeneratorInterface
 }
 ```
 
-`QRCodeImage` takes the raw image contents and its mime type, which defaults to `image/png`. The contract expects the raw image, never a data URI - watch out for libraries that encode their output by default, such as `chillerlan/php-qrcode` with `outputBase64` set to `true`.
+`QRCodeGeneratorImage` takes the raw image contents and its mime type, which defaults to `image/png`. The contract expects the raw image, never a data URI - watch out for libraries that encode their output by default, such as `chillerlan/php-qrcode` with `outputBase64` set to `true`.
 
 This also covers `endroid/qr-code` `5.x` if you need to stay on it: implement the contract against its fluent builder yourself. Note that the `5.x` builder is mutable, so build every code from a `clone` of it.
 
