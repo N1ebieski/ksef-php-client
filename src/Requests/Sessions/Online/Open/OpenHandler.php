@@ -31,6 +31,7 @@ final class OpenHandler extends AbstractHandler
         return $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('sessions/online'),
+            headers: $request->toHeaders(),
             body: [
                 ...$request->toBody(),
                 'encryption' => $this->config->encryptedKey->toBody()

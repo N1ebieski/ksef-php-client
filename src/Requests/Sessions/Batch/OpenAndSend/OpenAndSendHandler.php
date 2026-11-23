@@ -94,6 +94,7 @@ final class OpenAndSendHandler extends AbstractHandler
         $openResponse = $this->client->sendRequest(new Request(
             method: Method::Post,
             uri: Uri::from('sessions/batch'),
+            headers: $request->toHeaders(),
             body: array_replace_recursive( //@phpstan-ignore-line argument.type
                 $request->toBody(),
                 [
