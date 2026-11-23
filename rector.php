@@ -18,10 +18,6 @@ return \Rector\Config\RectorConfig::configure()
         \Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector::class => [
             __DIR__ . '/src/Validator/Rules/Number/NipRule.php'
         ],
-        \Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector::class => [
-            __DIR__ . '/src/Testing/Fixtures/Requests/AbstractResponseFixture.php',
-            __DIR__ . '/src/Testing/Fixtures/DTOs/Requests/Sessions/AbstractFakturaFixture.php'
-        ],
         \Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector::class,
         \Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector::class => [
             __DIR__ . '/src/Factories/EncryptedTokenFactory.php',
