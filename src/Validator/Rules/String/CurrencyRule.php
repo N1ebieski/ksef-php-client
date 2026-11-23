@@ -30,7 +30,7 @@ final class CurrencyRule extends AbstractRule
         'UGX', 'USD', 'USN', 'UYI', 'UYU', 'UYW', 'UZS', 'VES', 'VND', 'VUV',
         'WST', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XCD', 'XCG',
         'XDR', 'XOF', 'XPD', 'XPF', 'XPT', 'XSU', 'XUA', 'XXX', 'YER', 'ZAR',
-        'ZMW', 'ZWL',
+        'ZMW', 'ZWL', 'CNH', 'VED', 'XTS', 'ZWG', 'SLE'
     ];
 
     public function handle(string $value, ?string $attribute = null): void
