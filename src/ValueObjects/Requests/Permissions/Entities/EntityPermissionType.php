@@ -11,4 +11,6 @@ enum EntityPermissionType: string implements EnumInterface
     case InvoiceWrite = 'InvoiceWrite';
 
     case InvoiceRead = 'InvoiceRead';
+
+    case CollectiveIdentifierManage = 'CollectiveIdentifierManage';
 }
